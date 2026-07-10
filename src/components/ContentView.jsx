@@ -6,84 +6,107 @@ export default function ContentView({ items, renderItem, mode, pageKey }) {
   const actualMode = mode || getPageMode(pageKey)
   const isSlide = actualMode === 'slide'
   const [currentIdx, setCurrentIdx] = useState(0)
+  const [count, setCount] = useState(0)
+
+  const resetCount = () => setCount(0)
+  const incCount = () => setCount(c => c + 1)
+  const decCount = () => setCount(c => Math.max(0, c - 1))
 
   if (!items || items.length === 0) {
     return <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No content yet.</p>
   }
 
-  // LIST MODE
-  if (!isSlide) {
-    return <>{items.map((item, i) => renderItem(item, i))}</>
-  }
-
-  // SLIDE MODE
-  const current = items[currentIdx]
   const total = items.length
+  const goTo = (idx) => setCurrentIdx(Math.max(0, Math.min(idx, total - 1)))
   const hasPrev = currentIdx > 0
   const hasNext = currentIdx < total - 1
 
-  const goTo = (idx) => {
-    setCurrentIdx(Math.max(0, Math.min(idx, total - 1)))
+  // Shared counter component
+  const counterSection = (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <button onClick={decCount} style={circleBtn('#e74c3c', 34)}>−</button>
+      <span style={{
+        fontSize: 20, fontWeight: 800, color: 'var(--text-heading)',
+        minWidth: 38, textAlign: 'center', fontVariantNumeric: 'tabular-nums',
+      }}>{count}</span>
+      <button onClick={incCount} style={circleBtn('#2ecc71', 34)}>+</button>
+      <button onClick={resetCount} style={{
+        ...circleBtn('var(--accent)', 28), fontSize: 12, borderRadius: 6,
+      }}>↺</button>
+    </div>
+  )
+
+  // LIST MODE
+  if (!isSlide) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+        <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 66 }}>
+          {items.map((item, i) => renderItem(item, i))}
+        </div>
+        {/* Fixed counter bar */}
+        <div style={{
+          position: 'fixed', bottom: 56, left: '50%', transform: 'translateX(-50%)',
+          width: '100%', maxWidth: 'inherit', zIndex: 50,
+          background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
+          padding: '10px 0', display: 'flex', justifyContent: 'center',
+        }}>
+          {counterSection}
+        </div>
+      </div>
+    )
   }
 
-  const navBtnStyle = (disabled) => ({
-    background: disabled ? 'var(--bg-card-alt)' : 'var(--accent)',
-    border: 'none',
-    color: disabled ? 'var(--text-muted)' : '#fff',
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    cursor: disabled ? 'default' : 'pointer',
-    fontSize: 15,
-    opacity: disabled ? 0.4 : 1,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  })
+  // SLIDE MODE — combined nav + counter in ONE bar
+  const current = items[currentIdx]
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', flex: 1, minHeight: 0 }}>
-      {/* Scrollable card area — fills available space */}
-      <div key={currentIdx} style={{
-        flex: 1,
-        overflowY: 'auto',
-        minHeight: 0,
-        animation: 'fadeSlideIn 0.25s ease',
-        paddingBottom: 56,
-      }}>
+      {/* padding for fixed bar */}
+      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0,
+        animation: 'fadeSlideIn 0.25s ease', paddingBottom: 66 }}>
         {renderItem(current, currentIdx)}
       </div>
-
-      {/* Fixed nav bar — pinned to bottom of viewport */}
+      {/* One fixed bar: nav left, counter right */}
       <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 10,
-        padding: '12px 0 4px',
-        flexShrink: 0,
-        background: 'var(--bg)',
-        position: 'fixed',
-        bottom: 56,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 50,
-        width: '100%',
-        maxWidth: 'inherit',
-        borderTop: '1px solid var(--border)',
+        position: 'fixed', bottom: 56, left: '50%', transform: 'translateX(-50%)',
+        width: '100%', maxWidth: 'inherit', zIndex: 50,
+        background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
         boxSizing: 'border-box',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '8px 12px',
       }}>
-        <button onClick={() => goTo(0)} disabled={!hasPrev} style={navBtnStyle(!hasPrev)}>⏮</button>
-        <button onClick={() => goTo(currentIdx - 1)} disabled={!hasPrev} style={navBtnStyle(!hasPrev)}>◀</button>
-        <span style={{
-          fontSize: 14, color: 'var(--text-muted)', minWidth: 70,
-          textAlign: 'center', fontWeight: 600,
-        }}>
-          {currentIdx + 1} / {total}
-        </span>
-        <button onClick={() => goTo(currentIdx + 1)} disabled={!hasNext} style={navBtnStyle(!hasNext)}>▶</button>
-        <button onClick={() => goTo(total - 1)} disabled={!hasNext} style={navBtnStyle(!hasNext)}>⏭</button>
+        {/* Slide nav */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <button onClick={() => goTo(0)} disabled={!hasPrev} style={navBtn(!hasPrev)}>⏮</button>
+          <button onClick={() => goTo(currentIdx - 1)} disabled={!hasPrev} style={navBtn(!hasPrev)}>◀</button>
+          <span style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 600, minWidth: 50, textAlign: 'center' }}>
+            {currentIdx + 1}/{total}
+          </span>
+          <button onClick={() => goTo(currentIdx + 1)} disabled={!hasNext} style={navBtn(!hasNext)}>▶</button>
+          <button onClick={() => goTo(total - 1)} disabled={!hasNext} style={navBtn(!hasNext)}>⏭</button>
+        </div>
+        {/* Counter */}
+        {counterSection}
       </div>
     </div>
   )
+}
+
+function circleBtn(bg, size) {
+  return {
+    background: bg, border: 'none', color: '#fff',
+    width: size, height: size, borderRadius: '50%', cursor: 'pointer',
+    fontSize: 16, fontWeight: 700,
+    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+  }
+}
+
+function navBtn(disabled) {
+  return {
+    background: disabled ? 'var(--bg-card-alt)' : 'var(--accent)',
+    border: 'none', color: disabled ? 'var(--text-muted)' : '#fff',
+    width: 32, height: 32, borderRadius: 6, cursor: disabled ? 'default' : 'pointer',
+    fontSize: 13, opacity: disabled ? 0.4 : 1,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+  }
 }
