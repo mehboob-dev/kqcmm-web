@@ -9,7 +9,7 @@ export default function Khatm() {
   return (
     <div className="content-page">
       <h2 className="page-title">{content.title}</h2>
-      {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
+      {content.intro && <div className="page-section"><p style={{ whiteSpace: 'pre-line' }}>{content.intro}</p></div>}
       <ContentView
         items={content.sections}
         pageKey="khatm"
@@ -20,12 +20,6 @@ export default function Khatm() {
           </div>
         )}
       />
-      {content.masters && (
-        <div className="card" style={{ marginTop: 16, borderColor: 'var(--accent)' }}>
-          <div className="card-title" style={{ color: 'var(--accent)' }}>{content.masters.title}</div>
-          <div className="card-text">{content.masters.text}</div>
-        </div>
-      )}
     </div>
   )
 }

@@ -1,7 +1,7 @@
 {
   "en": {
     "title": "Khatm-e-Khwajagan",
-    "intro": "Khatm-e-Khwajagan is a special collective dhikr performed in the Chishti tradition. It consists of specific recitations of Qur'anic verses, salawat upon the Prophet ﷺ, and dhikr in remembrance of the Chishti masters (Khwajagan).",
+    "intro": "Khatm-e-Khwajagan is a special collective dhikr performed in the Chishti tradition. It consists of specific recitations of Qur'anic verses, salawat upon the Prophet ﷺ, and dhikr in remembrance of the Chishti masters (Khwajagan).\n\nThe Khwajagan are the spiritual chain of the Chishti order, beginning from Khwaja Moinuddin Chishti (Garib Nawaz) and continuing through the generations. Each master contributed to the spread of Islamic spirituality and love.",
     "sections": [
       { "title": "Surah Fatiha (Surah No. 1) - 1 Time", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
       { "title": "Surah Ikhlas (Surah No. 112) with Bismillah - 3 Times", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
@@ -34,15 +34,11 @@
       { "title": "Lahaula Wala Quwata Illah Billah Hil Ali-il Azim - 505 Times (51 Times)", "text": "THERE IS NO POWER AND NO FEAR OTHER THAN ALLAH, THE HIGHEST AND GREATEST" },
       { "title": "Darood Sharif - 101 Times", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
       { "title": "Pray for Your Heart's Desires", "text": "PRAY FOR YOUR HEART'S DESIRES" }
-    ],
-    "masters": {
-      "title": "The Khwajagan",
-      "text": "The Khwajagan (Masters) are the spiritual chain of the Chishti order, beginning from Khwaja Moinuddin Chishti (Garib Nawaz) and continuing through the generations. Each master contributed to the spread of Islamic spirituality and love."
-    }
+    ]
   },
   "hinglish": {
     "title": "Khatm-e-Khwajagan",
-    "intro": "Khatm-e-Khwajagan ek khaas ijtimai dhikr hai jo Chishti riwayat mein ada kiya jaata hai.",
+    "intro": "Khatm-e-Khwajagan ek khaas ijtimai dhikr hai jo Chishti riwayat mein ada kiya jaata hai.\n\nKhwajagan Chishti silsile ki ruhani zanjeer hain, jo Khwaja Moinuddin Chishti (Garib Nawaz) se shuru hoti hai aur aage ke buzurgon tak jaari rahi. Har buzurg ne Islami ruhaniyat aur muhabbat ke phailane mein hissa diya.",
     "sections": [
       { "title": "Surah Fatiha (Surah No. 1) - 1 Baar", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
       { "title": "Surah Ikhlas (Surah No. 112) Bismillah ke saath - 3 Baar", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
@@ -75,15 +71,11 @@
       { "title": "Lahaula Wala Quwata Illah Billah Hil Ali-il Azim - 505 Baar (51)", "text": "Allah ke siwa koi taaqat aur koi quwwat nahi, jo baala aur azeem hai" },
       { "title": "Darood Sharif - 101 Baar", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
       { "title": "Apne Dil ki Tamannaon ke liye Dua Karein", "text": "APNE DIL KI TAMANNAON KE LIYE DUA KAREIN" }
-    ],
-    "masters": {
-      "title": "Khwajagan",
-      "text": "Khwajagan Chishti silsile ki ruhani zanjeer hain, jo Khwaja Moinuddin Chishti (Garib Nawaz) se shuru hoti hai aur aage ke buzurgon tak jaari rahi."
-    }
+    ]
   },
   "urdu": {
     "title": "ختم خواجگان",
-    "intro": "ختم خواجگان ایک خاص اجتماعی ذکر ہے جو چشتی روایت میں ادا کیا جاتا ہے۔",
+    "intro": "ختم خواجگان ایک خاص اجتماعی ذکر ہے جو چشتی روایت میں ادا کیا جاتا ہے۔\n\nخواجگان چشتی سلسلے کی روحانی زنجیر ہیں، جو خواجہ معین الدین چشتی (غریب نواز) سے شروع ہوتی ہے اور آگے کے بزرگوں تک جاری رہی۔ ہر بزرگ نے اسلامی روحانیت اور محبت کے پھیلانے میں حصہ لیا۔",
     "sections": [
       { "title": "سورہ فاتحہ (سورہ نمبر ۱) - ۱ بار", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
       { "title": "سورہ اخلاص (سورہ نمبر ۱۱۲) بسم اللہ کے ساتھ - ۳ بار", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
@@ -116,10 +108,6 @@
       { "title": "لا حول ولا قوۃ الا باللہ العلی العظیم - ۵۰۵ بار (۵۱)", "text": "اللہ کے سوا کوئی طاقت اور کوئی قوت نہیں، جو بلند اور عظیم ہے" },
       { "title": "درود شریف - ۱۰۱ بار", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
       { "title": "اپنے دل کی تمناوں کے لیے دعا کریں", "text": "اپنے دل کی تمناوں کے لیے دعا کریں" }
-    ],
-    "masters": {
-      "title": "خواجگان",
-      "text": "خواجگان چشتی سلسلے کی روحانی زنجیر ہیں، جو خواجہ معین الدین چشتی (غریب نواز) سے شروع ہوتی ہے اور آگے کے بزرگوں تک جاری رہی۔"
-    }
+    ]
   }
 }
