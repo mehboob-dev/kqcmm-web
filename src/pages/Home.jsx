@@ -18,9 +18,7 @@ export default function Home() {
 
   return (
     <div className="home-container content-page">
-      <div className="home-logo" style={{ background: 'var(--bg-card, #2a2a3e)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40 }}>
-        🕌
-      </div>
+      <img src="/logo.png" alt="KQCMM" className="home-logo" />
       <h1 className="home-title">KQCMM</h1>
       <p className="home-subtitle">{strings.tagline}</p>
       <p className="home-desc">{strings.home.welcome}</p>
