@@ -16,7 +16,6 @@ import About from './pages/About'
 import Calendar from './pages/Calendar'
 import Roshni from './pages/Roshni'
 import Abbajaan from './pages/Abbajaan'
-import Settings from './pages/Settings'
 import NotFound from './pages/NotFound'
 
 export default function App() {
@@ -51,7 +50,6 @@ export default function App() {
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/roshni" element={<Roshni />} />
               <Route path="/abbajaan" element={<Abbajaan />} />
-              <Route path="/settings" element={<Settings />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

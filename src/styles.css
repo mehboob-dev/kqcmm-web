@@ -94,11 +94,15 @@ img { max-width: 100%; display: block; }
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-width: 480px;
+  max-width: 100%;
   margin: 0 auto;
   position: relative;
   background: var(--bg);
   box-shadow: 0 0 40px var(--shadow);
+}
+
+@media (min-width: 1400px) {
+  .app-shell { max-width: 1200px; }
 }
 
 /* ===== HEADER ===== */
@@ -405,10 +409,7 @@ strong { font-weight: 700; }
 .not-found h2 { font-size: 48px; color: var(--accent); }
 .not-found p { color: var(--text-muted); margin: 8px 0 16px; }
 
-/* ===== TABLET / DESKTOP BREAKPOINT ===== */
-@media (min-width: 768px) {
-  .app-shell { max-width: 600px; }
-}
-@media (min-width: 1024px) {
-  .app-shell { max-width: 700px; }
+/* ===== TABLET BREAKPOINT ===== */
+@media (min-width: 768px) and (max-width: 1399px) {
+  .app-shell { max-width: 100%; }
 }

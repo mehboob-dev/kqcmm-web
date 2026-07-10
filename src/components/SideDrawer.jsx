@@ -26,7 +26,6 @@ export default function SideDrawer({ open, onClose, strings }) {
     { to: '/calendar', icon: '📅', label: strings.drawer.calendar },
     { to: '/roshni', icon: '🕯️', label: strings.drawer.roshni },
     { to: '/abbajaan', icon: '👨‍👦', label: strings.drawer.abbajaan },
-    { to: '/settings', icon: '⚙', label: strings.settings.title },
   ]
 
   return (

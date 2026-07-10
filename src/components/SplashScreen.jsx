@@ -8,7 +8,6 @@ export default function SplashScreen({ onDone }) {
   useEffect(() => {
     const start = Date.now()
 
-    // Countdown: duration → duration-1 → ... → 1
     const interval = setInterval(() => {
       const elapsed = Math.round((Date.now() - start) / 1000)
       const remaining = Math.max(config.duration - elapsed, 0)
@@ -40,15 +39,26 @@ export default function SplashScreen({ onDone }) {
       opacity: fadeOut ? 0 : 1,
       transition: `opacity ${config.fadeTransition}ms ease`,
     }}>
-      <img
-        src={config.image}
-        alt="KQCMM"
-        style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'fill',
-        }}
-      />
+      {/* Center container full width */}
+      <div style={{
+        width: '100%',
+        height: '100%',
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+      }}>
+        <img
+          src={config.image}
+          alt="KQCMM"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'fill',
+          }}
+        />
+      </div>
       <div style={{
         position: 'absolute',
         bottom: '10%',
@@ -62,6 +72,7 @@ export default function SplashScreen({ onDone }) {
         fontSize: 20,
         fontWeight: 600,
         letterSpacing: 1,
+        pointerEvents: 'none',
       }}>
         {config.message} {count > 0 ? count : ''}
         {count > 0 ? [...Array(count)].map((_, i) => '.').join('') : ''}

@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react'
-import { useLocation, Outlet, useNavigate } from 'react-router-dom'
+import { useLocation, Outlet } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { useFont } from '../context/FontContext'
 import { loadStrings } from '../config/strings'
 import SideDrawer from './SideDrawer'
 import BottomNav from './BottomNav'
+import SettingsPopup from './SettingsPopup'
 
 export default function Layout() {
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [strings, setStrings] = useState(null)
   const location = useLocation()
-  const navigate = useNavigate()
   const { lang } = useLanguage()
   const { currentFont, currentSize } = useFont()
 
@@ -50,7 +51,7 @@ export default function Layout() {
           ☰
         </button>
         <span className="app-title">{title}</span>
-        <button className="hamburger-btn" onClick={() => navigate('/settings')} aria-label="Settings" style={{ fontSize: 18 }}>
+        <button className="hamburger-btn" onClick={() => setSettingsOpen(true)} aria-label="Settings" style={{ fontSize: 18 }}>
           <span style={{ fontSize: 40 }}>⚙</span>
         </button>
       </header>
@@ -65,6 +66,9 @@ export default function Layout() {
 
       {/* SIDE DRAWER */}
       {strings && <SideDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} strings={strings} />}
+
+      {/* SETTINGS POPUP */}
+      {strings && settingsOpen && <SettingsPopup strings={strings} onClose={() => setSettingsOpen(false)} />}
     </div>
   )
 }
