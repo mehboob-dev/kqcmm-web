@@ -5,7 +5,7 @@ export default function BottomNav({ strings }) {
     { to: '/', icon: '🏠', label: strings.nav.home },
     { to: '/khatm', icon: '✨', label: strings.nav.khatmEKhwajagan },
     { to: '/sijrah-nama', icon: '📖', label: strings.nav.sijrah },
-    { to: '/roshni', icon: '💡', label: strings.nav.roshni },
+    { to: '/roshni', icon: '🕯️', label: strings.nav.roshni },
     { to: '/dua', icon: '🤲', label: strings.nav.duas },
   ]
 

@@ -24,7 +24,7 @@ export default function SideDrawer({ open, onClose, strings }) {
     { to: '/salim-pappa', icon: '👤', label: strings.drawer.salimPappa },
     { to: '/about', icon: 'ℹ️', label: strings.drawer.about },
     { to: '/calendar', icon: '📅', label: strings.drawer.calendar },
-    { to: '/roshni', icon: '💡', label: strings.drawer.roshni },
+    { to: '/roshni', icon: '🕯️', label: strings.drawer.roshni },
     { to: '/abbajaan', icon: '👨‍👦', label: strings.drawer.abbajaan },
     { to: '/settings', icon: '⚙', label: strings.settings.title },
   ]
@@ -33,9 +33,19 @@ export default function SideDrawer({ open, onClose, strings }) {
     <>
       <div className={`drawer-overlay${open ? ' open' : ''}`} onClick={onClose} />
       <aside className={`drawer${open ? ' open' : ''}`}>
-        <div className="drawer-header">
-          <h2>{strings.appName}</h2>
-          <p>{strings.tagline}</p>
+        <div className="drawer-header" style={{
+          backgroundImage: 'url(/drawer-bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: 208,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+        }}>
+          <div style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.85))', padding: '16px 16px 20px', margin: -1 }}>
+            <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 800, textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>{strings.appName}</h2>
+            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 11, marginTop: 4, textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>{strings.tagline}</p>
+          </div>
         </div>
         <nav className="drawer-nav">
           {links.map((link) => (

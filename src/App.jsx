@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import { LanguageProvider } from './context/LanguageContext'
 import { FontProvider } from './context/FontContext'
+import SplashScreen from './components/SplashScreen'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Dua from './pages/Dua'
@@ -18,6 +20,20 @@ import Settings from './pages/Settings'
 import NotFound from './pages/NotFound'
 
 export default function App() {
+  const [splashDone, setSplashDone] = useState(() => {
+    // Show on every page load (including refresh) unless splash is disabled
+    return false
+  })
+
+  const handleSplashDone = () => {
+    sessionStorage.setItem('kqcmm_splash', '1')
+    setSplashDone(true)
+  }
+
+  if (!splashDone) {
+    return <SplashScreen onDone={handleSplashDone} />
+  }
+
   return (
     <ThemeProvider>
       <LanguageProvider>

@@ -236,12 +236,8 @@ strong { font-weight: 700; }
 .drawer.open { transform: translateX(0); }
 
 .drawer-header {
-  padding: 20px 16px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-header);
+  overflow: hidden;
 }
-.drawer-header h2 { color: #fff; font-size: 18px; }
-.drawer-header p { color: rgba(255,255,255,0.6); font-size: 12px; margin-top: 4px; }
 
 .drawer-nav { flex: 1; overflow-y: auto; padding: 8px 0; }
 .drawer-link {

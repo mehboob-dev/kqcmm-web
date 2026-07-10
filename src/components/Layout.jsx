@@ -51,7 +51,7 @@ export default function Layout() {
         </button>
         <span className="app-title">{title}</span>
         <button className="hamburger-btn" onClick={() => navigate('/settings')} aria-label="Settings" style={{ fontSize: 18 }}>
-          ⚙
+          <span style={{ fontSize: 22 }}>⚙</span>
         </button>
       </header>
 
