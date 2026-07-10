@@ -10,7 +10,7 @@ const LanguageContext = createContext()
 
 export function LanguageProvider({ children }) {
   const [lang, setLang] = useState(() => {
-    return localStorage.getItem('kqcmm_lang') || 'en'
+    return localStorage.getItem('kqcmm_lang') || 'hinglish'
   })
 
   const changeLang = useCallback((code) => {
