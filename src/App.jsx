@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import { LanguageProvider } from './context/LanguageContext'
 import { FontProvider } from './context/FontContext'
+import { ViewProvider } from './context/ViewContext'
 import SplashScreen from './components/SplashScreen'
 import Layout from './components/Layout'
 import Home from './pages/Home'
@@ -37,6 +38,7 @@ export default function App() {
     <ThemeProvider>
       <LanguageProvider>
         <FontProvider>
+          <ViewProvider>
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Home />} />
@@ -53,6 +55,7 @@ export default function App() {
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
+          </ViewProvider>
         </FontProvider>
       </LanguageProvider>
     </ThemeProvider>

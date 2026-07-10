@@ -1,0 +1,15 @@
+{
+  "defaultMode": "list",
+  "pages": {
+    "dua": "slide",
+    "khatm": "slide",
+    "sijrahNama": "slide",
+    "fatehaKhwani": "slide",
+    "roshni": "slide",
+    "hmk": "list",
+    "about": "list",
+    "abbajaan": "list",
+    "salimPappa": "list",
+    "calendar": "list"
+  }
+}

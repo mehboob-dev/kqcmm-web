@@ -1,6 +1,7 @@
 import { useLanguage } from '../context/LanguageContext'
 import { useTheme } from '../context/ThemeContext'
 import { useFont } from '../context/FontContext'
+import { useView } from '../context/ViewContext'
 
 function OptionRow({ label, options, value, onChange }) {
   return (
@@ -34,6 +35,7 @@ export default function SettingsPopup({ strings, onClose }) {
   const { lang, changeLang, languages } = useLanguage()
   const { theme, changeTheme, themes } = useTheme()
   const { fontFamily, fontSize, changeFontFamily, changeFontSize, fontFamilies, fontSizes } = useFont()
+  const { slideMode, toggleSlideMode } = useView()
 
   return (
     <>
@@ -54,13 +56,18 @@ export default function SettingsPopup({ strings, onClose }) {
           background: 'var(--bg-card)',
           border: '1px solid var(--border)',
           borderRadius: 16,
-          padding: 24,
-          overflowY: 'auto',
+          overflow: 'hidden',
           boxShadow: '0 8px 40px var(--shadow)',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        {/* header row */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+        {/* fixed header row */}
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          padding: '20px 24px 0 24px',
+          flexShrink: 0,
+        }}>
           <h3 style={{ color: 'var(--text-heading)', fontSize: 18, fontWeight: 700, margin: 0 }}>{strings.settings.title}</h3>
           <button onClick={onClose} style={{
             background: 'var(--bg-card-alt)', border: 'none', color: 'var(--text)',
@@ -68,6 +75,9 @@ export default function SettingsPopup({ strings, onClose }) {
             fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>✕</button>
         </div>
+
+        {/* scrollable body */}
+        <div style={{ padding: '12px 24px 24px', overflowY: 'auto' }}>
 
         {/* Language */}
         <div className="card" style={{ padding: 14, marginBottom: 12 }}>
@@ -88,9 +98,35 @@ export default function SettingsPopup({ strings, onClose }) {
         </div>
 
         {/* Font Size */}
-        <div className="card" style={{ padding: 14, marginBottom: 0 }}>
+        <div className="card" style={{ padding: 14, marginBottom: 12 }}>
           <div className="card-title" style={{ marginBottom: 8, color: 'var(--accent)', fontSize: 13 }}>{strings.settings.fontSize}</div>
           <OptionRow label="" options={fontSizes} value={fontSize} onChange={changeFontSize} />
+        </div>
+
+        {/* View Mode */}
+        <div className="card" style={{ padding: 14, marginBottom: 0 }}>
+          <div className="card-title" style={{ marginBottom: 8, color: 'var(--accent)', fontSize: 13 }}>View Mode</div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              onClick={() => { if (slideMode) toggleSlideMode() }}
+              style={{
+                flex: 1, padding: '8px 14px', borderRadius: 8, cursor: 'pointer', fontSize: '0.9em',
+                border: !slideMode ? '2px solid var(--accent)' : '1px solid var(--border)',
+                background: !slideMode ? 'var(--accent-bg)' : 'transparent',
+                color: 'var(--text)',
+              }}
+            >📋 List</button>
+            <button
+              onClick={() => { if (!slideMode) toggleSlideMode() }}
+              style={{
+                flex: 1, padding: '8px 14px', borderRadius: 8, cursor: 'pointer', fontSize: '0.9em',
+                border: slideMode ? '2px solid var(--accent)' : '1px solid var(--border)',
+                background: slideMode ? 'var(--accent-bg)' : 'transparent',
+                color: 'var(--text)',
+              }}
+            >📖 Slide</button>
+          </div>
+        </div>
         </div>
       </div>
     </>

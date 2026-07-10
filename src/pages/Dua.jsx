@@ -1,4 +1,5 @@
 import { useLanguage } from '../context/LanguageContext'
+import ContentView from '../components/ContentView'
 import data from '../config/content/dua.json'
 
 export default function Dua() {
@@ -8,13 +9,17 @@ export default function Dua() {
   return (
     <div className="content-page">
       <h2 className="page-title">{content.title}</h2>
-      {content.duas.map((dua, i) => (
-        <div key={i} className="card">
-          <div className="card-title">{dua.heading}</div>
-          {dua.arabic && <div className="arabic">{dua.arabic}</div>}
-          <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{dua.text || dua.translation}</div>
-        </div>
-      ))}
+      <ContentView
+        items={content.duas}
+        pageKey="dua"
+        renderItem={(dua, i) => (
+          <div className="card">
+            <div className="card-title">{dua.heading}</div>
+            {dua.arabic && <div className="arabic">{dua.arabic}</div>}
+            <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{dua.text || dua.translation}</div>
+          </div>
+        )}
+      />
     </div>
   )
 }
