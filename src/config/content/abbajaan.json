@@ -1,0 +1,42 @@
+{
+    "en":  {
+               "title":  "Abbajaan",
+               "sections":  [
+
+                            ]
+           },
+    "hinglish":  {
+                     "title":  "Abbajaan",
+                     "sections":  [
+                                      {
+                                          "title":  "Unki Zindagi aur Virasat",
+                                          "text":  "Abbajaan ne apni zindagi Chishti mission ki khidmat aur community ki ruhani taraqqi ke liye waqf kar di."
+                                      },
+                                      {
+                                          "title":  "Ek Taleem",
+                                          "text":  ""
+                                      },
+                                      {
+                                          "title":  "Yaadein",
+                                          "text":  ""
+                                      }
+                                  ]
+                 },
+    "urdu":  {
+                 "title":  "عباجان",
+                 "sections":  [
+                                  {
+                                      "title":  "ان کی زندگی اور ورثہ",
+                                      "text":  "عباجان نے اپنی زندگی چشتی مشن کی خدمت اور کمیونٹی کی روحانی ترقی کے لیے وقف کر دی۔"
+                                  },
+                                  {
+                                      "title":  "ایک تعلیم",
+                                      "text":  "\"سب سے بڑی عبادت ہے کسی کے دل میں خوشی لانا۔ انسانیت کی خدمت اللہ کی خدمت ہے۔\""
+                                  },
+                                  {
+                                      "title":  "یادیں",
+                                      "text":  "ان کی مجلسوں میں ذکر الٰہی، نعت اور کلام کی تلاوت اور تعلیمات ہوتی تھیں۔"
+                                  }
+                              ]
+             }
+}

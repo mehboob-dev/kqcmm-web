@@ -1,0 +1,179 @@
+{
+    "en":  {
+               "title":  "Islamic Calendar",
+               "events":  [
+                              {
+                                  "date":  "12",
+                                  "month":  "Rabi\u0027 al-Awwal",
+                                  "title":  "Eid Milad-un-Nabi ﷺ",
+                                  "desc":  "Birth of the Holy Prophet Muhammad ﷺ"
+                              },
+                              {
+                                  "date":  "1",
+                                  "month":  "Muharram",
+                                  "title":  "Islamic New Year",
+                                  "desc":  "Beginning of the Islamic calendar year"
+                              },
+                              {
+                                  "date":  "10",
+                                  "month":  "Muharram",
+                                  "title":  "Day of Ashura",
+                                  "desc":  "Remembrance of Imam Husayn (AS)"
+                              },
+                              {
+                                  "date":  "27",
+                                  "month":  "Rajab",
+                                  "title":  "Isra wal Miraj",
+                                  "desc":  "Night Journey and Ascension of the Prophet ﷺ"
+                              },
+                              {
+                                  "date":  "15",
+                                  "month":  "Sha\u0027ban",
+                                  "title":  "Shab-e-Barat",
+                                  "desc":  "Night of forgiveness"
+                              },
+                              {
+                                  "date":  "1",
+                                  "month":  "Ramadan",
+                                  "title":  "Ramadan begins",
+                                  "desc":  "Month of fasting begins"
+                              },
+                              {
+                                  "date":  "27",
+                                  "month":  "Ramadan",
+                                  "title":  "Laylat-ul-Qadr",
+                                  "desc":  "Night of Power"
+                              },
+                              {
+                                  "date":  "1",
+                                  "month":  "Shawwal",
+                                  "title":  "Eid-ul-Fitr",
+                                  "desc":  "Festival of breaking the fast"
+                              },
+                              {
+                                  "date":  "10",
+                                  "month":  "Dhul-Hijjah",
+                                  "title":  "Eid-ul-Adha",
+                                  "desc":  "Festival of sacrifice"
+                              }
+                          ]
+           },
+    "hinglish":  {
+                     "title":  "Islami Calendar",
+                     "events":  [
+                                    {
+                                        "date":  "12",
+                                        "month":  "Rabi\u0027 al-Awwal",
+                                        "title":  "Eid Milad-un-Nabi ﷺ",
+                                        "desc":  "Paighambar-e-Islam ﷺ ki wiladat"
+                                    },
+                                    {
+                                        "date":  "1",
+                                        "month":  "Muharram",
+                                        "title":  "Islami Naya Saal",
+                                        "desc":  "Islami calendar ka aaghaz"
+                                    },
+                                    {
+                                        "date":  "10",
+                                        "month":  "Muharram",
+                                        "title":  "Ashura ka din",
+                                        "desc":  "Imam Husayn (AS) ki yaad"
+                                    },
+                                    {
+                                        "date":  "27",
+                                        "month":  "Rajab",
+                                        "title":  "Isra wal Miraj",
+                                        "desc":  "Nabi ﷺ ka miraj"
+                                    },
+                                    {
+                                        "date":  "15",
+                                        "month":  "Sha\u0027ban",
+                                        "title":  "Shab-e-Barat",
+                                        "desc":  "Bakhshish ki raat"
+                                    },
+                                    {
+                                        "date":  "1",
+                                        "month":  "Ramadan",
+                                        "title":  "Ramadan ka aaghaz",
+                                        "desc":  "Roze ka mahina shuru"
+                                    },
+                                    {
+                                        "date":  "27",
+                                        "month":  "Ramadan",
+                                        "title":  "Shab-e-Qadr",
+                                        "desc":  "Qadr ki raat"
+                                    },
+                                    {
+                                        "date":  "1",
+                                        "month":  "Shawwal",
+                                        "title":  "Eid-ul-Fitr",
+                                        "desc":  "Roze ke baad ki Eid"
+                                    },
+                                    {
+                                        "date":  "10",
+                                        "month":  "Dhul-Hijjah",
+                                        "title":  "Eid-ul-Adha",
+                                        "desc":  "Qurbani ki Eid"
+                                    }
+                                ]
+                 },
+    "urdu":  {
+                 "title":  "اسلامی کیلنڈر",
+                 "events":  [
+                                {
+                                    "date":  "۱۲",
+                                    "month":  "ربیع الاول",
+                                    "title":  "عید میلاد النبی ﷺ",
+                                    "desc":  "پیغمبر اسلام ﷺ کی ولادت"
+                                },
+                                {
+                                    "date":  "۱",
+                                    "month":  "محرم",
+                                    "title":  "اسلامی نیا سال",
+                                    "desc":  "اسلامی کیلنڈر کا آغاز"
+                                },
+                                {
+                                    "date":  "۱۰",
+                                    "month":  "محرم",
+                                    "title":  "یوم عاشورہ",
+                                    "desc":  "امام حسین علیہ السلام کی یاد"
+                                },
+                                {
+                                    "date":  "۲۷",
+                                    "month":  "رجب",
+                                    "title":  "اسراء و معراج",
+                                    "desc":  "نبی ﷺ کا معراج"
+                                },
+                                {
+                                    "date":  "۱۵",
+                                    "month":  "شعبان",
+                                    "title":  "شب برات",
+                                    "desc":  "بخشش کی رات"
+                                },
+                                {
+                                    "date":  "۱",
+                                    "month":  "رمضان",
+                                    "title":  "رمضان کا آغاز",
+                                    "desc":  "روزے کا مہینہ شروع"
+                                },
+                                {
+                                    "date":  "۲۷",
+                                    "month":  "رمضان",
+                                    "title":  "شب قدر",
+                                    "desc":  "قدر کی رات"
+                                },
+                                {
+                                    "date":  "۱",
+                                    "month":  "شوال",
+                                    "title":  "عید الفطر",
+                                    "desc":  "روزے کے بعد کی عید"
+                                },
+                                {
+                                    "date":  "۱۰",
+                                    "month":  "ذوالحجہ",
+                                    "title":  "عید الاضحی",
+                                    "desc":  "قربانی کی عید"
+                                }
+                            ]
+             }
+}

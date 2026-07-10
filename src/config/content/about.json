@@ -1,0 +1,23 @@
+{
+    "en":  {
+               "title":  "About KQCMM",
+               "intro":  "Developed By :    Meghani M. Mehboob\n\r\n\r\nSpecial Thanks to :\n\r\n1. Salim Kasim\n\r\n2. Syed Sharafat\n\r\n\n\r\nAlso Thanks to Tester\n\r\n1. Meghani Hamza",
+               "sections":  [
+
+                            ]
+           },
+    "hinglish":  {
+                     "title":  "KQCMM ke baare mein",
+                     "intro":  "KQCMM - Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya - ek ruhani aur saqafati tanzeem hai jo mohabbat, aman aur lagaat ki taleemaat phailane ke liye kaam karti hai.",
+                     "sections":  [
+
+                                  ]
+                 },
+    "urdu":  {
+                 "title":  "KQCMM کے بارے میں",
+                 "intro":  "KQCMM - خانقاہ قادریہ چشتیہ مشرفیہ محبوبیہ - ایک روحانی اور ثقافتی تنظیم ہے جو محبت، امن اور لگن کی تعلیمات پھیلانے کے لیے کام کرتی ہے۔",
+                 "sections":  [
+
+                              ]
+             }
+}
