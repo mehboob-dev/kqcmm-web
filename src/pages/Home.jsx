@@ -18,7 +18,7 @@ export default function Home() {
 
   return (
     <div className="home-container content-page">
-      <img src="/logo.png" alt="KQCMM" className="home-logo" />
+      <img src={import.meta.env.BASE_URL + 'logo.png'} alt="KQCMM" className="home-logo" />
       <h1 className="home-title">KQCMM</h1>
       <p className="home-subtitle">{strings.tagline}</p>
       <p className="home-desc">{strings.home.welcome}</p>

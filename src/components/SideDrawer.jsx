@@ -33,7 +33,7 @@ export default function SideDrawer({ open, onClose, strings }) {
       <div className={`drawer-overlay${open ? ' open' : ''}`} onClick={onClose} />
       <aside className={`drawer${open ? ' open' : ''}`}>
         <div className="drawer-header" style={{
-          backgroundImage: 'url(/drawer-bg.jpg)',
+          backgroundImage: 'url(' + import.meta.env.BASE_URL + 'drawer-bg.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           minHeight: 208,

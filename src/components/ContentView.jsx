@@ -24,14 +24,14 @@ export default function ContentView({ items, renderItem, mode, pageKey }) {
   // Shared counter component
   const counterSection = (
     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <button onClick={decCount} style={circleBtn('var(--accent)', 34)}>−</button>
+      <button onClick={decCount} style={circleBtn('#e74c3c', 34)}>−</button>
       <span style={{
         fontSize: 20, fontWeight: 800, color: 'var(--text-heading)',
         minWidth: 38, textAlign: 'center', fontVariantNumeric: 'tabular-nums',
       }}>{count}</span>
-      <button onClick={incCount} style={circleBtn('var(--accent)', 34)}>+</button>
+      <button onClick={incCount} style={circleBtn('#2ecc71', 34)}>+</button>
       <button onClick={resetCount} style={{
-        ...circleBtn('var(--text-muted)', 28), fontSize: 12, borderRadius: 6,
+        ...circleBtn('var(--accent)', 28), fontSize: 12, borderRadius: 6,
       }}>↺</button>
     </div>
   )
@@ -45,8 +45,8 @@ export default function ContentView({ items, renderItem, mode, pageKey }) {
         </div>
         {/* Fixed counter bar */}
         <div style={{
-          position: 'fixed', bottom: 56, left: '50%', transform: 'translateX(-50%)',
-          width: '100%', maxWidth: 'inherit', zIndex: 50,
+          position: 'fixed', bottom: 46, left: '50%', transform: 'translateX(-50%)',
+          width: '100%', maxWidth: 'inherit', zIndex: 1,
           background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
           padding: '10px 0', display: 'flex', justifyContent: 'center',
         }}>
@@ -68,8 +68,8 @@ export default function ContentView({ items, renderItem, mode, pageKey }) {
       </div>
       {/* One fixed bar: nav left, counter right */}
       <div style={{
-        position: 'fixed', bottom: 56, left: '50%', transform: 'translateX(-50%)',
-        width: '100%', maxWidth: 'inherit', zIndex: 50,
+        position: 'fixed', bottom: 46, left: '50%', transform: 'translateX(-50%)',
+        width: '100%', maxWidth: 'inherit', zIndex: 1,
         background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
         boxSizing: 'border-box',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',

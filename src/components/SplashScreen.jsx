@@ -27,6 +27,9 @@ export default function SplashScreen({ onDone }) {
     return null
   }
 
+  // Use import.meta.env.BASE_URL to get the correct base path
+  const base = import.meta.env.BASE_URL || './'
+
   return (
     <div style={{
       position: 'fixed',
@@ -39,7 +42,6 @@ export default function SplashScreen({ onDone }) {
       opacity: fadeOut ? 0 : 1,
       transition: `opacity ${config.fadeTransition}ms ease`,
     }}>
-      {/* Center container full width */}
       <div style={{
         width: '100%',
         height: '100%',
@@ -50,7 +52,7 @@ export default function SplashScreen({ onDone }) {
         overflow: 'hidden',
       }}>
         <img
-          src={config.image}
+          src={base + config.image.replace(/^\//, '')}
           alt="KQCMM"
           style={{
             width: '100%',

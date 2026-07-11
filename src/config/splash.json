@@ -3,6 +3,6 @@
   "duration": 3,
   "message": "Loading",
   "showOnRefresh": true,
-  "image": "/splash.jpg",
+  "image": "splash.jpg",
   "fadeTransition": 400
 }
