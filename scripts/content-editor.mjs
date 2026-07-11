@@ -106,7 +106,7 @@ function build(o,p){
     let h=''
     o.forEach((_,i)=>{
       const cp=p?p+'.'+i:''+i
-      h+='<div class="ai"><div class="ah"><span class="an">#'+(i+1)+'</span><button class="dx" data-d="'+esc(p)+'" data-di="'+i+'">✕</button></div>'+build(o[i],cp)+'</div>'
+      h+='<div class="ai"><div class="ah"><span class="an">#'+(i+1)+'</span><div><button class="dx" data-u="'+esc(p)+'" data-ui="'+i+'">↑</button><button class="dx" data-dn="'+esc(p)+'" data-dni="'+i+'">↓</button><button class="dx" style="color:#e74c3c" data-r="'+esc(p)+'" data-ri="'+i+'">✕</button></div></div>'+build(o[i],cp)+'</div>'
     })
     h+='<button class="ad" data-a="'+esc(p)+'">+ Add item</button>'
     return h
@@ -126,16 +126,34 @@ function svp(path,val){
   const last=keys[keys.length-1]
   if(/^\\d+$/.test(last))v[parseInt(last)]=val; else v[last]=val
 }
+function autoGrow(ta){ta.style.height='auto'; ta.style.height=ta.scrollHeight+'px'}
 document.getElementById('ed').onchange=e=>{
   if(e.target.tagName==='TEXTAREA'&&e.target.dataset.p){svp(e.target.dataset.p,e.target.value); status('Unsaved','#e67e22')}
 }
+document.getElementById('ed').oninput=e=>{
+  if(e.target.tagName==='TEXTAREA')autoGrow(e.target)
+}
 document.getElementById('ed').onclick=e=>{
   // Delete
-  if(e.target.dataset.d!==undefined){
-    if(!confirm('Delete item '+(parseInt(e.target.dataset.di)+1)+'?'))return
-    const keys=String(e.target.dataset.d).split('.'); let v=D[L]
+  if(e.target.dataset.r!==undefined){
+    if(!confirm('Delete item '+(parseInt(e.target.dataset.ri)+1)+'?'))return
+    const keys=String(e.target.dataset.r).split('.'); let v=D[L]
     for(const k of keys){if(/^\\d+$/.test(k))v=v[parseInt(k)]; else v=v[k]}
-    v.splice(parseInt(e.target.dataset.di),1); render(); status('Deleted, unsaved','#e67e22')
+    v.splice(parseInt(e.target.dataset.ri),1); render(); status('Deleted, unsaved','#e67e22')
+  }
+  // Move up
+  if(e.target.dataset.u!==undefined){
+    const i=parseInt(e.target.dataset.ui); if(i===0)return
+    const keys=String(e.target.dataset.u).split('.'); let v=D[L]
+    for(const k of keys){if(/^\\d+$/.test(k))v=v[parseInt(k)]; else v=v[k]}
+    const t=v.splice(i,1)[0]; v.splice(i-1,0,t); render(); status('Moved up, unsaved','#e67e22')
+  }
+  // Move down
+  if(e.target.dataset.dn!==undefined){
+    const keys=String(e.target.dataset.dn).split('.'); let v=D[L]
+    for(const k of keys){if(/^\\d+$/.test(k))v=v[parseInt(k)]; else v=v[k]}
+    const i=parseInt(e.target.dataset.dni); if(i>=v.length-1)return
+    const t=v.splice(i,1)[0]; v.splice(i+1,0,t); render(); status('Moved down, unsaved','#e67e22')
   }
   // Add
   if(e.target.dataset.a!==undefined){
@@ -146,6 +164,8 @@ document.getElementById('ed').onclick=e=>{
     render(); status('Added, unsaved','#e67e22')
   }
 }
+// Auto-grow on render
+const origRender=render; render=function(){origRender();document.querySelectorAll('.ta').forEach(autoGrow)}
 document.getElementById('sv').onclick=async()=>{
   if(!P||!D)return
   document.getElementById('sv').textContent='Saving...'

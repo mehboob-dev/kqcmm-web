@@ -360,7 +360,18 @@ strong { font-weight: 700; }
   border: 1px solid var(--border);
   transition: background 0.3s, border-color 0.3s;
 }
-.card-title { font-weight: 600; color: var(--text-heading); font-size: 0.95em; margin-bottom: 0.4em; }
+.card-title {
+  font-weight: 800;
+  color: var(--text-heading);
+  font-size: 0.95em;
+  margin-bottom: 0.4em;
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid var(--border);
+}
+.card-title.borderless {
+  border-bottom: none;
+  padding-bottom: 0;
+}
 .card-text { color: var(--text); line-height: 1.7; }
 
 /* ===== CALENDAR ===== */
