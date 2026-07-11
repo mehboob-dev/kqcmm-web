@@ -1,13 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import config from '../config/splash.json'
 
 export default function SplashScreen({ onDone }) {
   const [fadeOut, setFadeOut] = useState(false)
   const [count, setCount] = useState(config.duration)
 
+  const skip = useCallback(() => {
+    setFadeOut(true)
+    setTimeout(() => onDone(), config.fadeTransition || 400)
+  }, [onDone])
+
   useEffect(() => {
     const start = Date.now()
-
     const interval = setInterval(() => {
       const elapsed = Math.round((Date.now() - start) / 1000)
       const remaining = Math.max(config.duration - elapsed, 0)
@@ -27,21 +31,24 @@ export default function SplashScreen({ onDone }) {
     return null
   }
 
-  // Use import.meta.env.BASE_URL to get the correct base path
   const base = import.meta.env.BASE_URL || './'
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      zIndex: 9999,
-      background: '#000',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      opacity: fadeOut ? 0 : 1,
-      transition: `opacity ${config.fadeTransition}ms ease`,
-    }}>
+    <div
+      onClick={skip}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        background: '#000',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: fadeOut ? 0 : 1,
+        transition: `opacity ${config.fadeTransition}ms ease`,
+        cursor: 'pointer',
+      }}
+    >
       <div style={{
         width: '100%',
         height: '100%',

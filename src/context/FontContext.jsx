@@ -5,9 +5,19 @@ const fontFamilies = [
   { id: 'serif', label: 'Serif', family: 'Georgia, "Times New Roman", serif' },
   { id: 'sans', label: 'Sans Serif', family: '"Helvetica Neue", Helvetica, Arial, sans-serif' },
   { id: 'mono', label: 'Monospace', family: '"Courier New", Courier, monospace' },
-  { id: 'urdu-nastaliq', label: 'Urdu Nastaliq', family: '"Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Traditional Arabic", serif', lang: ['urdu'] },
-  { id: 'urdu-naskh', label: 'Urdu Naskh', family: '"Noto Naskh Arabic", "Al Qalam", Scheherazade New, serif', lang: ['urdu'] },
-  { id: 'mehr-nastaliq', label: 'Mehr Nastaliq', family: '"Mehr Nastaliq", "Noto Nastaliq Urdu", serif', lang: ['urdu'] },
+  { id: 'bookman', label: 'Bookman', family: '"Bookman Old Style", "Bookman", Georgia, serif' },
+  { id: 'garamond', label: 'Garamond', family: '"EB Garamond", Garamond, "Times New Roman", serif' },
+  { id: 'palatino', label: 'Palatino', family: 'Palatino, "Palatino Linotype", serif' },
+  { id: 'georgia', label: 'Georgia', family: 'Georgia, "Times New Roman", serif' },
+  { id: 'tahoma', label: 'Tahoma', family: 'Tahoma, "Segoe UI", Arial, sans-serif' },
+  { id: 'trebuchet', label: 'Trebuchet', family: '"Trebuchet MS", "Lucida Grande", sans-serif' },
+  { id: 'verdana', label: 'Verdana', family: 'Verdana, Geneva, sans-serif' },
+  { id: 'times', label: 'Times New Roman', family: '"Times New Roman", Times, serif' },
+  { id: 'courier', label: 'Courier New', family: '"Courier New", Courier, monospace' },
+  { id: 'lucida', label: 'Lucida Console', family: '"Lucida Console", Monaco, monospace' },
+  { id: 'urdu-nastaliq', label: 'Urdu Nastaliq', family: '"Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Traditional Arabic", serif' },
+  { id: 'urdu-naskh', label: 'Urdu Naskh', family: '"Noto Naskh Arabic", "Al Qalam", Scheherazade New, serif' },
+  { id: 'mehr-nastaliq', label: 'Mehr Nastaliq', family: '"Mehr Nastaliq", "Noto Nastaliq Urdu", serif' },
 ]
 
 const fontSizes = [

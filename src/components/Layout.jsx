@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useLocation, Outlet } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { useFont } from '../context/FontContext'
@@ -14,10 +14,16 @@ export default function Layout() {
   const location = useLocation()
   const { lang } = useLanguage()
   const { currentFont, currentSize } = useFont()
+  const mainRef = useRef(null)
 
   useEffect(() => {
     loadStrings(lang).then(setStrings)
   }, [lang])
+
+  // Scroll to top on page navigation
+  useEffect(() => {
+    if (mainRef.current) mainRef.current.scrollTop = 0
+  }, [location.pathname])
 
   // Page title lookup from strings
   const pageTitleMap = strings ? {
@@ -57,7 +63,7 @@ export default function Layout() {
       </header>
 
       {/* MAIN CONTENT — base font size lives here */}
-      <main className="main-content" dir={document.documentElement.dir} style={{ fontSize: currentSize.size }}>
+      <main className="main-content" ref={mainRef} dir={document.documentElement.dir} style={{ fontSize: currentSize.size }}>
         {strings ? <Outlet context={{ strings }} /> : <div className="content-page"><p>Loading...</p></div>}
       </main>
 

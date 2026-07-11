@@ -11,7 +11,7 @@ const ThemeContext = createContext()
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('kqcmm_theme') || 'light'
+    return localStorage.getItem('kqcmm_theme') || 'green'
   })
 
   const changeTheme = useCallback((id) => {
