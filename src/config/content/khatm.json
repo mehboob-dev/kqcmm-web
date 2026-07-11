@@ -3,111 +3,390 @@
     "title": "Khatm-e-Khwajagan",
     "intro": "Khatm-e-Khwajagan is a special collective dhikr performed in the Chishti tradition. It consists of specific recitations of Qur'anic verses, salawat upon the Prophet ﷺ, and dhikr in remembrance of the Chishti masters (Khwajagan).\n\nThe Khwajagan are the spiritual chain of the Chishti order, beginning from Khwaja Moinuddin Chishti (Garib Nawaz) and continuing through the generations. Each master contributed to the spread of Islamic spirituality and love.",
     "sections": [
-      { "title": "Surah Fatiha (Surah No. 1) - 1 Time", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "Surah Ikhlas (Surah No. 112) with Bismillah - 3 Times", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
-      { "title": "Darood Sharif - 3 Times", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Read the Sijrah Once and Pray for Your Desires", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Surah Fatiha (Surah No. 1) - 7 Times", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "Darood Sharif - 101 Times", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Surah Alam Nashrah (Surah No. 94) - 79 Times (21 Times)", "text": "Alam nashrah laka sadrak\nWa wa d'ana 'anka wizrak\nAllazee anqada zahrak\nWa raf 'ana laka zikrak\nFa inna ma'al usri yusra\nInna ma'al 'usri yusra\nFa iza faragh ta fansab\nWa ilaa rabbika far ghab" },
-      { "title": "Surah Ikhlas with Bismillah - 1010 Times (101 Times)", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
-      { "title": "Surah Fatiha (Surah No. 1) - 7 Times", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "Allah Humma Ya Qadial Hajaat - 101 Times (21 Times)", "text": "FULFILLER OF WANTS" },
-      { "title": "Ya Kafial Mohimmaat - 101 Times (21 Times)", "text": "SUFFICER OF ALL DIFFICULT PROBLEMS" },
-      { "title": "Ya Dafeal Baliaat - 101 Times (21 Times)", "text": "REMOVER OF ALL PERILS" },
-      { "title": "Ya Rafe'ad Darajaat - 101 Times (21 Times)", "text": "EXALTER OF POSITION" },
-      { "title": "Ya Shafe'al Amraadh - 101 Times (21 Times)", "text": "CURER OF ALL DISEASES" },
-      { "title": "Ya Hallal Mushkilaat - 101 Times (21 Times)", "text": "SOLVER OF DIFFICULTIES" },
-      { "title": "Ya Giasal Mustagisin - 101 Times (21 Times)", "text": "HELPER OF THOSE WHO CALL FOR HELP" },
-      { "title": "Ya Khayrun Narsireen - 101 Times (21 Times)", "text": "BEST HELPER FOR VICTORIES" },
-      { "title": "Ya Mujibad Dawaat - 101 Times (21 Times)", "text": "GRANTER OF PRAYERS" },
-      { "title": "Ya Mufat Teh al Abwaab - 101 Times (21 Times)", "text": "OPENER OF GATES TO SUCCESS" },
-      { "title": "Ya Musab Bebal Asbaab - 101 Times (21 Times)", "text": "CAUSE FOR GRANTING GIFTS" },
-      { "title": "Be Rahmateka Ya Arhamar Rahimeen - 101 Times (21 Times)", "text": "THE GREATEST GRANTER OF MERCIES WITH BLESSINGS" },
-      { "title": "Ya Muhammad Mustafa Mushkil Khusha - 101 Times (21 Times)", "text": "SOLVER OF DIFFICULTIES, HELP ME\nSallallahu Alaihe Wa Sallam Ya Muhammad" },
-      { "title": "Ya Khwaja Moinuddin Moinul Haq Al Madad - 101 Times (21 Times)", "text": "BY THE ORDER OF ALLAH HELP ME\nBe Iznillah Ya Moinuddin" },
-      { "title": "Surah Muzzammil (Surah No. 73) - 1 Time", "text": "Bismillaahir Rahmaanir Raheem\nYa aiyuhal muzzammil\nQumil laila illaa qaleelaa\nNisfahooo awinqus minhu qaleelaa\nAw zid 'alaihi wa rattilil Qur'aana tarteela\nInnaa sanulqee 'alaika qawalan saqeelaa" },
-      { "title": "Darood Sharif - 101 Times", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Surah Fatiha (Surah No. 1) - 1 Time", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "Surah Ikhlas with Bismillah - 3 Times", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
-      { "title": "Darood Sharif - 3 Times", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Lahaula Wala Quwata Illah Billah Hil Ali-il Azim - 505 Times (51 Times)", "text": "THERE IS NO POWER AND NO FEAR OTHER THAN ALLAH, THE HIGHEST AND GREATEST" },
-      { "title": "Darood Sharif - 101 Times", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Pray for Your Heart's Desires", "text": "PRAY FOR YOUR HEART'S DESIRES" }
+      {
+        "title": "Surah Fatiha (Surah No. 1) - 1 Time",
+        "text": "In the Name of Allah, the Most Compassionate, the Ever-Merciful\n1. All praise be to Allah alone, the Sustainer of all the worlds,\n2. The Most Compassionate, the All-Merciful,\n3. Master of the Day of Judgement.\n4. (O Allah!) You alone we worship, and from You alone we seek help.\n5. Guide us upon the straight path,\n6. The path of those whom You have blessed,\n7.  Not of those who have incurred Your wrath, nor of those who have gone astray."
+      },
+      {
+        "title": "Surah Ikhlas (Surah No. 112) with Bismillah - 3 Times",
+        "text": "In the Name of Allah, the Most Compassionate, the Ever-Merciful\n1. (O Esteemed Messenger!) Proclaim: ‘He is Allah, Who is the One.\n2. Allah is the Transcendent of all, the Protector and Far-Superior to all.\n3. He has not begotten any, nor is He begotten.\n4. Nor is there anyone equal to Him."
+      },
+      {
+        "title": "Darood Sharif - 3 Times",
+        "text": "In the Name of Allah, the Most Compassionate, the Ever-Merciful\nO Allah, send Your blessings upon our Master and Patron Muhammad, and upon the family of our Master and Patron Muhammad, and bestow Your blessings and grant them peace."
+      },
+      {
+        "title": "Read the Sijrah Once and Pray for Your Desires",
+        "text": "In the Name of Allah, the Most Compassionate, the Ever-Merciful\nO Allah, send Your blessings upon our Master and Patron Muhammad, and upon the family of our Master and Patron Muhammad, and bestow Your blessings and grant them peace."
+      },
+      {
+        "title": "Surah Fatiha (Surah No. 1) - 7 Times",
+        "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen"
+      },
+      {
+        "title": "Darood Sharif - 101 Times",
+        "text": "In the Name of Allah, the Most Compassionate, the Ever-Merciful\nO Allah, send Your blessings upon our Master and Patron Muhammad, and upon the family of our Master and Patron Muhammad, and bestow Your blessings and grant them peace."
+      },
+      {
+        "title": "Surah Alam Nashrah (Surah No. 94) - 79 Times (21 Times)",
+        "text": "Alam nashrah laka sadrak\nWa wa d'ana 'anka wizrak\nAllazee anqada zahrak\nWa raf 'ana laka zikrak\nFa inna ma'al usri yusra\nInna ma'al 'usri yusra\nFa iza faragh ta fansab\nWa ilaa rabbika far ghab"
+      },
+      {
+        "title": "Surah Ikhlas with Bismillah - 1010 Times (101 Times)",
+        "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad"
+      },
+      {
+        "title": "Surah Fatiha (Surah No. 1) - 7 Times",
+        "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen"
+      },
+      {
+        "title": "Allah Humma Ya Qadial Hajaat - 101 Times (21 Times)",
+        "text": "FULFILLER OF WANTS"
+      },
+      {
+        "title": "Ya Kafial Mohimmaat - 101 Times (21 Times)",
+        "text": "SUFFICER OF ALL DIFFICULT PROBLEMS"
+      },
+      {
+        "title": "Ya Dafeal Baliaat - 101 Times (21 Times)",
+        "text": "REMOVER OF ALL PERILS"
+      },
+      {
+        "title": "Ya Rafe'ad Darajaat - 101 Times (21 Times)",
+        "text": "EXALTER OF POSITION"
+      },
+      {
+        "title": "Ya Shafe'al Amraadh - 101 Times (21 Times)",
+        "text": "CURER OF ALL DISEASES"
+      },
+      {
+        "title": "Ya Hallal Mushkilaat - 101 Times (21 Times)",
+        "text": "SOLVER OF DIFFICULTIES"
+      },
+      {
+        "title": "Ya Giasal Mustagisin - 101 Times (21 Times)",
+        "text": "HELPER OF THOSE WHO CALL FOR HELP"
+      },
+      {
+        "title": "Ya Khayrun Narsireen - 101 Times (21 Times)",
+        "text": "BEST HELPER FOR VICTORIES"
+      },
+      {
+        "title": "Ya Mujibad Dawaat - 101 Times (21 Times)",
+        "text": "GRANTER OF PRAYERS"
+      },
+      {
+        "title": "Ya Mufat Teh al Abwaab - 101 Times (21 Times)",
+        "text": "OPENER OF GATES TO SUCCESS"
+      },
+      {
+        "title": "Ya Musab Bebal Asbaab - 101 Times (21 Times)",
+        "text": "CAUSE FOR GRANTING GIFTS"
+      },
+      {
+        "title": "Be Rahmateka Ya Arhamar Rahimeen - 101 Times (21 Times)",
+        "text": "THE GREATEST GRANTER OF MERCIES WITH BLESSINGS"
+      },
+      {
+        "title": "Ya Muhammad Mustafa Mushkil Khusha - 101 Times (21 Times)",
+        "text": "SOLVER OF DIFFICULTIES, HELP ME\nSallallahu Alaihe Wa Sallam Ya Muhammad"
+      },
+      {
+        "title": "Ya Khwaja Moinuddin Moinul Haq Al Madad - 101 Times (21 Times)",
+        "text": "BY THE ORDER OF ALLAH HELP ME\nBe Iznillah Ya Moinuddin"
+      },
+      {
+        "title": "Surah Muzzammil (Surah No. 73) - 1 Time",
+        "text": "Bismillaahir Rahmaanir Raheem\nYa aiyuhal muzzammil\nQumil laila illaa qaleelaa\nNisfahooo awinqus minhu qaleelaa\nAw zid 'alaihi wa rattilil Qur'aana tarteela\nInnaa sanulqee 'alaika qawalan saqeelaa"
+      },
+      {
+        "title": "Darood Sharif - 101 Times",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "Surah Fatiha (Surah No. 1) - 1 Time",
+        "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen"
+      },
+      {
+        "title": "Surah Ikhlas with Bismillah - 3 Times",
+        "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad"
+      },
+      {
+        "title": "Darood Sharif - 3 Times",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "Lahaula Wala Quwata Illah Billah Hil Ali-il Azim - 505 Times (51 Times)",
+        "text": "THERE IS NO POWER AND NO FEAR OTHER THAN ALLAH, THE HIGHEST AND GREATEST"
+      },
+      {
+        "title": "Darood Sharif - 101 Times",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "Pray for Your Heart's Desires",
+        "text": "PRAY FOR YOUR HEART'S DESIRES"
+      }
     ]
   },
   "hinglish": {
     "title": "Khatm-e-Khwajagan",
     "intro": "Khatm-e-Khwajagan ek khaas ijtimai dhikr hai jo Chishti riwayat mein ada kiya jaata hai.\n\nKhwajagan Chishti silsile ki ruhani zanjeer hain, jo Khwaja Moinuddin Chishti (Garib Nawaz) se shuru hoti hai aur aage ke buzurgon tak jaari rahi. Har buzurg ne Islami ruhaniyat aur muhabbat ke phailane mein hissa diya.",
     "sections": [
-      { "title": "Surah Fatiha (Surah No. 1) - 1 Baar", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "Surah Ikhlas (Surah No. 112) Bismillah ke saath - 3 Baar", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
-      { "title": "Darood Sharif - 3 Baar", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Sijrah padhein aur apni khwahishaat ke liye dua karein", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Surah Fatiha (Surah No. 1) - 7 Baar", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "Darood Sharif - 101 Baar", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Surah Alam Nashrah (Surah No. 94) - 79 Baar (21)", "text": "Alam nashrah laka sadrak\nWa wa d'ana 'anka wizrak\nAllazee anqada zahrak\nWa raf 'ana laka zikrak\nFa inna ma'al usri yusra\nInna ma'al 'usri yusra\nFa iza faragh ta fansab\nWa ilaa rabbika far ghab" },
-      { "title": "Surah Ikhlas Bismillah ke saath - 1010 Baar (101)", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
-      { "title": "Surah Fatiha (Surah No. 1) - 7 Baar", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "Allah Humma Ya Qadial Hajaat - 101 Baar (21)", "text": "Hajaat poori karne waale" },
-      { "title": "Ya Kafial Mohimmaat - 101 Baar (21)", "text": "Mushkil masaa'il ko hal karne waale" },
-      { "title": "Ya Dafeal Baliaat - 101 Baar (21)", "text": "Museebaton ko door karne waale" },
-      { "title": "Ya Rafe'ad Darajaat - 101 Baar (21)", "text": "Darjaat buland karne waale" },
-      { "title": "Ya Shafe'al Amraadh - 101 Baar (21)", "text": "Bimariyon se shifa dene waale" },
-      { "title": "Ya Hallal Mushkilaat - 101 Baar (21)", "text": "Mushkilon ko hal karne waale" },
-      { "title": "Ya Giasal Mustagisin - 101 Baar (21)", "text": "Madad maangne waalon ki madad karne waale" },
-      { "title": "Ya Khayrun Narsireen - 101 Baar (21)", "text": "Sab se behtar madad karne waale" },
-      { "title": "Ya Mujibad Dawaat - 101 Baar (21)", "text": "Dua qubool karne waale" },
-      { "title": "Ya Mufat Teh al Abwaab - 101 Baar (21)", "text": "Kamyabi ke darwaaze kholne waale" },
-      { "title": "Ya Musab Bebal Asbaab - 101 Baar (21)", "text": "Wajah ke baghair inaayat karne waale" },
-      { "title": "Be Rahmateka Ya Arhamar Rahimeen - 101 Baar (21)", "text": "Sab se bada reham karne waala" },
-      { "title": "Ya Muhammad Mustafa Mushkil Khusha - 101 Baar (21)", "text": "Mushkil kusha, madad farmaayein\nSallallahu Alaihe Wa Sallam Ya Muhammad" },
-      { "title": "Ya Khwaja Moinuddin Moinul Haq Al Madad - 101 Baar (21)", "text": "Allah ke hukm se madad farmaayein\nBe Iznillah Ya Moinuddin" },
-      { "title": "Surah Muzzammil (Surah No. 73) - 1 Baar", "text": "Bismillaahir Rahmaanir Raheem\nYa aiyuhal muzzammil\nQumil laila illaa qaleelaa\nNisfahooo awinqus minhu qaleelaa\nAw zid 'alaihi wa rattilil Qur'aana tarteela\nInnaa sanulqee 'alaika qawalan saqeelaa" },
-      { "title": "Darood Sharif - 101 Baar", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Surah Fatiha (Surah No. 1) - 1 Baar", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "Surah Ikhlas Bismillah ke saath - 3 Baar", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
-      { "title": "Darood Sharif - 3 Baar", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Lahaula Wala Quwata Illah Billah Hil Ali-il Azim - 505 Baar (51)", "text": "Allah ke siwa koi taaqat aur koi quwwat nahi, jo baala aur azeem hai" },
-      { "title": "Darood Sharif - 101 Baar", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "Apne Dil ki Tamannaon ke liye Dua Karein", "text": "APNE DIL KI TAMANNAON KE LIYE DUA KAREIN" }
+      {
+        "title": "Surah Fatiha (Surah No. 1) - 1 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen"
+      },
+      {
+        "title": "Surah Ikhlas (Surah No. 112) Bismillah ke saath - 3 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad"
+      },
+      {
+        "title": "Darood Sharif - 3 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "Sijrah padhein aur apni khwahishaat ke liye dua karein",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "Surah Fatiha (Surah No. 1) - 7 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen"
+      },
+      {
+        "title": "Darood Sharif - 101 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "Surah Alam Nashrah (Surah No. 94) - 79 Baar (21)",
+        "text": "Alam nashrah laka sadrak\nWa wa d'ana 'anka wizrak\nAllazee anqada zahrak\nWa raf 'ana laka zikrak\nFa inna ma'al usri yusra\nInna ma'al 'usri yusra\nFa iza faragh ta fansab\nWa ilaa rabbika far ghab"
+      },
+      {
+        "title": "Surah Ikhlas Bismillah ke saath - 1010 Baar (101)",
+        "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad"
+      },
+      {
+        "title": "Surah Fatiha (Surah No. 1) - 7 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen"
+      },
+      {
+        "title": "Allah Humma Ya Qadial Hajaat - 101 Baar (21)",
+        "text": "Hajaat poori karne waale"
+      },
+      {
+        "title": "Ya Kafial Mohimmaat - 101 Baar (21)",
+        "text": "Mushkil masaa'il ko hal karne waale"
+      },
+      {
+        "title": "Ya Dafeal Baliaat - 101 Baar (21)",
+        "text": "Museebaton ko door karne waale"
+      },
+      {
+        "title": "Ya Rafe'ad Darajaat - 101 Baar (21)",
+        "text": "Darjaat buland karne waale"
+      },
+      {
+        "title": "Ya Shafe'al Amraadh - 101 Baar (21)",
+        "text": "Bimariyon se shifa dene waale"
+      },
+      {
+        "title": "Ya Hallal Mushkilaat - 101 Baar (21)",
+        "text": "Mushkilon ko hal karne waale"
+      },
+      {
+        "title": "Ya Giasal Mustagisin - 101 Baar (21)",
+        "text": "Madad maangne waalon ki madad karne waale"
+      },
+      {
+        "title": "Ya Khayrun Narsireen - 101 Baar (21)",
+        "text": "Sab se behtar madad karne waale"
+      },
+      {
+        "title": "Ya Mujibad Dawaat - 101 Baar (21)",
+        "text": "Dua qubool karne waale"
+      },
+      {
+        "title": "Ya Mufat Teh al Abwaab - 101 Baar (21)",
+        "text": "Kamyabi ke darwaaze kholne waale"
+      },
+      {
+        "title": "Ya Musab Bebal Asbaab - 101 Baar (21)",
+        "text": "Wajah ke baghair inaayat karne waale"
+      },
+      {
+        "title": "Be Rahmateka Ya Arhamar Rahimeen - 101 Baar (21)",
+        "text": "Sab se bada reham karne waala"
+      },
+      {
+        "title": "Ya Muhammad Mustafa Mushkil Khusha - 101 Baar (21)",
+        "text": "Mushkil kusha, madad farmaayein\nSallallahu Alaihe Wa Sallam Ya Muhammad"
+      },
+      {
+        "title": "Ya Khwaja Moinuddin Moinul Haq Al Madad - 101 Baar (21)",
+        "text": "Allah ke hukm se madad farmaayein\nBe Iznillah Ya Moinuddin"
+      },
+      {
+        "title": "Surah Muzzammil (Surah No. 73) - 1 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nYa aiyuhal muzzammil\nQumil laila illaa qaleelaa\nNisfahooo awinqus minhu qaleelaa\nAw zid 'alaihi wa rattilil Qur'aana tarteela\nInnaa sanulqee 'alaika qawalan saqeelaa"
+      },
+      {
+        "title": "Darood Sharif - 101 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "Surah Fatiha (Surah No. 1) - 1 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen"
+      },
+      {
+        "title": "Surah Ikhlas Bismillah ke saath - 3 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad"
+      },
+      {
+        "title": "Darood Sharif - 3 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "Lahaula Wala Quwata Illah Billah Hil Ali-il Azim - 505 Baar (51)",
+        "text": "Allah ke siwa koi taaqat aur koi quwwat nahi, jo baala aur azeem hai"
+      },
+      {
+        "title": "Darood Sharif - 101 Baar",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "Apne Dil ki Tamannaon ke liye Dua Karein",
+        "text": "APNE DIL KI TAMANNAON KE LIYE DUA KAREIN"
+      }
     ]
   },
   "urdu": {
     "title": "ختم خواجگان",
     "intro": "ختم خواجگان ایک خاص اجتماعی ذکر ہے جو چشتی روایت میں ادا کیا جاتا ہے۔\n\nخواجگان چشتی سلسلے کی روحانی زنجیر ہیں، جو خواجہ معین الدین چشتی (غریب نواز) سے شروع ہوتی ہے اور آگے کے بزرگوں تک جاری رہی۔ ہر بزرگ نے اسلامی روحانیت اور محبت کے پھیلانے میں حصہ لیا۔",
     "sections": [
-      { "title": "سورہ فاتحہ (سورہ نمبر ۱) - ۱ بار", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "سورہ اخلاص (سورہ نمبر ۱۱۲) بسم اللہ کے ساتھ - ۳ بار", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
-      { "title": "درود شریف - ۳ بار", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "سیرہ پڑھیں اور اپنی خواہشات کے لیے دعا کریں", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "سورہ فاتحہ (سورہ نمبر ۱) - ۷ بار", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "درود شریف - ۱۰۱ بار", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "سورہ الم نشرح (سورہ نمبر ۹۴) - ۷۹ بار (۲۱)", "text": "Alam nashrah laka sadrak\nWa wa d'ana 'anka wizrak\nAllazee anqada zahrak\nWa raf 'ana laka zikrak\nFa inna ma'al usri yusra\nInna ma'al 'usri yusra\nFa iza faragh ta fansab\nWa ilaa rabbika far ghab" },
-      { "title": "سورہ اخلاص بسم اللہ کے ساتھ - ۱۰۱۰ بار (۱۰۱)", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
-      { "title": "سورہ فاتحہ (سورہ نمبر ۱) - ۷ بار", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "اللہ ھم یا قاضی الحاجات - ۱۰۱ بار (۲۱)", "text": "حاجات پوری کرنے والے" },
-      { "title": "یا کافی المہمات - ۱۰۱ بار (۲۱)", "text": "مشکل مسائل کو حل کرنے والے" },
-      { "title": "یا دافع البلیات - ۱۰۱ بار (۲۱)", "text": "مصیبتوں کو دور کرنے والے" },
-      { "title": "یا رافع الدرجات - ۱۰۱ بار (۲۱)", "text": "درجات بلند کرنے والے" },
-      { "title": "یا شافی الامراض - ۱۰۱ بار (۲۱)", "text": "بیماریوں سے شفا دینے والے" },
-      { "title": "یا حلال المشکلات - ۱۰۱ بار (۲۱)", "text": "مشکلات کو حل کرنے والے" },
-      { "title": "یا غیاث المستغیثین - ۱۰۱ بار (۲۱)", "text": "مدد مانگنے والوں کی مدد کرنے والے" },
-      { "title": "یا خیر الناصرین - ۱۰۱ بار (۲۱)", "text": "سب سے بہتر مدد کرنے والے" },
-      { "title": "یا مجیب الدعوات - ۱۰۱ بار (۲۱)", "text": "دعا قبول کرنے والے" },
-      { "title": "یا مفتح الابواب - ۱۰۱ بار (۲۱)", "text": "کامیابی کے دروازے کھولنے والے" },
-      { "title": "یا مسبب بالاسباب - ۱۰۱ بار (۲۱)", "text": "وجہ کے بغیر عنایت کرنے والے" },
-      { "title": "برحمتک یا ارحم الراحمین - ۱۰۱ بار (۲۱)", "text": "سب سے بڑا رحم کرنے والا" },
-      { "title": "یا محمد مصطفیٰ مشکل کشا - ۱۰۱ بار (۲۱)", "text": "مشکل کشا، مدد فرمائیں\nصلی اللہ علیہ وسلم یا محمد" },
-      { "title": "یا خواجہ معین الدین معین الحق المداد - ۱۰۱ بار (۲۱)", "text": "اللہ کے حکم سے مدد فرمائیں\nباذن اللہ یا معین الدین" },
-      { "title": "سورہ مزمل (سورہ نمبر ۷۳) - ۱ بار", "text": "Bismillaahir Rahmaanir Raheem\nYa aiyuhal muzzammil\nQumil laila illaa qaleelaa\nNisfahooo awinqus minhu qaleelaa\nAw zid 'alaihi wa rattilil Qur'aana tarteela\nInnaa sanulqee 'alaika qawalan saqeelaa" },
-      { "title": "درود شریف - ۱۰۱ بار", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "سورہ فاتحہ (سورہ نمبر ۱) - ۱ بار", "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen" },
-      { "title": "سورہ اخلاص بسم اللہ کے ساتھ - ۳ بار", "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad" },
-      { "title": "درود شریف - ۳ بار", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "لا حول ولا قوۃ الا باللہ العلی العظیم - ۵۰۵ بار (۵۱)", "text": "اللہ کے سوا کوئی طاقت اور کوئی قوت نہیں، جو بلند اور عظیم ہے" },
-      { "title": "درود شریف - ۱۰۱ بار", "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD" },
-      { "title": "اپنے دل کی تمناوں کے لیے دعا کریں", "text": "اپنے دل کی تمناوں کے لیے دعا کریں" }
+      {
+        "title": "سورہ فاتحہ (سورہ نمبر ۱) - ۱ بار",
+        "text": "اللہ کے نام سے شروع جو نہایت مہربان ہمیشہ رحم فرمانے والا ہے\n1. سب تعریفیں اللہ ہی کے لئے ہیں جو تمام جہانوں کی پرورش فرمانے والا ہےo\n2. نہایت مہربان بہت رحم فرمانے والا ہےo\n3. روزِ جزا کا مالک ہےo\n4. (اے اللہ!) ہم تیری ہی عبادت کرتے ہیں اور ہم تجھ ہی سے مدد چاہتے ہیںo\n5. ہمیں سیدھا راستہ دکھاo\n6. ان لوگوں کا راستہ جن پر تو نے انعام فرمایاo\n7. ان لوگوں کا نہیں جن پر غضب کیا گیا ہے اور نہ (ہی) گمراہوں کاo"
+      },
+      {
+        "title": "سورہ اخلاص (سورہ نمبر ۱۱۲) بسم اللہ کے ساتھ - ۳ بار",
+        "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad"
+      },
+      {
+        "title": "درود شریف - ۳ بار",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "سیرہ پڑھیں اور اپنی خواہشات کے لیے دعا کریں",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "سورہ فاتحہ (سورہ نمبر ۱) - ۷ بار",
+        "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen"
+      },
+      {
+        "title": "درود شریف - ۱۰۱ بار",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "سورہ الم نشرح (سورہ نمبر ۹۴) - ۷۹ بار (۲۱)",
+        "text": "Alam nashrah laka sadrak\nWa wa d'ana 'anka wizrak\nAllazee anqada zahrak\nWa raf 'ana laka zikrak\nFa inna ma'al usri yusra\nInna ma'al 'usri yusra\nFa iza faragh ta fansab\nWa ilaa rabbika far ghab"
+      },
+      {
+        "title": "سورہ اخلاص بسم اللہ کے ساتھ - ۱۰۱۰ بار (۱۰۱)",
+        "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad"
+      },
+      {
+        "title": "سورہ فاتحہ (سورہ نمبر ۱) - ۷ بار",
+        "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen"
+      },
+      {
+        "title": "اللہ ھم یا قاضی الحاجات - ۱۰۱ بار (۲۱)",
+        "text": "حاجات پوری کرنے والے"
+      },
+      {
+        "title": "یا کافی المہمات - ۱۰۱ بار (۲۱)",
+        "text": "مشکل مسائل کو حل کرنے والے"
+      },
+      {
+        "title": "یا دافع البلیات - ۱۰۱ بار (۲۱)",
+        "text": "مصیبتوں کو دور کرنے والے"
+      },
+      {
+        "title": "یا رافع الدرجات - ۱۰۱ بار (۲۱)",
+        "text": "درجات بلند کرنے والے"
+      },
+      {
+        "title": "یا شافی الامراض - ۱۰۱ بار (۲۱)",
+        "text": "بیماریوں سے شفا دینے والے"
+      },
+      {
+        "title": "یا حلال المشکلات - ۱۰۱ بار (۲۱)",
+        "text": "مشکلات کو حل کرنے والے"
+      },
+      {
+        "title": "یا غیاث المستغیثین - ۱۰۱ بار (۲۱)",
+        "text": "مدد مانگنے والوں کی مدد کرنے والے"
+      },
+      {
+        "title": "یا خیر الناصرین - ۱۰۱ بار (۲۱)",
+        "text": "سب سے بہتر مدد کرنے والے"
+      },
+      {
+        "title": "یا مجیب الدعوات - ۱۰۱ بار (۲۱)",
+        "text": "دعا قبول کرنے والے"
+      },
+      {
+        "title": "یا مفتح الابواب - ۱۰۱ بار (۲۱)",
+        "text": "کامیابی کے دروازے کھولنے والے"
+      },
+      {
+        "title": "یا مسبب بالاسباب - ۱۰۱ بار (۲۱)",
+        "text": "وجہ کے بغیر عنایت کرنے والے"
+      },
+      {
+        "title": "برحمتک یا ارحم الراحمین - ۱۰۱ بار (۲۱)",
+        "text": "سب سے بڑا رحم کرنے والا"
+      },
+      {
+        "title": "یا محمد مصطفیٰ مشکل کشا - ۱۰۱ بار (۲۱)",
+        "text": "مشکل کشا، مدد فرمائیں\nصلی اللہ علیہ وسلم یا محمد"
+      },
+      {
+        "title": "یا خواجہ معین الدین معین الحق المداد - ۱۰۱ بار (۲۱)",
+        "text": "اللہ کے حکم سے مدد فرمائیں\nباذن اللہ یا معین الدین"
+      },
+      {
+        "title": "سورہ مزمل (سورہ نمبر ۷۳) - ۱ بار",
+        "text": "Bismillaahir Rahmaanir Raheem\nYa aiyuhal muzzammil\nQumil laila illaa qaleelaa\nNisfahooo awinqus minhu qaleelaa\nAw zid 'alaihi wa rattilil Qur'aana tarteela\nInnaa sanulqee 'alaika qawalan saqeelaa"
+      },
+      {
+        "title": "درود شریف - ۱۰۱ بار",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "سورہ فاتحہ (سورہ نمبر ۱) - ۱ بار",
+        "text": "Bismillaahir Rahmaanir Raheem\nAlhamdu lillaahi Rabbil 'aalameen\nAr-Rahmaanir-Raheem\nMaaliki Yawmid-Deen\nIyyaaka na'budu wa lyyaaka nasta'een\nIhdinas-Siraatal-Mustaqeem\nSiraatal-lazeena an'amta 'alaihim ghayril-maghdoobi 'alaihim wa lad-daaalleen"
+      },
+      {
+        "title": "سورہ اخلاص بسم اللہ کے ساتھ - ۳ بار",
+        "text": "Bismillaahir Rahmaanir Raheem\nQul huwal laahu ahad\nAllah hus-samad\nLam yalid wa lam yoolad\nWa lam yakul-lahu kufuwan ahad"
+      },
+      {
+        "title": "درود شریف - ۳ بار",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "لا حول ولا قوۃ الا باللہ العلی العظیم - ۵۰۵ بار (۵۱)",
+        "text": "اللہ کے سوا کوئی طاقت اور کوئی قوت نہیں، جو بلند اور عظیم ہے"
+      },
+      {
+        "title": "درود شریف - ۱۰۱ بار",
+        "text": "Bismillaahir Rahmaanir Raheem\nALLAH HUMA SALLE ALLAH MUHAMMADIN WA LA AALE MUHAMMAD"
+      },
+      {
+        "title": "اپنے دل کی تمناوں کے لیے دعا کریں",
+        "text": "اپنے دل کی تمناوں کے لیے دعا کریں"
+      }
     ]
   }
 }
