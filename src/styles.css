@@ -314,6 +314,11 @@ strong { font-weight: 700; }
 .quick-link .ql-icon { font-size: 28px; }
 .quick-link .ql-label { font-size: 13px; font-weight: 500; }
 
+/* Bottom nav safe area */
+.bottom-nav {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* ===== CONTENT PAGES ===== */
 .content-page {
   animation: fadeSlideIn 0.3s ease;

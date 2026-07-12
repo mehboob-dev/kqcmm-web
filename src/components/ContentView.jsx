@@ -45,7 +45,7 @@ export default function ContentView({ items, renderItem, mode, pageKey }) {
         </div>
         {/* Fixed counter bar */}
         <div style={{
-          position: 'fixed', bottom: 46, left: '50%', transform: 'translateX(-50%)',
+          position: 'fixed', bottom: 'var(--bottom-nav-height, 46px)', left: '50%', transform: 'translateX(-50%)',
           width: '100%', maxWidth: 'inherit', zIndex: 1,
           background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
           padding: '10px 0', display: 'flex', justifyContent: 'center',
@@ -68,7 +68,7 @@ export default function ContentView({ items, renderItem, mode, pageKey }) {
       </div>
       {/* One fixed bar: nav left, counter right */}
       <div style={{
-        position: 'fixed', bottom: 46, left: '50%', transform: 'translateX(-50%)',
+        position: 'fixed', bottom: 'var(--bottom-nav-height, 46px)', left: '50%', transform: 'translateX(-50%)',
         width: '100%', maxWidth: 'inherit', zIndex: 1,
         background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
         boxSizing: 'border-box',
