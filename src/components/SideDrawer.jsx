@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
+import Icon from './FontAwesome'
+import navConfig from '../config/navigation.json'
 
 export default function SideDrawer({ open, onClose, strings }) {
   const location = useLocation()
@@ -14,19 +16,11 @@ export default function SideDrawer({ open, onClose, strings }) {
     return () => { document.body.style.overflow = '' }
   }, [open])
 
-  const links = [
-    { to: '/', icon: '🏠', label: strings.drawer.home },
-    { to: '/dua', icon: '🤲', label: strings.drawer.duas },
-    { to: '/hmk', icon: '📜', label: strings.drawer.hmk },
-    { to: '/sijrah-nama', icon: '📖', label: strings.drawer.sijrahNama },
-    { to: '/fateha-khwani', icon: '🕌', label: strings.drawer.fatehaKhwani },
-    { to: '/khatm', icon: '✨', label: strings.drawer.khatm },
-    { to: '/salim-pappa', icon: '👤', label: strings.drawer.salimPappa },
-    { to: '/about', icon: 'ℹ️', label: strings.drawer.about },
-    { to: '/calendar', icon: '📅', label: strings.drawer.calendar },
-    { to: '/roshni', icon: '🕯️', label: strings.drawer.roshni },
-    { to: '/abbajaan', icon: '👨‍👦', label: strings.drawer.abbajaan },
-  ]
+  const links = navConfig.sideDrawer.map(item => ({
+    to: item.to,
+    icon: item.icon,
+    label: strings.drawer?.[item.key] || item.key,
+  }))
 
   return (
     <>
@@ -55,7 +49,7 @@ export default function SideDrawer({ open, onClose, strings }) {
                 `drawer-link${isActive ? ' active' : ''}`
               }
             >
-              <span className="dl-icon">{link.icon}</span>
+              <span className="dl-icon"><Icon name={link.icon} /></span>
               {link.label}
             </NavLink>
           ))}

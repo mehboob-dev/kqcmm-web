@@ -41,7 +41,7 @@ export default function ContentView({ items, renderItem, mode, pageKey }) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
         <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 66 }}>
-          {items.map((item, i) => renderItem(item, i))}
+          {items.map((item, i) => <div key={i}>{renderItem(item, i)}</div>)}
         </div>
         {/* Fixed counter bar */}
         <div style={{

@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router-dom'
+import Icon from './FontAwesome'
+import navConfig from '../config/navigation.json'
 
 export default function BottomNav({ strings }) {
-  const items = [
-    { to: '/', icon: '🏠', label: strings.nav.home },
-    { to: '/khatm', icon: '✨', label: strings.nav.khatmEKhwajagan },
-    { to: '/sijrah-nama', icon: '📖', label: strings.nav.sijrah },
-    { to: '/roshni', icon: '🕯️', label: strings.nav.roshni },
-    { to: '/dua', icon: '🤲', label: strings.nav.duas },
-  ]
+  const items = navConfig.bottomNav.map(item => ({
+    to: item.to,
+    icon: item.icon,
+    label: strings.nav?.[item.key] || item.key,
+  }))
 
   return (
     <nav className="bottom-nav">
@@ -19,7 +19,7 @@ export default function BottomNav({ strings }) {
             `nav-item${isActive ? ' active' : ''}`
           }
         >
-          <span className="nav-icon">{item.icon}</span>
+          <Icon name={item.icon} className="nav-icon" />
           {item.label}
         </NavLink>
       ))}
