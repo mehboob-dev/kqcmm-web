@@ -133,16 +133,23 @@ writeJSON('khatm.json', d)
 console.log('\nUpdating fatehaKhwani.json...')
 d = readJSON('fatehaKhwani.json')
 
+// Indices are +1 from original due to inserted START EACH SURAH section at idx 3
 const fatehaMap = [
-  { idx: 3, sura: 1 },
-  { idx: 5, sura: 36 },
-  { idx: 7, sura: 2, start: 255 },
-  { idx: 8, sura: 2, start: 285, end: 286 },
-  { idx: 9, sura: 73 },
-  { idx: 10, sura: 93 },
-  { idx: 11, sura: 94 },
-  { idx: 15, sura: 112 },
-  { idx: 18, sura: 1 },
+  { idx: 4, sura: 1 },       // Surah Al-Fateha
+  { idx: 6, sura: 36 },      // Surah Ya Sin
+  { idx: 8, sura: 2, start: 255 },      // Ayat al-Kursi
+  { idx: 9, sura: 2, start: 285, end: 286 },  // Amanar Rasul
+  // idx 10 is the new composite surah — not mapping, its content is custom
+  { idx: 11, sura: 73 },     // Surah Muzzammil
+  { idx: 12, sura: 93 },     // Surah Wadduha
+  { idx: 13, sura: 94 },     // Surah Ash-Sharh
+  { idx: 14, sura: 102 },    // Surah At-Takathur
+  { idx: 15, sura: 105 },    // Surah Al-Fil
+  { idx: 16, sura: 109 },    // Surah Al-Kafirun
+  { idx: 17, sura: 112 },    // Surah Al-Ikhlas
+  { idx: 18, sura: 113 },    // Surah Al-Falaq
+  { idx: 19, sura: 114 },    // Surah An-Nas
+  { idx: 20, sura: 1 },      // Surah Al-Fateha (repeat)
 ]
 
 ;['hinglish', 'urdu'].forEach(lang => {
