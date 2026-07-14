@@ -8,7 +8,7 @@ export default function About() {
   return (
     <div className="content-page">
       <h2 className="page-title">{content.title}</h2>
-      {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
+      {content.intro && <div className="page-section"><p style={{ whiteSpace: 'pre-line' }}>{content.intro}</p></div>}
       {content.sections?.map((s, i) => (
         <div key={i} className="card">
           {s.title && <div className="card-title">{s.title}</div>}
