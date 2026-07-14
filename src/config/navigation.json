@@ -14,9 +14,9 @@
     { "to": "/fateha-khwani", "icon": "faMosque", "key": "fatehaKhwani" },
     { "to": "/khatm", "icon": "faStar", "key": "khatm" },
     { "to": "/salim-pappa", "icon": "faUser", "key": "salimPappa" },
-    { "to": "/about", "icon": "faCircleInfo", "key": "about" },
     { "to": "/calendar", "icon": "faCalendar", "key": "calendar" },
     { "to": "/roshni", "icon": "faFire", "key": "roshni" },
-    { "to": "/abbajaan", "icon": "faPeopleGroup", "key": "abbajaan" }
+    { "to": "/abbajaan", "icon": "faPeopleGroup", "key": "abbajaan" },
+    { "to": "/about", "icon": "faCircleInfo", "key": "about" }
   ]
 }
