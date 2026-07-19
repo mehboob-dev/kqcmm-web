@@ -18,7 +18,7 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
       // In list mode, scroll the item into view
       const el = listRef.current?.querySelector(`[data-section-index="${jumpTo}"]`)
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
     }
   }, [jumpTo, isSlide])
