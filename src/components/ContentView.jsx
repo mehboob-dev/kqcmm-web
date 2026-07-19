@@ -60,8 +60,8 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
         </div>
         {/* Fixed counter bar */}
         <div style={{
-          position: 'fixed', bottom: 'var(--bottom-nav-height, 46px)', left: '50%', transform: 'translateX(-50%)',
-          width: '100%', maxWidth: 'inherit', zIndex: 1,
+          position: 'fixed', bottom: 'var(--bottom-nav-height, 56px)', left: '50%', transform: 'translateX(-50%)',
+          width: '100%', maxWidth: 1200, zIndex: 2,
           background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
           padding: '10px 0', display: 'flex', justifyContent: 'center',
         }}>
@@ -83,8 +83,8 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
       </div>
       {/* One fixed bar: nav left, counter right */}
       <div style={{
-        position: 'fixed', bottom: 'var(--bottom-nav-height, 46px)', left: '50%', transform: 'translateX(-50%)',
-        width: '100%', maxWidth: 'inherit', zIndex: 1,
+        position: 'fixed', bottom: 'var(--bottom-nav-height, 56px)', left: '50%', transform: 'translateX(-50%)',
+        width: '100%', maxWidth: 1200, zIndex: 2,
         background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
         boxSizing: 'border-box',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',

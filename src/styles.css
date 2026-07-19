@@ -184,6 +184,9 @@ strong { font-weight: 700; }
   border-top: 1px solid var(--border);
   flex-shrink: 0;
   padding-bottom: env(safe-area-inset-bottom, 0);
+  position: relative;
+  z-index: 50;
+  height: var(--bottom-nav-height, 56px);
 }
 .nav-item {
   flex: 1;

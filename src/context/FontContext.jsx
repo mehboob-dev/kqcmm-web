@@ -31,10 +31,10 @@ const FontContext = createContext()
 
 export function FontProvider({ children }) {
   const [fontFamily, setFontFamily] = useState(() => {
-    return localStorage.getItem('kqcmm_font_family') || 'system'
+    return localStorage.getItem('kqcmm_font_family') || 'times'
   })
   const [fontSize, setFontSize] = useState(() => {
-    return localStorage.getItem('kqcmm_font_size') || 'medium'
+    return localStorage.getItem('kqcmm_font_size') || 'large'
   })
 
   const changeFontFamily = useCallback((id) => {

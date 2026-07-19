@@ -17,7 +17,7 @@ export default function QuickJump({ items, onJump }) {
         onClick={() => setOpen(true)}
         style={{
           position: 'fixed',
-          bottom: 'calc(var(--bottom-nav-height, 46px) + 56px)',
+          bottom: 'calc(var(--bottom-nav-height, 56px) + 56px)',
           right: 16,
           width: 44, height: 44,
           borderRadius: '50%',
@@ -51,7 +51,8 @@ export default function QuickJump({ items, onJump }) {
 
       {/* Bottom sheet */}
       <div style={{
-        position: 'fixed', bottom: 0, left: 0, right: 0,
+        position: 'fixed', bottom: 0, left: '50%', transform: open ? 'translateX(-50%) translateY(0)' : 'translateX(-50%) translateY(100%)',
+        width: '100%', maxWidth: 1200,
         zIndex: 100,
         background: 'var(--bg-card)',
         borderTopLeftRadius: 16,
@@ -59,7 +60,6 @@ export default function QuickJump({ items, onJump }) {
         boxShadow: '0 -4px 20px rgba(0,0,0,0.15)',
         maxHeight: '60vh',
         overflowY: 'auto',
-        transform: open ? 'translateY(0)' : 'translateY(100%)',
         transition: 'transform 0.25s ease',
         paddingBottom: 'calc(var(--bottom-nav-height, 46px) + 8px)',
       }}>

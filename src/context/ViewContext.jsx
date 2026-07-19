@@ -23,7 +23,7 @@ export function ViewProvider({ children }) {
     if (saved === 'slide') return 'slide'
     if (saved === 'list') return 'list'
     // No global preference → per-page config
-    return viewConfig.pages[pageKey] || 'list'
+    return (viewConfig.pages && viewConfig.pages[pageKey]) || viewConfig.defaultMode || 'list'
   }, [slideMode])
 
   return (
