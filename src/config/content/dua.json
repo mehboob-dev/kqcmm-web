@@ -1,6 +1,13 @@
 {
     "en":  {
                "title":  "Duas (Supplications)",
+               "quickJump": [
+                 { "label": "1st DUA", "sectionIndex": 0 },
+                 { "label": "2nd DUA", "sectionIndex": 1 },
+                 { "label": "3rd DUA", "sectionIndex": 2 },
+                 { "label": "4th DUA", "sectionIndex": 3 },
+                 { "label": "5th DUA", "sectionIndex": 4 }
+               ],
                "duas":  [
                             {
                                 "heading":  "1st DUA",
@@ -26,6 +33,13 @@
            },
     "hinglish":  {
                      "title":  "Duayein",
+                     "quickJump": [
+                       { "label": "1st Dua", "sectionIndex": 0 },
+                       { "label": "2nd Dua", "sectionIndex": 1 },
+                       { "label": "3rd Dua", "sectionIndex": 2 },
+                       { "label": "4th Dua", "sectionIndex": 3 },
+                       { "label": "5th Dua", "sectionIndex": 4 }
+                     ],
                      "duas":  [
                                   {
                                       "heading":  "1st Dua",
@@ -51,6 +65,13 @@
                  },
     "urdu":  {
                  "title":  "دعائیں",
+                 "quickJump": [
+                   { "label": "پہلی دعا", "sectionIndex": 0 },
+                   { "label": "دوسری دعا", "sectionIndex": 1 },
+                   { "label": "تیسری دعا", "sectionIndex": 2 },
+                   { "label": "چوتھی دعا", "sectionIndex": 3 },
+                   { "label": "پانچویں دعا", "sectionIndex": 4 }
+                 ],
                  "duas":  [
                               {
                                   "heading":  "پہلی دعا",

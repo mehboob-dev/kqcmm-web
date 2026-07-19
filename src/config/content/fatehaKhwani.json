@@ -2,6 +2,17 @@
   "en": {
     "title": "Fateha Khwani",
     "intro": "Fateha Khwani is a traditional gathering in which du'a (supplication) is made, and the reward (thawab) of reciting the Qur'an, dhikr, or other acts of worship is dedicated to the deceased, with the hope that Allah grants them its benefit.",
+    "quickJump": [
+      { "label": "START", "sectionIndex": 0 },
+      { "label": "ZIKR", "sectionIndex": 1 },
+      { "label": "Darood-e-Taj", "sectionIndex": 22 },
+      { "label": "Dua-e-Nur", "sectionIndex": 23 },
+      { "label": "Darood-e-Tanjina", "sectionIndex": 24 },
+      { "label": "Darood-e-Mahi", "sectionIndex": 25 },
+      { "label": "Darood-e-Khaas", "sectionIndex": 26 },
+      { "label": "Du'a", "sectionIndex": 29 },
+      { "label": "Salaam", "sectionIndex": 30 }
+    ],
     "sections": [
       {
         "title": "START",
@@ -136,6 +147,17 @@
   "hinglish": {
     "title": "Fateha Khwani",
     "intro": "Fateha Khwani ek dua ki rasam hai jo marhumeen ki rooh ko sawab pahunchane ke liye ki jaati hai.",
+    "quickJump": [
+      { "label": "START", "sectionIndex": 0 },
+      { "label": "ZIKR", "sectionIndex": 1 },
+      { "label": "Darood-e-Taj", "sectionIndex": 22 },
+      { "label": "Dua-e-Nur", "sectionIndex": 23 },
+      { "label": "Darood-e-Tanjina", "sectionIndex": 24 },
+      { "label": "Darood-e-Mahi", "sectionIndex": 25 },
+      { "label": "Darood-e-Khaas", "sectionIndex": 26 },
+      { "label": "Du'a", "sectionIndex": 29 },
+      { "label": "Salaam", "sectionIndex": 30 }
+    ],
     "sections": [
       {
         "title": "START",
@@ -270,6 +292,17 @@
   "urdu": {
     "title": "فاتحہ خوانی",
     "intro": "فاتحہ خوانی ایک دعا کی رسم ہے جو مرحومین کی روح کو ثواب پہنچانے کے لیے کی جاتی ہے۔",
+    "quickJump": [
+      { "label": "START", "sectionIndex": 0 },
+      { "label": "ZIKR", "sectionIndex": 1 },
+      { "label": "Darood-e-Taj", "sectionIndex": 22 },
+      { "label": "Dua-e-Nur", "sectionIndex": 23 },
+      { "label": "Darood-e-Tanjina", "sectionIndex": 24 },
+      { "label": "Darood-e-Mahi", "sectionIndex": 25 },
+      { "label": "Darood-e-Khaas", "sectionIndex": 26 },
+      { "label": "Du'a", "sectionIndex": 29 },
+      { "label": "Salaam", "sectionIndex": 30 }
+    ],
     "sections": [
       {
         "title": "START",

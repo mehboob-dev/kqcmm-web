@@ -1,10 +1,13 @@
+import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
+import QuickJump from '../components/QuickJump'
 import data from '../config/content/fatehaKhwani.json'
 
 export default function FatehaKhwani() {
   const { lang } = useLanguage()
   const content = data[lang] || data.en
+  const [jumpToIdx, setJumpToIdx] = useState()
 
   return (
     <div className="content-page">
@@ -13,6 +16,7 @@ export default function FatehaKhwani() {
       <ContentView
         items={content.sections}
         pageKey="fatehaKhwani"
+        jumpTo={jumpToIdx}
         renderItem={(s, i) => {
           if (s.text && s.text.includes('|||')) {
             const subCards = s.text.split('|||').map(block => {
@@ -41,6 +45,9 @@ export default function FatehaKhwani() {
           )
         }}
       />
+      {content.quickJump && (
+        <QuickJump items={content.quickJump} onJump={setJumpToIdx} />
+      )}
     </div>
   )
 }

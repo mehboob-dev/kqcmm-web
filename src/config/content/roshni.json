@@ -1,6 +1,13 @@
 {
     "en":  {
                "title":  "Roshni (Chirag Raushan)",
+               "quickJump": [
+                 { "label": "ABOUT", "sectionIndex": 0 },
+                 { "label": "QADRI VERSE", "sectionIndex": 1 },
+                 { "label": "PERSIAN VERSE", "sectionIndex": 2 },
+                 { "label": "SALAAM", "sectionIndex": 3 },
+                 { "label": "DUA", "sectionIndex": 4 }
+               ],
                "sections":  [
                                 {
                                     "title":  "ABOUT",
@@ -26,6 +33,13 @@
            },
     "hinglish":  {
                      "title":  "Roshni - Chirag Raushan",
+                     "quickJump": [
+                       { "label": "ABOUT", "sectionIndex": 0 },
+                       { "label": "QADRI VERSE", "sectionIndex": 1 },
+                       { "label": "PERSIAN VERSE", "sectionIndex": 2 },
+                       { "label": "SALAAM", "sectionIndex": 3 },
+                       { "label": "DUA", "sectionIndex": 4 }
+                     ],
                      "sections":  [
                                       {
                                           "title":  "ABOUT",
@@ -51,6 +65,13 @@
                  },
     "urdu":  {
                  "title":  "روشنی - چراغِ روشن",
+                 "quickJump": [
+                   { "label":  "تعارف", "sectionIndex": 0 },
+                   { "label":  "قادری آیت", "sectionIndex": 1 },
+                   { "label":  "فارسی اشعار", "sectionIndex": 2 },
+                   { "label":  "سلام", "sectionIndex": 3 },
+                   { "label":  "دعا", "sectionIndex": 4 }
+                 ],
                  "sections":  [
                                   {
                                       "title":  "تعارف",

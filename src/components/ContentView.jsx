@@ -1,12 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useView } from '../context/ViewContext'
 
-export default function ContentView({ items, renderItem, mode, pageKey }) {
+export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }) {
   const { slideMode, getPageMode } = useView()
   const actualMode = mode || getPageMode(pageKey)
   const isSlide = actualMode === 'slide'
   const [currentIdx, setCurrentIdx] = useState(0)
   const [count, setCount] = useState(0)
+  const listRef = useRef(null)
+
+  // Handle external jumpTo signal
+  useEffect(() => {
+    if (jumpTo === undefined || jumpTo === null) return
+    if (isSlide) {
+      setCurrentIdx(jumpTo)
+    } else {
+      // In list mode, scroll the item into view
+      const el = listRef.current?.querySelector(`[data-section-index="${jumpTo}"]`)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }
+  }, [jumpTo, isSlide])
 
   const resetCount = () => setCount(0)
   const incCount = () => setCount(c => c + 1)
@@ -40,8 +55,8 @@ export default function ContentView({ items, renderItem, mode, pageKey }) {
   if (!isSlide) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
-        <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 66 }}>
-          {items.map((item, i) => <div key={i}>{renderItem(item, i)}</div>)}
+        <div ref={listRef} style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 66 }}>
+          {items.map((item, i) => <div key={i} data-section-index={i}>{renderItem(item, i)}</div>)}
         </div>
         {/* Fixed counter bar */}
         <div style={{

@@ -1,10 +1,13 @@
+import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
+import QuickJump from '../components/QuickJump'
 import data from '../config/content/dua.json'
 
 export default function Dua() {
   const { lang } = useLanguage()
   const content = data[lang] || data.en
+  const [jumpToIdx, setJumpToIdx] = useState()
 
   return (
     <div className="content-page">
@@ -12,6 +15,7 @@ export default function Dua() {
       <ContentView
         items={content.duas}
         pageKey="dua"
+        jumpTo={jumpToIdx}
         renderItem={(dua, i) => (
           <div className="card">
             <div className="card-title">{dua.heading}</div>
@@ -20,6 +24,9 @@ export default function Dua() {
           </div>
         )}
       />
+      {content.quickJump && (
+        <QuickJump items={content.quickJump} onJump={setJumpToIdx} />
+      )}
     </div>
   )
 }

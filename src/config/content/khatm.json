@@ -2,6 +2,14 @@
   "en": {
     "title": "Khatm-e-Khwajagan",
     "intro": "Khatm-e-Khwajagan is a special collective dhikr performed in the Chishti tradition. It consists of specific recitations of Qur'anic verses, salawat upon the Prophet ﷺ, and dhikr in remembrance of the Chishti masters (Khwajagan).\n\nThe Khwajagan are the spiritual chain of the Chishti order, beginning from Khwaja Moinuddin Chishti (Garib Nawaz) and continuing through the generations. Each master contributed to the spread of Islamic spirituality and love.",
+    "quickJump": [
+      { "label": "Opening", "sectionIndex": 0 },
+      { "label": "Darood Sharif (101)", "sectionIndex": 5 },
+      { "label": "Surah Ikhlas (1010)", "sectionIndex": 8 },
+      { "label": "Surah Muzzammil", "sectionIndex": 23 },
+      { "label": "Lahaula Wala Quwata", "sectionIndex": 29 },
+      { "label": "Pray for Desires", "sectionIndex": 31 }
+    ],
     "sections": [
       {
         "title": "Surah Fatiha (Surah No. 1) - 1 Time",
@@ -136,6 +144,13 @@
   "hinglish": {
     "title": "Khatm-e-Khwajagan",
     "intro": "Khatm-e-Khwajagan ek khaas ijtimai dhikr hai jo Chishti riwayat mein ada kiya jaata hai.\n\nKhwajagan Chishti silsile ki ruhani zanjeer hain, jo Khwaja Moinuddin Chishti (Garib Nawaz) se shuru hoti hai aur aage ke buzurgon tak jaari rahi. Har buzurg ne Islami ruhaniyat aur muhabbat ke phailane mein hissa diya.",
+    "quickJump": [
+      { "label": "Shuruat", "sectionIndex": 0 },
+      { "label": "Darood Sharif (101)", "sectionIndex": 5 },
+      { "label": "Surah Ikhlas (1010)", "sectionIndex": 8 },
+      { "label": "Surah Muzzammil", "sectionIndex": 23 },
+      { "label": "Lahaula Wala Quwata", "sectionIndex": 29 }
+    ],
     "sections": [
       {
         "title": "Surah Fatiha (Surah No. 1) - 1 Baar",
@@ -270,6 +285,13 @@
   "urdu": {
     "title": "ختم خواجگان",
     "intro": "ختم خواجگان ایک خاص اجتماعی ذکر ہے جو چشتی روایت میں ادا کیا جاتا ہے۔\n\nخواجگان چشتی سلسلے کی روحانی زنجیر ہیں، جو خواجہ معین الدین چشتی (غریب نواز) سے شروع ہوتی ہے اور آگے کے بزرگوں تک جاری رہی۔ ہر بزرگ نے اسلامی روحانیت اور محبت کے پھیلانے میں حصہ لیا۔",
+    "quickJump": [
+      { "label": "شروع", "sectionIndex": 0 },
+      { "label": "درود شریف (۱۰۱)", "sectionIndex": 5 },
+      { "label": "سورہ اخلاص (۱۰۱۰)", "sectionIndex": 8 },
+      { "label": "سورہ مزمل", "sectionIndex": 23 },
+      { "label": "لا حول ولا قوۃ", "sectionIndex": 29 }
+    ],
     "sections": [
       {
         "title": "سورہ فاتحہ (سورہ نمبر ۱) - ۱ بار",
