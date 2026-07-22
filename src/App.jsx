@@ -5,6 +5,7 @@ import { LanguageProvider } from './context/LanguageContext'
 import { FontProvider } from './context/FontContext'
 import { ViewProvider } from './context/ViewContext'
 import SplashScreen from './components/SplashScreen'
+import PwaSupport from './components/PwaSupport'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Dua from './pages/Dua'
@@ -39,6 +40,7 @@ export default function App() {
       <LanguageProvider>
         <FontProvider>
           <ViewProvider>
+          <PwaSupport />
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Home />} />
