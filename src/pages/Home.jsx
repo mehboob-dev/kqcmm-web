@@ -21,10 +21,7 @@ export default function Home() {
 
   return (
     <>
-      <SeoHead
-        title="Home"
-        description="Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya — Spiritual platform for followers of the Chishti Sufi order. Duas, khatm, fateha, kalam, sijrah nama and more."
-      />
+      <SeoHead title="Home" path="" description="Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya — Spiritual platform for followers of the Chishti Sufi order. Duas, khatm, fateha, kalam, sijrah nama and more." />
       <div className="home-container content-page">
       <img src={import.meta.env.BASE_URL + 'logo.png'} alt="KQCMM" className="home-logo" />
       <h1 className="home-title">KQCMM</h1>

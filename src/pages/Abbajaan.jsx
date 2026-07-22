@@ -8,7 +8,7 @@ export default function Abbajaan() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Abbajaan" description="Dedicated page for Abbajaan — life, teachings, and memories from the Chishti spiritual tradition." />
+      <SeoHead title="Abbajaan" path="/abbajaan" description="Dedicated page for Abbajaan — life, teachings, and memories from the Chishti spiritual tradition." />
       <h2 className="page-title">{content.title}</h2>
       {content.sections?.map((s, i) => (
         <div key={i} className="card">

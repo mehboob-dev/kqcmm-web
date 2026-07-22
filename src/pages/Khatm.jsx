@@ -12,7 +12,7 @@ export default function Khatm() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Khatm-e-Khwajagan" description="30-step spiritual dhikr with Quranic recitations, salawat, and dhikr in remembrance of the Chishti masters (Khwajagan)." />
+      <SeoHead title="Khatm-e-Khwajagan" path="/khatm" description="30-step spiritual dhikr with Quranic recitations, salawat, and dhikr in remembrance of the Chishti masters (Khwajagan)." />
       <h2 className="page-title">{content.title}</h2>
       {content.intro && <div className="page-section"><p style={{ whiteSpace: 'pre-line' }}>{content.intro}</p></div>}
       <ContentView

@@ -8,7 +8,7 @@ export default function Hmk() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Hmk / Kalam" description="Biography and spiritual kalam of Hajee Mahboob Kassim — devotional poetry and life history." />
+      <SeoHead title="Hmk / Kalam" path="/hmk" description="Biography and spiritual kalam of Hajee Mahboob Kassim — devotional poetry and life history." />
       <h2 className="page-title">{content.title}</h2>
       {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
       {content.paragraphs?.map((p, i) => (

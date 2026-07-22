@@ -12,7 +12,7 @@ export default function Roshni() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Roshni" description="Chirag Raushan / Roshni — spiritual illumination and devotional content from the Chishti tradition." />
+      <SeoHead title="Roshni" path="/roshni" description="Chirag Raushan / Roshni — spiritual illumination and devotional content from the Chishti tradition." />
       <h2 className="page-title">{content.title}</h2>
       {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
       <ContentView

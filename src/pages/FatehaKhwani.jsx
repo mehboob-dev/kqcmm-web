@@ -12,7 +12,7 @@ export default function FatehaKhwani() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Fateha Khwani" description="Traditional gathering for Qur'an recitation and du'a — dedicate the reward (thawab) of recitation to your loved ones." />
+      <SeoHead title="Fateha Khwani" path="/fateha-khwani" description="Traditional gathering for Qur'an recitation and du'a — dedicate the reward (thawab) of recitation to your loved ones." />
       <h2 className="page-title">{content.title}</h2>
       {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
       <ContentView

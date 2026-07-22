@@ -8,7 +8,7 @@ export default function About() {
 
   return (
     <div className="content-page">
-      <SeoHead title="About" description="About Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya (KQCMM) — mission, activities, and contact information." />
+      <SeoHead title="About" path="/about" description="About Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya (KQCMM) — mission, activities, and contact information." />
       <h2 className="page-title">{content.title}</h2>
       {content.intro && <div className="page-section"><p style={{ whiteSpace: 'pre-line' }}>{content.intro}</p></div>}
       {content.sections?.map((s, i) => (
