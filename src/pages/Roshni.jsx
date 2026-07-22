@@ -1,3 +1,4 @@
+import SeoHead from '../components/SeoHead'
 import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
@@ -11,6 +12,7 @@ export default function Roshni() {
 
   return (
     <div className="content-page">
+      <SeoHead title="Roshni" description="Chirag Raushan / Roshni — spiritual illumination and devotional content from the Chishti tradition." />
       <h2 className="page-title">{content.title}</h2>
       {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
       <ContentView

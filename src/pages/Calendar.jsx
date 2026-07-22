@@ -1,3 +1,4 @@
+import SeoHead from '../components/SeoHead'
 import { useLanguage } from '../context/LanguageContext'
 import data from '../config/content/calendar.json'
 
@@ -7,6 +8,7 @@ export default function Calendar() {
 
   return (
     <div className="content-page">
+      <SeoHead title="Islamic Calendar" description="Upcoming Islamic events, important dates, and spiritual observances from the Chishti tradition." />
       <h2 className="page-title">{content.title}</h2>
       <div className="calendar-grid">
         {content.events.map((ev, i) => (

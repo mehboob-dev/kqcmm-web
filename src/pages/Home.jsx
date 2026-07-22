@@ -1,3 +1,4 @@
+import SeoHead from '../components/SeoHead'
 import { Link, useOutletContext } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 
@@ -8,16 +9,23 @@ const quickLinks = [
   { to: '/fateha-khwani', icon: '🕌', labelKey: 'fatehaKhwani' },
   { to: '/khatm', icon: '✨', labelKey: 'khatm' },
   { to: '/salim-pappa', icon: '👤', labelKey: 'salimPappa' },
+  { to: '/roshni', icon: '🕯️', labelKey: 'roshni' },
+  { to: '/abbajaan', icon: '👳', labelKey: 'abbajaan' },
   { to: '/calendar', icon: '📅', labelKey: 'calendar' },
   { to: '/about', icon: 'ℹ️', labelKey: 'about' },
 ]
 
 export default function Home() {
   const { strings } = useOutletContext()
-  const { lang } = useLanguage()
+  const { /* lang */ } = useLanguage()
 
   return (
-    <div className="home-container content-page">
+    <>
+      <SeoHead
+        title="Home"
+        description="Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya — Spiritual platform for followers of the Chishti Sufi order. Duas, khatm, fateha, kalam, sijrah nama and more."
+      />
+      <div className="home-container content-page">
       <img src={import.meta.env.BASE_URL + 'logo.png'} alt="KQCMM" className="home-logo" />
       <h1 className="home-title">KQCMM</h1>
       <p className="home-subtitle">{strings.tagline}</p>
@@ -33,6 +41,7 @@ export default function Home() {
           )
         })}
       </div>
-    </div>
+      </div>
+    </>
   )
 }
