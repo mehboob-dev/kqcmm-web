@@ -101,9 +101,12 @@ export default function PwaSupport() {
         </div>
       )}
 
-      {/* Offline banner — pushes content down */}
+      {/* Offline banner — overlay on top */}
       {offline && (
         <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0,
+          zIndex: 9999,
           background: '#b71c1c',
           color: '#fff',
           textAlign: 'center',

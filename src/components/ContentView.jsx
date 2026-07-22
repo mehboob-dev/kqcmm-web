@@ -60,12 +60,19 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
         </div>
         {/* Fixed counter bar */}
         <div style={{
-          position: 'fixed', bottom: 'var(--bottom-nav-height, 56px)', left: '50%', transform: 'translateX(-50%)',
-          width: '100%', maxWidth: 1200, zIndex: 2,
-          background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
-          padding: '10px 0', display: 'flex', justifyContent: 'center',
+          position: 'fixed', bottom: 'var(--bottom-nav-height, 56px)', left: 0, right: 0,
+          display: 'flex', justifyContent: 'center', zIndex: 2,
+          pointerEvents: 'none',
         }}>
-          {counterSection}
+          <div style={{
+            width: '100%', maxWidth: 1200,
+            background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
+            padding: '10px 0', display: 'flex', justifyContent: 'center',
+            boxSizing: 'border-box',
+            pointerEvents: 'auto',
+          }}>
+            {counterSection}
+          </div>
         </div>
       </div>
     )
@@ -83,13 +90,18 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
       </div>
       {/* One fixed bar: nav left, counter right */}
       <div style={{
-        position: 'fixed', bottom: 'var(--bottom-nav-height, 56px)', left: '50%', transform: 'translateX(-50%)',
-        width: '100%', maxWidth: 1200, zIndex: 2,
-        background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
-        boxSizing: 'border-box',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '8px 12px',
+        position: 'fixed', bottom: 'var(--bottom-nav-height, 56px)', left: 0, right: 0,
+        display: 'flex', justifyContent: 'center', zIndex: 2,
+        pointerEvents: 'none',
       }}>
+        <div style={{
+          width: '100%', maxWidth: 1200,
+          background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
+          boxSizing: 'border-box',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '8px 12px',
+          pointerEvents: 'auto',
+        }}>
         {/* Slide nav */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <button onClick={() => goTo(0)} disabled={!hasPrev} style={navBtn(!hasPrev)}>⏮</button>
@@ -102,7 +114,8 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
         </div>
         {/* Counter */}
         {counterSection}
-      </div>
+        </div>{/* inner */}
+      </div>{/* outer */}
     </div>
   )
 }
