@@ -22,7 +22,8 @@ import NotFound from './pages/NotFound'
 
 export default function App() {
   const [splashDone, setSplashDone] = useState(() => {
-    // Show on every page load (including refresh) unless splash is disabled
+    // Skip if already seen (prevents flash on return visits and helps prerender)
+    if (sessionStorage.getItem('kqcmm_splash')) return true
     return false
   })
 
