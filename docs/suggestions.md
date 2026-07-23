@@ -28,64 +28,73 @@ Press `1`-`5` for bottom nav items on desktop, arrow keys for slide nav.
 ### 7. Disable splash toggle
 Option in settings to permanently skip the splash screen after first visit.
 
+### 8. Quick actions on home page
+Add a "Today's Khatm progress" widget or "Continue where you left off" section on the home page instead of just static links.
+
+### 9. Font preview in settings
+When picking a font or size in settings, show a live preview of sample text before applying. Helps users decide without trial and error.
+
+### 10. Long-press context menu on cards
+In list mode, long-press a card to show options: "Copy this verse", "Share via WhatsApp", "Bookmark". Power-user feature for mobile.
+
+### 11. Page transition animations
+Smooth slide/fade animations between routes instead of instant cut. Polishes the app feel (already have `fadeSlideIn` for toasts — extend to pages).
+
+### 12. Pinned pages
+Let users pin their most-visited pages (e.g., Khatm, Dua) to the top of the side drawer or home page for quick access.
+
 ---
 
 ## 🔍 Content & Discovery
 
-### 8. Search across content
-Search all 10 content JSONs in the current language. Show results grouped by page with highlighted matches. See [search feature discussion](#).
+### 13. Daily verse on home page
+Show a random dua/verse/kalam that changes daily on the home page. Could rotate through existing content JSONs ("Verse of the Day"). Makes the app feel alive.
 
-### 9. Quran browser
+### 14. Search across content
+Search all 11 content JSONs in the current language. Show results grouped by page with highlighted matches.
+
+### 15. Quran browser
 `public/quran.json` (1.1MB, 114 surahs, 6236 verses) is unused. Could add a Quran reading page with surah list, juz markers, search.
 
-### 10. Scroll position memory
+### 16. Scroll position memory
 Remember scroll position on pages like Khatm (30 steps) so users don't lose their place on refresh. Use `sessionStorage` or `localStorage`.
 
-### 11. Tasbih counter
+### 17. Tasbih counter
 Standalone digital tasbih (prayer bead counter) tool. Simple UI: tap to count, reset button.
 
-### 12. Bookmarks / favorites
+### 18. Bookmarks / favorites
 Let users bookmark specific verses or sections. Store in IndexedDB or localStorage.
 
 ---
 
 ## 🎵 Audio & Media
 
-### 13. Audio recitations
+### 19. Audio recitations
 Play MP3 recitations alongside duas/khatm verses. Auto-scroll to highlight current verse.
 
-### 14. Video integration
+### 20. Video integration
 Embed spiritual talks or kalam videos (YouTube / local).
 
 ---
 
 ## ⚙️ Technical
 
-### 15. Lazy loading / code splitting
+### 21. Lazy loading / code splitting
 Split pages with `React.lazy()` so they only load on demand. Quick performance win.
 
-### 16. Urdu web fonts
-Nastaliq/Naskh fonts referenced in font picker but never loaded via `@font-face` — only work if device has them installed. Add Google Fonts or self-hosted fonts.
+### 22. Analytics
+Privacy-respecting analytics (e.g., Plausible, Umami) to see which pages are most visited.
 
-### 17. Service worker update refinements
+### 23. Service worker update refinements
 - Show loading progress during SW install
 - Add a "Cache size" display in settings
 - Option to re-cache all content
-
-### 18. Analytics
-Privacy-respecting analytics (e.g., Plausible, Umami) to see which pages are most visited.
 
 ---
 
 ## 📄 Content
 
-### 19. Content versioning
-Track changes to content JSONs — simple changelog or git-based.
-
-### 20. Auto-translate pipeline
-Improve Hinglish/Urdu sync scripts to handle more content types.
-
-### 21. Expand About page
+### 24. Expand About page
 Currently sparse. Could include:
 - Full mission statement
 - Contact form or email
@@ -96,13 +105,13 @@ Currently sparse. Could include:
 
 ## 🧪 Testing & Quality
 
-### 22. Add tests
+### 25. Add tests
 No test framework exists. Add basic smoke tests for rendering key pages.
 
-### 23. Error boundaries
+### 26. Error boundaries
 Catch React render errors gracefully with a friendly fallback UI.
 
-### 24. Accessibility audit
+### 27. Accessibility audit
 - Screen reader labels
 - Keyboard navigation
 - Focus management for modals/drawers
