@@ -17,6 +17,9 @@ Welcome to the KQCMM web app documentation. Choose a topic below.
 - [SEO & Pre-rendering](seo.md) — Meta tags, OG images, Puppeteer prerender
 - [Scripts Reference](scripts.md) — All CLI tools and utilities
 
+## Future Ideas
+- [Suggestions](suggestions.md) — 24 documented feature ideas
+
 ## Quick Links
 | File | Purpose |
 |---|---|

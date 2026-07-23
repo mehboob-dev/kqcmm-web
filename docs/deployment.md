@@ -22,7 +22,7 @@ How to build, deploy, and host the KQCMM web app.
 The `npm run build` command runs three steps:
 
 1. **`vite build`** — Bundles the app into `dist/`
-2. **`node scripts/prerender.mjs`** — Puppeteer generates static HTML for all 11 routes with full SEO meta tags
+2. **`node scripts/prerender.mjs`** — Puppeteer generates static HTML for all 12 routes with full SEO meta tags
 3. **`cp dist/index.html dist/404.html`** — SPA fallback for GitHub Pages
 
 ### Output Structure
@@ -41,6 +41,7 @@ dist/
 ├── calendar/index.html             # Prerendered Calendar page
 ├── roshni/index.html               # Prerendered Roshni page
 ├── abbajaan/index.html             # Prerendered Abbajaan page
+├── changelog/index.html            # Prerendered Changelog page
 ├── assets/
 │   ├── index-xxxxxxxx.js           # Bundled JS (content-hashed)
 │   └── index-xxxxxxxx.css          # Bundled CSS (content-hashed)

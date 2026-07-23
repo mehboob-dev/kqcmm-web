@@ -115,17 +115,18 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 ## Route Map
 
 ```
-/               → Home page (logo, tagline, 8 quick-link cards)
+/               → Home page (logo, tagline, 10 quick-link cards)
 /dua            → Duas / Supplications (5 duas in slide mode)
 /hmk            → Hajee Mahboob Kassim biography
 /sijrah-nama    → Sijrah Nama (verses, slide mode)
 /fateha-khwani  → Fateha Khwani (30+ sections, master-child cards)
 /khatm          → Khatm-e-Khwajagan (30 steps, slide mode)
 /salim-pappa    → Salim Pappa
-/about          → About KQCMM
+/about          → About KQCMM (with version)
 /calendar       → Islamic Calendar (9 events)
 /roshni         → Roshni / Chirag Raushan
 /abbajaan       → Abbajaan
+/changelog      → Version history
 ```
 
 ---

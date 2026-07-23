@@ -19,6 +19,7 @@ Built with React 18 + Vite 5. Hosted on GitHub Pages.
 | **PWA & Offline** (service worker, caching, install) | [docs/pwa.md](docs/pwa.md) |
 | **SEO & Pre-rendering** (meta tags, OG, Puppeteer) | [docs/seo.md](docs/seo.md) |
 | **Scripts reference** (all CLI tools) | [docs/scripts.md](docs/scripts.md) |
+| **Future suggestions** (feature ideas) | [docs/suggestions.md](docs/suggestions.md) |
 | **New developer guide** (step-by-step for freshers) | [docs/new-developer-guide.md](docs/new-developer-guide.md) |
 | **Quick start** (setup & commands) | [README.md](README.md) |
 | **All docs index** | [docs/index.md](docs/index.md) |
@@ -36,7 +37,7 @@ npm run preview     # Preview production build
 
 | Path | Purpose |
 |---|---|
-| `src/config/content/` | All page content (10 JSON files, 3 languages each) |
+| `src/config/content/` | All page content (11 JSON files, 3 languages each) |
 | `src/config/strings/` | UI labels and navigation text |
 | `src/components/` | Reusable UI components |
 | `src/pages/` | One component per route |

@@ -60,6 +60,7 @@ Crawler or user → static HTML served → React hydrates client-side
 /kqcmm-web/calendar       → dist/calendar/index.html
 /kqcmm-web/roshni → dist/roshni/index.html
 /kqcmm-web/abbajaan       → dist/abbajaan/index.html
+/kqcmm-web/changelog      → dist/changelog/index.html
 ```
 
 ### Build Integration
@@ -161,6 +162,7 @@ Place custom images in `public/` and rebuild.
 | `/calendar` | KQCMM - Islamic Calendar | KQCMM - Islamic Calendar | Upcoming Islamic events and spiritual observances |
 | `/roshni` | KQCMM - Roshni | KQCMM - Roshni | Chirag Raushan / Roshni — spiritual illumination |
 | `/abbajaan` | KQCMM - Abbajaan | KQCMM - Abbajaan | Life, teachings, and memories |
+| `/changelog` | KQCMM - Changelog | KQCMM - Changelog | Version history and release notes |
 | `*` (404) | KQCMM - Page Not Found | KQCMM - Page Not Found | The requested page could not be found |
 
 ---

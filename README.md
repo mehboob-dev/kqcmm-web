@@ -78,6 +78,7 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | `/calendar` | Islamic Calendar |
 | `/roshni` | Roshni / Chirag Raushan |
 | `/abbajaan` | Abbajaan |
+| `/changelog` | Version history |
 
 ---
 
@@ -96,6 +97,9 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | **Settings Popup** | Language, theme, font, view mode |
 | **Offline Support** | Full app cached via Service Worker |
 | **SEO / Open Graph** | Unique meta tags per page, pre-rendered |
+| **Install App** | Native install button in bottom nav |
+| **Swipe Navigation** | Swipe left/right in slide mode |
+| **Changelog** | Version history page |
 
 ---
 

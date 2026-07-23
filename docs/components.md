@@ -25,6 +25,9 @@ The root layout component that wraps all pages.
 | `settingsOpen` | boolean | Controls settings modal visibility |
 | `strings` | object/null | Loaded language strings |
 
+### Page Title Lookup
+Uses a `pageTitleMap` object to translate route paths to display titles from the current language's strings. Includes routes for all 12 pages plus settings.
+
 ### Effects
 ```jsx
 // Load strings when language changes
@@ -60,6 +63,12 @@ First | Prev | Position | Next | Last
    Decrease | Count | Increase | Reset
 ```
 
+### Swipe Navigation (Slide Mode)
+In slide mode, swipe left/right directly on the card area to go to the next/previous item.
+- Threshold: 50px horizontal movement
+- Works alongside the ◀▶ button navigation
+- Implemented via `onTouchStart` / `onTouchEnd` handlers
+
 ### Component Architecture
 ```jsx
 <ContentView>
@@ -90,6 +99,15 @@ First | Prev | Position | Next | Last
 - Uses FontAwesome icons
 - Highlights active tab with accent color + top indicator bar
 - Reports its height to CSS var `--bottom-nav-height` for counter bar positioning
+
+### Install App Button (6th slot)
+When the browser fires `beforeinstallprompt`, a 6th tab with 📲 icon appears automatically.
+- Uses native browser install prompt
+- Tracks install state via `display-mode: standalone` media query
+- Hidden once app is installed or if browser doesn't support it
+
+### Swipe Gesture Support
+BottomNav passes touch events to ContentView for swipe navigation in slide mode.
 
 ---
 

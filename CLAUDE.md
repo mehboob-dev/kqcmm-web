@@ -4,6 +4,8 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
+>
+> **Current version: v5.2.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -100,6 +102,7 @@ kqcmm-web/
 │   │   ├── Calendar.jsx              # Islamic calendar events
 │   │   ├── Roshni.jsx                # Chirag Raushan / Roshni
 │   │   ├── Abbajaan.jsx              # Abbajaan page
+│   │   ├── Changelog.jsx            # Version history
 │   │   └── NotFound.jsx              # 404 page
 │   │
 │   ├── context/
@@ -127,7 +130,8 @@ kqcmm-web/
 │   │       ├── about.json
 │   │       ├── calendar.json
 │   │       ├── roshni.json
-│   │       └── abbajaan.json
+│   │       ├── abbajaan.json
+│   │       └── changelog.json               # Version history (3 languages)
 │   │
 │   └── scripts/                       # CLI tools (see below)
 │
@@ -332,6 +336,18 @@ The workflow:
 GitHub Pages serves `404.html` for any unmatched path (like `/khatm`). This is a copy of `index.html` — React Router then handles the route client-side.
 
 Router basename: `/kqcmm-web/` (set in `vite.config.js` + `main.jsx`).
+
+---
+
+## 📝 Changelog
+
+Version history is in `src/config/content/changelog.json` (3 languages). When making significant changes:
+
+1. Add a new entry at the top of the `versions` array with the next version number
+2. List changes as bullet points in the user's language
+3. Update `package.json` version to match
+4. Update the Version card in `src/pages/About.jsx`
+5. Run `npm run build` afterwards to re-prerender
 
 ---
 
