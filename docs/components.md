@@ -129,6 +129,83 @@ Full-screen splash with countdown and tap-to-skip.
 - Image fills screen with object-fit
 - Tap anywhere to skip immediately
 - Fade-out transition on completion
+- Skips automatically on repeat visits (sessionStorage)
+
+---
+
+## PwaSupport.jsx
+
+Manages offline/update notifications for the PWA experience.
+
+**File:** `src/components/PwaSupport.jsx`
+
+### Behaviour
+| Toast | When | Description |
+|---|---|---|
+| ✅ Ready for offline use | First SW registration | Auto-dismiss after 4s, once per session |
+| 🔄 New version available | Updated SW detected | Shows [Refresh] button to activate update |
+| 📡 You're offline | Browser goes offline | Fixed red banner at top, hides on reconnect |
+
+### Integration
+```jsx
+// In App.jsx — renders inside context providers, before Routes
+<ThemeProvider>
+  <LanguageProvider>
+    <PwaSupport />
+    <Routes>...</Routes>
+  </LanguageProvider>
+</ThemeProvider>
+```
+
+### How It Works
+- Uses `useRegisterSW()` from `virtual:pwa-register/react` (vite-plugin-pwa's React integration)
+- Listens to `navigator.onLine` events for offline detection
+- On update available, calls `updateServiceWorker(true)` to activate new SW
+- Shows "update available" toast with a Refresh button
+
+---
+
+## SeoHead.jsx
+
+Sets per-page meta tags for SEO and social sharing.
+
+**File:** `src/components/SeoHead.jsx`
+
+### Props
+| Prop | Type | Required | Example |
+|---|---|---|---|
+| `title` | string | Yes | `"Duas"` → renders `<title>KQCMM - Duas</title>` |
+| `description` | string | Yes | `"Collection of sacred supplications..."` |
+| `image` | string | No | Custom OG image URL |
+| `path` | string | Yes | `"/dua"` → used for `og:url` |
+
+### Tags Generated
+```html
+<title>KQCMM - {title}</title>
+<meta name="description" content="..." />
+<meta property="og:title" content="..." />
+<meta property="og:description" content="..." />
+<meta property="og:image" content="..." />
+<meta property="og:url" content="https://mehboob-dev.github.io/kqcmm-web/{path}" />
+<meta property="og:site_name" content="KQCMM" />
+<meta name="twitter:card" content="summary_large_image" />
+```
+
+### Usage in Pages
+```jsx
+import SeoHead from '../components/SeoHead'
+
+export default function Dua() {
+  return (
+    <>
+      <SeoHead title="Duas" path="/dua" description="..." />
+      <div className="content-page">...</div>
+    </>
+  )
+}
+```
+
+Uses `react-helmet-async` to inject tags into `<head>`. During build, Puppeteer prerenders these as static HTML.
 
 ---
 

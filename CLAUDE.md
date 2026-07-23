@@ -2,6 +2,9 @@
 
 A spiritual web platform for followers of the Chishti Sufi order. Displays duas, khatm, fateha, kalam, sijrah nama, and other devotional content in **English**, **Hinglish**, and **Urdu**.
 
+> **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
+> **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
+
 ---
 
 ## 🏗 Architecture Overview
@@ -81,7 +84,9 @@ kqcmm-web/
 │   │   ├── ContentView.jsx            # List/slide view + counter
 │   │   ├── SplashScreen.jsx           # Splash with countdown
 │   │   ├── SettingsPopup.jsx          # Settings modal
-│   │   └── FontAwesome.jsx           # Icon component (centralized)
+│   │   ├── FontAwesome.jsx           # Icon component (centralized)
+│   │   ├── PwaSupport.jsx            # Offline/update toasts
+│   │   └── SeoHead.jsx              # Per-page meta tags (Helmet)
 │   │
 │   ├── pages/
 │   │   ├── Home.jsx                   # Home with logo + quick links
@@ -128,6 +133,7 @@ kqcmm-web/
 │
 ├── scripts/
 │   ├── content-editor.mjs            # Local web editor (npm run edit)
+│   ├── prerender.mjs                 # Puppeteer prerender for SEO
 │   ├── fetch-content.mjs             # Fetches from Firebase Hosting
 │   ├── sync-other-langs.mjs          # Syncs hinglish/urdu from XML
 │   ├── sync-quran.mjs                # Maps Quran into content JSONs

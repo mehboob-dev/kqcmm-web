@@ -28,6 +28,9 @@ npm run edit         # Content editor (localhost:3030)
 | Vite 5 | Build tool & dev server |
 | React Router 6 | Client-side routing |
 | FontAwesome 6 | Icons (solid) |
+| react-helmet-async | SEO / Open Graph tags |
+| vite-plugin-pwa | Service Worker + offline |
+| Puppeteer | Pre-rendering (build only) |
 | GitHub Pages | Hosting / auto-deploy |
 
 ---
@@ -42,8 +45,8 @@ src/
 ├── pages/            ← One component per route
 ├── context/          ← Theme, Language, Font, View state
 └── styles.css        ← All styles in one file (themes, cards, layout)
-docs/                 ← Full documentation (7 files)
-scripts/              ← CLI tools (editor, sync scripts)
+docs/                 ← Full documentation (9 files)
+scripts/              ← CLI tools (editor, prerender, sync scripts)
 ```
 
 ---
@@ -88,9 +91,11 @@ scripts/              ← CLI tools (editor, sync scripts)
 | **4 Font Sizes** | Small (14px) to X-Large (21px) |
 | **2 View Modes** | List (stack cards) / Slide (one at a time + nav) |
 | **Counter** | Global +/−/↺ counter on content pages |
-| **Splash Screen** | 3s countdown, tap to skip |
+| **Splash Screen** | 3s countdown, tap to skip (skips on revisit) |
 | **Swipeable Drawer** | Side menu with background image |
 | **Settings Popup** | Language, theme, font, view mode |
+| **Offline Support** | Full app cached via Service Worker |
+| **SEO / Open Graph** | Unique meta tags per page, pre-rendered |
 
 ---
 
@@ -132,7 +137,10 @@ npx gh-pages -d dist
 ```
 
 ### SPA Routing
-GitHub Pages uses `404.html` (a copy of `index.html`) to handle client-side routes like `/khatm`. React Router then picks up the URL and renders the correct page.
+Each route is pre-rendered into a static HTML file at build time (`dist/{route}/index.html`) via Puppeteer. This handles direct URL access and gives social media crawlers proper meta tags. The `404.html` fallback covers any unmapped routes.
+
+### Pre-rendering
+The build script runs `node scripts/prerender.mjs` after `vite build`, which uses Puppeteer to render all 11 routes and save their HTML with full SEO tags baked in.
 
 ---
 
@@ -147,6 +155,8 @@ Full documentation is in the `docs/` folder:
 | [docs/content.md](docs/content.md) | Content JSON, master-child cards, editing |
 | [docs/styling.md](docs/styling.md) | CSS variables, themes, cards, fonts |
 | [docs/deployment.md](docs/deployment.md) | Building, deploying, troubleshooting |
+| [docs/pwa.md](docs/pwa.md) | PWA / offline / service worker |
+| [docs/seo.md](docs/seo.md) | SEO, Open Graph, pre-rendering |
 | [docs/scripts.md](docs/scripts.md) | All CLI tools |
 | [docs/new-developer-guide.md](docs/new-developer-guide.md) | Step-by-step for freshers |
 

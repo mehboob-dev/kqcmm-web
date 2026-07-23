@@ -13,6 +13,8 @@ Welcome to the KQCMM web app documentation. Choose a topic below.
 
 ## Operations
 - [Deployment Guide](deployment.md) — Building, deploying, troubleshooting
+- [PWA & Offline Support](pwa.md) — Service worker, caching, installable app
+- [SEO & Pre-rendering](seo.md) — Meta tags, OG images, Puppeteer prerender
 - [Scripts Reference](scripts.md) — All CLI tools and utilities
 
 ## Quick Links

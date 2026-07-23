@@ -102,6 +102,10 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 │  │  │  Theme     │ │  Language    │ │  Font    │ │  View    │  │   │
 │  │  │  Provider  │ │  Provider    │ │  Provider│ │  Provider│  │   │
 │  │  └────────────┘ └──────────────┘ └──────────┘ └──────────┘  │   │
+│  │                                                                │   │
+│  │  ┌──────────────────────────────────────────────────────┐    │   │
+│  │  │  PwaSupport (toast notifications for offline/update)  │    │   │
+│  │  └──────────────────────────────────────────────────────┘    │   │
 │  └──────────────────────────────────────────────────────────────┘   │
 └──────────────────────────────────────────────────────────────────────┘
 ```
@@ -172,6 +176,10 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 | **React Router** | 6.x | Client-side routing |
 | **Vite** | 5.x | Build tool / dev server |
 | **FontAwesome** | 6.x | Icons (solid only) |
+| **react-helmet-async** | 3.x | Dynamic meta tags per page |
+| **vite-plugin-pwa** | 1.x | Service worker + PWA manifest |
+| **Puppeteer** | 25.x | Pre-rendering (build only) |
+| **sharp** | 0.35.x | Image processing (icons) |
 | **Node.js** | ≥18 | Build / scripts |
 
 No state management library — React Context is sufficient for this app's complexity.

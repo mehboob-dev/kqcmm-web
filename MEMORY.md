@@ -16,6 +16,8 @@ Built with React 18 + Vite 5. Hosted on GitHub Pages.
 | **Content system** (JSON structure, master-child cards, editing) | [docs/content.md](docs/content.md) |
 | **Styling guide** (CSS variables, themes, cards, fonts) | [docs/styling.md](docs/styling.md) |
 | **Deployment** (GitHub Pages, hosting, troubleshooting) | [docs/deployment.md](docs/deployment.md) |
+| **PWA & Offline** (service worker, caching, install) | [docs/pwa.md](docs/pwa.md) |
+| **SEO & Pre-rendering** (meta tags, OG, Puppeteer) | [docs/seo.md](docs/seo.md) |
 | **Scripts reference** (all CLI tools) | [docs/scripts.md](docs/scripts.md) |
 | **New developer guide** (step-by-step for freshers) | [docs/new-developer-guide.md](docs/new-developer-guide.md) |
 | **Quick start** (setup & commands) | [README.md](README.md) |

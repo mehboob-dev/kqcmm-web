@@ -17,12 +17,55 @@ How to build, deploy, and host the KQCMM web app.
 
 ---
 
+## Build Pipeline
+
+The `npm run build` command runs three steps:
+
+1. **`vite build`** — Bundles the app into `dist/`
+2. **`node scripts/prerender.mjs`** — Puppeteer generates static HTML for all 11 routes with full SEO meta tags
+3. **`cp dist/index.html dist/404.html`** — SPA fallback for GitHub Pages
+
+### Output Structure
+
+```
+dist/
+├── index.html                      # Prerendered home page
+├── 404.html                        # Copy of index.html for SPA routing
+├── dua/index.html                  # Prerendered Dua page
+├── hmk/index.html                  # Prerendered Hmk page
+├── sijrah-nama/index.html          # Prerendered Sijrah Nama page
+├── fateha-khwani/index.html        # Prerendered Fateha Khwani page
+├── khatm/index.html                # Prerendered Khatm page
+├── salim-pappa/index.html          # Prerendered Salim Pappa page
+├── about/index.html                # Prerendered About page
+├── calendar/index.html             # Prerendered Calendar page
+├── roshni/index.html               # Prerendered Roshni page
+├── abbajaan/index.html             # Prerendered Abbajaan page
+├── assets/
+│   ├── index-xxxxxxxx.js           # Bundled JS (content-hashed)
+│   └── index-xxxxxxxx.css          # Bundled CSS (content-hashed)
+├── og-image.png                    # Social sharing image (1200×630)
+├── logo.png
+├── splash.jpg
+├── drawer-bg.jpg
+├── manifest.json
+├── manifest.webmanifest
+├── sw.js                           # Service worker (auto-generated)
+├── workbox-xxxxxxxx.js             # Workbox runtime
+└── icons/
+    ├── favicon.png
+    ├── icon-192.png
+    └── icon-512.png
+```
+
+---
+
 ## GitHub Pages (Current)
 
 ### How It Works
 1. Push to `main` branch
 2. GitHub Actions runs the workflow in `.github/workflows/deploy.yml`
-3. Workflow: `npm ci` → `npm run build` → copy `404.html` → deploy
+3. Workflow: install Chromium → `npm ci` → `npm run build` → deploy
 
 ### SPA Routing on GitHub Pages
 GitHub Pages doesn't support client-side routing natively. The fix:
@@ -31,8 +74,10 @@ GitHub Pages doesn't support client-side routing natively. The fix:
 2. When a user visits `/khatm` directly, GitHub Pages returns `404.html` (which is really `index.html`)
 3. React Router reads the URL and routes correctly
 
+Additionally, **pre-rendered HTML files** handle direct visits to each route — crawlers and users opening a deep link get the correct page with full CSS and JS.
+
 ### Required Config
-- `vite.config.js`: `base: './'` (relative paths for assets)
+- `vite.config.js`: `base: '/kqcmm-web/'` (absolute paths for assets)
 - `src/main.jsx`: `BrowserRouter basename="/kqcmm-web/"`
 - `public/` dir: Static assets (images, manifest, quran.json)
 
@@ -50,9 +95,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: sudo apt-get update && sudo apt-get install -y chromium-browser
       - run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: true
       - run: npm run build
-      - run: cp dist/index.html dist/404.html
+        env:
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -69,9 +118,30 @@ https://mehboob-dev.github.io/kqcmm-web/
 | Problem | Cause | Fix |
 |---|---|---|
 | White screen after deploy | Router basename mismatch | Check `vite.config.js` base and `main.jsx` basename |
-| Assets 404 | Wrong base path | Use `base: './'` for relative paths |
-| Direct URL (/khatm) fails | Missing 404.html | Add `cp dist/index.html dist/404.html` to build |
+| Assets 404 on sub-page | Wrong base path | Use `base: '/kqcmm-web/'` (absolute, not `./`) |
+| Direct URL (/khatm) breaks | Missing 404.html or prerender | Add `cp dist/index.html dist/404.html` to build |
 | Splash image missing | Path not relative | Use `import.meta.env.BASE_URL + 'splash.jpg'` |
+
+---
+
+## Pre-rendering
+
+**File:** `scripts/prerender.mjs`
+
+The prerender script launches headless Chromium, navigates all routes, and saves the rendered HTML. This ensures:
+- Social media crawlers see OG tags (Open Graph, Twitter Card)
+- Search engines index page titles and descriptions
+- First-time users opening a deep link see correct content immediately
+
+See [SEO & Pre-rendering](seo.md) for full details.
+
+---
+
+## PWA & Offline
+
+The app uses `vite-plugin-pwa` to generate a service worker that precaches all assets. On first visit, everything is cached for offline use.
+
+See [PWA & Offline Support](pwa.md) for full details.
 
 ---
 
@@ -119,10 +189,14 @@ vercel --prod
 ```javascript
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: './',
-  plugins: [react()],
+  base: '/kqcmm-web/',
+  plugins: [
+    react(),
+    VitePWA({ /* ... */ }),
+  ],
   build: {
     outDir: 'dist',
     sourcemap: false,
@@ -130,35 +204,12 @@ export default defineConfig({
 })
 ```
 
-### dist/ Output Structure
-```
-dist/
-├── index.html                      # Entry point
-├── 404.html                        # Copy of index.html for SPA
-├── assets/
-│   ├── index-xxxxxxxx.js           # Bundled JS
-│   └── index-xxxxxxxx.css          # Bundled CSS
-├── logo.png
-├── splash.jpg
-├── drawer-bg.jpg
-├── manifest.json
-├── quran.json
-└── icons/
-    ├── favicon.png
-    ├── icon-192.png
-    └── icon-512.png
-```
-
 ---
 
 ## SEO
 
-The app is a client-side SPA (Single Page Application). For basic SEO:
-- Meta tags in `index.html` (title, description, theme-color)
-- PWA manifest for installable experience
-- No SSR (Server-Side Rendering) — search engines may not index dynamic content
-
-For better SEO, consider:
-- Adding meta tags per page dynamically
-- Using prerendering (e.g., `@prerenderer/vite-plugin`)
-- Migrating to Next.js or similar SSR framework
+The app uses `react-helmet-async` for dynamic meta tags and Puppeteer-based pre-rendering for static HTML output. See [SEO & Pre-rendering](seo.md) for details on:
+- Per-page Open Graph and Twitter Card tags
+- Pre-rendered static HTML files
+- Testing with social media debuggers
+- OG image generation
