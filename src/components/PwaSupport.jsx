@@ -20,7 +20,7 @@ export default function PwaSupport() {
   useEffect(() => {
     if (!needRefresh) {
       setUpdated(true)
-      setTimeout(() => setUpdated(false), 4000)
+      setTimeout(() => setUpdated(false), 1000)
     }
   }, [needRefresh])
 
