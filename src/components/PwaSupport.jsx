@@ -3,23 +3,26 @@ import { useRegisterSW } from 'virtual:pwa-register/react'
 
 export default function PwaSupport() {
   const [offline, setOffline] = useState(!navigator.onLine)
-  const [readyOffline, setReadyOffline] = useState(false)
+  const [updated, setUpdated] = useState(false)
 
   const {
-    needRefresh: [needRefresh, setNeedRefresh],
+    needRefresh: [needRefresh],
     updateServiceWorker,
   } = useRegisterSW({
-    onRegistered() {
-      if (!sessionStorage.getItem('kqcmm_offline_ready')) {
-        setReadyOffline(true)
-        sessionStorage.setItem('kqcmm_offline_ready', '1')
-        setTimeout(() => setReadyOffline(false), 4000)
-      }
-    },
-    onRegisterError() {
-      // SW registration failed — app works normally online
+    onRegistered() {},
+    onRegisterError() {},
+    onNeedRefresh() {
+      updateServiceWorker(true)
     },
   })
+
+  // Show "✅ Updated" toast briefly after auto-refresh
+  useEffect(() => {
+    if (!needRefresh) {
+      setUpdated(true)
+      setTimeout(() => setUpdated(false), 4000)
+    }
+  }, [needRefresh])
 
   useEffect(() => {
     const handleOnline = () => setOffline(false)
@@ -31,11 +34,6 @@ export default function PwaSupport() {
       window.removeEventListener('offline', handleOffline)
     }
   }, [])
-
-  const handleRefresh = () => {
-    updateServiceWorker(true)
-    setNeedRefresh(false)
-  }
 
   const toastStyle = {
     position: 'fixed',
@@ -57,47 +55,10 @@ export default function PwaSupport() {
 
   return (
     <>
-      {/* Update available */}
-      {needRefresh && (
-        <div style={{ ...toastStyle, background: 'var(--accent)', color: '#fff' }}>
-          <span>🔄 New version available</span>
-          <button
-            onClick={handleRefresh}
-            style={{
-              background: 'rgba(255,255,255,0.2)',
-              border: '1px solid rgba(255,255,255,0.4)',
-              color: '#fff',
-              padding: '6px 14px',
-              borderRadius: 8,
-              cursor: 'pointer',
-              fontWeight: 700,
-              fontSize: 13,
-              whiteSpace: 'nowrap',
-            }}
-          >
-            Refresh
-          </button>
-          <button
-            onClick={() => setNeedRefresh(false)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'rgba(255,255,255,0.7)',
-              cursor: 'pointer',
-              fontSize: 16,
-              padding: 0,
-              lineHeight: 1,
-            }}
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
-      {/* Ready for offline */}
-      {readyOffline && (
+      {/* Updated toast — shows briefly after auto-update */}
+      {updated && (
         <div style={{ ...toastStyle, background: '#2e7d32', color: '#fff' }}>
-          ✅ App ready for offline use
+          ✅ App updated to latest version
         </div>
       )}
 
