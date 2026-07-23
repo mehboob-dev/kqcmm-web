@@ -4,7 +4,7 @@
     "versions": [
       {
         "version": "5.2.0",
-        "date": "July 2026",
+        "date": "2026-07-23",
         "changes": [
           "Added swipe navigation (left/right) in slide mode",
           "Added Install App button in bottom navigation",
@@ -15,7 +15,7 @@
       },
       {
         "version": "5.1.0",
-        "date": "July 2026",
+        "date": "2026-07-22",
         "changes": [
           "Full SEO with pre-rendering for all 11 routes",
           "Open Graph and Twitter Card meta tags per page",
@@ -25,7 +25,7 @@
       },
       {
         "version": "5.0.0",
-        "date": "July 2026",
+        "date": "2026-07-22",
         "changes": [
           "Service Worker with full offline caching",
           "PWA manifest with proper icons",
@@ -35,7 +35,7 @@
       },
       {
         "version": "4.0.0",
-        "date": "June 2026",
+        "date": "2026-07-22",
         "changes": [
           "Pre-rendering for SEO performance",
           "Counter bar width fix for desktop",
@@ -44,7 +44,7 @@
       },
       {
         "version": "3.0.0",
-        "date": "June 2026",
+        "date": "2026-07-21",
         "changes": [
           "QuickJump navigation added",
           "All content fully translated (English, Hinglish, Urdu)",
@@ -53,7 +53,7 @@
       },
       {
         "version": "2.0.0",
-        "date": "May 2026",
+        "date": "2026-07-20",
         "changes": [
           "Content Editor web UI (npm run edit)",
           "Master-child card system for Fateha Khwani",
@@ -62,7 +62,7 @@
       },
       {
         "version": "1.0.0",
-        "date": "April 2026",
+        "date": "2026-07-10",
         "changes": [
           "Initial release with all 11 pages",
           "4 themes (Light, Dark, Sepia, Green)",
@@ -79,7 +79,7 @@
     "versions": [
       {
         "version": "5.2.0",
-        "date": "July 2026",
+        "date": "2026-07-23",
         "changes": [
           "Slide mode mein swipe navigation (left/right) add kiya",
           "Bottom navigation mein Install App button add kiya",
@@ -90,7 +90,7 @@
       },
       {
         "version": "5.1.0",
-        "date": "July 2026",
+        "date": "2026-07-22",
         "changes": [
           "Har page ke liye alag SEO tags",
           "Open Graph aur Twitter Card tags",
@@ -100,7 +100,7 @@
       },
       {
         "version": "5.0.0",
-        "date": "July 2026",
+        "date": "2026-07-22",
         "changes": [
           "Service Worker — offline kaam karta hai",
           "PWA manifest sahi icons ke saath",
@@ -110,7 +110,7 @@
       },
       {
         "version": "4.0.0",
-        "date": "June 2026",
+        "date": "2026-07-22",
         "changes": [
           "SEO ke liye pre-rendering",
           "Counter bar width theek kiya",
@@ -119,7 +119,7 @@
       },
       {
         "version": "3.0.0",
-        "date": "June 2026",
+        "date": "2026-07-21",
         "changes": [
           "QuickJump navigation add kiya",
           "Teeno languages mein content complete",
@@ -128,7 +128,7 @@
       },
       {
         "version": "2.0.0",
-        "date": "May 2026",
+        "date": "2026-07-20",
         "changes": [
           "Content Editor web UI (npm run edit)",
           "Fateha Khwani ke liye master-child cards",
@@ -137,7 +137,7 @@
       },
       {
         "version": "1.0.0",
-        "date": "April 2026",
+        "date": "2026-07-10",
         "changes": [
           "11 pages ke saath pehli release",
           "4 themes (Light, Dark, Sepia, Green)",
@@ -154,7 +154,7 @@
     "versions": [
       {
         "version": "5.2.0",
-        "date": "جولائی 2026",
+        "date": "2026-07-23",
         "changes": [
           "سلائیڈ موڈ میں سوائپ نیویگیشن",
           "بٹم نیویگیشن میں انسٹال بٹن",
@@ -165,7 +165,7 @@
       },
       {
         "version": "5.1.0",
-        "date": "جولائی 2026",
+        "date": "2026-07-22",
         "changes": [
           "تمام 11 راستوں کے لیے SEO",
           "اوپن گراف اور ٹویٹر کارڈ ٹیگز",
@@ -175,7 +175,7 @@
       },
       {
         "version": "5.0.0",
-        "date": "جولائی 2026",
+        "date": "2026-07-22",
         "changes": [
           "سروس ورکر کے ساتھ آف لائن سپورٹ",
           "PWA مینی فیسٹ",
@@ -185,7 +185,7 @@
       },
       {
         "version": "4.0.0",
-        "date": "جون 2026",
+        "date": "2026-07-22",
         "changes": [
           "SEO کے لیے پری رینڈرنگ",
           "کاؤنٹر بار کی چوڑائی درست کی گئی",
@@ -194,7 +194,7 @@
       },
       {
         "version": "3.0.0",
-        "date": "جون 2026",
+        "date": "2026-07-21",
         "changes": [
           "QuickJump نیویگیشن شامل کیا",
           "تمام زبانوں میں مکمل مواد",
@@ -203,7 +203,7 @@
       },
       {
         "version": "2.0.0",
-        "date": "مئی 2026",
+        "date": "2026-07-20",
         "changes": [
           "مواد کا ایڈیٹر (npm run edit)",
           "فاتحہ خوانی کے لیے ماسٹر چائلڈ کارڈز",
@@ -212,7 +212,7 @@
       },
       {
         "version": "1.0.0",
-        "date": "اپریل 2026",
+        "date": "2026-07-10",
         "changes": [
           "11 صفحات کے ساتھ پہلی ریلیز",
           "4 تھیمز",
