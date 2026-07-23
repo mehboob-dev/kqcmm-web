@@ -1,6 +1,5 @@
 import SeoHead from '../components/SeoHead'
 import { Link, useOutletContext } from 'react-router-dom'
-import { useLanguage } from '../context/LanguageContext'
 
 const quickLinks = [
   { to: '/dua', icon: '🤲', labelKey: 'duas' },
@@ -17,7 +16,6 @@ const quickLinks = [
 
 export default function Home() {
   const { strings } = useOutletContext()
-  const { /* lang */ } = useLanguage()
 
   return (
     <>
