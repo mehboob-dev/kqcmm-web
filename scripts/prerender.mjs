@@ -20,6 +20,7 @@ const routes = [
   BASENAME + '/calendar',
   BASENAME + '/roshni',
   BASENAME + '/abbajaan',
+  BASENAME + '/changelog',
 ]
 
 // Static file server that handles the /kqcmm-web/ basename prefix

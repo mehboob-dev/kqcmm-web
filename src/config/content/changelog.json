@@ -1,0 +1,227 @@
+{
+  "en": {
+    "title": "Changelog",
+    "versions": [
+      {
+        "version": "5.2.0",
+        "date": "July 2026",
+        "changes": [
+          "Added swipe navigation (left/right) in slide mode",
+          "Added Install App button in bottom navigation",
+          "Added Suggestions document with future ideas",
+          "Enhanced About page with version info",
+          "Added Changelog page"
+        ]
+      },
+      {
+        "version": "5.1.0",
+        "date": "July 2026",
+        "changes": [
+          "Full SEO with pre-rendering for all 11 routes",
+          "Open Graph and Twitter Card meta tags per page",
+          "OG image for social sharing previews",
+          "Fixed asset paths for direct sub-page access"
+        ]
+      },
+      {
+        "version": "5.0.0",
+        "date": "July 2026",
+        "changes": [
+          "Service Worker with full offline caching",
+          "PWA manifest with proper icons",
+          "Offline/update toasts",
+          "Splash screen skips on revisit"
+        ]
+      },
+      {
+        "version": "4.0.0",
+        "date": "June 2026",
+        "changes": [
+          "Pre-rendering for SEO performance",
+          "Counter bar width fix for desktop",
+          "Home page quick links added (Roshni, Abbajaan)"
+        ]
+      },
+      {
+        "version": "3.0.0",
+        "date": "June 2026",
+        "changes": [
+          "QuickJump navigation added",
+          "All content fully translated (English, Hinglish, Urdu)",
+          "Khatm and Fateha Khwani completed"
+        ]
+      },
+      {
+        "version": "2.0.0",
+        "date": "May 2026",
+        "changes": [
+          "Content Editor web UI (npm run edit)",
+          "Master-child card system for Fateha Khwani",
+          "FontAwesome icons throughout"
+        ]
+      },
+      {
+        "version": "1.0.0",
+        "date": "April 2026",
+        "changes": [
+          "Initial release with all 11 pages",
+          "4 themes (Light, Dark, Sepia, Green)",
+          "3 languages (English, Hinglish, Urdu)",
+          "17 fonts with 4 sizes",
+          "List and Slide view modes",
+          "Splash screen"
+        ]
+      }
+    ]
+  },
+  "hinglish": {
+    "title": "Changelog",
+    "versions": [
+      {
+        "version": "5.2.0",
+        "date": "July 2026",
+        "changes": [
+          "Slide mode mein swipe navigation (left/right) add kiya",
+          "Bottom navigation mein Install App button add kiya",
+          "Suggestions document banaya",
+          "About page mein version info add kiya",
+          "Changelog page add kiya"
+        ]
+      },
+      {
+        "version": "5.1.0",
+        "date": "July 2026",
+        "changes": [
+          "Har page ke liye alag SEO tags",
+          "Open Graph aur Twitter Card tags",
+          "Social sharing ke liye OG image",
+          "Direct sub-page access ke liye asset paths theek kiye"
+        ]
+      },
+      {
+        "version": "5.0.0",
+        "date": "July 2026",
+        "changes": [
+          "Service Worker — offline kaam karta hai",
+          "PWA manifest sahi icons ke saath",
+          "Offline aur update ke liye toasts",
+          "Splash screen dubara nahi dikhti"
+        ]
+      },
+      {
+        "version": "4.0.0",
+        "date": "June 2026",
+        "changes": [
+          "SEO ke liye pre-rendering",
+          "Counter bar width theek kiya",
+          "Home page mein naye quick links (Roshni, Abbajaan)"
+        ]
+      },
+      {
+        "version": "3.0.0",
+        "date": "June 2026",
+        "changes": [
+          "QuickJump navigation add kiya",
+          "Teeno languages mein content complete",
+          "Khatm aur Fateha Khwani mukammal"
+        ]
+      },
+      {
+        "version": "2.0.0",
+        "date": "May 2026",
+        "changes": [
+          "Content Editor web UI (npm run edit)",
+          "Fateha Khwani ke liye master-child cards",
+          "FontAwesome icons"
+        ]
+      },
+      {
+        "version": "1.0.0",
+        "date": "April 2026",
+        "changes": [
+          "11 pages ke saath pehli release",
+          "4 themes (Light, Dark, Sepia, Green)",
+          "3 languages (English, Hinglish, Urdu)",
+          "17 fonts aur 4 sizes",
+          "List aur Slide view modes",
+          "Splash screen"
+        ]
+      }
+    ]
+  },
+  "urdu": {
+    "title": "تبدیلیوں کا ریکارڈ",
+    "versions": [
+      {
+        "version": "5.2.0",
+        "date": "جولائی 2026",
+        "changes": [
+          "سلائیڈ موڈ میں سوائپ نیویگیشن",
+          "بٹم نیویگیشن میں انسٹال بٹن",
+          "تجاویز کی دستاویز",
+          "ایباؤٹ پیج میں ورژن کی معلومات",
+          "چینج لاگ پیج"
+        ]
+      },
+      {
+        "version": "5.1.0",
+        "date": "جولائی 2026",
+        "changes": [
+          "تمام 11 راستوں کے لیے SEO",
+          "اوپن گراف اور ٹویٹر کارڈ ٹیگز",
+          "سوشل شیئرنگ کے لیے OG امیج",
+          "براہ راست ذیلی صفحہ کے لیے اثاثوں کے راستے طے کیے گئے"
+        ]
+      },
+      {
+        "version": "5.0.0",
+        "date": "جولائی 2026",
+        "changes": [
+          "سروس ورکر کے ساتھ آف لائن سپورٹ",
+          "PWA مینی فیسٹ",
+          "آف لائن اور اپ ڈیٹ کے لیے ٹوسٹ",
+          "اسپلش اسکرین دوبارہ نہیں دکھائی دیتی"
+        ]
+      },
+      {
+        "version": "4.0.0",
+        "date": "جون 2026",
+        "changes": [
+          "SEO کے لیے پری رینڈرنگ",
+          "کاؤنٹر بار کی چوڑائی درست کی گئی",
+          "ہوم پیج میں نئے فوری لنکس"
+        ]
+      },
+      {
+        "version": "3.0.0",
+        "date": "جون 2026",
+        "changes": [
+          "QuickJump نیویگیشن شامل کیا",
+          "تمام زبانوں میں مکمل مواد",
+          "ختم اور فاتحہ خوانی مکمل"
+        ]
+      },
+      {
+        "version": "2.0.0",
+        "date": "مئی 2026",
+        "changes": [
+          "مواد کا ایڈیٹر (npm run edit)",
+          "فاتحہ خوانی کے لیے ماسٹر چائلڈ کارڈز",
+          "FontAwesome آئیکنز"
+        ]
+      },
+      {
+        "version": "1.0.0",
+        "date": "اپریل 2026",
+        "changes": [
+          "11 صفحات کے ساتھ پہلی ریلیز",
+          "4 تھیمز",
+          "3 زبانیں",
+          "17 فونٹس اور 4 سائز",
+          "لسٹ اور سلائیڈ ویو موڈز",
+          "اسپلش اسکرین"
+        ]
+      }
+    ]
+  }
+}

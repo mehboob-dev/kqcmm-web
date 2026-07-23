@@ -3,13 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faHouse, faStar, faBook, faFire, faHandsPraying,
   faScroll, faMosque, faUser, faCircleInfo, faCalendar,
-  faPeopleGroup, faGear, faBars, faXmark,
+  faPeopleGroup, faGear, faBars, faXmark, faClockRotateLeft,
 } from '@fortawesome/free-solid-svg-icons'
 
 const iconMap = {
   faHouse, faStar, faBook, faFire, faHandsPraying,
   faScroll, faMosque, faUser, faCircleInfo, faCalendar,
-  faPeopleGroup, faGear, faBars, faXmark,
+  faPeopleGroup, faGear, faBars, faXmark, faClockRotateLeft,
 }
 
 export default function Icon({ name, className, style }) {

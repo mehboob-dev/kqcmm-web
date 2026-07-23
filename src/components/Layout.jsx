@@ -38,6 +38,7 @@ export default function Layout() {
     '/calendar': strings.drawer.calendar,
     '/roshni': strings.drawer.roshni,
     '/abbajaan': strings.drawer.abbajaan,
+    '/changelog': strings.drawer.changelog,
     '/settings': strings.settings.title,
   } : {}
 

@@ -17,6 +17,7 @@
     { "to": "/calendar", "icon": "faCalendar", "key": "calendar" },
     { "to": "/roshni", "icon": "faFire", "key": "roshni" },
     { "to": "/abbajaan", "icon": "faPeopleGroup", "key": "abbajaan" },
-    { "to": "/about", "icon": "faCircleInfo", "key": "about" }
+    { "to": "/about", "icon": "faCircleInfo", "key": "about" },
+    { "to": "/changelog", "icon": "faClockRotateLeft", "key": "changelog" }
   ]
 }
