@@ -1,23 +1,28 @@
 {
-    "en":  {
-               "title":  "Sijrah Nama",
-               "intro":  "Sijrah Nama is a poetic composition recounting the spiritual journey, lineage, and virtues of the noble family of KQCMM.",
-               "verses":  [
-
-                          ]
-           },
-    "hinglish":  {
-                     "title":  "Sijrah Nama",
-                     "intro":  "Sijrah Nama ek shayarana tarteeb hai jo KQCMM ke buzurgon ke safar aur khoobiyon ko bayaan karti hai.",
-                     "verses":  [
-
-                                ]
-                 },
-    "urdu":  {
-                 "title":  "سیرت نامہ",
-                 "intro":  "سیرت نامہ ایک شاعرانہ ترتیب ہے جو KQCMM کے بزرگوں کے سفر اور خوبیوں کو بیان کرتی ہے۔",
-                 "verses":  [
-
-                            ]
-             }
+  "en": {
+    "title": "Sijrah Nama",
+    "intro": "Sijrah Nama",
+    "verses": []
+  },
+  "hinglish": {
+    "title": "Sijrah Nama",
+    "intro": "Sijrah Nama",
+    "verses": [
+      {
+        "title": "Verses",
+        "text": "Ya Ilahi Apne zaat-e-kibriya ke waaste Rehm kar hum sab par Muhammad Mustafa (S.A.W.) ke waste\nBand mehnat ki asiri ne kiya hai sakht azad Khol de Mushkil Ali Muskil Khusha ke waaste\n\nKhwaja Basri Hasan ka naam laata hoon Shafiq Shaikh Abdul Wahid Ahle Baka ke waaste\nFazI kar hum sab par Tufail-e-Khwaja Ibne Ayaz Shah Ibrahim Balkhi Badshah ke waaste\n\nHazrat Khwaja Huzaifa ke liye Tu Rehm kar Bu Habira Basri Sahibe Huda ke waaste\nKhwaja Mamshad ke khaatir hum sab ka dilshaad kar Shaikh Bu Ishaq Kutbe Chishtiya ke waaste\n\nKhwaja Abdal Ahmad Bu Muhammad Mukhtada Khwaja Bu Yusuf Sahibe Safa ke waaste\nKhwaja Moudud Huq aur Khwaja Hajee Sharif Khwaja Osman Ahle Ikhtada ke waaste\n\nKutbe Rub Mehboob-e-Subha Pir-e-Pira Dastagir Abdul Qadir Qadire Kudrat Numa ke waaste\nKhalq mein Lasaani hai Noor-e-Chirag-e-Mustafa Aale Panjatan Mohiuddin Ghous-ul-Wara ke waaste\n\nWaaliye Hindustan Khwaja Molnuddin Hasan Shaikh Kutbuddin Kutbul Akhtiya ke waaste\nKaam kar Shirin tufaile Khwaja Ganj-e-Shakar Aur Nizamuddin Mehboob-e-Auliya ke waste\n\nDil ko raushan kar tufaile Shah-e-Nasiruddin Chirag Aur Kamaluddin Kamale Asfiya ke waste\nDur kar zulmat Siraj-ud-din duniya ke liye Aur Ilm &ndash; ul &ndash; haq wa - Din Ilm - ul Huda ke waste\n\nHazrat Mahmood Rajan Sarware Duniya wa Din Aur Jamaluddin Jaman Sahibe Safa ke waaste\nShaikh Hasan aur Khwaja Shaikh Muhammad ke tufail Hazrat Yahya Madni Muktada ke waaste\n\nFazal kar hum sab par tufaile Shah Kalimuliah Wali Aur Nizamuddin Maqbool-e-Allah ke waaste\nDin wa duniya ka Wasilah Pir-e-Alam Fakr-e-din Khwaja Nur Muhammad Rehnuma ke waaste\n\nHazrat Khwaja Sulaiman Do Jahaan ke Dastagir Kibla-e-Hajaat Kaba Muddua ke waaste\nHaadiye Din Nabi Mahboob-e-Rabbul Aalamin Khwaja Allabaksh Sahibe Ba Safa ke waaste\n\nHafiz Musa Pir-e-Alam bekason ke rehnuma Khwaja Hamid Miya Alhe Safa ke waaste\nWaasta Khwaja Enayat ka jo hai Miski Nawaz Hazrat Shaikh-ul-Mashaik Muktada ke waaste\n\nRak Shariyat aur Tariqat pe hum sab ko saabit kadam Khwaja Hajee Musharraf Ba Safa ke waaste\nSurkhru rakhna hum sab ko dono jahaan mein Ai Allah Khwaja Mahboob Kutbe Huq Numa ke waaste\n\nHum sab ko Apne ishq mein bekhud banaa de Ai Allah Mere Maula mere Rahbar Rahnuma ke waaste\nDe Hum sab Ko Unki Mohabbat Kar Haqi Ka Taashna Qadriya Chishtiya aur kul Auliya ke waaste"
+      }
+    ],
+    "lineage": [
+      {
+        "title": "Lineage",
+        "text": "Batufail-e-Ruh-e-Pak, Muqaddas-e-Mutahhar-e-Munawwar, Sarware Anbiya, Burhaan-ul-Asfiya, Afzal-e-Jumlaae Maujoodaat, Khulaasaae Qul Qayanaat, Khatim-un-Nabin, Shafi-e-Roza-e-Mehshar, Habib-e-Allah, Tabib-e-Illat-e-Gunah, Kibla-e-Kaunain, Kaaba-e-Darain, Nur-e-Mujassam Hazrat Syedna Ahmed-e-Mujtaba Muhammad-e-Mustafa Rasul-ullah Sal Allah Ho Ta'ala Alai Hae Wa Aale Hae Wa Aulaade Hae Wa Ajwaaje Hae Wa Zurreyaate Hae Wa Ahle-Baite Hae Wa Khulfaate Hae Ajmaieen\n\nBa Ruh-e-Pak Bab-ul-ulum, Imam ul Masharik wal Magarib, Amir ul Mominin, Moula-e-Qayanaat, Haider-e-Karraar, Sher-e-Khuda, Mushkil Khusha, Fateh Khaybar, Bu Turaab, Khalifatul Muslimeen Hazrat Syedna Ali Ibne Abu Talib Karam Allah Waj Ho Wa Aale Hae Wa Aulaade Hae Wa Ajwaaje Hae Wa Zurreyaate Hae Wa Ahle-Baite Hae Wa Khulfaate Hae Ajmaieen\n\nBa Ruh-e-Pak Imam-us-Salikeen Khwaja Hasan Basri Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Abdul Wahed bin Zahed Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Mohammad Fadil ibne Ayaz Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Sultan Ebrahim bin Adham Balkhi Badshah Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Sadiduddin Bu Huzaifa Muraishi Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Aminuddin Bu Habira Basri Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Ulu Mamshad Dinwari Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Shaikh Bu Ishaq Shami Subhani Kutbe Chishtiya Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Abdal Ahmad Awwalin Chishty Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Bu Md. Muqtada Zahid Maqbool Chishty Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Bu Yousuf Nasiruddin Chishty Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Kutbuddin Moudud Huq Chishty Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Khwaja Haji Sharif Zindani Chishty Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Qutub-ul-Auliya, Burhan-ul-Asfiya, Siraj-e-Millat-e-Din, Imam-ul-Muttaqueen, Muqarrar-e-Bargah-e-Rahman, Dua-e-Bargah-e-Rahman, Khwaja-e-Kul \nKhwajgan Syedna Usman Harooni Chishty Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Naib-e-Rasul Allah, Fil-Hind-Habibullah, Sultan-us-Sultan, Sultan-ul-Salikeen, Burhan-ul-Ashikeen, Al-Mohtikeen, Taj-il-Mukarabbeen, Banda-e-Qutbul Aftab, Khwaja-e-Kul Khwajgan Khwaja Garib Nawaz, Hazrat Syedna Moinuddin Hasan Chishty Sanjari Summa Ajmeri Radi Allah Ho An Ho\n\nBa Ruh-e-Pak Shahid-ul-Mohabbat, Qutb-ul-Aftab, Hazrat Khwaja Syed Kutbuddin Ba Aktiar Kaki Ausi Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Shaikh-ul-Alam, Shaikh-ul-Muslimeen, Hariq-ul-Mohabbat, Hazrat Khwaja Baba Fariduddin Ganje Shakar Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Sultan-ul-Mashaikh, Mahboob-e-Elahi, Zarizarbakhsh, Hazrat Khwaja Syed Nizamuddin Auliya Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Makhdoom Syed Nasiruddin Mahmood Roshan Chirag Delhi Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Kamaluddin Allama Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Sirajuddin Siraji Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Ilmuddin Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Mahmud Rajan Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Jamaluddin Jaman Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Shaikh Husain Md. Naquib Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Shaikh Md. Hussain Azam Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Yousuf Yahya Kutbe Madina Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Shah Kalimullah Wali Jahanabadi Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Shah Nizamuddin Wali Aurangabadi Faridi Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Maulana Fakruddin Dehalvi Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Nur Muhammad Maharoi Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Maulana Shah Sulaiman Tausi Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Allahbaksh Mia Saheb Tausi Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Hafiz Musa Pir Aalam Mia Saheb Tausi Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Syed Hamid Mia Saheb Tausi Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Diwan Syedna Enayat Hussain Ali Khan Moini Tausi Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Hajee Syed Musharafali Bukhari Chishty Rahmatullah Elahi\n\nBa Ruh-e-Pak Khwaja Hajee Mahboob Kassim Qadri Chishty Musharrafi Rahmatullah Elahi\n\nAzbarae Salamati Khwaja Hajee Munawarali Mahboob Kassim Chishty Damzil Lakum"
+      }
+    ]
+  },
+  "urdu": {
+    "title": "سیرت نامہ",
+    "intro": "سیرت نامہ ایک شاعرانہ ترتیب ہے جو KQCMM کے بزرگوں کے سفر اور خوبیوں کو بیان کرتی ہے۔",
+    "verses": []
+  }
 }
