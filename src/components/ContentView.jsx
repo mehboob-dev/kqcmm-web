@@ -8,6 +8,8 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
   const [currentIdx, setCurrentIdx] = useState(0)
   const [count, setCount] = useState(0)
   const listRef = useRef(null)
+  const slideRef = useRef(null)
+  const touchStartX = useRef(null)
 
   // Handle external jumpTo signal
   useEffect(() => {
@@ -15,13 +17,28 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
     if (isSlide) {
       setCurrentIdx(jumpTo)
     } else {
-      // In list mode, scroll the item into view
       const el = listRef.current?.querySelector(`[data-section-index="${jumpTo}"]`)
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
     }
   }, [jumpTo, isSlide])
+
+  // Swipe handlers for slide mode
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return
+    const diff = e.changedTouches[0].clientX - touchStartX.current
+    const threshold = 50
+    if (Math.abs(diff) > threshold) {
+      if (diff < 0 && hasNext) setCurrentIdx(i => i + 1)
+      else if (diff > 0 && hasPrev) setCurrentIdx(i => i - 1)
+    }
+    touchStartX.current = null
+  }
 
   const resetCount = () => setCount(0)
   const incCount = () => setCount(c => c + 1)
@@ -82,10 +99,17 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
   const current = items[currentIdx]
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', flex: 1, minHeight: 0 }}>
+    <div
+      ref={slideRef}
+      style={{ display: 'flex', flexDirection: 'column', height: '100%', flex: 1, minHeight: 0 }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* padding for fixed bar */}
-      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0,
-        animation: 'fadeSlideIn 0.25s ease', paddingBottom: 66 }}>
+      <div style={{
+        flex: 1, overflowY: 'auto', minHeight: 0,
+        animation: 'fadeSlideIn 0.25s ease', paddingBottom: 66,
+      }}>
         {renderItem(current, currentIdx)}
       </div>
       {/* One fixed bar: nav left, counter right */}

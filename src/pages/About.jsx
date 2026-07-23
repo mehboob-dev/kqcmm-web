@@ -35,6 +35,10 @@ export default function About() {
           <div className="card-text">{content.contact.text}</div>
         </div>
       )}
+      <div className="card">
+        <div className="card-title">Version</div>
+        <div className="card-text">1.0.0</div>
+      </div>
     </div>
   )
 }
