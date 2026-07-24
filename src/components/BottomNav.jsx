@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Icon from './FontAwesome'
 import navConfig from '../config/navigation.json'
 
 export default function BottomNav({ strings }) {
+  const navigate = useNavigate()
+  const location = useLocation()
   const ref = useRef(null)
   const [installPrompt, setInstallPrompt] = useState(null)
   const [isInstalled, setIsInstalled] = useState(false)
@@ -47,16 +49,14 @@ export default function BottomNav({ strings }) {
   return (
     <nav className="bottom-nav" ref={ref}>
       {items.map((item) => (
-        <NavLink
-          key={item.to}
-          to={item.to}
-          className={({ isActive }) =>
-            `nav-item${isActive ? ' active' : ''}`
-          }
+        <button
+            key={item.to}
+            onClick={() => navigate(item.to, { replace: true })}
+            className={`nav-item${location.pathname === item.to ? ' active' : ''}`}
         >
           <Icon name={item.icon} className="nav-icon" />
           {item.label}
-        </NavLink>
+        </button>
       ))}
       {/* 6th tab: Install App — only when browser supports it */}
       {installPrompt && !isInstalled && (
