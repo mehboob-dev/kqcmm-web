@@ -18,7 +18,7 @@ Welcome to the KQCMM web app documentation. Choose a topic below.
 - [Scripts Reference](scripts.md) — All CLI tools and utilities
 
 ## Future Ideas
-- [Suggestions](suggestions.md) — 24 documented feature ideas
+- [Suggestions](suggestions.md) — 27 documented feature ideas
 
 ## Quick Links
 | File | Purpose |

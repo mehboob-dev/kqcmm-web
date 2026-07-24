@@ -67,7 +67,7 @@ Crawler or user → static HTML served → React hydrates client-side
 
 In `package.json`, the build script chains:
 ```json
-"build": "vite build && node scripts/prerender.mjs && cp dist/index.html dist/404.html"
+"build": "vite build && node scripts/prerender.mjs && node -e \"fs.copyFileSync('dist/index.html','dist/404.html')\""
 ```
 
 ### Prerender Server

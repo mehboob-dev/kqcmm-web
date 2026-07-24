@@ -130,6 +130,14 @@ With card-accent (child):
 
 ## Font System
 
+### Google Fonts
+The app loads 3 font families from Google Fonts via `index.html`:
+- **Noto Nastaliq Urdu** (400, 700) — Urdu script
+- **Noto Naskh Arabic** (400, 700) — Arabic script
+- **EB Garamond** (400, 400 italic, 600) — Serif
+
+These are preloaded via `<link rel="preconnect">` for faster loading.
+
 ### Font Families (17)
 ```javascript
 const fontFamilies = [

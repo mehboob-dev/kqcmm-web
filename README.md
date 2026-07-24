@@ -163,6 +163,7 @@ Full documentation is in the `docs/` folder:
 | [docs/seo.md](docs/seo.md) | SEO, Open Graph, pre-rendering |
 | [docs/scripts.md](docs/scripts.md) | All CLI tools |
 | [docs/new-developer-guide.md](docs/new-developer-guide.md) | Step-by-step for freshers |
+| [docs/suggestions.md](docs/suggestions.md) | 27 feature ideas
 
 ---
 

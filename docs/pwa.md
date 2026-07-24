@@ -15,7 +15,7 @@ KQCMM uses `vite-plugin-pwa` (powered by Workbox) to generate a service worker t
 | **Offline content** | ✅ All pages (Dua, Khatm, Fateha, etc.) work offline |
 | **Offline navigation** | ✅ All routes work (React Router runs client-side) |
 | **Offline settings** | ✅ Theme, language, font changes persist via localStorage |
-| **Update notification** | ✅ Toast when new version available → refresh to activate |
+| **Auto-update** | ✅ New SW activates silently on deploy — brief "Updated" toast shown |
 | **Install prompt** | ✅ Browser fires "Add to Home Screen" automatically |
 | **Cache size** | ~2 MB (15 entries, no quran.json) |
 | **Splash screen** | ✅ Skips on repeat visits (sessionStorage) |
@@ -30,7 +30,7 @@ The `VitePWA` plugin is configured in `vite.config.js`:
 
 ```javascript
 VitePWA({
-  registerType: 'prompt',           // Let user choose when to update
+  registerType: 'autoUpdate',       // Auto-update on deploy — no user prompt
   manifest: {
     name: 'KQCMM — Khanqahe Qadriyah ...',
     short_name: 'KQCMM',
@@ -85,9 +85,8 @@ Renders toast notifications for offline/update events.
 
 | Toast | Trigger | Behaviour |
 |---|---|---|
-| ✅ App ready for offline use | First SW registration | Auto-dismiss after 4s, once per session |
-| 🔄 New version available | Updated SW detected | Shows [Refresh] button — user clicks to activate |
-| 📡 You're offline | `navigator.onLine` change | Fixed top banner, auto-hides on reconnect |
+| ✅ App upupdated to latest version | SW auto-update triggers | Auto-dismiss after 100ms (brief green toast) |
+| 📡 You're offline | `navigator.onLine` change | Fixed red top banner, auto-hides on reconnect |
 
 #### Integration
 
@@ -129,9 +128,10 @@ Rendered in `App.jsx` inside the context providers, before `<Routes>`:
 ### Update Flow
 
 1. User visits app — SW checks for new files in background
-2. If new version found, new SW installs but waits
-3. PwaSupport shows "New version available → [Refresh]"
-4. User taps Refresh → new SW activates → page reloads
+2. If new version found, `updateServiceWorker(true)` is called immediately
+3. New SW activates and page reloads automatically
+4. PwaSupport shows brief "✅ App updated to latest version" toast (100ms)
+5. No user interaction needed — updates happen silently
 
 ---
 

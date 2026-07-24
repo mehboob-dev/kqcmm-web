@@ -181,9 +181,22 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 | **vite-plugin-pwa** | 1.x | Service worker + PWA manifest |
 | **Puppeteer** | 25.x | Pre-rendering (build only) |
 | **sharp** | 0.35.x | Image processing (icons) |
+| **Google Fonts** | — | Web fonts (Noto Nastaliq Urdu, Noto Naskh Arabic, EB Garamond) |
 | **Node.js** | ≥18 | Build / scripts |
 
 No state management library — React Context is sufficient for this app's complexity.
+
+### Google Fonts
+The app loads 3 font families from Google Fonts in `index.html`:
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+```
+
+This ensures Urdu script fonts (Nastaliq, Naskh) and the Garamond serif font are available even on devices that don't have them installed.
+
 
 ---
 

@@ -28,7 +28,7 @@ Open `http://localhost:5173` in your browser. You should see the splash screen, 
 ### 4. Explore the Running App
 | Page | URL | What to look for |
 |---|---|---|
-| Home | `/` | Logo, tagline, 8 quick-link cards |
+| Home | `/` | Logo, tagline, 10 quick-link cards |
 | Khatm | `/khatm` | 30-step prayer, slide mode, counter |
 | Dua | `/dua` | 5 duas, try slide mode |
 | Settings | ⚙ gear icon | Change language to Urdu, theme to Sepia |
@@ -57,11 +57,14 @@ kqcmm-web/
 │   │   ├── SideDrawer.jsx        ← Slide-in menu (reads from navigation.json)
 │   │   ├── SettingsPopup.jsx     ← Settings modal (language, theme, font, view)
 │   │   ├── SplashScreen.jsx      ← Start-up splash with countdown
-│   │   └── FontAwesome.jsx       ← Icon component (centralized icon map)
+│   │   ├── FontAwesome.jsx       ← Icon component (centralized icon map)
+│   │   ├── PwaSupport.jsx       ← Offline/update toasts (auto-update)
+│   │   └── SeoHead.jsx          ← Per-page meta tags (Helmet)
 │   │
 │   ├── pages/                    ← One file per page (route)
 │   │   ├── Home.jsx              ← Home page with quick links
 │   │   ├── Dua.jsx, Khatm.jsx, FatehaKhwani.jsx, ... ← Content pages
+│   │   ├── Changelog.jsx         ← Version history
 │   │   └── NotFound.jsx          ← 404 page
 │   │
 │   ├── context/                  ← React Context providers
@@ -71,7 +74,7 @@ kqcmm-web/
 │   │   └── ViewContext.jsx       ← List/Slide mode
 │   │
 │   ├── config/                   ← Configuration (edit these often)
-│   │   ├── content/              ← ALL page content (10 JSON files)
+│   │   ├── content/              ← ALL page content (11 JSON files, 10 editable)
 │   │   ├── strings/              ← UI labels per language
 │   │   ├── navigation.json       ← Nav order and icons
 │   │   ├── splash.json           ← Splash screen settings
@@ -93,7 +96,10 @@ kqcmm-web/
     ├── content.md                ← Content system
     ├── styling.md                ← CSS & theming guide
     ├── deployment.md             ← Deployment guide
+    ├── pwa.md                    ← PWA & offline
+    ├── seo.md                    ← SEO & pre-rendering
     ├── scripts.md                ← Scripts reference
+    ├── suggestions.md            ← Future feature ideas
     └── new-developer-guide.md   ← ← You are here
 ```
 

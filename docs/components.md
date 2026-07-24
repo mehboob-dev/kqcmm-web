@@ -160,8 +160,7 @@ Manages offline/update notifications for the PWA experience.
 ### Behaviour
 | Toast | When | Description |
 |---|---|---|
-| ✅ Ready for offline use | First SW registration | Auto-dismiss after 4s, once per session |
-| 🔄 New version available | Updated SW detected | Shows [Refresh] button to activate update |
+| ✅ App updated to latest version | SW auto-update triggers | Auto-dismiss after 100ms (brief green toast) |
 | 📡 You're offline | Browser goes offline | Fixed red banner at top, hides on reconnect |
 
 ### Integration
@@ -176,10 +175,10 @@ Manages offline/update notifications for the PWA experience.
 ```
 
 ### How It Works
-- Uses `useRegisterSW()` from `virtual:pwa-register/react` (vite-plugin-pwa's React integration)
+- Uses `useRegisterSW()` from `virtual:pwa-register/react` (vite-plugin-pwa's React integration) with `onNeedRefresh` calling `updateServiceWorker(true)` immediately
 - Listens to `navigator.onLine` events for offline detection
-- On update available, calls `updateServiceWorker(true)` to activate new SW
-- Shows "update available" toast with a Refresh button
+- On update available, new SW activates and page reloads automatically
+- Shows brief "✅ App updated" toast (100ms) after auto-update — no user interaction needed
 
 ---
 

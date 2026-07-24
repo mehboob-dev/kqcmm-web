@@ -3,6 +3,17 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.3.0",
+        "date": "2026-07-24",
+        "changes": [
+          "App auto-updates silently on deploy — no more refresh prompt",
+          "Windows-compatible build script (fs.copyFileSync instead of cp)",
+          "Urdu fonts loaded via Google Fonts (Nastaliq, Naskh, Garamond)",
+          "Cleaned up duplicate string files",
+          "Added 7 new suggestions (27 total), reorganized categories"
+        ]
+      },
+      {
         "version": "5.2.0",
         "date": "2026-07-23",
         "changes": [
@@ -78,6 +89,17 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.3.0",
+        "date": "2026-07-24",
+        "changes": [
+          "App ab deploy par automatically update ho jata hai — refresh nahi maangta",
+          "Windows-compatible build script (cp ki jagah fs.copyFileSync)",
+          "Urdu fonts Google Fonts se load hote hain (Nastaliq, Naskh, Garamond)",
+          "Duplicate string files hataye gaye",
+          "7 naye suggestions (total 27), categories reorganize ki gayi"
+        ]
+      },
+      {
         "version": "5.2.0",
         "date": "2026-07-23",
         "changes": [
@@ -152,6 +174,17 @@
   "urdu": {
     "title": "تبدیلیوں کا ریکارڈ",
     "versions": [
+      {
+        "version": "5.3.0",
+        "date": "2026-07-24",
+        "changes": [
+          "ایپ ڈپلائے پر خود بخود اپڈیٹ ہو جاتی ہے — ریفریش کا اشارہ نہیں",
+          "ونڈوز کے ساتھ مطابقت (cp کی جگہ fs.copyFileSync)",
+          "Urdu فونٹس گوگل فونٹس سے لوڈ ہوتے ہیں (نستعلیق، ناسخ، گارامنڈ)",
+          "ڈپلیکیٹ سٹرنگ فائلیں ہٹا دی گئیں",
+          "7 نئے مشورے (کل 27)، زمرہ جات کی تنظیم نو"
+        ]
+      },
       {
         "version": "5.2.0",
         "date": "2026-07-23",

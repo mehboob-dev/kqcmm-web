@@ -23,7 +23,7 @@ The `npm run build` command runs three steps:
 
 1. **`vite build`** — Bundles the app into `dist/`
 2. **`node scripts/prerender.mjs`** — Puppeteer generates static HTML for all 12 routes with full SEO meta tags
-3. **`cp dist/index.html dist/404.html`** — SPA fallback for GitHub Pages
+3. **`node -e "fs.copyFileSync('dist/index.html','dist/404.html')"`** — SPA fallback for GitHub Pages (uses Node.js for cross-platform compatibility)
 
 ### Output Structure
 
@@ -71,7 +71,7 @@ dist/
 ### SPA Routing on GitHub Pages
 GitHub Pages doesn't support client-side routing natively. The fix:
 
-1. **`404.html` trick**: After build, `dist/index.html` is copied to `dist/404.html`
+1. **`404.html` trick**: After build, `dist/index.html` is copied to `dist/404.html` (via `fs.copyFileSync` for cross-platform compatibility)
 2. When a user visits `/khatm` directly, GitHub Pages returns `404.html` (which is really `index.html`)
 3. React Router reads the URL and routes correctly
 
@@ -120,7 +120,7 @@ https://mehboob-dev.github.io/kqcmm-web/
 |---|---|---|
 | White screen after deploy | Router basename mismatch | Check `vite.config.js` base and `main.jsx` basename |
 | Assets 404 on sub-page | Wrong base path | Use `base: '/kqcmm-web/'` (absolute, not `./`) |
-| Direct URL (/khatm) breaks | Missing 404.html or prerender | Add `cp dist/index.html dist/404.html` to build |
+| Direct URL (/khatm) breaks | Missing 404.html or prerender | Ensure build script copies index.html to 404.html using `fs.copyFileSync` |
 | Splash image missing | Path not relative | Use `import.meta.env.BASE_URL + 'splash.jpg'` |
 
 ---

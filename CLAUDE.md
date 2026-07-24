@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.2.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.3.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -291,6 +291,7 @@ Global +/−/↺ counter displayed on content pages. In slide mode it sits in a 
 /calendar       → Islamic Calendar
 /roshni         → Roshni / Chirag Raushan
 /abbajaan       → Abbajaan
+/changelog      → Version history
 ```
 
 ---
@@ -411,6 +412,9 @@ Comprehensive docs are in the `docs/` folder:
 | [docs/deployment.md](docs/deployment.md) | Building, deploying, troubleshooting |
 | [docs/scripts.md](docs/scripts.md) | All CLI tools and utilities |
 | [docs/new-developer-guide.md](docs/new-developer-guide.md) | Step-by-step guide for freshers |
+| [docs/pwa.md](docs/pwa.md) | PWA / offline / service worker |
+| [docs/seo.md](docs/seo.md) | SEO, Open Graph, pre-rendering |
+| [docs/suggestions.md](docs/suggestions.md) | 27 documented feature ideas |
 
 ---
 
