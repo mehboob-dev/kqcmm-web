@@ -24,6 +24,7 @@ Built with React 18 + Vite 5. Hosted on GitHub Pages.
 | **Quick start** (setup & commands) | [README.md](README.md) |
 | **All docs index** | [docs/index.md](docs/index.md) |
 | **Future suggestions** (27 feature ideas) | [docs/suggestions.md](docs/suggestions.md) |
+| **Hijri calendar plan** (implementation plans) | [docs/hijri-calendar-plan.md](docs/hijri-calendar-plan.md) |
 
 ## Quick Commands
 

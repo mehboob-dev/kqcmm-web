@@ -16,6 +16,7 @@ Welcome to the KQCMM web app documentation. Choose a topic below.
 - [PWA & Offline Support](pwa.md) — Service worker, caching, installable app
 - [SEO & Pre-rendering](seo.md) — Meta tags, OG images, Puppeteer prerender
 - [Scripts Reference](scripts.md) — All CLI tools and utilities
+- [Hijri Calendar Plan](hijri-calendar-plan.md) — Islamic calendar implementation plan
 
 ## Future Ideas
 - [Suggestions](suggestions.md) — 27 documented feature ideas
