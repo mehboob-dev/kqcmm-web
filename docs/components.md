@@ -65,9 +65,12 @@ First | Prev | Position | Next | Last
 
 ### Swipe Navigation (Slide Mode)
 In slide mode, swipe left/right directly on the card area to go to the next/previous item.
-- Threshold: 50px horizontal movement
+- Threshold: 80px horizontal movement (requires a deliberate drag)
+- Vertical scrolling is ignored — swipe only triggers when horizontal movement clearly exceeds vertical movement (ratio > 1.5×)
+- `touchAction: pan-y` on the container lets the browser handle vertical scrolling natively
 - Works alongside the ◀▶ button navigation
-- Implemented via `onTouchStart` / `onTouchEnd` handlers
+- Implemented via `onTouchStart` / `onTouchMove` / `onTouchEnd` handlers
+- Accidental touches (taps, scrolls) do not trigger navigation
 
 ### Component Architecture
 ```jsx
@@ -106,8 +109,8 @@ When the browser fires `beforeinstallprompt`, a 6th tab with 📲 icon appears a
 - Tracks install state via `display-mode: standalone` media query
 - Hidden once app is installed or if browser doesn't support it
 
-### Swipe Gesture Support
-BottomNav passes touch events to ContentView for swipe navigation in slide mode.
+### Note: Swipe Gesture Location
+Swipe navigation in slide mode is handled entirely in `ContentView.jsx` via `onTouchStart`/`onTouchMove`/`onTouchEnd` on the slide container. BottomNav does not participate in gesture handling.
 
 ---
 

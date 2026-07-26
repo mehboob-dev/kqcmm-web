@@ -98,7 +98,7 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | **Offline Support** | Full app cached via Service Worker |
 | **SEO / Open Graph** | Unique meta tags per page, pre-rendered |
 | **Install App** | Native install button in bottom nav |
-| **Swipe Navigation** | Swipe left/right in slide mode |
+| **Swipe Navigation** | Swipe left/right in slide mode — deliberate drag required (80px threshold, vertical scroll ignored) |
 | **Changelog** | Version history page |
 
 ---

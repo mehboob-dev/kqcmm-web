@@ -55,7 +55,7 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 │  │  ┌────────────────────────────────────────────────────────┐   │   │
 │  │  │  BOTTOM NAV (5 tabs, configurable order)               │   │   │
 │  │  │  ┌─────┬─────┬─────┬─────┬─────┐                       │   │   │
-│  │  │  │ 🏠  │ ✨  │ 📖  │ 🕯️  │ 🤲  │                       │   │   │
+│  │  │  │ 🏠  │ ✨  │ 📖  │ 💡  │ 🕌  │                       │   │   │
 │  │  │  │Home │Khatm│Sijr.│Rosh.│ Dua │                       │   │   │
 │  │  │  └─────┴─────┴─────┴─────┴─────┘                       │   │   │
 │  │  └────────────────────────────────────────────────────────┘   │   │
@@ -68,7 +68,7 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 │  │  │  tagline       │                                          │   │
 │  │  ├────────────────┤                                          │   │
 │  │  │  🏠 Home       │                                          │   │
-│  │  │  🤲 Duas       │                                          │   │
+│  │  │  🕌 Duas       │                                          │   │
 │  │  │  📜 Hmk        │                                          │   │
 │  │  │  📖 Sijrah     │                                          │   │
 │  │  │  🕌 Fateha     │                                          │   │

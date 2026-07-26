@@ -9,7 +9,8 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
   const [count, setCount] = useState(0)
   const listRef = useRef(null)
   const slideRef = useRef(null)
-  const touchStartX = useRef(null)
+  const touchStart = useRef(null)   // { x, y }
+  const touchMoved = useRef(false)  // did the finger actually drag?
 
   // Handle external jumpTo signal
   useEffect(() => {
@@ -24,20 +25,41 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
     }
   }, [jumpTo, isSlide])
 
-  // Swipe handlers for slide mode
+  // Swipe handlers for slide mode — improved sensitivity: requires a real
+  // horizontal drag that exceeds vertical movement (to avoid accidental triggers
+  // while scrolling) and raises the threshold so taps never navigate.
   const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX
+    const t = e.touches[0]
+    touchStart.current = { x: t.clientX, y: t.clientY }
+    touchMoved.current = false
+  }
+
+  const handleTouchMove = (e) => {
+    if (!touchStart.current) return
+    const t = e.touches[0]
+    const dx = Math.abs(t.clientX - touchStart.current.x)
+    const dy = Math.abs(t.clientY - touchStart.current.y)
+    // Only mark as "moved" when horizontal drag clearly exceeds vertical scroll
+    if (dx > 10 && dx > dy * 1.5) {
+      touchMoved.current = true
+    }
   }
 
   const handleTouchEnd = (e) => {
-    if (touchStartX.current === null) return
-    const diff = e.changedTouches[0].clientX - touchStartX.current
-    const threshold = 50
+    if (!touchStart.current) return
+    if (!touchMoved.current) {
+      // Tap / vertical scroll — don't navigate
+      touchStart.current = null
+      return
+    }
+    const diff = e.changedTouches[0].clientX - touchStart.current.x
+    const threshold = 80
     if (Math.abs(diff) > threshold) {
       if (diff < 0 && hasNext) setCurrentIdx(i => i + 1)
       else if (diff > 0 && hasPrev) setCurrentIdx(i => i - 1)
     }
-    touchStartX.current = null
+    touchStart.current = null
+    touchMoved.current = false
   }
 
   const resetCount = () => setCount(0)
@@ -101,8 +123,12 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
   return (
     <div
       ref={slideRef}
-      style={{ display: 'flex', flexDirection: 'column', height: '100%', flex: 1, minHeight: 0 }}
+      style={{
+        display: 'flex', flexDirection: 'column', height: '100%', flex: 1, minHeight: 0,
+        touchAction: 'pan-y',              // ← let the browser scroll vertically, we handle horizontal
+      }}
       onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
       {/* padding for fixed bar */}

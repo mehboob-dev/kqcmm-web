@@ -3,19 +3,19 @@
     { "to": "/", "icon": "faHouse", "key": "home" },
     { "to": "/khatm", "icon": "faStar", "key": "khatmEKhwajagan" },
     { "to": "/sijrah-nama", "icon": "faBook", "key": "sijrah" },
-    { "to": "/roshni", "icon": "faFire", "key": "roshni" },
-    { "to": "/dua", "icon": "faHandsPraying", "key": "duas" }
+    { "to": "/roshni", "icon": "faLightbulb", "key": "roshni" },
+    { "to": "/dua", "icon": "faMosque", "key": "duas" }
   ],
   "sideDrawer": [
     { "to": "/", "icon": "faHouse", "key": "home" },
-    { "to": "/dua", "icon": "faHandsPraying", "key": "duas" },
+    { "to": "/dua", "icon": "faMosque", "key": "duas" },
     { "to": "/hmk", "icon": "faScroll", "key": "hmk" },
     { "to": "/sijrah-nama", "icon": "faBook", "key": "sijrahNama" },
     { "to": "/fateha-khwani", "icon": "faMosque", "key": "fatehaKhwani" },
     { "to": "/khatm", "icon": "faStar", "key": "khatm" },
     { "to": "/salim-pappa", "icon": "faUser", "key": "salimPappa" },
     { "to": "/calendar", "icon": "faCalendar", "key": "calendar" },
-    { "to": "/roshni", "icon": "faFire", "key": "roshni" },
+    { "to": "/roshni", "icon": "faLightbulb", "key": "roshni" },
     { "to": "/abbajaan", "icon": "faPeopleGroup", "key": "abbajaan" },
     { "to": "/about", "icon": "faCircleInfo", "key": "about" },
     { "to": "/changelog", "icon": "faClockRotateLeft", "key": "changelog" }
