@@ -3,7 +3,6 @@ import { createContext, useContext, useState, useCallback } from 'react'
 const languages = [
   { code: 'en', label: 'English', dir: 'ltr' },
   { code: 'hinglish', label: 'Hinglish', dir: 'ltr' },
-  { code: 'urdu', label: 'اردو', dir: 'rtl' },
 ]
 
 const LanguageContext = createContext()

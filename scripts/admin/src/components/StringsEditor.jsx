@@ -1,26 +1,48 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
-const LANGS = ['en', 'hinglish', 'urdu']
+const KNOWN_LANGS = ['en', 'hinglish', 'urdu']
 
 export default function StringsEditor({ api, show }) {
   const [lang, setLang] = useState('en')
   const [data, setData] = useState(null)
-  const [original, setOriginal] = useState(null)
   const [dirty, setDirty] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [allLangs, setAllLangs] = useState(KNOWN_LANGS)
+  const loadingRef = useRef(false)
 
-  useEffect(() => {
-    api.getStrings(lang).then(d => {
-      setData(JSON.parse(JSON.stringify(d)))
-      setOriginal(JSON.parse(JSON.stringify(d)))
+  const load = useCallback(async (l) => {
+    if (loadingRef.current) return
+    loadingRef.current = true
+    setLoading(true)
+    setError(null)
+    try {
+      const [strings, langCodes] = await Promise.all([api.getStrings(l), api.listStringLangs()])
+      setData(strings)
+      setAllLangs(langCodes)
       setDirty(false)
-    })
-  }, [lang])
+    } catch (e) {
+      setError(e.message)
+    } finally {
+      setLoading(false)
+      loadingRef.current = false
+    }
+  }, [api])
+
+  useEffect(() => { load(lang) }, [lang, load])
 
   const save = async () => {
-    await api.saveStrings(lang, data)
-    setOriginal(JSON.parse(JSON.stringify(data)))
-    setDirty(false)
-    show('Strings saved!')
+    setSaving(true)
+    try {
+      await api.saveStrings(lang, data)
+      setDirty(false)
+      show('Strings saved!')
+    } catch (e) {
+      show(e.message, 'error')
+    } finally {
+      setSaving(false)
+    }
   }
 
   const handleChange = (path, value) => {
@@ -30,43 +52,48 @@ export default function StringsEditor({ api, show }) {
     setDirty(true)
   }
 
-  if (!data) return <p style={{ color: 'var(--text-muted)', padding: 20 }}>Loading...</p>
+  if (loading) return <div className="section-card"><p style={{ color: 'var(--text-muted)' }}>Loading strings...</p></div>
+  if (error) return <div className="section-card"><p style={{ color: 'var(--danger)' }}>Failed: {error}</p><button className="btn btn-ghost" onClick={() => load(lang)} style={{ marginTop: 8 }}>Retry</button></div>
+  if (!data) return null
 
   return (
     <div style={{ maxWidth: 700 }}>
       <div className="lang-tabs">
-        {LANGS.map(l => (
+        {(allLangs.length ? allLangs : KNOWN_LANGS).map(l => (
           <button key={l} className={'lang-tab' + (lang === l ? ' active' : '')} onClick={() => setLang(l)}>{l}</button>
         ))}
       </div>
       <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>
-        UI labels used in navigation, settings, and other interface text.
+        UI labels for navigation, settings, and other interface text.
+        {dirty && <span className="status-badge unsaved" style={{ marginLeft: 10 }}>Unsaved</span>}
       </p>
       <div className="section-card" style={{ padding: 16 }}>
         {renderStrings(data, '', handleChange)}
       </div>
-      <button className={'btn ' + (dirty ? 'btn-primary' : '')}
-        style={dirty ? { marginTop: 12 } : { marginTop: 12, background: '#e5e7eb', color: '#9ca3af', cursor: 'default' }}
-        onClick={save} disabled={!dirty}>
-        {dirty ? '💾 Save Strings' : '✓ Saved'}
+      <button className="btn btn-primary" onClick={save} disabled={!dirty || saving} style={{ marginTop: 12 }}>
+        {saving ? 'Saving…' : dirty ? '💾 Save Strings' : '✓ Saved'}
       </button>
     </div>
   )
 }
 
 function renderStrings(obj, prefix, onChange) {
-  if (typeof obj === 'string') {
+  if (typeof obj !== 'object' || obj === null) {
     const key = prefix.split('.').pop()
     const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase())
+    const isLong = typeof obj === 'string' && (obj.length > 80 || obj.includes('\n'))
     return (
       <div className="field-group">
         <label className="field-label">{label}</label>
-        <input type="text" value={obj} onChange={e => onChange(prefix, e.target.value)} className="field-input" />
+        {isLong
+          ? <textarea className="field-textarea" value={obj || ''} onChange={e => onChange(prefix, e.target.value)} style={{ minHeight: 60 }} />
+          : <input type="text" className="field-input" value={obj === null ? '' : obj} onChange={e => onChange(prefix, e.target.value)} />
+        }
       </div>
     )
   }
   if (Array.isArray(obj)) {
-    return <div style={{ marginLeft: 8, marginBottom: 8 }}>
+    return <div style={{ margin: '0 0 8px 8px' }}>
       <div className="field-label">{prefix} [{obj.length} items]</div>
       {obj.map((item, i) => <div key={i}>{renderStrings(item, prefix + '.' + i, onChange)}</div>)}
     </div>
@@ -86,6 +113,9 @@ function renderStrings(obj, prefix, onChange) {
 function setPath(o, path, val) {
   const keys = path.split('.')
   let v = o
-  for (let i = 0; i < keys.length - 1; i++) v = v[keys[i]]
+  for (let i = 0; i < keys.length - 1; i++) {
+    if (v[keys[i]] === undefined) v[keys[i]] = {}
+    v = v[keys[i]]
+  }
   v[keys[keys.length - 1]] = val
 }

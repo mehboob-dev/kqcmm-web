@@ -5,11 +5,14 @@ async function api(path, opts = {}) {
     headers: { 'Content-Type': 'application/json', ...opts.headers },
     ...opts,
   })
+  const body = await r.text()
+  let payload = null
+  try { payload = body ? JSON.parse(body) : null } catch { /* non-JSON response */ }
   if (!r.ok) {
-    const body = await r.text()
-    throw new Error(body || r.statusText)
+    const message = payload?.error || payload?.message || body || r.statusText
+    throw new Error(message)
   }
-  return r.json()
+  return payload
 }
 
 export function useApi() {
@@ -43,5 +46,13 @@ export function useApi() {
 
     // Content info (list of languages per page)
     getPageInfo: (name) => api('/page/' + name + '.json/info'),
+
+    // Content language management
+    addContentLang: (lang, sourceLang) => api('/content-lang', { method: 'PUT', body: JSON.stringify({ lang, sourceLang }) }),
+    removeContentLang: (lang) => api('/content-lang', { method: 'DELETE', body: JSON.stringify({ lang }) }),
+
+    // Language config (LanguageContext.jsx)
+    getLangConfig: () => api('/lang-config'),
+    saveLangConfig: (langs) => api('/lang-config', { method: 'POST', body: JSON.stringify(langs) }),
   }
 }

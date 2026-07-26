@@ -22,6 +22,7 @@ const CONTENT_DIR = path.resolve(ROOT, 'src/config/content')
 const STRINGS_DIR = path.resolve(ROOT, 'src/config/strings')
 const NAV_FILE = path.resolve(ROOT, 'src/config/navigation.json')
 const VIEW_FILE = path.resolve(ROOT, 'src/config/view.json')
+const LANG_CTX_FILE = path.resolve(ROOT, 'src/context/LanguageContext.jsx')
 const ADMIN_DIST = path.resolve(__dirname, 'admin/dist')
 const PORT = 3030
 
@@ -272,6 +273,108 @@ const server = http.createServer((req, res) => {
     return sendJSON({ ok: true })
   }
 
+  // ── CONTENT LANGUAGE ROUTES ──
+  // Add a lang to all content pages (clones from a source lang or creates empty)
+  if (u.pathname === '/api/content-lang' && method === 'PUT') {
+    let body = ''
+    req.on('data', c => body += c)
+    req.on('end', () => {
+      try {
+        const { lang, sourceLang } = JSON.parse(body)
+        if (!lang) return sendError('Language code required')
+        let modified = 0
+        listPages().forEach(name => {
+          const fp = path.join(CONTENT_DIR, name + '.json')
+          const d = readJSON(fp)
+          if (!d) return
+          if (d[lang]) return // already exists
+          if (sourceLang && d[sourceLang]) {
+            d[lang] = JSON.parse(JSON.stringify(d[sourceLang]))
+          } else {
+            // Create empty structure based on first available lang
+            const first = Object.keys(d).find(k => typeof d[k] === 'object' && d[k] !== null && !Array.isArray(d[k]))
+            if (first) d[lang] = JSON.parse(JSON.stringify(d[first]))
+            else d[lang] = { title: '', sections: [] }
+          }
+          writeJSON(fp, d)
+          modified++
+        })
+        // Also create strings if not exists
+        const stringsFp = path.join(STRINGS_DIR, lang + '.json')
+        if (!fs.existsSync(stringsFp)) {
+          writeJSON(stringsFp, generateStrings(lang))
+          updateStringsIndex()
+        }
+        // Also add to LanguageContext.jsx
+        addLangToContext(lang)
+        sendJSON({ ok: true, modified })
+      } catch (e) { sendError(e.message) }
+    })
+    return
+  }
+
+  // Remove a lang from all content pages
+  if (u.pathname === '/api/content-lang' && method === 'DELETE') {
+    let body = ''
+    req.on('data', c => body += c)
+    req.on('end', () => {
+      try {
+        const { lang } = JSON.parse(body)
+        if (!lang) return sendError('Language code required')
+        if (lang === 'en') return sendError('Cannot remove English')
+        let modified = 0
+        listPages().forEach(name => {
+          const fp = path.join(CONTENT_DIR, name + '.json')
+          const d = readJSON(fp)
+          if (!d || !d[lang]) return
+          delete d[lang]
+          writeJSON(fp, d)
+          modified++
+        })
+        // Also remove strings
+        const stringsFp = path.join(STRINGS_DIR, lang + '.json')
+        if (fs.existsSync(stringsFp)) {
+          fs.unlinkSync(stringsFp)
+          updateStringsIndex()
+        }
+        // Also remove from LanguageContext.jsx
+        removeLangFromContext(lang)
+        sendJSON({ ok: true, modified })
+      } catch (e) { sendError(e.message) }
+    })
+    return
+  }
+
+  // ── LANGUAGE CONFIG ──
+  // Read the current language list from LanguageContext.jsx
+  if (u.pathname === '/api/lang-config' && method === 'GET') {
+    try {
+      const raw = fs.readFileSync(LANG_CTX_FILE, 'utf8')
+      const m = raw.match(/const languages = \[([\s\S]*?)\]/)
+      if (!m) return sendJSON([])
+      const langs = [...m[1].matchAll(/\{ code:\s*'(\w+)',\s*label:\s*'([^']+)',\s*dir:\s*'(\w+)'\s*\}/g)]
+        .map(m => ({ code: m[1], label: m[2], dir: m[3] }))
+      return sendJSON(langs)
+    } catch (e) { return sendError(e.message) }
+  }
+  // Save updated language list to LanguageContext.jsx
+  if (u.pathname === '/api/lang-config' && method === 'POST') {
+    let body = ''
+    req.on('data', c => body += c)
+    req.on('end', () => {
+      try {
+        const langs = JSON.parse(body)
+        if (!Array.isArray(langs) || !langs.length) return sendError('Invalid language list')
+        const entries = langs.map(l => `  { code: '${l.code}', label: '${l.label}', dir: '${l.dir}' }`)
+        const raw = fs.readFileSync(LANG_CTX_FILE, 'utf8')
+        const updated = raw.replace(/const languages = \[[\s\S]*?\]/, `const languages = [\n${entries.join(',\n')},\n]`)
+        fs.writeFileSync(LANG_CTX_FILE, updated)
+        sendJSON({ ok: true })
+      } catch (e) { sendError(e.message) }
+    })
+    return
+  }
+
   // ── VIEW CONFIG ──
   if (u.pathname === '/api/view' && method === 'GET') {
     return sendJSON(readJSON(VIEW_FILE) || { defaultMode: 'list' })
@@ -322,6 +425,39 @@ const server = http.createServer((req, res) => {
   res.writeHead(404)
   res.end('Not found')
 })
+
+function addLangToContext(code) {
+  if (!fs.existsSync(LANG_CTX_FILE)) return
+  let raw = fs.readFileSync(LANG_CTX_FILE, 'utf8')
+  if (raw.includes(`code: '${code}'`)) return
+  const langMatch = raw.match(/const languages = \[([\s\S]*?)\]/)
+  if (!langMatch) return
+  const existing = langMatch[1].trim()
+  const lines = existing.split('\n').map(l => l.trim()).filter(Boolean)
+  const cleaned = lines.map(l => l.replace(/,\s*$/, ''))
+  const newEntry = `  { code: '${code}', label: '${code}', dir: 'ltr' },`
+  const formatted = [...cleaned.map(l => `  ${l},`), newEntry]
+  const updated = `const languages = [\n${formatted.join('\n')}\n]`
+  raw = raw.replace(/const languages = \[[\s\S]*?\]/, updated)
+  fs.writeFileSync(LANG_CTX_FILE, raw)
+}
+
+function removeLangFromContext(code) {
+  if (!fs.existsSync(LANG_CTX_FILE)) return
+  let raw = fs.readFileSync(LANG_CTX_FILE, 'utf8')
+  const langMatch = raw.match(/const languages = \[([\s\S]*?)\]/)
+  if (!langMatch) return
+  const entries = langMatch[1].trim()
+  const lines = entries.split('\n').map(l => l.trim()).filter(Boolean)
+  const kept = lines.filter(l => !l.includes(`code: '${code}'`))
+  if (kept.length === lines.length) return
+  // Strip trailing commas from each line and rebuild with proper indentation + commas
+  const cleaned = kept.map(l => l.replace(/,\s*$/, ''))
+  const formatted = cleaned.map(l => `  ${l},`)
+  const updated = `const languages = [\n${formatted.join('\n')}\n]`
+  raw = raw.replace(/const languages = \[[\s\S]*?\]/, updated)
+  fs.writeFileSync(LANG_CTX_FILE, raw)
+}
 
 function updateStringsIndex() {
   const files = fs.readdirSync(STRINGS_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', ''))

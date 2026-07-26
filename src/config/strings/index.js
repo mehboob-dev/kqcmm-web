@@ -1,8 +1,9 @@
 import en from './en.json'
 import hinglish from './hinglish.json'
-import urdu from './urdu.json'
 
-const all = { en, hinglish, urdu }
+const all = {
+  en,
+  hinglish,}
 const cache = {}
 
 export function loadStrings(lang) {
