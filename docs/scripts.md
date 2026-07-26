@@ -4,33 +4,68 @@ All CLI tools and utilities available in the project.
 
 ---
 
-## Content Editor (npm run edit)
+## Content Editor / Admin Panel (npm run edit)
 
 **File:** `scripts/content-editor.mjs`  
 **Usage:** `npm run edit` → opens `http://localhost:3030`
 
-A standalone web app for editing content JSONs without touching raw JSON.
+Two interfaces are served at the same port:
 
-### Features
-- Sidebar with all 10 content pages
-- Language tabs (English, Hinglish, Urdu)
-- Auto-resizing text areas (real Enter for line breaks)
-- Add/delete/reorder array items
-- Save writes back to `src/config/content/*.json`
-- Light theme UI
+### 1. Admin Panel (Recommended) — `/admin/`
+A full React-based admin SPA built in `scripts/admin/`. Built automatically before the server starts.
 
-### How It Works
-```
-Browser ←→ HTTP (port 3030) ←→ content-editor.mjs ←→ src/config/content/*.json
-```
+**Features:**
+- **Content Manager** — type-aware fields (titles, textareas, numbers), add/delete/reorder items in arrays, live card preview while you type
+- **Page CRUD** — create new pages from templates (plain, duas layout, fateha layout), delete, duplicate
+- **Navigation Editor** — reorder bottom nav and side drawer, pick icons from a visual selector, edit paths and keys inline
+- **Strings Editor** — edit all UI labels (nav text, settings labels) for each language
+- **Language Manager** — translation status overview (what % filled per page per language), side-by-side comparison
+- **Settings Editor** — view mode defaults (list/slide per page)
+- **Global Search** — search across all pages and languages
 
-The editor is a Node.js HTTP server that serves an HTML page with inline JS. All edits go through API endpoints:
+### 2. Legacy Editor — `/`
+The original single-page editor. Simpler but still functional.
+
+### API Endpoints
 
 | Endpoint | Method | Description |
 |---|---|---|
 | `/api/pages` | GET | List all content files |
 | `/api/page/{name}.json` | GET | Get page content |
 | `/api/page/{name}.json` | POST | Save page content |
+| `/api/page/{name}.json` | DELETE | Delete a page |
+| `/api/page` | PUT | Create a new page |
+| `/api/page/duplicate` | POST | Duplicate a page |
+| `/api/search?q=` | GET | Search across all content |
+| `/api/nav` | GET | Get navigation config |
+| `/api/nav` | POST | Save navigation config |
+| `/api/strings` | GET | List string language codes |
+| `/api/strings/{lang}` | GET | Get strings for a language |
+| `/api/strings/{lang}` | POST | Save strings for a language |
+| `/api/strings/{lang}` | PUT | Create new string language |
+| `/api/view` | GET | Get view config |
+| `/api/view` | POST | Save view config |
+| `/api/templates` | GET | List page templates |
+
+### Admin Panel Architecture
+```
+scripts/admin/
+├── package.json          # React + Vite deps
+├── vite.config.js        # Vite config (proxies /api to :3030)
+├── index.html            # Entry point
+├── src/
+│   ├── main.jsx          # React mount
+│   ├── App.jsx           # Main layout + sidebar + routing
+│   ├── hooks/
+│   │   └── useApi.js     # API client
+│   └── components/
+│       ├── ContentEditor.jsx  # Content editor + live preview
+│       ├── NavEditor.jsx      # Navigation editor
+│       ├── StringsEditor.jsx  # UI strings editor
+│       ├── LanguageEditor.jsx # Translation status + compare
+│       └── SettingsEditor.jsx # View config editor
+└── dist/                 # Built output (auto-generated)
+```
 
 ---
 

@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build && node scripts/prerender.mjs && node -e \"fs.copyFileSync('dist/index.html','dist/404.html')\"",
     "preview": "vite preview",
-    "edit": "node scripts/content-editor.mjs",
+    "edit": "cd scripts/admin && npm run build && cd ../.. && node scripts/content-editor.mjs",
     "fetch-content": "node scripts/fetch-content.mjs",
     "fetch-firebase": "node scripts/fetch-content.mjs",
     "deploy": "npm run build && npx gh-pages -d dist"
