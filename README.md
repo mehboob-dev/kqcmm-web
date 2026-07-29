@@ -45,7 +45,7 @@ src/
 ├── pages/            ← One component per route
 ├── context/          ← Theme, Language, Font, View state
 └── styles.css        ← All styles in one file (themes, cards, layout)
-docs/                 ← Full documentation (9 files)
+docs/                 ← Full documentation (12 files)
 scripts/              ← CLI tools (editor, prerender, sync scripts)
 ```
 
@@ -163,7 +163,9 @@ Full documentation is in the `docs/` folder:
 | [docs/seo.md](docs/seo.md) | SEO, Open Graph, pre-rendering |
 | [docs/scripts.md](docs/scripts.md) | All CLI tools |
 | [docs/new-developer-guide.md](docs/new-developer-guide.md) | Step-by-step for freshers |
-| [docs/suggestions.md](docs/suggestions.md) | 27 feature ideas
+| [docs/suggestions.md](docs/suggestions.md) | 27 feature ideas |
+| [docs/hijri-calendar-plan.md](docs/hijri-calendar-plan.md) | Islamic calendar implementation plan |
+| [docs/index.md](docs/index.md) | Master documentation index |
 
 ---
 

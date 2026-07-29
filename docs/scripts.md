@@ -19,7 +19,7 @@ A full React-based admin SPA built in `scripts/admin/`. Built automatically befo
 - **Page CRUD** — create new pages from templates (plain, duas layout, fateha layout), delete, duplicate
 - **Navigation Editor** — reorder bottom nav and side drawer, pick icons from a visual selector, edit paths and keys inline
 - **Strings Editor** — edit all UI labels (nav text, settings labels) for each language
-- **Language Manager** — translation status overview (what % filled per page per language), side-by-side comparison
+- **Language Manager** — translation status overview (what % filled per page per language), clickable percentages to jump to a page in a specific language, side-by-side comparison view, add/remove language across all content pages and strings
 - **Settings Editor** — view mode defaults (list/slide per page)
 - **Global Search** — search across all pages and languages
 
@@ -46,6 +46,10 @@ The original single-page editor. Simpler but still functional.
 | `/api/view` | GET | Get view config |
 | `/api/view` | POST | Save view config |
 | `/api/templates` | GET | List page templates |
+| `/api/content-lang` | PUT | Add a language to all content pages (clones from source or creates empty) |
+| `/api/content-lang` | DELETE | Remove a language from all content pages and strings |
+| `/api/lang-config` | GET | Get the current language list (from LanguageContext.jsx) |
+| `/api/lang-config` | POST | Save updated language list to LanguageContext.jsx |
 
 ### Admin Panel Architecture
 ```
@@ -62,8 +66,10 @@ scripts/admin/
 │       ├── ContentEditor.jsx  # Content editor + live preview
 │       ├── NavEditor.jsx      # Navigation editor
 │       ├── StringsEditor.jsx  # UI strings editor
-│       ├── LanguageEditor.jsx # Translation status + compare
-│       └── SettingsEditor.jsx # View config editor
+│       ├── LanguageEditor.jsx # Translation status + CRUD + compare
+│       ├── SettingsEditor.jsx # View config editor
+│       └── ui/
+│           └── Modal.jsx      # Reusable modal dialog component
 └── dist/                 # Built output (auto-generated)
 ```
 

@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.4.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.5.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -143,7 +143,24 @@ kqcmm-web/
 │   ├── sync-quran.mjs                # Maps Quran into content JSONs
 │   ├── translate-content.mjs         # Translation helper
 │   ├── import-to-firebase.mjs        # Firebase Admin import template
-│   └── json-to-js.mjs                # JSON→JS converter
+│   ├── json-to-js.mjs                # JSON→JS converter
+│   └── admin/                        # React-based admin panel (npm run edit)
+│       ├── package.json
+│       ├── vite.config.js
+│       ├── index.html
+│       └── src/
+│           ├── main.jsx
+│           ├── App.jsx               # Main layout, Page CRUD, dialogs
+│           ├── hooks/
+│           │   └── useApi.js
+│           └── components/
+│               ├── ContentEditor.jsx  # Type-aware fields + live preview
+│               ├── NavEditor.jsx      # Nav reorder + icon picker
+│               ├── StringsEditor.jsx  # UI labels editor
+│               ├── LanguageEditor.jsx # Translation status + CRUD
+│               ├── SettingsEditor.jsx # View mode config
+│               └── ui/
+│                   └── Modal.jsx      # Reusable modal dialog
 │
 └── .github/workflows/
     └── deploy.yml                    # GitHub Pages auto-deploy
@@ -296,7 +313,7 @@ Global +/−/↺ counter displayed on content pages. In slide mode it sits in a 
 
 ---
 
-## 💾 Content Editor
+## 💾 Admin Panel / Content Editor
 
 Run locally:
 ```bash
@@ -304,12 +321,37 @@ npm run edit
 # Opens http://localhost:3030
 ```
 
-A standalone web app that lets you edit content JSONs with real line breaks (no `\n` needed). Supports:
-- Page selection sidebar
-- Language tabs (en/hinglish/urdu)
-- Auto-resizing text areas
-- Add/delete/reorder array items
-- Save writes back to `src/config/content/*.json`
+Two interfaces served at the same port:
+
+### 1. Admin Panel (Recommended) — `/admin/`
+A full React-based SPA built in `scripts/admin/`. Built automatically before the server starts.
+
+**Tabs:**
+- **📄 Pages** — type-aware content editor with live preview, add/delete/reorder items, global search
+- **🧭 Nav** — reorder bottom nav & side drawer items, pick icons from a visual selector
+- **🏷️ Strings** — edit all UI labels per language
+- **🌍 Translate** — translation status table (% filled per page per language), click % to jump to edit, add/remove languages
+- **⚙️ Settings** — default view mode per page
+
+**Page CRUD:** Create new pages from templates (plain, duas layout, fateha layout), duplicate, or delete pages.
+
+### 2. Legacy Editor — `/`
+The original single-page editor. Simpler but still functional.
+
+### Admin Panel Architecture
+```
+scripts/admin/
+├── package.json, vite.config.js, index.html
+└── src/
+    ├── main.jsx, App.jsx, hooks/useApi.js
+    └── components/
+        ├── ContentEditor.jsx  # Type-aware fields + live preview
+        ├── NavEditor.jsx      # Nav reorder + icon picker
+        ├── StringsEditor.jsx  # UI labels editor
+        ├── LanguageEditor.jsx # Translation status + CRUD + compare
+        ├── SettingsEditor.jsx # View mode config
+        └── ui/Modal.jsx       # Reusable modal dialog
+```
 
 ---
 
@@ -349,6 +391,21 @@ Version history is in `src/config/content/changelog.json` (3 languages). When ma
 3. Update `package.json` version to match
 4. Update the Version card in `src/pages/About.jsx`
 5. Run `npm run build` afterwards to re-prerender
+
+---
+
+## 🛠 Admin Panel Maintenance
+
+The admin panel lives in `scripts/admin/`. When modifying it:
+
+1. **Edit source** in `scripts/admin/src/` (React + Vite)
+2. **Rebuild** before committing: `cd scripts/admin && npm run build`
+3. The built output goes to `scripts/admin/dist/` — the content editor server (`npm run edit`) auto-rebuilds before starting
+4. If adding a new component, update `docs/scripts.md` (Admin Panel Architecture tree)
+5. If adding new API endpoints, update `scripts/content-editor.mjs` and list them in `docs/scripts.md` (API Endpoints table)
+
+### API Layer
+The editor server at `scripts/content-editor.mjs` serves both the Admin Panel and Legacy Editor. New API endpoints go in the same file, in the `http.createServer` callback, following the existing routing pattern.
 
 ---
 

@@ -12,13 +12,16 @@ function fieldType(key, val, depth) {
   return 'auto'
 }
 
-export default function ContentEditor({ data, onChange, pageName }) {
+export default function ContentEditor({ data, onChange, pageName, initialLang }) {
   const langs = useMemo(() => {
     if (!data) return []
     return Object.keys(data).filter(k => k !== 'quickJump' && typeof data[k] === 'object' && data[k] !== null && !Array.isArray(data[k]))
   }, [data])
 
-  const [activeLang, setActiveLang] = useState(langs[0] || 'en')
+  const [activeLang, setActiveLang] = useState(() => {
+    if (initialLang && langs.includes(initialLang)) return initialLang
+    return langs[0] || 'en'
+  })
   const [expanded, setExpanded] = useState({})
   const [showPreview, setShowPreview] = useState(true)
 

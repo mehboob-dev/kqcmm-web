@@ -3,6 +3,20 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.5.0",
+        "date": "2026-07-29",
+        "changes": [
+          "Admin panel: add/remove languages across all content pages and strings",
+          "Admin panel: click translation % to jump to that page in the target language",
+          "Admin panel: reusable Modal component for create/delete/duplicate dialogs",
+          "Admin panel: responsive layout — collapsible sidebar on mobile",
+          "Admin panel: type-aware content editor with auto-resizing textareas",
+          "Admin panel: visual navigation editor with icon picker, reorder, add/remove",
+          "Admin panel: content search across all pages and languages",
+          "Fixed Sijrah Nama to use ContentView with slide mode"
+        ]
+      },
+      {
         "version": "5.4.0",
         "date": "2026-07-26",
         "changes": [
@@ -97,6 +111,20 @@
   "hinglish": {
     "title": "Changelog",
     "versions": [
+      {
+        "version": "5.5.0",
+        "date": "2026-07-29",
+        "changes": [
+          "Admin panel: sabhi content pages aur strings mein languages add/remove kar sakte hain",
+          "Admin panel: translation % click karke us page aur language mein ja sakte hain",
+          "Admin panel: naya Modal component — create/delete/duplicate dialogs ke liye",
+          "Admin panel: responsive layout — mobile par sidebar collapse hota hai",
+          "Admin panel: type-aware content editor with auto-resizing textareas",
+          "Admin panel: visual navigation editor — icon picker, reorder, add/remove",
+          "Admin panel: content search across all pages and languages",
+          "Sijrah Nama ko ContentView slide mode mein fix kiya gaya"
+        ]
+      },
       {
         "version": "5.4.0",
         "date": "2026-07-26",

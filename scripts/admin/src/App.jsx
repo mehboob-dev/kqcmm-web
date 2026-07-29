@@ -32,6 +32,7 @@ export default function App() {
   const [dialogTemplate, setDialogTemplate] = useState('')
   const [dialogError, setDialogError] = useState('')
   const [dialogBusy, setDialogBusy] = useState(false)
+  const [pendingLang, setPendingLang] = useState(null)
   const dialogTrigger = useRef(null)
   const searchTimer = useRef(null)
   const pageRequest = useRef(0)
@@ -158,6 +159,14 @@ export default function App() {
     confirmNavigation(() => openDialog('duplicate', event.currentTarget))
   }
 
+  const jumpToPage = useCallback((name, lang) => {
+    confirmNavigation(() => {
+      setPendingLang(lang || null)
+      setTab('pages')
+      openPage(name)
+    })
+  }, [])
+
   const filteredPages = searchResults
     ? pages.filter(p => searchResults.some(r => r.name === p.name))
     : pages.filter(p => p.name.toLowerCase().includes(searchQ.toLowerCase()))
@@ -248,7 +257,7 @@ export default function App() {
 
         <div className="content-area">
           {tab === 'pages' && activePage && pageData && (
-            <ContentEditor data={pageData} onChange={d => { setPageData(d); setDirty(true) }} pageName={activePage} />
+            <ContentEditor data={pageData} onChange={d => { setPageData(d); setDirty(true) }} pageName={activePage} initialLang={pendingLang} />
           )}
           {tab === 'pages' && !activePage && (
             <div className="empty-state">
@@ -259,7 +268,7 @@ export default function App() {
           )}
           {tab === 'nav' && <NavEditor api={api} show={show} />}
           {tab === 'strings' && <StringsEditor api={api} show={show} />}
-          {tab === 'lang' && <LanguageEditor api={api} pages={pages} show={show} />}
+          {tab === 'lang' && <LanguageEditor api={api} pages={pages} show={show} onJumpToPage={jumpToPage} />}
           {tab === 'settings' && <SettingsEditor api={api} show={show} />}
         </div>
       </main>

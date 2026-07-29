@@ -31,7 +31,7 @@ function pctClass(pct) {
   return 'pct-low'
 }
 
-export default function LanguageEditor({ api, pages, show }) {
+export default function LanguageEditor({ api, pages, show, onJumpToPage }) {
   const [pageData, setPageData] = useState({})
   const [activePage, setActivePage] = useState(null)
   const [compareLangs, setCompareLangs] = useState(['en', 'urdu'])
@@ -162,7 +162,14 @@ export default function LanguageEditor({ api, pages, show }) {
                 {langList.map(l => {
                   const s = langs[l]
                   if (!s || s.pct === -1) return <div key={l} className="table-col-lang" style={{ color: '#d1d5db' }}>—</div>
-                  return <div key={l} className={'table-col-lang ' + pctClass(s.pct)}>{s.pct}%</div>
+                  return <div key={l} className={'table-col-lang ' + pctClass(s.pct)}
+                    style={{ cursor: 'pointer', textDecoration: 'underline dotted' }}
+                    title={`Edit ${name} in ${l}`}
+                    onClick={e => { e.stopPropagation(); onJumpToPage?.(name, l) }}
+                    role="button" tabIndex={0}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.stopPropagation(); onJumpToPage?.(name, l) } }}>
+                    {s.pct}%
+                  </div>
                 })}
               </div>
             ))
