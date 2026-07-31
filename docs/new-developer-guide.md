@@ -29,9 +29,9 @@ Open `http://localhost:5173` in your browser. You should see the splash screen, 
 | Page | URL | What to look for |
 |---|---|---|
 | Home | `/` | Logo, tagline, 10 quick-link cards |
-| Khatm | `/khatm` | 30-step prayer, slide mode, counter |
-| Dua | `/dua` | 5 duas, try slide mode |
-| Settings | ⚙ gear icon | Change language to Urdu, theme to Sepia |
+| Khatm | `/khatm` | 32-step prayer, slide mode, counter |
+| Dua | `/dua` | 7 duas, try slide mode |
+| Settings | ⚙ gear icon | Change language (English/Hinglish; Urdu planned), theme to Sepia |
 
 ### 5. Try the Content Editor
 ```bash
@@ -69,12 +69,12 @@ kqcmm-web/
 │   │
 │   ├── context/                  ← React Context providers
 │   │   ├── ThemeContext.jsx       ← Light/Dark/Sepia/Green
-│   │   ├── LanguageContext.jsx    ← English/Hinglish/Urdu
+│   │   ├── LanguageContext.jsx    ← English/Hinglish (Urdu planned)
 │   │   ├── FontContext.jsx       ← Font family + size
 │   │   └── ViewContext.jsx       ← List/Slide mode
 │   │
 │   ├── config/                   ← Configuration (edit these often)
-│   │   ├── content/              ← ALL page content (11 JSON files, 10 editable)
+│   │   ├── content/              ← ALL page content (11 JSON files)
 │   │   ├── strings/              ← UI labels per language
 │   │   ├── navigation.json       ← Nav order and icons
 │   │   ├── splash.json           ← Splash screen settings
@@ -108,7 +108,7 @@ kqcmm-web/
 
 ### Change Text on a Page
 1. Open `src/config/content/dua.json` (or whichever page)
-2. Find the language section (`en`, `hinglish`, or `urdu`)
+2. Find the language section (`en` or `hinglish`; `urdu` is planned)
 3. Edit the text inside the JSON
 4. Save → browser auto-reloads
 
@@ -167,20 +167,20 @@ This pulls new transliteration/translation from the XML files.
 8. ContentView:
    a. Checks ViewContext for list/slide mode
    b. Checks view.json default for "khatm" page
-   c. Renders all 30 sections as cards (list) or one at a time (slide)
+   c. Renders all 32 sections as cards (list) or one at a time (slide)
    d. Shows counter bar (+/-/↺) at the bottom
 ```
 
 ### What happens when user changes language?
 
 ```
-1. User taps "Urdu" in Settings popup
-2. LanguageContext.changeLang('urdu') fires
+1. User taps "Hinglish" (or "English") in Settings popup
+2. LanguageContext.changeLang('hinglish') fires
 3. State updates, localStorage saves preference
-4. <html dir="rtl"> and <html lang="ur"> set
-5. Layout.jsx useEffect triggers loadStrings('urdu')
-6. All page components re-render with data.urdu
-7. Navigation labels switch to Urdu
+4. <html lang="hinglish"> set (Urdu, when added, would also set dir="rtl")
+5. Layout.jsx useEffect triggers loadStrings('hinglish')
+6. All page components re-render with data.hinglish
+7. Navigation labels switch to the chosen language
 ```
 
 ---
@@ -194,7 +194,7 @@ This pulls new transliteration/translation from the XML files.
 | Hardcoding colors | Theme switch won't work | Use `var(--bg)`, `var(--accent)`, etc. |
 | Putting content in components | Can't edit without rebuilding | Put all text in `src/config/content/` |
 | Forgetting `\n` in JSON | Text shows as one paragraph | Use `\n` for line breaks in JSON strings |
-| Mismatched section counts across languages | App crashes on language switch | Keep all 3 languages with same structure |
+| Mismatched section counts across languages | App crashes on language switch | Keep all languages with the same structure |
 
 ---
 

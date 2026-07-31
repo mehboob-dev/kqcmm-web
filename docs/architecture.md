@@ -2,7 +2,7 @@
 
 ## Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya
 
-A spiritual web platform serving followers of the Chishti Sufi order. Displays devotional content — duas, khatm, fateha, kalam, sijrah nama, calendar events, and more — in **English**, **Hinglish**, and **Urdu**.
+A spiritual web platform serving followers of the Chishti Sufi order. Displays devotional content — duas, khatm, fateha, kalam, sijrah nama, calendar events, and more — in **English** and **Hinglish** (Urdu is planned — see [Languages](#languages)).
 
 ---
 
@@ -83,7 +83,7 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 │  │  │  Settings     [✕]  │                                       │   │
 │  │  ├────────────────────┤                                       │   │
 │  │  │  🌐 Language      │                                       │   │
-│  │  │  [English][Hing][Urdu]                                     │   │   │
+│  │  │  [English][Hinglish]  (Urdu: planned)                      │   │   │
 │  │  │  🎨 Theme         │                                       │   │
 │  │  │  [Light][Dark][Sepia][Green]                               │   │   │
 │  │  │  🔤 Font          │                                       │   │
@@ -116,11 +116,11 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 
 ```
 /               → Home page (logo, tagline, 10 quick-link cards)
-/dua            → Duas / Supplications (5 duas in slide mode)
+/dua            → Duas / Supplications (7 duas in slide mode)
 /hmk            → Hajee Mahboob Kassim biography
 /sijrah-nama    → Sijrah Nama (verses, slide mode)
-/fateha-khwani  → Fateha Khwani (30+ sections, master-child cards)
-/khatm          → Khatm-e-Khwajagan (30 steps, slide mode)
+/fateha-khwani  → Fateha Khwani (32 sections, master-child cards)
+/khatm          → Khatm-e-Khwajagan (32 steps, slide mode)
 /salim-pappa    → Salim Pappa
 /about          → About KQCMM (with version)
 /calendar       → Islamic Calendar (9 events)
@@ -136,8 +136,8 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 ```
                   ┌─────────────────────────────┐
                   │     src/config/strings/       │
-                  │  en.json / hinglish.json /    │
-                  │  urdu.json                    │
+                  │  en.json / hinglish.json      │
+                  │  (urdu.json: planned)         │
                   │  (UI labels, navigation)      │
                   └──────────┬──────────────────┘  │
                              │ import
@@ -195,7 +195,7 @@ The app loads 3 font families from Google Fonts in `index.html`:
 <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
 ```
 
-This ensures Urdu script fonts (Nastaliq, Naskh) and the Garamond serif font are available even on devices that don't have them installed.
+This ensures the Urdu script fonts (Nastaliq, Naskh — preloaded for the planned Urdu language) and the Garamond serif font are available even on devices that don't have them installed.
 
 
 ---

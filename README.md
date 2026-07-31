@@ -2,7 +2,7 @@
 
 **Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya**
 
-A spiritual web platform for followers of the Chishti Sufi order. Displays devotional content — duas, khatm, fateha, kalam, sijrah nama, calendar events — in **English**, **Hinglish**, and **Urdu** with 4 themes, 17 fonts, and slide/list view modes.
+A spiritual web platform for followers of the Chishti Sufi order. Displays devotional content — duas, khatm, fateha, kalam, sijrah nama, calendar events — in **English** and **Hinglish** (Urdu planned) with 4 themes, 17 fonts, and slide/list view modes.
 
 🌐 **Live:** https://mehboob-dev.github.io/kqcmm-web/
 
@@ -39,7 +39,7 @@ npm run edit         # Content editor (localhost:3030)
 
 ```
 src/
-├── config/content/   ← All page content (10 JSON files, 3 languages each)
+├── config/content/   ← All page content (11 JSON files, en + hinglish each; urdu planned)
 ├── config/strings/   ← UI labels and nav text
 ├── components/       ← Reusable UI (Layout, ContentView, BottomNav, etc.)
 ├── pages/            ← One component per route
@@ -71,8 +71,8 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | `/dua` | Duas (supplications) |
 | `/hmk` | Hajee Mahboob Kassim biography |
 | `/sijrah-nama` | Sijrah Nama |
-| `/fateha-khwani` | Fateha Khwani (30+ sections) |
-| `/khatm` | Khatm-e-Khwajagan (30 steps) |
+| `/fateha-khwani` | Fateha Khwani (32 sections) |
+| `/khatm` | Khatm-e-Khwajagan (32 steps) |
 | `/salim-pappa` | Salim Pappa |
 | `/about` | About KQCMM |
 | `/calendar` | Islamic Calendar |
@@ -86,7 +86,7 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 
 | Feature | Details |
 |---|---|
-| **3 Languages** | English, Hinglish, Urdu (RTL support) |
+| **2 Languages** | English, Hinglish (Urdu planned — RTL support wired up) |
 | **4 Themes** | Light, Dark, Sepia, Green (default: Green) |
 | **17 Fonts** | System, Serif, Sans, Urdu Nastaliq, etc. |
 | **4 Font Sizes** | Small (14px) to X-Large (21px) |
@@ -106,14 +106,13 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 
 ## Content
 
-All content is in `src/config/content/*.json`. Each file has the same structure for all 3 languages. `quickJump` is a top-level, language-independent list of selection indices (labels derive from each section's `title`/`heading`):
+All content is in `src/config/content/*.json`. Each file has the same structure for the shipped languages (en/hinglish; urdu planned). `quickJump` is a top-level, language-independent list of selection indices (labels derive from each section's `title`/`heading`):
 
 ```json
 {
   "quickJump": [0, 22, 29],
   "en": { "title": "...", "sections": [...] },
-  "hinglish": { "title": "...", "sections": [...] },
-  "urdu": { "title": "...", "sections": [...] }
+  "hinglish": { "title": "...", "sections": [...] }
 }
 ```
 

@@ -1,6 +1,6 @@
 # KQCMM — Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya
 
-A spiritual web platform for followers of the Chishti Sufi order. Displays duas, khatm, fateha, kalam, sijrah nama, and other devotional content in **English**, **Hinglish**, and **Urdu**.
+A spiritual web platform for followers of the Chishti Sufi order. Displays duas, khatm, fateha, kalam, sijrah nama, and other devotional content in **English** and **Hinglish** (Urdu planned).
 
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
@@ -96,7 +96,7 @@ kqcmm-web/
 │   │   ├── Hmk.jsx                    # Hajee Mahboob Kassim bio
 │   │   ├── SijrahNama.jsx            # Sijrah Nama verses
 │   │   ├── FatehaKhwani.jsx          # Fateha Khwani (with master-child cards)
-│   │   ├── Khatm.jsx                 # Khatm-e-Khwajagan (30 steps)
+│   │   ├── Khatm.jsx                 # Khatm-e-Khwajagan (32 steps)
 │   │   ├── SalimPappa.jsx            # Salim Pappa page
 │   │   ├── About.jsx                 # About KQCMM
 │   │   ├── Calendar.jsx              # Islamic calendar events
@@ -115,12 +115,11 @@ kqcmm-web/
 │   │   ├── navigation.json           # Bottom nav + drawer order/icons
 │   │   ├── splash.json               # Splash screen config
 │   │   ├── view.json                 # Default view mode per page
-│   │   ├── strings/                  # UI labels (per language)
+│   │   ├── strings/                  # UI labels (per live language)
 │   │   │   ├── index.js              # String loader
 │   │   │   ├── en.json
-│   │   │   ├── hinglish.json
-│   │   │   └── urdu.json
-│   │   └── content/                  # Page content (per page, triple language)
+│   │   │   └── hinglish.json
+│   │   └── content/                  # Page content (per page, en + hinglish; urdu planned)
 │   │       ├── dua.json
 │   │       ├── hmk.json
 │   │       ├── sijrahNama.json
@@ -131,7 +130,7 @@ kqcmm-web/
 │   │       ├── calendar.json
 │   │       ├── roshni.json
 │   │       ├── abbajaan.json
-│   │       └── changelog.json               # Version history (3 languages)
+│   │       └── changelog.json               # Version history (2 live languages)
 │   │
 │   └── scripts/                       # CLI tools (see below)
 │
@@ -171,9 +170,10 @@ kqcmm-web/
 
 ### Content JSON Structure
 
-Each content file has the same shape across all 3 languages. `quickJump` is a **top-level**,
-language-independent list of selection indices (labels are derived from each section's
-`title`/`heading` at render time — see [`QuickJump.jsx`](/kqcmm-web/src/components/QuickJump.jsx)):
+Each content file has the same shape across the live languages (en, hinglish — urdu planned).
+`quickJump` is a **top-level**, language-independent list of selection indices (labels are
+derived from each section's `title`/`heading` at render time — see
+[`QuickJump.jsx`](/kqcmm-web/src/components/QuickJump.jsx)):
 
 ```json
 {
@@ -232,11 +232,11 @@ Numbering skips empty sub-cards (Bismillah, Darood, Awraade Wazaaif).
 
 ## 🌐 Languages
 
-| Code | Direction | Labels |
-|---|---|---|
-| `en` | LTR | English |
-| `hinglish` | LTR | Romanized Hindi/Urdu |
-| `urdu` | RTL | Urdu script |
+| Code | Direction | Labels | Status |
+|---|---|---|---|
+| `en` | LTR | English | ✅ live |
+| `hinglish` | LTR | Romanized Hindi/Urdu | ✅ live |
+| `urdu` | RTL | Urdu script | ⏳ planned — plumbing ready (RTL, fonts, `data[lang] \|\| data.en` fallback), no content shipped yet |
 
 Language switch triggers re-render of all text via context. RTL direction sets `document.documentElement.dir`.
 
@@ -303,8 +303,8 @@ Global +/−/↺ counter displayed on content pages. In slide mode it sits in a 
 /dua            → Duas
 /hmk            → Hajee Mahboob Kassim bio
 /sijrah-nama    → Sijrah Nama
-/fateha-khwani  → Fateha Khwani (30+ sections)
-/khatm          → Khatm-e-Khwajagan (30 steps)
+/fateha-khwani  → Fateha Khwani (32 sections)
+/khatm          → Khatm-e-Khwajagan (32 steps)
 /salim-pappa    → Salim Pappa
 /about          → About KQCMM
 /calendar       → Islamic Calendar
@@ -386,7 +386,7 @@ Router basename: `/kqcmm-web/` (set in `vite.config.js` + `main.jsx`).
 
 ## 📝 Changelog
 
-Version history is in `src/config/content/changelog.json` (3 languages). When making significant changes:
+Version history is in `src/config/content/changelog.json` (live languages: en, hinglish). When making significant changes:
 
 1. Add a new entry at the top of the `versions` array with the next version number
 2. List changes as bullet points in the user's language

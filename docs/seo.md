@@ -156,7 +156,7 @@ Place custom images in `public/` and rebuild.
 | `/hmk` | KQCMM - Hmk / Kalam | KQCMM - Hmk / Kalam | Biography and spiritual kalam of Hajee Mahboob Kassim |
 | `/sijrah-nama` | KQCMM - Sijrah Nama | KQCMM - Sijrah Nama | Sacred verses and spiritual poetry from the Chishti tradition |
 | `/fateha-khwani` | KQCMM - Fateha Khwani | KQCMM - Fateha Khwani | Traditional gathering for Qur'an recitation and du'a |
-| `/khatm` | KQCMM - Khatm-e-Khwajagan | KQCMM - Khatm-e-Khwajagan | 30-step spiritual dhikr with Quranic recitations |
+| `/khatm` | KQCMM - Khatm-e-Khwajagan | KQCMM - Khatm-e-Khwajagan | 32-step spiritual dhikr with Quranic recitations |
 | `/salim-pappa` | KQCMM - Salim Pappa | KQCMM - Salim Pappa | Teachings and spiritual guidance from Salim Pappa |
 | `/about` | KQCMM - About | KQCMM - About | Mission, activities, and contact information |
 | `/calendar` | KQCMM - Islamic Calendar | KQCMM - Islamic Calendar | Upcoming Islamic events and spiritual observances |

@@ -122,7 +122,7 @@ Slide-in navigation drawer with header image.
 - Background image with gradient overlay in header
 - Closes on route change
 - Locks body scroll when open
-- RTL support (slides from right in Urdu/Arabic)
+- RTL support (slides from right — wired up for the planned Urdu/Arabic languages)
 
 ---
 
@@ -133,7 +133,7 @@ Modal popup for user preferences.
 ### Controls
 | Section | Options | Persistence |
 |---|---|---|
-| Language | English, Hinglish, Urdu | localStorage |
+| Language | English, Hinglish (Urdu: planned) | localStorage |
 | Theme | Light, Dark, Sepia, Green | localStorage |
 | Font Family | 17 options | localStorage |
 | Font Size | Small/Medium/Large/X-Large | localStorage |
@@ -337,8 +337,9 @@ Handles **master-child card sections** where content is split into sub-cards usi
 - State: `lang`, `changeLang`, `languages`, `current`
 - Persistence: localStorage key `kqcmm_lang`
 - Default: `hinglish`
+- Languages: `en`, `hinglish` (Urdu: planned — plumbing exists but no content yet)
 - Sets `dir` and `lang` attributes on `<html>`
-- RTL support for Urdu (dir="rtl")
+- RTL support wired up for Urdu (`dir="rtl"`), ready when Urdu content ships
 
 ### FontContext.jsx
 - State: `fontFamily`, `fontSize`, `changeFontFamily`, `changeFontSize`, `fontFamilies`, `fontSizes`

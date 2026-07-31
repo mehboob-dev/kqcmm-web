@@ -24,11 +24,8 @@ Every content file in `src/config/content/` follows this structure:
   "hinglish": {
     "title": "Page Title in Hinglish",
     "sections": [ ... ]
-  },
-  "urdu": {
-    "title": "اردو میں صفحہ کا عنوان",
-    "sections": [ ... ]
   }
+  // "urdu": { "title": "اردو میں صفحہ کا عنوان", "sections": [...] }  ← planned (add when translating)
 }
 ```
 
@@ -95,8 +92,8 @@ Quick Jump sheet is derived at render time from the source item's own `title`
 {
   "quickJump": [0, 22, 29],
   "en":  { "title": "...", "sections": [ /* ... */ ] },
-  "hinglish": { "title": "...", "sections": [ /* ... */ ] },
-  "urdu": { "title": "...", "sections": [ /* ... */ ] }
+  "hinglish": { "title": "...", "sections": [ /* ... */ ] }
+  // "urdu": { ... }  ← planned
 }
 ```
 
@@ -229,8 +226,8 @@ Pages not listed default to `"list"` mode.
 npm run edit
 # Opens http://localhost:3030
 ```
-- Sidebar lists all 10 content pages
-- Language tabs switch between en/hinglish/urdu
+- Sidebar lists all 11 content pages
+- Language tabs switch between en/hinglish (urdu appears once it ships)
 - Auto-resizing text areas with real Enter for line breaks
 - Add/delete/reorder array items with buttons
 - Save button writes back to `src/config/content/*.json`
@@ -238,11 +235,11 @@ npm run edit
 ### Direct JSON Editing
 Edit `src/config/content/*.json` files directly:
 - Use `\n` for line breaks inside strings
-- Keep all 3 language sections in sync
+- Keep both language sections (en/hinglish) in sync — and urdu when added
 - Run `npm run build` to verify
 
 ### Content Checklist for New Pages
-1. Create `src/config/content/pagename.json` with en/hinglish/urdu
+1. Create `src/config/content/pagename.json` with en/hinglish (urdu: planned)
 2. Each language has `title` + `sections` (or appropriate field names)
 3. Add keys to `src/config/strings/*.json` for nav labels
-4. Keep section structure identical across all 3 languages
+4. Keep section structure identical across all languages
