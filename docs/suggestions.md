@@ -56,9 +56,6 @@ Search all 11 content JSONs in the current language. Show results grouped by pag
 ### 15. Scroll position memory
 Remember scroll position on pages like Khatm (30 steps) so users don't lose their place on refresh. Use `sessionStorage` or `localStorage`.
 
-### 17. Tasbih counter
-Standalone digital tasbih (prayer bead counter) tool. Simple UI: tap to count, reset button.
-
 ### 18. Bookmarks / favorites
 Let users bookmark specific verses or sections. Store in IndexedDB or localStorage.
 
