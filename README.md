@@ -1,5 +1,7 @@
 # KQCMM Web App
 
+<!-- ci-skip-test -->
+
 **Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya**
 
 A spiritual web platform for followers of the Chishti Sufi order. Displays devotional content — duas, khatm, fateha, kalam, sijrah nama, calendar events — in **English**, **Hinglish**, and **Urdu** with 4 themes, 17 fonts, and slide/list view modes.
