@@ -32,6 +32,8 @@ export default function ContentEditor({ data, onChange, pageName, initialLang })
   if (!data || !activeLang) return <p style={{ color: 'var(--text-muted)', padding: 20 }}>No content</p>
   const langData = data[activeLang]
   if (!langData) return <p style={{ color: 'var(--text-muted)', padding: 20 }}>No data for {activeLang}</p>
+  // The source array the Quick Jump indices point into (sections / duas / items / verses)
+  const sourceKey = MAJOR_COLLECTION.find(k => Array.isArray(langData[k]))
 
   const toggle = (k) => setExpanded(p => ({ ...p, [k]: !p[k] }))
   const isEx = (k) => expanded[k] !== false
@@ -44,9 +46,24 @@ export default function ContentEditor({ data, onChange, pageName, initialLang })
 
   const ctx = { handleChange, handleDeleteItem, handleAddItem, handleMoveItem, expanded, toggle, isEx }
 
+  // Quick Jump lives once at the top level of the page file (shared by all
+  // languages). Labels are derived from the source array's title/heading.
+  const quickJump = Array.isArray(data.quickJump) ? data.quickJump : []
+  const handleQuickJumpChange = (next) => {
+    const d = clone(data)
+    d.quickJump = next
+    onChange(d)
+  }
+
   return (
     <div className="card-grid" style={{ height: '100%' }}>
       <div className="editor-panel">
+        <QuickJumpEditor
+          indices={quickJump}
+          sourceItems={sourceKey ? langData[sourceKey] : null}
+          sourceKey={sourceKey}
+          onChange={handleQuickJumpChange}
+        />
         <div className="lang-tabs">
           {langs.map(l => (
             <button key={l} className={'lang-tab' + (activeLang === l ? ' active' : '')} onClick={() => setActiveLang(l)}>{l}</button>
@@ -61,7 +78,7 @@ export default function ContentEditor({ data, onChange, pageName, initialLang })
       {showPreview && (
         <div className="preview-panel">
           <div className="preview-title">Preview — {activeLang}</div>
-          <PreviewPanel data={langData} />
+          <PreviewPanel data={langData} quickJump={quickJump} sourceKey={sourceKey} />
         </div>
       )}
     </div>
@@ -108,8 +125,7 @@ function renderObject(obj, prefix, depth, ctx) {
         const path = prefix ? prefix + '.' + key : key
         const hasChildren = typeof val === 'object' && val !== null
         const isMajor = MAJOR_COLLECTION.includes(key) && Array.isArray(val)
-        const isQuick = key === 'quickJump' && Array.isArray(val)
-        const isCollapsible = (hasChildren && !Array.isArray(val)) || isMajor || isQuick
+        const isCollapsible = (hasChildren && !Array.isArray(val)) || isMajor
         const isOpen = ctx.isEx(path)
 
         if (isCollapsible) {
@@ -163,9 +179,13 @@ function FieldEditor({ value, path, depth, ctx, numeric }) {
   )
 }
 
-function PreviewPanel({ data }) {
+function PreviewPanel({ data, quickJump, sourceKey }) {
   if (!data) return <p style={{ color: 'var(--text-muted)', fontSize: 12 }}>No data</p>
-  const { title, sections, duas, items, verses, intro, quickJump, ...rest } = data
+  const { title, sections, duas, items, verses, intro, ...rest } = data
+  const qjSource = quickJump && Array.isArray(quickJump) && quickJump.length > 0
+    ? (sections || duas || items || verses || [])
+    : []
+  const labelOf = (q) => qjSource[q]?.title || qjSource[q]?.heading || `#${q + 1}`
 
   return (
     <div style={{ maxWidth: 420 }}>
@@ -216,12 +236,88 @@ function PreviewPanel({ data }) {
       ))}
       {Array.isArray(quickJump) && quickJump.length > 0 && (
         <div style={{ marginTop: 8, padding: '6px 10px', background: '#f5f3ff', borderRadius: 6, fontSize: 11, color: '#6b7280' }}>
-          <strong style={{ color: 'var(--accent)' }}>QuickJump:</strong> {quickJump.map(q => q.label).join(', ')}
+          <strong style={{ color: 'var(--accent)' }}>QuickJump:</strong> {quickJump.map(labelOf).join(', ')}
         </div>
       )}
       {!Array.isArray(sections) && !Array.isArray(duas) && !Array.isArray(items) && !Array.isArray(verses) && Object.keys(rest).length > 0 && (
         <div className="section-card"><pre style={{ fontSize: 11 }}>{JSON.stringify(rest, null, 2).slice(0, 300)}</pre></div>
       )}
+    </div>
+  )
+}
+
+// Shared Quick Jump editor — language-independent list of selection indices.
+// Labels come from the source items' title/heading, so there's no per-language
+// label duplication to maintain.
+function QuickJumpEditor({ indices, sourceItems, sourceKey, onChange }) {
+  const items = indices || []
+  const setItem = (i, v) => {
+    const next = [...items]
+    next[i] = Math.max(0, Number(v) || 0)
+    onChange(next)
+  }
+  const addItem = () => onChange([...items, items.length ? Math.max(...items) + 1 : 0])
+  const deleteItem = (i) => { const next = [...items]; next.splice(i, 1); onChange(next) }
+  const moveItem = (from, to) => {
+    if (to < 0 || to >= items.length) return
+    const next = [...items]; const [it] = next.splice(from, 1); next.splice(to, 0, it); onChange(next)
+  }
+  const labelOf = (q) => sourceItems?.[q]?.title || sourceItems?.[q]?.heading || `#${q + 1}`
+
+  const usesDropdown = Array.isArray(sourceItems) && sourceItems.length > 0
+
+  return (
+    <div className="section-card" style={{ marginBottom: 16 }}>
+      <div className="section-header">
+        <span className="section-title">Quick Jump</span>
+        <span className="tag">{sourceKey ? `points to "${sourceKey}"` : 'no content array found'} · shared across languages</span>
+      </div>
+      {items.length === 0 && (
+        <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 8 }}>
+          No quick jump entries yet. Add the sections users should jump to.
+        </p>
+      )}
+      {items.map((q, i) => (
+        <div key={i} className="array-item">
+          <div className="array-header">
+            <span className="array-badge">#{i + 1}</span>
+            <div className="array-controls">
+              <button className="btn-icon" onClick={() => moveItem(i, i - 1)} disabled={i === 0} aria-label="Move up">↑</button>
+              <button className="btn-icon" onClick={() => moveItem(i, i + 1)} disabled={i >= items.length - 1} aria-label="Move down">↓</button>
+              <button className="btn-icon danger" onClick={() => deleteItem(i)} aria-label="Delete">✕</button>
+            </div>
+          </div>
+          <label className="field-label" htmlFor={`qj-sel-${i}`}>Jump to</label>
+          {usesDropdown ? (
+            <select
+              id={`qj-sel-${i}`}
+              className="field-select"
+              value={String(q)}
+              onChange={e => setItem(i, e.target.value)}
+            >
+              {sourceItems.map((s, si) => (
+                <option key={si} value={si}>
+                  {s.title || s.heading || `#${si + 1}`} (item {si + 1})
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              id={`qj-sel-${i}`}
+              type="number"
+              min={0}
+              className="field-input"
+              style={{ width: 160 }}
+              value={String(q)}
+              onChange={e => setItem(i, e.target.value)}
+            />
+          )}
+          <small className="field-help">
+            {usesDropdown ? `Selects "${labelOf(q)}"` : 'Selection index into the content array'}
+          </small>
+        </div>
+      ))}
+      <button className="btn-add" onClick={addItem}>+ Add quick jump entry</button>
     </div>
   )
 }

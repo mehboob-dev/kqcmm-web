@@ -1,28 +1,7 @@
 {
+  "quickJump": [0, 1, 2, 3, 4],
   "en": {
     "title": "Roshni (Chirag Raushan)",
-    "quickJump": [
-      {
-        "label": "ABOUT",
-        "sectionIndex": 0
-      },
-      {
-        "label": "QADRI VERSE",
-        "sectionIndex": 1
-      },
-      {
-        "label": "PERSIAN VERSE",
-        "sectionIndex": 2
-      },
-      {
-        "label": "SALAAM",
-        "sectionIndex": 3
-      },
-      {
-        "label": "DUA",
-        "sectionIndex": 4
-      }
-    ],
     "sections": [
       {
         "title": "ABOUT",
@@ -48,28 +27,6 @@
   },
   "hinglish": {
     "title": "Roshni - Chirag Raushan",
-    "quickJump": [
-      {
-        "label": "ABOUT",
-        "sectionIndex": 0
-      },
-      {
-        "label": "QADRI VERSE",
-        "sectionIndex": 1
-      },
-      {
-        "label": "PERSIAN VERSE",
-        "sectionIndex": 2
-      },
-      {
-        "label": "SALAAM",
-        "sectionIndex": 3
-      },
-      {
-        "label": "DUA",
-        "sectionIndex": 4
-      }
-    ],
     "sections": [
       {
         "title": "ABOUT",

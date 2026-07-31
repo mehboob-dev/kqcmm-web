@@ -38,8 +38,8 @@ export default function Roshni() {
           <div className="card-text" style={{ whiteSpace: 'pre-line', lineHeight: 2 }}>{content.poem.text}</div>
         </div>
       )}
-      {content.quickJump && (
-        <QuickJump items={content.quickJump} onJump={setJumpToIdx} />
+      {data.quickJump && (
+        <QuickJump indices={data.quickJump} sourceItems={content.sections} labelKey="title" onJump={setJumpToIdx} />
       )}
     </div>
   )

@@ -1,32 +1,15 @@
 {
+  "quickJump": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
   "en": {
     "title": "Duas (Supplications)",
-    "quickJump": [
-      {
-        "label": "1st DUA",
-        "sectionIndex": 0
-      },
-      {
-        "label": "2nd DUA",
-        "sectionIndex": 1
-      },
-      {
-        "label": "3rd DUA",
-        "sectionIndex": 2
-      },
-      {
-        "label": "4th DUA",
-        "sectionIndex": 3
-      },
-      {
-        "label": "5th DUA",
-        "sectionIndex": 4
-      },
-      {
-        "label": "6th Dua [Hazrat Shaykh Sadi Shirazi Soharwardi (Rahima'ullah)]",
-        "sectionIndex": 5
-      }
-    ],
     "duas": [
       {
         "heading": "1st DUA",
@@ -51,37 +34,15 @@
       {
         "heading": "6th Dua [Hazrat Shaykh Sadi Shirazi Soharwardi (Rahima'ullah)]",
         "text": "O My Lord, for the sake of the children (family) of Fatimah,\nGrant that my end (death) be upon true faith (Iman).\nIf You reject my invitation (prayer) for acceptance,\nStill, I hold fast to the hands and cloak of the Family of the Messenger (Ahl al-B"
+      },
+      {
+        "heading": "Darood E Taj [The original , as composed by Shaykh Abu Bakr bin Salim]",
+        "text": "O Allah, send prayers and peace, blessings and honour, in proportion to the greatness of Your most exalted essence, at every moment and every instant, forever, in the measure of all that You know, the weight of all that You know, and the fullness of all that You know, upon our master and patron Muhammad and upon the family of our master and patron Muhammad, the bearer of the crown, the Mi’raj, the Buraq and the banner, the repeller of affliction, epidemics, disease and pain. His body is pure, perfumed and illuminated, and his name is written, exalted and placed upon the Preserved Tablet and the Pen. He is the sun of the morning brightness, the full moon of the dark night, the light of guidance and the lamp amid the darkness. Abu al-Qasim, the master of the two worlds and the intercessor of humankind and jinn, Abu al-Qasim, our master Muhammad ibn Abdullah, the master of the Arabs and the non-Arabs, the prophet of the Two Sanctuaries, the beloved of the Lord of the Two Easts and the Two Wests. O you who long for the light of his beauty, send abundant prayers and peace upon him."
       }
     ]
   },
   "hinglish": {
     "title": "Duayein",
-    "quickJump": [
-      {
-        "label": "1st Dua",
-        "sectionIndex": 0
-      },
-      {
-        "label": "2nd Dua",
-        "sectionIndex": 1
-      },
-      {
-        "label": "3rd Dua",
-        "sectionIndex": 2
-      },
-      {
-        "label": "4th Dua",
-        "sectionIndex": 3
-      },
-      {
-        "label": "5th Dua",
-        "sectionIndex": 4
-      },
-      {
-        "label": "6th Dua [Hazrat Shaykh Sadi Shirazi Soharwardi (Rahima'ullah)]",
-        "sectionIndex": 5
-      }
-    ],
     "duas": [
       {
         "heading": "1st Dua",
@@ -106,6 +67,10 @@
       {
         "heading": "6th Dua [Hazrat Shaykh Sadi Shirazi Soharwardi (Rahima'ullah)]",
         "text": "Ya Ilaahi ba'haq e Bani Fatima,\nKe Bar koul e Imaa'n kuni khatima... \nAgar dao'atam rad kuni dar qubool,\nMann'o dast'o damaan e Aal'e Rasool"
+      },
+      {
+        "heading": "Darood E Taj [Original jo Shaykh Abu Bakr bin Salim ne compose ki thi.]",
+        "text": "Allāhumma ṣalli wa-sallim, wa-bārik wa-karrim, bi-qadri ʿaẓamati dhātika l-ʿaliyyati, fī kulli waqtin wa-ḥīnin abadan, ʿadada mā ʿalimta wa-zinata mā ʿalimta wa-mil’a mā ʿalimta, ʿalā sayyidinā wa-mawlānā Muḥammadin wa-ʿalā āli sayyidinā wa-mawlānā Muḥammadin, ṣāḥibi t-tāji wa-l-Miʿrāji wa-l-Burāqi wa-l-ʿalami, wa-dāfiʿi l-balā’i wa-l-wabā’i wa-l-maraḍi wa-l-alami, jismuhu muṭahharun muʿaṭṭarun munawwarun, mani smuhu maktūbun marfūʿun mawḍūʿun ʿalā-l-lawḥi wa-l-qalami, shamsi ḍ-ḍuḥā, badri d-dujā, nūri l-hudā, miṣbāḥi ẓ-ẓulami, abi l-Qāsimi, sayyidi l-kawnayni wa-shafīʿi th-thaqalayni, abi l-Qāsimi sayyidinā Muḥammadi bni ʿAbdi Llāhi, sayyidi l-ʿarabi wa-l-ʿajami, nabiyyi l-ḥaramayni, maḥbūbin ʿinda rabbi l-mashriqayni wa-l-maghribayni, yā ayyuha l-mushtāqūna li-nūri jamālihi, ṣallu ʿalayhi wa-sallimū taslīma."
       }
     ]
   }

@@ -10,6 +10,7 @@ Every content file in `src/config/content/` follows this structure:
 
 ```json
 {
+  "quickJump": [0, 3, 7],
   "en": {
     "title": "Page Title in English",
     "intro": "Optional intro paragraph",
@@ -80,6 +81,29 @@ Verses across child cards are numbered sequentially, not restarting per card:
   "text": "In the Name of Allah...\n|||\nSura Ya Sin 36:58::1. Peace! A word from the Merciful Lord.\n|||\nSura As-Saffat 37:79::2. Peace be upon Nuh...\n|||\nSura As-Saffat 37:109::3. Peace be upon Ibrahim..."
 }
 ```
+
+---
+
+## Quick Jump (shared, language-independent)
+
+`quickJump` is a single **top-level** array of selection indices — it is **not** stored
+per-language. The same list is used for every language, and the label shown in the
+Quick Jump sheet is derived at render time from the source item's own `title`
+(or `heading` for `duas`), so each language automatically displays its own text.
+
+```json
+{
+  "quickJump": [0, 22, 29],
+  "en":  { "title": "...", "sections": [ /* ... */ ] },
+  "hinglish": { "title": "...", "sections": [ /* ... */ ] },
+  "urdu": { "title": "...", "sections": [ /* ... */ ] }
+}
+```
+
+- The indices point into the page's content array (`sections`, `duas`, `items`, or `verses`).
+- Because it lives at the top level, it appears once per file — no duplicate labels to keep in sync.
+- The Admin Panel's **Quick Jump** editor manages this list (add / remove / reorder / re-select
+  items via a dropdown of the source items).
 
 ---
 

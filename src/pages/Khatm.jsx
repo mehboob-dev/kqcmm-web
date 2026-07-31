@@ -26,8 +26,8 @@ export default function Khatm() {
           </div>
         )}
       />
-      {content.quickJump && (
-        <QuickJump items={content.quickJump} onJump={setJumpToIdx} />
+      {data.quickJump && (
+        <QuickJump indices={data.quickJump} sourceItems={content.sections} labelKey="title" onJump={setJumpToIdx} />
       )}
     </div>
   )

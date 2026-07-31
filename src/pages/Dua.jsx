@@ -26,8 +26,8 @@ export default function Dua() {
           </div>
         )}
       />
-      {content.quickJump && (
-        <QuickJump items={content.quickJump} onJump={setJumpToIdx} />
+      {data.quickJump && (
+        <QuickJump indices={data.quickJump} sourceItems={content.duas} labelKey="heading" onJump={setJumpToIdx} />
       )}
     </div>
   )

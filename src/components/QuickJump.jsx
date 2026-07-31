@@ -1,7 +1,18 @@
 import { useState } from 'react'
 
-export default function QuickJump({ items, onJump }) {
+// QuickJump is language-independent: `indices` is a shared list of selection
+// indices (same across all languages). Labels are derived from the source
+// items (e.g. sections/duas) so each language automatically shows its own
+// title/heading without storing duplicate labels in the content JSON.
+export default function QuickJump({ indices, sourceItems, labelKey, onJump }) {
   const [open, setOpen] = useState(false)
+
+  const items = (indices || [])
+    .map(idx => ({
+      idx,
+      label: (sourceItems && sourceItems[idx] && sourceItems[idx][labelKey]) || `#${idx + 1}`,
+    }))
+    .filter(item => item.idx >= 0)
 
   if (!items || items.length === 0) return null
 
@@ -91,8 +102,8 @@ export default function QuickJump({ items, onJump }) {
         <div style={{ padding: '4px 0' }}>
           {items.map((item, i) => (
             <button
-              key={i}
-              onClick={() => handleSelect(item.sectionIndex)}
+              key={item.idx}
+              onClick={() => handleSelect(item.idx)}
               style={{
                 display: 'block', width: '100%', textAlign: 'left',
                 padding: '12px 20px',

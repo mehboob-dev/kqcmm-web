@@ -51,16 +51,18 @@ function generateTemplate(template, name) {
   }
   if (template === 'dua') {
     return {
-      en: { title: title, quickJump: [{ label: '1st DUA', sectionIndex: 0 }], duas: [{ heading: '1st DUA', text: 'Dua text...' }] },
-      hinglish: { title: title, quickJump: [{ label: '1st Dua', sectionIndex: 0 }], duas: [{ heading: '1st Dua', text: 'Dua text...' }] },
-      urdu: { title: title, quickJump: [{ label: 'پہلی دعا', sectionIndex: 0 }], duas: [{ heading: 'پہلی دعا', text: 'دعا کا متن...' }] },
+      quickJump: [0],
+      en: { title: title, duas: [{ heading: '1st DUA', text: 'Dua text...' }] },
+      hinglish: { title: title, duas: [{ heading: '1st Dua', text: 'Dua text...' }] },
+      urdu: { title: title, duas: [{ heading: 'پہلی دعا', text: 'دعا کا متن...' }] },
     }
   }
   if (template === 'fateha') {
     return {
-      en: { title: title, quickJump: [{ label: 'START', sectionIndex: 0 }], sections: [{ title: 'Opening', text: 'Bismillah...\n|||\nSurah...::...\n|||\nDarood...::...' }] },
-      hinglish: { title: title, quickJump: [{ label: 'Shuru', sectionIndex: 0 }], sections: [{ title: 'Shuruat', text: 'Bismillah...\n|||\nSurah...::...' }] },
-      urdu: { title: title, quickJump: [{ label: 'شروع', sectionIndex: 0 }], sections: [{ title: 'شروع', text: 'بسم اللہ...\n|||\nسورہ...::...' }] },
+      quickJump: [0],
+      en: { title: title, sections: [{ title: 'Opening', text: 'Bismillah...\n|||\nSurah...::...\n|||\nDarood...::...' }] },
+      hinglish: { title: title, sections: [{ title: 'Shuruat', text: 'Bismillah...\n|||\nSurah...::...' }] },
+      urdu: { title: title, sections: [{ title: 'شروع', text: 'بسم اللہ...\n|||\nسورہ...::...' }] },
     }
   }
   return base
