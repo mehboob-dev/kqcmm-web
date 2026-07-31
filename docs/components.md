@@ -245,6 +245,39 @@ import Icon from './FontAwesome'
 
 ---
 
+## QuickJump.jsx
+
+Floating-book FAB that opens a bottom-sheet list of jump targets for long content pages (Duas, Roshni, Fateha Khwani, Khatm).
+
+**File:** `src/components/QuickJump.jsx`
+
+### Props
+| Prop | Type | Description |
+|---|---|---|
+| `indices` | array of number | **Shared, language-independent** list of selection indices (from the top-level `quickJump` in the page's content JSON) |
+| `sourceItems` | array | The page's content array the indices point into (`sections`, `duas`, `items`, `verses`) |
+| `labelKey` | string | Which field on each source item is the label — `"title"` for sections, `"heading"` for duas |
+| `onJump` | `(idx) => void` | Called with the selected index; pages pass this to `ContentView`'s `jumpTo` |
+
+### Language-Independent Labels
+Labels are **not stored** in the content JSON. Each list entry is just a selection index; the label is derived at render time from the *active language's* source item, so each language automatically shows its own `title`/`heading`. Missing items fall back to `#N` (`#` + index + 1).
+
+```jsx
+<QuickJump
+  indices={data.quickJump}                 // top-level, shared across languages
+  sourceItems={content.sections}           // active language's sections
+  labelKey="title"
+  onJump={setJumpToIdx}
+/>
+```
+
+### Layout
+- FAB: fixed, bottom-right above the bottom nav (`--bottom-nav-height`), accent circle with a 📖 icon
+- Backdrop: semi-transparent overlay, tap to close
+- Bottom sheet: slides up (max 60vh, scrollable), sticky header with ✕ close, one button per jump target
+
+---
+
 ## Page Components
 
 All pages follow the same pattern:

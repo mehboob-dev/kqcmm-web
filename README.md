@@ -99,16 +99,18 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | **SEO / Open Graph** | Unique meta tags per page, pre-rendered |
 | **Install App** | Native install button in bottom nav |
 | **Swipe Navigation** | Swipe left/right in slide mode — deliberate drag required (80px threshold, vertical scroll ignored) |
+| **Quick Jump** | Floating book FAB → bottom sheet to jump to key sections (labels auto-derived per language) |
 | **Changelog** | Version history page |
 
 ---
 
 ## Content
 
-All content is in `src/config/content/*.json`. Each file has the same structure for all 3 languages:
+All content is in `src/config/content/*.json`. Each file has the same structure for all 3 languages. `quickJump` is a top-level, language-independent list of selection indices (labels derive from each section's `title`/`heading`):
 
 ```json
 {
+  "quickJump": [0, 22, 29],
   "en": { "title": "...", "sections": [...] },
   "hinglish": { "title": "...", "sections": [...] },
   "urdu": { "title": "...", "sections": [...] }

@@ -16,6 +16,7 @@ A full React-based admin SPA built in `scripts/admin/`. Built automatically befo
 
 **Features:**
 - **Content Manager** — type-aware fields (titles, textareas, numbers), add/delete/reorder items in arrays, live card preview while you type
+- **Quick Jump Editor** — shared, language-independent editor for a page's `quickJump` list: add/remove/reorder entries, pick each target from a dropdown of the source items (sections/duas), no per-language labels to maintain
 - **Page CRUD** — create new pages from templates (plain, duas layout, fateha layout), delete, duplicate
 - **Navigation Editor** — reorder bottom nav and side drawer, pick icons from a visual selector, edit paths and keys inline
 - **Strings Editor** — edit all UI labels (nav text, settings labels) for each language
@@ -63,7 +64,7 @@ scripts/admin/
 │   ├── hooks/
 │   │   └── useApi.js     # API client
 │   └── components/
-│       ├── ContentEditor.jsx  # Content editor + live preview
+│       ├── ContentEditor.jsx  # Content editor + live preview + shared Quick Jump editor
 │       ├── NavEditor.jsx      # Navigation editor
 │       ├── StringsEditor.jsx  # UI strings editor
 │       ├── LanguageEditor.jsx # Translation status + CRUD + compare

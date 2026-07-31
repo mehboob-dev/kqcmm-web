@@ -101,6 +101,8 @@ Quick Jump sheet is derived at render time from the source item's own `title`
 ```
 
 - The indices point into the page's content array (`sections`, `duas`, `items`, or `verses`).
+- Order in the array **is** the order shown in the Quick Jump sheet — it does not have to be
+  sorted (e.g. `[4, 17, 12, 13, 22]` is valid).
 - Because it lives at the top level, it appears once per file — no duplicate labels to keep in sync.
 - The Admin Panel's **Quick Jump** editor manages this list (add / remove / reorder / re-select
   items via a dropdown of the source items).

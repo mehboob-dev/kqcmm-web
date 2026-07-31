@@ -83,6 +83,7 @@ kqcmm-web/
 │   │   ├── BottomNav.jsx              # 5-tab navigation bar
 │   │   ├── SideDrawer.jsx             # Slide-in navigation drawer
 │   │   ├── ContentView.jsx            # List/slide view + counter
+│   │   ├── QuickJump.jsx             # Floating quick-jump bottom sheet (shared, language-independent)
 │   │   ├── SplashScreen.jsx           # Splash with countdown
 │   │   ├── SettingsPopup.jsx          # Settings modal
 │   │   ├── FontAwesome.jsx           # Icon component (centralized)
@@ -170,10 +171,13 @@ kqcmm-web/
 
 ### Content JSON Structure
 
-Each content file has the same shape across all 3 languages:
+Each content file has the same shape across all 3 languages. `quickJump` is a **top-level**,
+language-independent list of selection indices (labels are derived from each section's
+`title`/`heading` at render time — see [`QuickJump.jsx`](/kqcmm-web/src/components/QuickJump.jsx)):
 
 ```json
 {
+  "quickJump": [0, 22, 29],
   "en": { "title": "...", "sections": [...] },
   "hinglish": { "title": "...", "sections": [...] },
   "urdu": { "title": "...", "sections": [...] }
