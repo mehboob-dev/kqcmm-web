@@ -53,10 +53,7 @@ Show a random dua/verse/kalam that changes daily on the home page. Could rotate 
 ### 14. Search across content
 Search all 11 content JSONs in the current language. Show results grouped by page with highlighted matches.
 
-### 15. Quran browser
-`public/quran.json` (1.1MB, 114 surahs, 6236 verses) is unused. Could add a Quran reading page with surah list, juz markers, search.
-
-### 16. Scroll position memory
+### 15. Scroll position memory
 Remember scroll position on pages like Khatm (30 steps) so users don't lose their place on refresh. Use `sessionStorage` or `localStorage`.
 
 ### 17. Tasbih counter

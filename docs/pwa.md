@@ -17,7 +17,7 @@ KQCMM uses `vite-plugin-pwa` (powered by Workbox) to generate a service worker t
 | **Offline settings** | ✅ Theme, language, font changes persist via localStorage |
 | **Auto-update** | ✅ New SW activates silently on deploy — brief "Updated" toast shown |
 | **Install prompt** | ✅ Browser fires "Add to Home Screen" automatically |
-| **Cache size** | ~2 MB (15 entries, no quran.json) |
+| **Cache size** | ~2 MB (15 entries) |
 | **Splash screen** | ✅ Skips on repeat visits (sessionStorage) |
 
 ---
@@ -46,7 +46,6 @@ VitePWA({
   },
   workbox: {
     globPatterns: ['**/*.{js,css,html,json,png,jpg,svg,ico}'],
-    globIgnores: ['**/quran.json'],   // Large unused file — skip
   },
 })
 ```
@@ -67,7 +66,6 @@ index.html       drawer-bg.jpg   icons/*.png
 assets/*.js      assets/*.css    manifest.webmanifest
 ```
 
-**Excluded:** `quran.json` (1.1 MB, unused by any page)
 
 ---
 

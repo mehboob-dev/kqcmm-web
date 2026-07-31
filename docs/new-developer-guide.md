@@ -88,7 +88,6 @@ kqcmm-web/
 ├── public/                       ← Static files (copied to dist/)
 │   ├── logo.png, splash.jpg, drawer-bg.jpg  ← Images
 │   ├── manifest.json             ← PWA manifest
-│   └── quran.json               ← Complete Quran data
 │
 └── docs/                         ← Full documentation (read these!)
     ├── architecture.md           ← System architecture

@@ -32,7 +32,6 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,json,png,jpg,svg,ico}'],
-        globIgnores: ['**/quran.json'],
         runtimeCaching: [
           {
             urlPattern: /\.(?:png|jpg|jpeg|svg|gif|ico)$/,

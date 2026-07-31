@@ -72,7 +72,6 @@ kqcmm-web/
 │   ├── splash.jpg                      # Splash screen image
 │   ├── drawer-bg.jpg                   # Side drawer background
 │   ├── manifest.json                   # PWA manifest
-│   └── quran.json                      # Full Quran (114 surahs, 6236 verses)
 │
 ├── src/
 │   ├── main.jsx                        # React entry + BrowserRouter
@@ -140,7 +139,6 @@ kqcmm-web/
 │   ├── prerender.mjs                 # Puppeteer prerender for SEO
 │   ├── fetch-content.mjs             # Fetches from Firebase Hosting
 │   ├── sync-other-langs.mjs          # Syncs hinglish/urdu from XML
-│   ├── sync-quran.mjs                # Maps Quran into content JSONs
 │   ├── translate-content.mjs         # Translation helper
 │   ├── import-to-firebase.mjs        # Firebase Admin import template
 │   ├── json-to-js.mjs                # JSON→JS converter
@@ -426,7 +424,6 @@ The editor server at `scripts/content-editor.mjs` serves both the Admin Panel an
 |---|---|---|
 | `content-editor.mjs` | `npm run edit` | Local web content editor |
 | `sync-other-langs.mjs` | `node scripts/sync-other-langs.mjs` | Sync hinglish/urdu from Quran XML |
-| `sync-quran.mjs` | `node scripts/sync-quran.mjs` | Map Quran verses into content |
 | `fetch-content.mjs` | `npm run fetch-content` | Pull from Firebase Hosting |
 | `translate-content.mjs` | `node scripts/translate-content.mjs` | Translate content to languages |
 
@@ -439,7 +436,7 @@ The editor server at `scripts/content-editor.mjs` serves both the Admin Panel an
 | Quran XML (English) | `D:/Work/KQCMM/QuranSharif-IrfanUlQuran/iq_en.xml` | English translation (Dr. Tahir-ul-Qadri) |
 | Quran XML (Transliteration) | `D:/Work/KQCMM/QuranSharif-IrfanUlQuran/en_simple_transliteration1.xml` | Hinglish transliteration |
 | Quran XML (Urdu) | `D:/Work/KQCMM/QuranSharif-IrfanUlQuran/iq_ur.xml` | Urdu translation |
-| JSON (processed) | `public/quran.json` | All 114 surahs, 6236 verses |
+| JSON (processed) | — | All processed into per-page content JSONs |
 | Content JSONs | `src/config/content/*.json` | Page-specific content |
 
 ---

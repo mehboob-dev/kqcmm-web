@@ -44,7 +44,7 @@ npm run preview     # Preview production build
 | `src/components/` | Reusable UI components |
 | `src/pages/` | One component per route |
 | `src/context/` | React context providers |
-| `public/` | Static assets (images, quran.json) |
+| `public/` | Static assets (images, manifest) |
 | `scripts/` | CLI tools for content management |
 
 ## Key Architecture Decisions

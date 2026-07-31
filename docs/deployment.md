@@ -80,7 +80,7 @@ Additionally, **pre-rendered HTML files** handle direct visits to each route —
 ### Required Config
 - `vite.config.js`: `base: '/kqcmm-web/'` (absolute paths for assets)
 - `src/main.jsx`: `BrowserRouter basename="/kqcmm-web/"`
-- `public/` dir: Static assets (images, manifest, quran.json)
+- `public/` dir: Static assets (images, manifest)
 
 ### GitHub Actions Workflow
 ```yaml
