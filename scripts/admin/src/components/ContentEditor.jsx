@@ -36,10 +36,11 @@ export default function ContentEditor({ data, onChange, pageName, initialLang })
   const toggle = (k) => setExpanded(p => ({ ...p, [k]: !p[k] }))
   const isEx = (k) => expanded[k] !== false
 
-  const handleChange = (path, value) => { const d = clone(data); setPath(d, path, value); onChange(d) }
-  const handleDeleteItem = (arrayPath, index) => { const d = clone(data); const arr = getPath(d, arrayPath); if (Array.isArray(arr)) { arr.splice(index, 1); onChange(d) } }
-  const handleAddItem = (arrayPath) => { const d = clone(data); const arr = getPath(d, arrayPath); if (!Array.isArray(arr)) return; if (arr.length > 0 && typeof arr[0] === 'object' && arr[0] !== null) { const t = {}; for (const k of Object.keys(arr[0])) t[k] = ''; arr.push(t) } else { arr.push('') } onChange(d) }
-  const handleMoveItem = (arrayPath, from, to) => { const d = clone(data); const arr = getPath(d, arrayPath); if (!Array.isArray(arr) || to < 0 || to >= arr.length) return; const [item] = arr.splice(from, 1); arr.splice(to, 0, item); onChange(d) }
+  const langPath = (p) => activeLang + '.' + p
+  const handleChange = (path, value) => { const d = clone(data); setPath(d, langPath(path), value); onChange(d) }
+  const handleDeleteItem = (arrayPath, index) => { const d = clone(data); const arr = getPath(d, langPath(arrayPath)); if (Array.isArray(arr)) { arr.splice(index, 1); onChange(d) } }
+  const handleAddItem = (arrayPath) => { const d = clone(data); const arr = getPath(d, langPath(arrayPath)); if (!Array.isArray(arr)) return; if (arr.length > 0 && typeof arr[0] === 'object' && arr[0] !== null) { const t = {}; for (const k of Object.keys(arr[0])) t[k] = ''; arr.push(t) } else { arr.push('') } onChange(d) }
+  const handleMoveItem = (arrayPath, from, to) => { const d = clone(data); const arr = getPath(d, langPath(arrayPath)); if (!Array.isArray(arr) || to < 0 || to >= arr.length) return; const [item] = arr.splice(from, 1); arr.splice(to, 0, item); onChange(d) }
 
   const ctx = { handleChange, handleDeleteItem, handleAddItem, handleMoveItem, expanded, toggle, isEx }
 
