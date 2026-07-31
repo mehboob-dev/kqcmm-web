@@ -21,6 +21,10 @@
       {
         "label": "5th DUA",
         "sectionIndex": 4
+      },
+      {
+        "label": "6th Dua [Hazrat Shaykh Sadi Shirazi Soharwardi (Rahima'ullah)]",
+        "sectionIndex": 5
       }
     ],
     "duas": [
@@ -43,6 +47,10 @@
       {
         "heading": "5th DUA",
         "text": "Your sacred abode is the Abode of Peace, O Khwaja,\nWhere every morning and evening is ever fresh and filled with blessing.\nThose devoted to you are free from worry and fear for their lives,\nFor with just one gracious glance from you, O Khwaja, all their affairs are set right."
+      },
+      {
+        "heading": "6th Dua [Hazrat Shaykh Sadi Shirazi Soharwardi (Rahima'ullah)]",
+        "text": "O My Lord, for the sake of the children (family) of Fatimah,\nGrant that my end (death) be upon true faith (Iman).\nIf You reject my invitation (prayer) for acceptance,\nStill, I hold fast to the hands and cloak of the Family of the Messenger (Ahl al-B"
       }
     ]
   },
@@ -68,6 +76,10 @@
       {
         "label": "5th Dua",
         "sectionIndex": 4
+      },
+      {
+        "label": "6th Dua [Hazrat Shaykh Sadi Shirazi Soharwardi (Rahima'ullah)]",
+        "sectionIndex": 5
       }
     ],
     "duas": [
@@ -90,6 +102,10 @@
       {
         "heading": "5th Dua",
         "text": "Tera dayar-e-darus-salam ya Khwaja,\nnahi hai naya zamana subh-o-sham ya Khwaja.\nNa fikr mein na gham-e-jaan tere maston ko,\nteri ek nigaah se chalta hai kaam ya Khwaja."
+      },
+      {
+        "heading": "6th Dua [Hazrat Shaykh Sadi Shirazi Soharwardi (Rahima'ullah)]",
+        "text": "Ya Ilaahi ba'haq e Bani Fatima,\nKe Bar koul e Imaa'n kuni khatima... \nAgar dao'atam rad kuni dar qubool,\nMann'o dast'o damaan e Aal'e Rasool"
       }
     ]
   }
