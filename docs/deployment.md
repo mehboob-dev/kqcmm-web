@@ -68,6 +68,19 @@ dist/
 2. GitHub Actions runs the workflow in `.github/workflows/deploy.yml`
 3. Workflow: install Chromium → `npm ci` → `npm run build` → deploy
 
+### When the Deploy Is Skipped
+Only pushes that change **buildable code** trigger a rebuild. Pushes touching only
+markdown/docs (`.md` files or `docs/`) are **skipped** via `paths-ignore` — they never
+end up in `dist/`, so no Actions minutes are wasted.
+
+To force a rebuild anyway:
+- **Manual run**: use the **"Run workflow"** button on the Actions tab (the workflow is
+  `workflow_dispatch`-enabled), or
+- **Empty commit**: `git commit --allow-empty -m "force deploy" && git push`
+
+A `concurrency` group also ensures only one deploy runs per branch at a time — a quick
+sequence of pushes cancels the stale in-progress run instead of queueing several builds.
+
 ### SPA Routing on GitHub Pages
 GitHub Pages doesn't support client-side routing natively. The fix:
 
@@ -88,6 +101,17 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    paths-ignore:          # docs-only pushes are skipped (save Actions minutes)
+      - '*.md'
+      - 'docs/**'
+  workflow_dispatch:        # allow manual "Run workflow" from the Actions tab
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:                # one deploy per branch at a time
+  group: pages-deploy
+  cancel-in-progress: true
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -103,6 +127,7 @@ jobs:
       - run: npm run build
         env:
           PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
+      - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

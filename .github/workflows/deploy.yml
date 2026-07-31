@@ -3,11 +3,24 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    # Don't burn Actions minutes rebuilding when only documentation changes —
+    # *.md files never end up in dist/. Push the branch with an empty commit
+    # (git commit --allow-empty) or use the manual trigger below to force a build.
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
+
+# Only one deploy per branch at a time — cancel any run still in progress
+# so a quick sequence of pushes doesn't queue multiple builds.
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
