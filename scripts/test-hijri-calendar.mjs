@@ -23,6 +23,7 @@ import {
   hijriMonthOf,
   buildGregorianMonthGrid,
   gregorianMonthOf,
+  splitUpcomingPast,
 } from '../src/utils/hijriCalendar.js'
 
 let pass = 0, fail = 0
@@ -130,6 +131,42 @@ assert(ashura.length >= 1, 'fixed event has occurrences')
 const firstAshura = ashura[0]
 eq(formatISODate(firstAshura.gregorianStart), '2026-07-05', 'Ashura (Muharram 10) = Jun26+9 = Jul5')
 assert(firstAshura.available, 'fixed event available')
+
+console.log('--- event mapping: monthly (hijri-monthly) ---')
+// Monthly event: repeats on the 13th of every Hijri month.
+const monthlyCfg = {
+  monthStarts: [
+    { hijriYear: 1447, hijriMonth: 1, gregorianStart: '2026-06-26' },
+    { hijriYear: 1447, hijriMonth: 2, gregorianStart: '2026-07-26' },
+    { hijriYear: 1447, hijriMonth: 3, gregorianStart: '2026-08-25' },
+    { hijriYear: 1447, hijriMonth: 4, gregorianStart: '2026-09-24' },
+  ],
+  events: [
+    { id: 'monthly13', rule: 'hijri-monthly', hijriDays: [13], label: '13th of each month' },
+  ],
+}
+const mOccs = enumerateOccurrences(monthlyCfg).filter(o => o.available)
+eq(mOccs.length, 4, 'monthly event has one occurrence per configured month')
+// Muharram 13 = 2026-06-26 + 12 = 2026-07-08
+eq(formatISODate(mOccs[0].gregorianStart), '2026-07-08', 'Muharram 13 = 2026-07-08')
+// Safar 13 = 2026-07-26 + 12 = 2026-08-07
+eq(formatISODate(mOccs[1].gregorianStart), '2026-08-07', 'Safar 13 = 2026-08-07')
+// All share the same event id + rule
+assert(mOccs.every(o => o.id === 'monthly13' && o.rule === 'hijri-monthly'), 'monthly occurrences share id/rule')
+
+// Monthly event with day 30: only available in months proven to have 30 days
+const m30Cfg = {
+  monthStarts: [
+    { hijriYear: 1447, hijriMonth: 1, gregorianStart: '2026-06-26' },
+    { hijriYear: 1447, hijriMonth: 2, gregorianStart: '2026-07-26' }, // 30-day (Jun26->Jul26)
+  ],
+  events: [
+    { id: 'monthly30', rule: 'hijri-monthly', hijriDays: [30] },
+  ],
+}
+const m30Occs = enumerateOccurrences(m30Cfg).filter(o => o.available)
+eq(m30Occs.length, 1, 'day-30 monthly event only in proven-30-day months')
+eq(formatISODate(m30Occs[0].gregorianStart), '2026-07-25', 'Muharram 30 = 2026-06-26 + 29 = 2026-07-25')
 
 console.log('--- event mapping: no boundary needed for days 1-29 ---')
 // User scenario: only 1 Safar is set. "20 Safar" = start + 19 days, no boundary needed.
@@ -296,6 +333,47 @@ assert(gg2.cells[0].hijriDay === null, 'unconfigured date has null hijriDay')
 const gmo = gregorianMonthOf({ y: 2026, m: 8, d: 1 })
 eq(gmo.year, 2026, 'gregorianMonthOf year')
 eq(gmo.month, 8, 'gregorianMonthOf month')
+
+console.log('--- upcoming/past split (monthly dedup bug fix) ---')
+// Regression test for the bug where a monthly event's PAST list dropped all
+// but the latest occurrence (only "6 Safar" showed, "6 Muharram" was missing).
+// Build the exact scenario: a monthly event on the 6th, with two past
+// occurrences (Muharram 6 = 2026-06-22, Safar 6 = 2026-07-21) and today
+// 2026-08-01 (Safar 17). Plus a fixed event (Ashura, Muharram 10 = 2026-06-26).
+const splitCfg = {
+  monthStarts: [
+    { hijriYear: 1448, hijriMonth: 1, gregorianStart: '2026-06-17' },
+    { hijriYear: 1448, hijriMonth: 2, gregorianStart: '2026-07-16' },
+    { hijriYear: 1448, hijriMonth: 3, gregorianStart: null },
+  ],
+  events: [
+    { id: 'chhatti', rule: 'hijri-monthly', hijriDays: [6], label: 'Chhatti' },
+    { id: 'ashura', rule: 'hijri-fixed', hijriMonth: 1, hijriDays: [10], label: 'Ashura' },
+  ],
+}
+const splitOccs = enumerateOccurrences(splitCfg).filter(o => o.available && o.gregorianStart)
+  .sort((a, b) => formatISODate(a.gregorianStart) < formatISODate(b.gregorianStart) ? -1 : 1)
+const { eventList, pastEvents } = splitUpcomingPast(splitOccs, parseISODate('2026-08-01'))
+
+// Past must include BOTH monthly occurrences (the bug dropped Muharram 6)
+const pastMonthly = pastEvents.filter(o => o.id === 'chhatti')
+eq(pastMonthly.length, 2, 'past list keeps every monthly occurrence (both Muharram 6 and Safar 6)')
+assert(pastMonthly.some(o => o.hijriMonth === 1), 'past includes 6 Muharram')
+assert(pastMonthly.some(o => o.hijriMonth === 2), 'past includes 6 Safar')
+
+// Fixed events still dedup to one past representative
+eq(pastEvents.filter(o => o.id === 'ashura').length, 1, 'fixed event still dedups to one past occurrence')
+
+// No upcoming (all past) with today = 2026-08-01
+eq(eventList.length, 0, 'no upcoming events when all are past')
+
+// Upcoming dedup: pick an earlier "today" so Chhatti's NEXT occurrence (Safar 6,
+// 2026-07-21) is upcoming, and there is exactly ONE of them in the list.
+const { eventList: upList } = splitUpcomingPast(splitOccs, parseISODate('2026-07-01'))
+const upcomingMonthly = upList.filter(o => o.id === 'chhatti')
+eq(upcomingMonthly.length, 1, 'upcoming dedups monthly to next occurrence only')
+// The upcoming monthly occurrence is the next one (Safar 6 = 2026-07-21)
+eq(formatISODate(upcomingMonthly[0].gregorianStart), '2026-07-21', 'upcoming monthly is the next occurrence (Safar 6)')
 
 console.log(`\n${pass} passed, ${fail} failed`)
 process.exit(fail ? 1 : 0)

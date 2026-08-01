@@ -15,6 +15,7 @@ import {
   hijriMonthOf,
   buildGregorianMonthGrid,
   gregorianMonthOf,
+  splitUpcomingPast,
 } from '../utils/hijriCalendar'
 
 // Weekday header labels (3 letters) — Sunday-first. Localized via toLocaleDateString
@@ -122,23 +123,7 @@ export default function Calendar() {
     .sort((a, b) => formatISODate(a.gregorianStart) < formatISODate(b.gregorianStart) ? -1 : 1)
   const unavailable = occurrences.filter(o => !o.available)
 
-  const todayStr = formatISODate(today)
-  const seenUp = new Set(), seenPast = new Set()
-  const eventList = available.filter(o => {
-    if (o.gregorianStart && formatISODate(o.gregorianStart) < todayStr) return false
-    if (seenUp.has(o.id)) return false
-    seenUp.add(o.id)
-    return true
-  })
-  const pastEvents = [...available]
-    .reverse()
-    .filter(o => {
-      if (!(o.gregorianStart && formatISODate(o.gregorianStart) < todayStr)) return false
-      if (seenPast.has(o.id)) return false
-      seenPast.add(o.id)
-      return true
-    })
-    .reverse()
+  const { eventList, pastEvents } = splitUpcomingPast(available, today)
 
   const eventById = (id) => data.events.find(e => e.id === id)
 

@@ -159,6 +159,7 @@ export default function CalendarEditor({ api, show }) {
                 <label className="field-label" htmlFor={`ev-rule-${i}`}>Rule</label>
                 <select id={`ev-rule-${i}`} className="field-select" value={ev.rule} onChange={e => setEvent(i, { rule: e.target.value })}>
                   <option value="hijri-fixed">Fixed Hijri date</option>
+                  <option value="hijri-monthly">Monthly (every Hijri month)</option>
                   <option value="gregorian-month-hijri-relative">Hijri days in a Gregorian month</option>
                 </select>
               </div>
@@ -176,6 +177,11 @@ export default function CalendarEditor({ api, show }) {
                     <input id={`ev-hd-${i}`} className="field-input" value={(ev.hijriDays || []).join(', ')} onChange={e => setEventDays(i, e.target.value)} />
                   </div>
                 </>
+              ) : ev.rule === 'hijri-monthly' ? (
+                <div className="field-group" style={{ marginBottom: 0 }}>
+                  <label className="field-label" htmlFor={`ev-hd-${i}`}>Hijri day(s) each month</label>
+                  <input id={`ev-hd-${i}`} className="field-input" value={(ev.hijriDays || []).join(', ')} onChange={e => setEventDays(i, e.target.value)} />
+                </div>
               ) : (
                 <>
                   <div className="field-group" style={{ marginBottom: 0 }}>

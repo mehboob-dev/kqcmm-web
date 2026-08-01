@@ -149,6 +149,12 @@ export function validateCalendarConfig(cfg) {
           ev.hijriDays.some(d => !Number.isInteger(d) || d < 1 || d > 30)) {
         errors.push(`${where}: hijriDays must be non-empty integers 1..30`)
       }
+    } else if (ev.rule === 'hijri-monthly') {
+      // Repeats on the given Hijri day(s) every month — only hijriDays required.
+      if (!Array.isArray(ev.hijriDays) || ev.hijriDays.length === 0 ||
+          ev.hijriDays.some(d => !Number.isInteger(d) || d < 1 || d > 30)) {
+        errors.push(`${where}: hijriDays must be non-empty integers 1..30`)
+      }
     } else if (ev.rule === 'gregorian-month-hijri-relative') {
       if (ev.gregorianMonth < 1 || ev.gregorianMonth > 12) errors.push(`${where}: gregorianMonth must be 1..12`)
       if (!Array.isArray(ev.hijriDays) || ev.hijriDays.length === 0 ||
@@ -331,13 +337,14 @@ export function enumerateOccurrences(cfg) {
   const out = []
 
   for (const ev of events) {
-    if (ev.rule === 'hijri-fixed') {
-      // Only map a fixed event against the slot for ITS month — never against
-      // a different month's start (which would mislabel e.g. "27 Safar" for an
-      // event that is actually Rajab 27).
+    if (ev.rule === 'hijri-fixed' || ev.rule === 'hijri-monthly') {
+      const isMonthly = ev.rule === 'hijri-monthly'
+      // hijri-fixed maps against the slot for ITS month only (never a different
+      // month). hijri-monthly maps against EVERY month slot (recurs monthly),
+      // including the last configured month (days 1-29 need no boundary).
       for (let i = 0; i < monthStarts.length - 1; i++) {
         const ms = monthStarts[i]
-        if (ms.hijriMonth !== ev.hijriMonth) continue
+        if (!isMonthly && ms.hijriMonth !== ev.hijriMonth) continue
         const nextMs = monthStarts[i + 1]
         const r = mapFixedEventToMonth(ev, ms, nextMs)
         if (r.ok) {
@@ -345,6 +352,17 @@ export function enumerateOccurrences(cfg) {
         } else if (anchorDate(ms)) {
           // month start exists but event days don't fit / boundary missing
           out.push({ id: ev.id, rule: ev.rule, hijriYear: ms.hijriYear, hijriMonth: ms.hijriMonth, hijriDays: ev.hijriDays, available: false })
+        }
+      }
+      // Monthly events also map the LAST configured month (days 1-29 need only
+      // the month's own start; day 30 stays unavailable without a boundary).
+      if (isMonthly && monthStarts.length) {
+        const ms = monthStarts[monthStarts.length - 1]
+        if (ms.gregorianStart) {
+          const r = mapFixedEventToMonth(ev, ms, null)
+          if (r.ok) {
+            out.push({ id: ev.id, rule: ev.rule, hijriYear: r.hijriYear, hijriMonth: r.hijriMonth, hijriDays: r.hijriDays, gregorianStart: r.gregorianStart, gregorianEnd: r.gregorianEnd, available: true })
+          }
         }
       }
     } else if (ev.rule === 'gregorian-month-hijri-relative') {
@@ -492,4 +510,38 @@ export function buildGregorianMonthGrid(monthStarts, target, today) {
 /** The Gregorian { year, month } (1-based) that contains a civil date. */
 export function gregorianMonthOf(date) {
   return { year: date.y, month: date.m }
+}
+
+/**
+ * Split available occurrences into upcoming (>= today) and past (< today)
+ * lists for display, applying the right dedup:
+ *  - Fixed events produce one occurrence per Hijri year, so only a single
+ *    representative should be listed (dedup by id).
+ *  - Monthly events produce a distinct occurrence per Hijri month. The UPCOMING
+ *    list shows only the next one (dedup by id, to avoid flooding), but the
+ *    PAST list shows EVERY past occurrence (each is a real past date).
+ *
+ * Input `available` should already be sorted ascending by gregorianStart.
+ * Returns { eventList, pastEvents } (each in ascending date order).
+ */
+export function splitUpcomingPast(available, today) {
+  const todayStr = formatISODate(today)
+  const seenUp = new Set(), seenPast = new Set()
+  const eventList = available.filter(o => {
+    if (o.gregorianStart && formatISODate(o.gregorianStart) < todayStr) return false
+    if (seenUp.has(o.id)) return false
+    seenUp.add(o.id)
+    return true
+  })
+  const pastEvents = [...available]
+    .reverse()
+    .filter(o => {
+      if (!(o.gregorianStart && formatISODate(o.gregorianStart) < todayStr)) return false
+      const k = o.rule === 'hijri-monthly' ? `${o.id}#${o.hijriYear}-${o.hijriMonth}` : o.id
+      if (seenPast.has(k)) return false
+      seenPast.add(k)
+      return true
+    })
+    .reverse()
+  return { eventList, pastEvents }
 }

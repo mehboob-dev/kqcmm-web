@@ -159,12 +159,32 @@
   },
   "monthNamesShort": {
     "en": [
-      "Muh", "Saf", "Rabi I", "Rabi II", "Jum I", "Jum II",
-      "Raj", "Sha'", "Ram", "Shaw", "Dhu-Q", "Dhu-H"
+      "Muh",
+      "Saf",
+      "Rabi I",
+      "Rabi II",
+      "Jum I",
+      "Jum II",
+      "Raj",
+      "Sha'",
+      "Ram",
+      "Shaw",
+      "Dhu-Q",
+      "Dhu-H"
     ],
     "hinglish": [
-      "Muh", "Saf", "Rabi I", "Rabi II", "Jum I", "Jum II",
-      "Raj", "Shab", "Ram", "Shaw", "Zil-Q", "Zil-H"
+      "Muh",
+      "Saf",
+      "Rabi I",
+      "Rabi II",
+      "Jum I",
+      "Jum II",
+      "Raj",
+      "Shab",
+      "Ram",
+      "Shaw",
+      "Zil-Q",
+      "Zil-H"
     ]
   },
   "events": [
@@ -311,6 +331,17 @@
           "description": "Qurbani ki Eid"
         }
       }
+    },
+    {
+      "id": "chhatti-shareef",
+      "rule": "hijri-monthly",
+      "hijriMonth": 1,
+      "hijriDays": [
+        6
+      ],
+      "label": "Chhatti Shareef",
+      "description": "Monthly Chhatti Fateha",
+      "translations": {}
     }
   ],
   "en": {
