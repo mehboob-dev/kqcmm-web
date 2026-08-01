@@ -3,12 +3,15 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-    # Don't burn Actions minutes rebuilding when only documentation changes —
-    # *.md files never end up in dist/. Push the branch with an empty commit
-    # (git commit --allow-empty) or use the manual trigger below to force a build.
+    # Don't burn Actions minutes rebuilding when only non-deployed files change:
+    # *.md / docs/** never end up in dist/, and scripts/** (admin panel, editor
+    # server, tests) is a separate local tool that the deployed site never
+    # includes. Push with an empty commit (git commit --allow-empty) or use the
+    # manual trigger below to force a build.
     paths-ignore:
       - '*.md'
       - 'docs/**'
+      - 'scripts/**'
   workflow_dispatch:
 
 permissions:
