@@ -19,6 +19,8 @@ import {
   localizedEvent,
   hijriLabel,
   nextOccurrence,
+  buildMonthGrid,
+  hijriMonthOf,
 } from '../src/utils/hijriCalendar.js'
 
 let pass = 0, fail = 0
@@ -231,6 +233,46 @@ const loc = localizedEvent({ id: 'ashura', label: 'Ashura', translations: { hing
 eq(loc.label, 'Ashura ka din', 'localizedEvent override')
 const loc2 = localizedEvent({ id: 'x', label: 'Default' }, 'urdu', [])
 eq(loc2.label, 'Default', 'localizedEvent fallback to default label')
+
+console.log('--- month grid ---')
+// Safar 1448 starts 2026-07-16; today 2026-08-01 is in Safar.
+const gridCfg = {
+  monthStarts: [
+    { hijriYear: 1448, hijriMonth: 1, gregorianStart: '2026-06-17' },
+    { hijriYear: 1448, hijriMonth: 2, gregorianStart: '2026-07-16' },
+    { hijriYear: 1448, hijriMonth: 3, gregorianStart: '2026-08-15' },
+  ],
+}
+const g = buildMonthGrid(gridCfg.monthStarts, { year: 1448, month: 2 }, parseISODate('2026-08-01'))
+assert(g.hasData, 'grid builds')
+eq(g.year, 1448, 'grid year')
+eq(g.month, 2, 'grid month is Safar')
+eq(g.monthLen, 30, 'grid renders 30 cells')
+eq(g.cells.length, 30, 'cell count')
+const todayCell = g.cells.find(c => c.isToday)
+assert(todayCell, 'grid has a today cell')
+eq(todayCell.hijriDay, 17, 'today is Safar 17')
+// Safar 1 = 2026-07-16 which is a Thursday (2026-07-16 weekday)
+eq(g.firstWeekday, new Date(2026, 6, 16).getDay(), 'first weekday matches')
+// First & last Gregorian mapping
+eq(formatISODate(g.cells[0].gregorian), '2026-07-16', 'Safar 1 -> 2026-07-16')
+eq(formatISODate(g.cells[29].gregorian), '2026-08-14', 'Safar 30 -> 2026-08-14')
+
+// Navigate to a different month (Muharram 1448)
+const g2 = buildMonthGrid(gridCfg.monthStarts, { year: 1448, month: 1 }, parseISODate('2026-08-01'))
+assert(g2.hasData, 'previous month grid builds')
+eq(g2.cells.length, 30, 'Muharram also 30 cells')
+eq(formatISODate(g2.cells[0].gregorian), '2026-06-17', 'Muharram 1 -> 2026-06-17')
+assert(!g2.cells.some(c => c.isToday), 'no today cell when viewing a past month')
+
+// No month start set -> hasData false
+const emptyGrid = buildMonthGrid([], { year: 1448, month: 2 }, parseISODate('2026-08-01'))
+assert(!emptyGrid.hasData, 'grid without data returns hasData:false')
+
+// hijriMonthOf
+const mo = hijriMonthOf(gridCfg.monthStarts, parseISODate('2026-08-01'))
+eq(mo.year, 1448, 'hijriMonthOf year')
+eq(mo.month, 2, 'hijriMonthOf month (Safar)')
 
 console.log(`\n${pass} passed, ${fail} failed`)
 process.exit(fail ? 1 : 0)

@@ -397,3 +397,60 @@ export function nextOccurrence(occurrences, today) {
   if (!best) return null
   return { occurrence: best, daysUntil: bestOrd - tOrd }
 }
+
+/**
+ * Build a weekday-aligned grid for a specific Hijri month.
+ * Returns { hasData, year, month, monthLen, firstWeekday, cells } where each
+ * cell is { hijriDay, gregorian, isToday, eventIds }.
+ *
+ * - `target` = { year, month } (the Hijri month to render). The target's start
+ *   must be set to build the grid.
+ * - `today` = today's civil date, used to mark the "today" cell when the target
+ *   is the current month.
+ * - Month length is 30 cells (the 30th day is only "confirmed" when the next
+ *   boundary proves 30 days; without it day-30 events stay unavailable, but the
+ *   day is still shown).
+ * - Each cell's `gregorian` is the mapped civil date, so the UI can show both
+ *   Hijri day and Gregorian date.
+ * - Weekday alignment uses the Gregorian weekday of Hijri day 1 (0=Sun..6=Sat).
+ * - `hasData:false` if the target month's start isn't set.
+ */
+export function buildMonthGrid(monthStarts, target, today) {
+  const anchor = monthStarts.find(ms => ms.hijriYear === target.year && ms.hijriMonth === target.month)
+  if (!anchor) return { hasData: false }
+  const start = anchorDate(anchor)
+  if (!start) return { hasData: false }
+
+  const next = monthStarts.find(ms =>
+    (ms.hijriYear === target.year && ms.hijriMonth === target.month + 1) ||
+    (ms.hijriYear === target.year + 1 && target.month === 12 && ms.hijriMonth === 1)
+  )
+  const nextStart = next ? anchorDate(next) : null
+  const monthLen = 30
+
+  const startOrd = dayOrdinal(start)
+  const todayOrd = today ? dayOrdinal(today) : -Infinity
+  const firstWeekday = new Date(start.y, start.m - 1, start.d).getDay()
+
+  const cells = []
+  for (let hijriDay = 1; hijriDay <= monthLen; hijriDay++) {
+    const g = ordinalToDate(startOrd + hijriDay - 1)
+    const gOrd = dayOrdinal(g)
+    cells.push({ hijriDay, gregorian: g, isToday: gOrd === todayOrd, eventIds: [] })
+  }
+  return { hasData: true, year: target.year, month: target.month, monthLen, firstWeekday, cells }
+}
+
+/** The Hijri { year, month } that contains a civil date, or null if unknown. */
+export function hijriMonthOf(monthStarts, date) {
+  const ord = dayOrdinal(date)
+  let anchor = null
+  let anchorOrd = -Infinity
+  for (const ms of monthStarts) {
+    const d = anchorDate(ms)
+    if (!d) continue
+    const o = dayOrdinal(d)
+    if (o <= ord && o > anchorOrd) { anchor = ms; anchorOrd = o }
+  }
+  return anchor ? { year: anchor.hijriYear, month: anchor.hijriMonth } : null
+}

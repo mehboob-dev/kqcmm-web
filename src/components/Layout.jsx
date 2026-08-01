@@ -6,6 +6,7 @@ import { loadStrings } from '../config/strings'
 import SideDrawer from './SideDrawer'
 import BottomNav from './BottomNav'
 import SettingsPopup from './SettingsPopup'
+import HijriStrip from './HijriStrip'
 
 export default function Layout() {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -62,6 +63,9 @@ export default function Layout() {
           <span style={{ fontSize: 40 }}>⚙</span>
         </button>
       </header>
+
+      {/* HIJRI STRIP — app-wide, below the header */}
+      <HijriStrip lang={lang} />
 
       {/* MAIN CONTENT — base font size lives here */}
       <main className="main-content" ref={mainRef} dir={document.documentElement.dir} style={{ fontSize: currentSize.size }}>

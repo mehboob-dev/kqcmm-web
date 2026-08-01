@@ -11,27 +11,51 @@ import {
   localizedEvent,
   hijriLabel,
   formatISODate,
+  buildMonthGrid,
+  hijriMonthOf,
 } from '../utils/hijriCalendar'
+
+// Weekday header labels (3 letters) — Sunday-first. Localized via toLocaleDateString
+// when available, but a static 3-letter set keeps the grid compact across languages.
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 function formatDisplayDate({ y, m, d }) {
   const date = new Date(y, m - 1, d)
   return date.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' })
 }
 
+function formatDayMonth({ y, m, d }) {
+  const date = new Date(y, m - 1, d)
+  return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+}
+
 export default function Calendar() {
   const { lang } = useLanguage()
   const [strings, setStrings] = useState(null)
   const [today, setToday] = useState(() => todayLocal())
+  // viewed month { year, month } — init to the month containing today
+  const [view, setView] = useState(null)
 
   useEffect(() => {
     loadStrings(lang).then(setStrings)
   }, [lang])
 
-  // Recompute "today" if the page stays open across midnight
   useEffect(() => {
     const id = setInterval(() => setToday(todayLocal()), 60000)
     return () => clearInterval(id)
   }, [])
+
+  // Initialize view to the current Hijri month, falling back to the configured
+  // min month if today isn't within any configured month. The nav is bounded to
+  // configured months, so the view always lands on a configured month.
+  useEffect(() => {
+    if (!view) {
+      const cur = hijriMonthOf(data.monthStarts, todayLocal())
+      const fallback = (data.monthStarts || []).find(ms => ms.gregorianStart)
+      const target = cur || (fallback ? { year: fallback.hijriYear, month: fallback.hijriMonth } : null)
+      if (target) setView(target)
+    }
+  }, [view])
 
   const content = data[lang] || data.en
   const title = content.title
@@ -42,21 +66,34 @@ export default function Calendar() {
   const next = nextOccurrence(occurrences, today)
   const cal = strings?.calendar || {}
 
+  // Map event ids -> Gregorian day ordinal for marking grid cells
+  const dayOrdKey = ({ y, m, d }) => `${y}-${m}-${d}`
+  const eventByOrd = new Map()
+  occurrences.filter(o => o.available && o.gregorianStart).forEach(o => {
+    const k = dayOrdKey(o.gregorianStart)
+    eventByOrd.set(k, (eventByOrd.get(k) || []).concat(o))
+  })
+
+  const grid = view ? buildMonthGrid(data.monthStarts, view, today) : { hasData: false }
+  if (grid.hasData) {
+    grid.cells.forEach(cell => {
+      cell.events = eventByOrd.get(dayOrdKey(cell.gregorian)) || []
+    })
+  }
+
+  const currentMonth = hijriMonthOf(data.monthStarts, today)
+  const isCurrentView = view && currentMonth && view.year === currentMonth.year && view.month === currentMonth.month
+
   // Available occurrences sorted by start date (ascending)
   const available = occurrences
     .filter(o => o.available && o.gregorianStart)
     .sort((a, b) => formatISODate(a.gregorianStart) < formatISODate(b.gregorianStart) ? -1 : 1)
-  // Unavailable events (for reference)
   const unavailable = occurrences.filter(o => !o.available)
 
-  // Split into future (>= today) and past (< today), de-duplicated by event id.
-  // The NEXT-event card already covers the earliest future occurrence; the
-  // upcoming list shows each event's earliest FUTURE occurrence, and the past
-  // list shows each event's latest PAST occurrence.
   const todayStr = formatISODate(today)
   const seenUp = new Set(), seenPast = new Set()
   const eventList = available.filter(o => {
-    if (o.gregorianStart && formatISODate(o.gregorianStart) < todayStr) return false // skip past here
+    if (o.gregorianStart && formatISODate(o.gregorianStart) < todayStr) return false
     if (seenUp.has(o.id)) return false
     seenUp.add(o.id)
     return true
@@ -73,129 +110,183 @@ export default function Calendar() {
 
   const eventById = (id) => data.events.find(e => e.id === id)
 
+  // Configured min/max Hijri months (only slots with a set gregorianStart)
+  const configured = (data.monthStarts || []).filter(ms => ms.gregorianStart)
+  const minMonth = configured.length
+    ? { year: configured[0].hijriYear, month: configured[0].hijriMonth }
+    : null
+  const maxMonth = configured.length
+    ? { year: configured[configured.length - 1].hijriYear, month: configured[configured.length - 1].hijriMonth }
+    : null
+  const keyOf = (m) => m ? `${m.year}-${m.month}` : ''
+  const canPrev = minMonth && view && keyOf(view) > keyOf(minMonth)
+  const canNext = maxMonth && view && keyOf(view) < keyOf(maxMonth)
+
+  const goPrev = () => setView(prev => {
+    if (!prev) return prev
+    let next
+    if (prev.month === 1) next = { year: prev.year - 1, month: 12 }
+    else next = { ...prev, month: prev.month - 1 }
+    // bound to configured min
+    if (minMonth && keyOf(next) < keyOf(minMonth)) return prev
+    return next
+  })
+  const goNext = () => setView(prev => {
+    if (!prev) return prev
+    let next
+    if (prev.month === 12) next = { year: prev.year + 1, month: 1 }
+    else next = { ...prev, month: prev.month + 1 }
+    // bound to configured max
+    if (maxMonth && keyOf(next) > keyOf(maxMonth)) return prev
+    return next
+  })
+  const goToday = () => { if (currentMonth) setView(currentMonth) }
+
+  const renderEventCard = (occ, past) => {
+    const e = eventById(occ.id)
+    const loc = localizedEvent(e, lang, monthNames)
+    const dayBadge = occ.hijriDays.length === 1 ? occ.hijriDays[0] : `${occ.hijriDays[0]}–${occ.hijriDays[occ.hijriDays.length - 1]}`
+    return (
+      <div key={occ.id + '-' + occ.hijriYear + '-' + occ.hijriMonth} className={'cal-ev' + (past ? ' cal-ev-past' : '')}>
+        <div className="cal-ev-date">
+          <span className="cal-ev-day">{dayBadge}</span>
+          <span className="cal-ev-mon">{monthNames[occ.hijriMonth - 1] || occ.hijriMonth}</span>
+        </div>
+        <div className="cal-ev-body">
+          <div className="cal-ev-title">{loc.label}</div>
+          {loc.description && <div className="cal-ev-desc">{loc.description}</div>}
+          <div className="cal-ev-greg">{formatDisplayDate(occ.gregorianStart)}</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="content-page">
       <SeoHead title="Islamic Calendar" path="/calendar" description="Upcoming Islamic events, important dates, and spiritual observances from the Chishti tradition." />
       <h2 className="page-title">{title}</h2>
 
-      {/* TODAY CARD */}
-      <div className="cal-today">
-        <div className="cal-today-label">{cal.today || 'Today'}</div>
-        {todayH.ok ? (
+      {/* MONTH GRID */}
+      <div className="cal-grid-card">
+        <div className="cal-grid-nav">
+          <button className="cal-nav-btn" onClick={goPrev} disabled={!canPrev} aria-label="Previous month">‹</button>
+          <div className="cal-grid-title">
+            <div className="cal-grid-month">
+              {grid.hasData ? `${monthNames[grid.month - 1] || grid.month} ${grid.year}` : ''}
+            </div>
+            <div className="cal-grid-sub">
+              {grid.hasData && isCurrentView && todayH.ok ? hijriLabel(todayH.hijriYear, todayH.hijriMonth, todayH.hijriDay, monthNames) : ''}
+            </div>
+          </div>
+          <button className="cal-nav-btn" onClick={goNext} disabled={!canNext} aria-label="Next month">›</button>
+        </div>
+
+        {grid.hasData ? (
           <>
-            <div className="cal-today-hijri">{hijriLabel(todayH.hijriYear, todayH.hijriMonth, todayH.hijriDay, monthNames)}</div>
-            <div className="cal-today-gregorian">{formatDisplayDate(today)}</div>
+            <div className="cal-grid-weekdays">
+              {WEEKDAYS.map((w, i) => <div key={i} className="cal-grid-wd">{w}</div>)}
+            </div>
+            <div className="cal-grid-days">
+              {Array.from({ length: grid.firstWeekday }).map((_, i) => <div key={'b' + i} className="cal-grid-day cal-grid-blank" />)}
+              {grid.cells.map(cell => (
+                <div
+                  key={cell.hijriDay}
+                  className={'cal-grid-day' + (cell.isToday ? ' is-today' : '') + (cell.events.length ? ' has-event' : '')}
+                  title={cell.events.length ? cell.events.map(o => eventById(o.id)?.label || o.id).join(' · ') : ''}
+                >
+                  <span className="cal-grid-daynum">{cell.hijriDay}</span>
+                  <span className="cal-grid-greg">{formatDayMonth(cell.gregorian)}</span>
+                  {cell.events.length > 0 && (
+                    <span className="cal-grid-dots">
+                      {cell.events.map((o, i) => <span key={i} className="cal-grid-dot" />)}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="cal-grid-legend">
+              <span className="cal-legend-item"><span className="cal-legend-dot cal-legend-dot-today" /> {cal.todayLabel || 'Today'}</span>
+              <span className="cal-legend-item"><span className="cal-legend-dot cal-legend-dot-event" /> Event</span>
+            </div>
           </>
         ) : (
-          <div className="cal-unavailable">
-            <div>{cal.unavailable || 'Not yet configured'}</div>
-            <div className="cal-unavailable-hint">{cal.unavailableHint || ''}</div>
+          <div className="cal-grid-empty">{cal.unavailable || 'Not yet configured'}</div>
+        )}
+
+        {!isCurrentView && (
+          <div className="cal-grid-todaybar">
+            <button className="cal-today-btn" onClick={goToday}>← {cal.todayLabel || 'Today'}</button>
           </div>
         )}
       </div>
 
-      {/* NEXT EVENT CARD */}
+      {/* NEXT EVENT STRIP */}
       {next ? (
-        <div className="cal-next">
-          <div className="cal-next-label">{cal.nextEvent || 'Next Event'}</div>
-          <div className="cal-next-title">
-            {(() => { const e = eventById(next.occurrence.id); return localizedEvent(e, lang, monthNames).label })()}
+        <div className="cal-nextstrip">
+          <div className="cal-nextstrip-body">
+            <div className="cal-nextstrip-label">{cal.nextEvent || 'Next Event'}</div>
+            <div className="cal-nextstrip-title">
+              {(() => { const e = eventById(next.occurrence.id); return localizedEvent(e, lang, monthNames).label })()}
+            </div>
+            <div className="cal-nextstrip-date">
+              {hijriLabel(next.occurrence.hijriYear, next.occurrence.hijriMonth, next.occurrence.hijriDays[0], monthNames)}
+              <span className="cal-nextstrip-sep">·</span>
+              {formatDisplayDate(next.occurrence.gregorianStart)}
+            </div>
           </div>
-          <div className="cal-next-date">
-            {hijriLabel(next.occurrence.hijriYear, next.occurrence.hijriMonth, next.occurrence.hijriDays[0], monthNames)}
-            {' · '}
-            {formatDisplayDate(next.occurrence.gregorianStart)}
-          </div>
-          <div className="cal-next-count">
+          <div className="cal-nextstrip-count">
             {next.daysUntil === 0
-              ? (cal.todayLabel || 'Today')
-              : (cal.inDays || 'in {n} days').replace('{n}', String(next.daysUntil))}
+              ? <span className="cal-nextstrip-num cal-nextstrip-now">{cal.todayLabel || 'Today'}</span>
+              : (<>
+                <span className="cal-nextstrip-num">{next.daysUntil}</span>
+                <span className="cal-nextstrip-unit">{cal.inDays ? (cal.inDays.split('{n}')[1] || '').trim() : 'days'}</span>
+              </>)}
           </div>
         </div>
       ) : (
-        <div className="cal-next">
-          <div className="cal-next-label">{cal.nextEvent || 'Next Event'}</div>
+        <div className="cal-nextstrip cal-nextstrip-empty">
+          <div className="cal-nextstrip-label">{cal.nextEvent || 'Next Event'}</div>
           <div className="cal-unavailable">{cal.noUpcoming || 'No upcoming events scheduled'}</div>
         </div>
       )}
 
-      {/* UPCOMING EVENT LIST */}
-      <h3 className="cal-section-title">{cal.eventList || 'Upcoming Events'}</h3>
-      {eventList.length === 0 ? (
-        <p className="cal-empty">{cal.noUpcoming || 'No upcoming events scheduled'}</p>
-      ) : (
-        <div className="calendar-grid">
-          {eventList.map(occ => {
-            const e = eventById(occ.id)
-            const loc = localizedEvent(e, lang, monthNames)
-            const dayBadge = occ.hijriDays.length === 1 ? occ.hijriDays[0] : `${occ.hijriDays[0]}–${occ.hijriDays[occ.hijriDays.length - 1]}`
-            return (
-              <div key={occ.id + '-' + occ.hijriYear + '-' + occ.hijriMonth} className="cal-event">
-                <div className="cal-date">
-                  {dayBadge}
-                  <span className="cal-month">{monthNames[occ.hijriMonth - 1] || occ.hijriMonth}</span>
-                </div>
-                <div className="cal-info">
-                  <div className="cal-event-title">{loc.label}</div>
-                  <div className="cal-event-desc">{loc.description}</div>
-                  <div className="cal-event-date">
-                    {formatISODate(occ.gregorianStart)}
-                    {occ.gregorianStart && occ.gregorianEnd && formatISODate(occ.gregorianStart) !== formatISODate(occ.gregorianEnd)
-                      ? ' – ' + formatISODate(occ.gregorianEnd)
-                      : ''}
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {/* PAST EVENTS */}
-      {pastEvents.length > 0 && (
+      {/* UPCOMING */}
+      {eventList.length > 0 && (
         <>
-          <h3 className="cal-section-title">{cal.pastEvents || 'Past Events'}</h3>
-          <div className="calendar-grid">
-            {pastEvents.map(occ => {
-              const e = eventById(occ.id)
-              const loc = localizedEvent(e, lang, monthNames)
-              const dayBadge = occ.hijriDays.length === 1 ? occ.hijriDays[0] : `${occ.hijriDays[0]}–${occ.hijriDays[occ.hijriDays.length - 1]}`
-              return (
-                <div key={occ.id + '-' + occ.hijriYear + '-' + occ.hijriMonth} className="cal-event cal-event-past">
-                  <div className="cal-date">
-                    {dayBadge}
-                    <span className="cal-month">{monthNames[occ.hijriMonth - 1] || occ.hijriMonth}</span>
-                  </div>
-                  <div className="cal-info">
-                    <div className="cal-event-title">{loc.label}</div>
-                    <div className="cal-event-desc">{loc.description}</div>
-                    <div className="cal-event-date">
-                      {formatISODate(occ.gregorianStart)}
-                      {occ.gregorianStart && occ.gregorianEnd && formatISODate(occ.gregorianStart) !== formatISODate(occ.gregorianEnd)
-                        ? ' – ' + formatISODate(occ.gregorianEnd)
-                        : ''}
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
+          <div className="cal-sec-head">
+            <h3 className="cal-sec-title">{cal.eventList || 'Upcoming Events'}</h3>
+            <span className="cal-sec-count">{eventList.length}</span>
+          </div>
+          <div className="cal-ev-list">
+            {eventList.map(occ => renderEventCard(occ, false))}
           </div>
         </>
       )}
 
-      {/* UNAVAILABLE EVENTS */}
+      {/* PAST */}
+      {pastEvents.length > 0 && (
+        <>
+          <div className="cal-sec-head">
+            <h3 className="cal-sec-title">{cal.pastEvents || 'Past Events'}</h3>
+            <span className="cal-sec-count">{pastEvents.length}</span>
+          </div>
+          <div className="cal-ev-list">
+            {pastEvents.map(occ => renderEventCard(occ, true))}
+          </div>
+        </>
+      )}
+
+      {/* UNAVAILABLE */}
       {unavailable.length > 0 && (
-        <div className="cal-unavailable-list">
-          <div className="cal-unavailable-list-title">{cal.unavailable || 'Not yet configured'}</div>
-          {unavailable.map((occ, i) => {
-            const e = eventById(occ.id)
-            const loc = localizedEvent(e, lang, monthNames)
-            return (
-              <div key={i} className="cal-unavailable-item">
-                {loc.label} — {cal.unavailableHint || ''}
-              </div>
-            )
-          })}
+        <div className="cal-unavail">
+          <div className="cal-unavail-title">{cal.unavailable || 'Not yet configured'}</div>
+          <div className="cal-unavail-chips">
+            {unavailable.map((occ, i) => {
+              const e = eventById(occ.id)
+              const loc = localizedEvent(e, lang, monthNames)
+              return <span key={i} className="cal-unavail-chip">{loc.label}</span>
+            })}
+          </div>
         </div>
       )}
     </div>
