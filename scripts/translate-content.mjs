@@ -220,11 +220,9 @@ write('salimPappa.json', d)
 // ---------------------------------------------------------------
 // 10. CALENDAR
 // ---------------------------------------------------------------
-d = read('calendar.json')
-// Already had good translations — just ensure structure
-;['en', 'hinglish', 'urdu', 'arabic'].forEach(lang => {
-  if (!d[lang] || !d[lang].events) d[lang] = { title: d[lang]?.title || d.en.title, events: d.en.events }
-})
-write('calendar.json', d)
+// Calendar is now schema v1 (admin-managed): monthStarts + shared events are
+// top-level and language-independent. Only the page title is localized, so
+// nothing needs translation here — leave the file untouched.
+console.log('  Skipping calendar.json — schema v1, admin-managed (events are shared, not per-language)')
 
 console.log('\nAll content JSONs translated!')

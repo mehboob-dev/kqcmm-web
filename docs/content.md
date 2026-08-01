@@ -41,7 +41,25 @@ Every content file in `src/config/content/` follows this structure:
 | `duas` | array | Alternate field for Dua page (same shape as sections) |
 | `verses` | array | Alternate field for SijrahNama |
 | `paragraphs` | array | Alternate field for Hmk (biography) |
-| `events` | array | Calendar events |
+
+### Calendar page (schema v1) — special case
+
+`calendar.json` is **not** a normal per-language content file. It uses `schemaVersion: 1` and is admin-managed through the dedicated 📅 Calendar editor, not the generic Pages editor:
+
+- `monthStarts` (top-level, shared): rolling 3-Hijri-year window (36 months) + 1 boundary month = 37 slots. Each `{ hijriYear, hijriMonth, gregorianStart }`; `gregorianStart` is `null` until the admin confirms the moon sighting.
+- `events` (top-level, shared): language-independent rules with stable IDs.
+- `monthNames` (top-level): localized Hijri month names per language.
+- `en` / `hinglish`: only the localized page `title`.
+
+Event rules:
+```json
+{ "id": "ashura", "rule": "hijri-fixed", "hijriMonth": 1, "hijriDays": [10], "label": "Ashura" }
+{ "id": "dec-event", "rule": "gregorian-month-hijri-relative", "gregorianMonth": 12, "hijriDays": [15,16,17], "label": "December Observance" }
+```
+
+Derivation lives in `src/utils/hijriCalendar.js` (see [Components](components.md) and [Hijri Calendar Plan](hijri-calendar-plan.md)).
+
+**Behavioral rules:** today's date resolves from the current month's start alone; event days 1–29 map from their month's start; day 30 needs the next month's boundary; fixed events only map to their own `hijriMonth`. The Calendar page shows upcoming and past events as separate sections.
 
 ---
 

@@ -33,6 +33,19 @@
     "fontSize": "Font Size",
     "fontFamily": "Font Family"
   },
+  "calendar": {
+    "today": "Today",
+    "hijriDate": "Hijri Date",
+    "gregorianDate": "Gregorian Date",
+    "nextEvent": "Next Event",
+    "inDays": "in {n} days",
+    "todayLabel": "Today",
+    "eventList": "Upcoming Events",
+    "pastEvents": "Past Events",
+    "unavailable": "Not yet configured",
+    "unavailableHint": "The admin has not yet confirmed the moon sighting for this date.",
+    "noUpcoming": "No upcoming events scheduled"
+  },
   "notFound": {
     "title": "404",
     "msg": "Page not found",

@@ -38,6 +38,10 @@ export function useApi() {
     getViewConfig: () => api('/view'),
     saveViewConfig: (data) => api('/view', { method: 'POST', body: JSON.stringify(data) }),
 
+    // Calendar (dedicated, schema-validated editor)
+    getCalendar: () => api('/calendar'),
+    saveCalendar: (data) => api('/calendar', { method: 'POST', body: JSON.stringify(data) }),
+
     // Search
     search: (q) => api('/search?q=' + encodeURIComponent(q)),
 

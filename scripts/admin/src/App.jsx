@@ -5,6 +5,7 @@ import NavEditor from './components/NavEditor.jsx'
 import StringsEditor from './components/StringsEditor.jsx'
 import SettingsEditor from './components/SettingsEditor.jsx'
 import LanguageEditor from './components/LanguageEditor.jsx'
+import CalendarEditor from './components/CalendarEditor.jsx'
 import Modal from './components/ui/Modal.jsx'
 
 const TABS = [
@@ -12,6 +13,7 @@ const TABS = [
   { key: 'nav',      label: '🧭 Nav',      desc: 'Bottom nav & drawer' },
   { key: 'strings',  label: '🏷️ Strings',  desc: 'UI labels' },
   { key: 'lang',     label: '🌍 Translate',desc: 'Translation status' },
+  { key: 'calendar', label: '📅 Calendar', desc: 'Hijri calendar & events' },
   { key: 'settings', label: '⚙️ Settings', desc: 'View config' },
 ]
 
@@ -235,6 +237,7 @@ export default function App() {
             {tab === 'nav' && 'Navigation Editor'}
             {tab === 'strings' && 'Strings Editor'}
             {tab === 'lang' && 'Translation Manager'}
+            {tab === 'calendar' && 'Hijri Calendar Editor'}
             {tab === 'settings' && 'Settings'}
           </h1>
           {tab === 'pages' && activePage && (
@@ -269,6 +272,7 @@ export default function App() {
           {tab === 'nav' && <NavEditor api={api} show={show} />}
           {tab === 'strings' && <StringsEditor api={api} show={show} />}
           {tab === 'lang' && <LanguageEditor api={api} pages={pages} show={show} onJumpToPage={jumpToPage} />}
+          {tab === 'calendar' && <CalendarEditor api={api} show={show} />}
           {tab === 'settings' && <SettingsEditor api={api} show={show} />}
         </div>
       </main>

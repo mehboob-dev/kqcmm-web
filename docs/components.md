@@ -278,6 +278,51 @@ Labels are **not stored** in the content JSON. Each list entry is just a selecti
 
 ---
 
+## Calendar.jsx
+
+Hijri Islamic calendar page — replaced the old static event list.
+
+**File:** `src/pages/Calendar.jsx`
+
+### Behaviour
+- **Today card:** shows today's Gregorian date and the calculated Hijri date (day/month/year) using the admin-maintained month-start table. Today's date resolves as soon as the **current month's** start is set (the next month's boundary is not needed — see `hijriCalendar.js`). If the current month's start isn't configured, shows an explicit unavailable state.
+- **Next-event card:** earliest upcoming event at or after today, with its Hijri + Gregorian date and a countdown in days (0 = today).
+- **Event lists:** split into **Upcoming** (each event's earliest future occurrence, ≥ today) and **Past** (each event's latest past occurrence, dimmed). An event only appears when its **own** Hijri month's start is set.
+- **Event list:** one card per event (deduplicated by event ID), sorted by mapped Gregorian occurrence, showing the shared/language-override label, description, and calculated Gregorian date range.
+- **Unavailable list:** events whose mapping isn't yet configured are listed separately as "not yet configured" — never guessed.
+
+### Data & logic
+- Reads the shared, top-level data from `src/config/content/calendar.json` (schema v1).
+- Uses `src/utils/hijriCalendar.js` for all conversion/mapping.
+- UI labels from `strings.calendar` in `src/config/strings/*.json`.
+
+---
+
+## hijriCalendar.js (pure date/logic util)
+
+**File:** `src/utils/hijriCalendar.js` — dependency-free, timezone-safe.
+
+| Export | Purpose |
+|---|---|
+| `parseISODate`, `formatISODate` | Strict `YYYY-MM-DD` local civil-date parsing/formatting (never `new Date('YYYY-MM-DD')`) |
+| `todayLocal`, `dayOrdinal`, `ordinalToDate`, `daysBetween`, `addDays`, `compareDates` | DST-safe day arithmetic via UTC ordinals |
+| `validateCalendarConfig` | Validates month starts (ordering, 29–30 day lengths, duplicate slots) and event rules |
+| `gregorianToHijri`, `todayHijri` | Convert a civil date to Hijri; needs only the containing month's start (day capped at 30) |
+| `enumerateOccurrences` | All event occurrences across the covered window (available + unavailable records) |
+| `localizedEvent`, `hijriLabel` | Label resolution (language override → default → id) and `"10 Muharram 1448"` formatting |
+| `nextOccurrence` | Earliest occurrence at/after a date + days-until |
+
+### Boundary rules (important)
+- **Today's date** needs only the current month's start. `start + (day−1)`, day capped at 30.
+- **Event days 1–29** map from the month's own start alone (`start + (day−1)`) — every Hijri month has at least 29 days.
+- **Event day 30** requires the next month's boundary (a 29-day month has no day 30) — otherwise unavailable, never guessed.
+- **Fixed events map only against their own `hijriMonth` slot** — never a different month (prevents "27 Safar" for a Rajab-27 event).
+- The next month's boundary is still required to place day-30 events and to validate 29/30-day month lengths.
+
+Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 54 cases).
+
+---
+
 ## Page Components
 
 All pages follow the same pattern:

@@ -1,120 +1,312 @@
 {
-  "en": {
-    "title": "Islamic Calendar",
-    "events": [
-      {
-        "date": "12",
-        "month": "Rabi' al-Awwal",
-        "title": "Eid Milad-un-Nabi ﷺ",
-        "desc": "Birth of the Holy Prophet Muhammad ﷺ"
-      },
-      {
-        "date": "1",
-        "month": "Muharram",
-        "title": "Islamic New Year",
-        "desc": "Beginning of the Islamic calendar year"
-      },
-      {
-        "date": "10",
-        "month": "Muharram",
-        "title": "Day of Ashura",
-        "desc": "Remembrance of Imam Husayn (AS)"
-      },
-      {
-        "date": "27",
-        "month": "Rajab",
-        "title": "Isra wal Miraj",
-        "desc": "Night Journey and Ascension of the Prophet ﷺ"
-      },
-      {
-        "date": "15",
-        "month": "Sha'ban",
-        "title": "Shab-e-Barat",
-        "desc": "Night of forgiveness"
-      },
-      {
-        "date": "1",
-        "month": "Ramadan",
-        "title": "Ramadan begins",
-        "desc": "Month of fasting begins"
-      },
-      {
-        "date": "27",
-        "month": "Ramadan",
-        "title": "Laylat-ul-Qadr",
-        "desc": "Night of Power"
-      },
-      {
-        "date": "1",
-        "month": "Shawwal",
-        "title": "Eid-ul-Fitr",
-        "desc": "Festival of breaking the fast"
-      },
-      {
-        "date": "10",
-        "month": "Dhul-Hijjah",
-        "title": "Eid-ul-Adha",
-        "desc": "Festival of sacrifice"
-      }
+  "schemaVersion": 1,
+  "monthStarts": [
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 1,
+      "gregorianStart": "2026-06-17"
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 2,
+      "gregorianStart": "2026-07-16"
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 3,
+      "gregorianStart": "2026-08-15"
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 4,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 5,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 6,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 7,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 8,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 9,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 10,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 11,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 12,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 1,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 2,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 3,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 4,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 5,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 6,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 7,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 8,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 9,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 10,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 11,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1449,
+      "hijriMonth": 12,
+      "gregorianStart": null
+    },
+    {
+      "hijriYear": 1450,
+      "hijriMonth": 1,
+      "gregorianStart": null
+    }
+  ],
+  "monthNames": {
+    "en": [
+      "Muharram",
+      "Safar",
+      "Rabi' al-Awwal",
+      "Rabi' al-Thani",
+      "Jumada al-Awwal",
+      "Jumada al-Thani",
+      "Rajab",
+      "Sha'ban",
+      "Ramadan",
+      "Shawwal",
+      "Dhul-Qa'dah",
+      "Dhul-Hijjah"
+    ],
+    "hinglish": [
+      "Muharram",
+      "Safar",
+      "Rabi-ul-Awwal",
+      "Rabi-ul-Sani",
+      "Jumada-ul-Awwal",
+      "Jumada-ul-Sani",
+      "Rajab",
+      "Shaban",
+      "Ramadan",
+      "Shawwal",
+      "Zilqad",
+      "Zilhaj"
     ]
   },
-  "hinglish": {
-    "title": "Islami Calendar",
-    "events": [
-      {
-        "date": "12",
-        "month": "Rabi' al-Awwal",
-        "title": "Eid Milad-un-Nabi ﷺ",
-        "desc": "Paighambar-e-Islam ﷺ ki wiladat"
-      },
-      {
-        "date": "1",
-        "month": "Muharram",
-        "title": "Islami Naya Saal",
-        "desc": "Islami calendar ka aaghaz"
-      },
-      {
-        "date": "10",
-        "month": "Muharram",
-        "title": "Ashura ka din",
-        "desc": "Imam Husayn (AS) ki yaad"
-      },
-      {
-        "date": "27",
-        "month": "Rajab",
-        "title": "Isra wal Miraj",
-        "desc": "Nabi ﷺ ka miraj"
-      },
-      {
-        "date": "15",
-        "month": "Sha'ban",
-        "title": "Shab-e-Barat",
-        "desc": "Bakhshish ki raat"
-      },
-      {
-        "date": "1",
-        "month": "Ramadan",
-        "title": "Ramadan ka aaghaz",
-        "desc": "Roze ka mahina shuru"
-      },
-      {
-        "date": "27",
-        "month": "Ramadan",
-        "title": "Shab-e-Qadr",
-        "desc": "Qadr ki raat"
-      },
-      {
-        "date": "1",
-        "month": "Shawwal",
-        "title": "Eid-ul-Fitr",
-        "desc": "Roze ke baad ki Eid"
-      },
-      {
-        "date": "10",
-        "month": "Dhul-Hijjah",
-        "title": "Eid-ul-Adha",
-        "desc": "Qurbani ki Eid"
+  "events": [
+    {
+      "id": "islamic-new-year",
+      "rule": "hijri-fixed",
+      "hijriMonth": 1,
+      "hijriDays": [
+        1
+      ],
+      "label": "Islamic New Year",
+      "description": "Beginning of the Islamic calendar year",
+      "translations": {
+        "hinglish": {
+          "label": "Islami Naya Saal",
+          "description": "Islami calendar ka aaghaz"
+        }
       }
-    ]
+    },
+    {
+      "id": "ashura",
+      "rule": "hijri-fixed",
+      "hijriMonth": 1,
+      "hijriDays": [
+        10
+      ],
+      "label": "Day of Ashura",
+      "description": "Remembrance of Imam Husayn (AS)",
+      "translations": {
+        "hinglish": {
+          "label": "Ashura ka din",
+          "description": "Imam Husayn (AS) ki yaad"
+        }
+      }
+    },
+    {
+      "id": "eid-milad-un-nabi",
+      "rule": "hijri-fixed",
+      "hijriMonth": 3,
+      "hijriDays": [
+        12
+      ],
+      "label": "Eid Milad-un-Nabi ﷺ",
+      "description": "Birth of the Holy Prophet Muhammad ﷺ",
+      "translations": {
+        "hinglish": {
+          "label": "Eid Milad-un-Nabi ﷺ",
+          "description": "Paighambar-e-Islam ﷺ ki wiladat"
+        }
+      }
+    },
+    {
+      "id": "isra-wal-miraj",
+      "rule": "hijri-fixed",
+      "hijriMonth": 7,
+      "hijriDays": [
+        27
+      ],
+      "label": "Isra wal Miraj",
+      "description": "Night Journey and Ascension of the Prophet ﷺ",
+      "translations": {
+        "hinglish": {
+          "label": "Isra wal Miraj",
+          "description": "Nabi ﷺ ka miraj"
+        }
+      }
+    },
+    {
+      "id": "shab-e-barat",
+      "rule": "hijri-fixed",
+      "hijriMonth": 8,
+      "hijriDays": [
+        15
+      ],
+      "label": "Shab-e-Barat",
+      "description": "Night of forgiveness",
+      "translations": {
+        "hinglish": {
+          "label": "Shab-e-Barat",
+          "description": "Bakhshish ki raat"
+        }
+      }
+    },
+    {
+      "id": "ramadan-begins",
+      "rule": "hijri-fixed",
+      "hijriMonth": 9,
+      "hijriDays": [
+        1
+      ],
+      "label": "Ramadan begins",
+      "description": "Month of fasting begins",
+      "translations": {
+        "hinglish": {
+          "label": "Ramadan ka aaghaz",
+          "description": "Roze ka mahina shuru"
+        }
+      }
+    },
+    {
+      "id": "laylat-ul-qadr",
+      "rule": "hijri-fixed",
+      "hijriMonth": 9,
+      "hijriDays": [
+        27
+      ],
+      "label": "Laylat-ul-Qadr",
+      "description": "Night of Power",
+      "translations": {
+        "hinglish": {
+          "label": "Shab-e-Qadr",
+          "description": "Qadr ki raat"
+        }
+      }
+    },
+    {
+      "id": "eid-ul-fitr",
+      "rule": "hijri-fixed",
+      "hijriMonth": 10,
+      "hijriDays": [
+        1
+      ],
+      "label": "Eid-ul-Fitr",
+      "description": "Festival of breaking the fast",
+      "translations": {
+        "hinglish": {
+          "label": "Eid-ul-Fitr",
+          "description": "Roze ke baad ki Eid"
+        }
+      }
+    },
+    {
+      "id": "eid-ul-adha",
+      "rule": "hijri-fixed",
+      "hijriMonth": 12,
+      "hijriDays": [
+        10
+      ],
+      "label": "Eid-ul-Adha",
+      "description": "Festival of sacrifice",
+      "translations": {
+        "hinglish": {
+          "label": "Eid-ul-Adha",
+          "description": "Qurbani ki Eid"
+        }
+      }
+    }
+  ],
+  "en": {
+    "title": "Islamic Calendar"
+  },
+  "hinglish": {
+    "title": "Islami Calendar"
   }
 }

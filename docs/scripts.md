@@ -22,6 +22,7 @@ A full React-based admin SPA built in `scripts/admin/`. Built automatically befo
 - **Strings Editor** — edit all UI labels (nav text, settings labels) for each language
 - **Language Manager** — translation status overview (what % filled per page per language), clickable percentages to jump to a page in a specific language, side-by-side comparison view, add/remove language across all content pages and strings
 - **Settings Editor** — view mode defaults (list/slide per page)
+- **Calendar Editor** — dedicated 📅 tab for the Hijri calendar: edit the 37 month-start slots (Gregorian start per Hijri month), manage shared events with rule-specific controls, validate before saving via `/api/calendar` (schema-validated)
 - **Global Search** — search across all pages and languages
 
 ### 2. Legacy Editor — `/`
@@ -46,6 +47,8 @@ The original single-page editor. Simpler but still functional.
 | `/api/strings/{lang}` | PUT | Create new string language |
 | `/api/view` | GET | Get view config |
 | `/api/view` | POST | Save view config |
+| `/api/calendar` | GET | Get calendar config (schema v1) |
+| `/api/calendar` | POST | Save calendar config (validated; rejects malformed data atomically) |
 | `/api/templates` | GET | List page templates |
 | `/api/content-lang` | PUT | Add a language to all content pages (clones from source or creates empty) |
 | `/api/content-lang` | DELETE | Remove a language from all content pages and strings |
@@ -69,6 +72,7 @@ scripts/admin/
 │       ├── StringsEditor.jsx  # UI strings editor
 │       ├── LanguageEditor.jsx # Translation status + CRUD + compare
 │       ├── SettingsEditor.jsx # View config editor
+│       ├── CalendarEditor.jsx # Hijri calendar editor (month starts + shared events)
 │       └── ui/
 │           └── Modal.jsx      # Reusable modal dialog component
 └── dist/                 # Built output (auto-generated)

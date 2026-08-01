@@ -33,6 +33,19 @@
     "fontSize": "Font Size",
     "fontFamily": "Font Family"
   },
+  "calendar": {
+    "today": "Aaj",
+    "hijriDate": "Hijri Tareekh",
+    "gregorianDate": "Gregorian Tareekh",
+    "nextEvent": "Agla Event",
+    "inDays": "{n} din mein",
+    "todayLabel": "Aaj",
+    "eventList": "Aane Wale Events",
+    "pastEvents": "Guzre Hue Events",
+    "unavailable": "Abhi set nahi hai",
+    "unavailableHint": "Admin ne is tareekh ke liye moon sighting abhi confirm nahi ki hai.",
+    "noUpcoming": "Koi upcoming event nahi hai"
+  },
   "notFound": {
     "title": "404",
     "msg": "Page nahi mili",

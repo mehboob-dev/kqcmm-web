@@ -391,6 +391,75 @@ strong { font-weight: 700; }
 .card-text { color: var(--text); line-height: 1.7; }
 
 /* ===== CALENDAR ===== */
+.cal-today {
+  background: var(--accent);
+  color: var(--header-text, #fff);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.cal-today-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.85;
+  margin-bottom: 6px;
+}
+.cal-today-hijri {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.cal-today-gregorian {
+  font-size: 13px;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+
+.cal-next {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.cal-next-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.cal-next-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+.cal-next-date {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.cal-next-count {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--accent);
+  color: var(--header-text, #fff);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.cal-section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+
 .calendar-grid {
   display: flex;
   flex-direction: column;
@@ -423,6 +492,42 @@ strong { font-weight: 700; }
 .cal-info { flex: 1; }
 .cal-info .cal-event-title { font-size: 14px; color: var(--text-heading); font-weight: 500; }
 .cal-info .cal-event-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.cal-event-date { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-variant-numeric: tabular-nums; }
+.cal-event-past { opacity: 0.6; }
+
+.cal-unavailable {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.cal-unavailable-hint {
+  font-size: 12px;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+.cal-empty {
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: center;
+  padding: 24px 0;
+}
+.cal-unavailable-list {
+  margin-top: 20px;
+  padding: 12px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+}
+.cal-unavailable-list-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.cal-unavailable-item {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
 
 /* ===== NOT FOUND ===== */
 .not-found {

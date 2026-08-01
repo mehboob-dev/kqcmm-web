@@ -232,13 +232,10 @@ async function main() {
     paragraphs: parsed,
   }))
 
-  await updateContent('calendar.html', 'calendar.json', (html) => {
-    const items = extractCollapsibles(html)
-    return items.map(item => ({ title: item.title, desc: item.body }))
-  }, (parsed, prev) => ({
-    title: 'Islamic Calendar',
-    events: parsed.length ? parsed : prev.events,
-  }))
+  // The Calendar page is now admin-managed via the dedicated Calendar editor
+  // (schemaVersion 1: monthStarts + shared events). Fetching from Firebase would
+  // reintroduce the old string-date event array, so it is skipped entirely.
+  console.log('  Skipping calendar.json — managed by the dedicated Calendar editor (schema v1)')
 
   console.log('\n✅ Done! English sections updated with full content from Firebase Hosting.')
 }

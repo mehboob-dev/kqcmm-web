@@ -84,6 +84,7 @@ kqcmm-web/
 │   │   ├── SideDrawer.jsx             # Slide-in navigation drawer
 │   │   ├── ContentView.jsx            # List/slide view + counter
 │   │   ├── QuickJump.jsx             # Floating quick-jump bottom sheet (shared, language-independent)
+│   │   ├── Calendar.jsx              # Hijri calendar (today, next-event countdown, mapped events)
 │   │   ├── SplashScreen.jsx           # Splash with countdown
 │   │   ├── SettingsPopup.jsx          # Settings modal
 │   │   ├── FontAwesome.jsx           # Icon component (centralized)
@@ -105,6 +106,8 @@ kqcmm-web/
 │   │   ├── Changelog.jsx            # Version history
 │   │   └── NotFound.jsx              # 404 page
 │   │
+│   ├── utils/
+│   │   └── hijriCalendar.js         # Hijri date conversion + event mapping (pure, tested)
 │   ├── context/
 │   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green)
 │   │   ├── LanguageContext.jsx       # Language state (en/hinglish/urdu)
@@ -127,7 +130,7 @@ kqcmm-web/
 │   │       ├── khatm.json
 │   │       ├── salimPappa.json
 │   │       ├── about.json
-│   │       ├── calendar.json
+│   │       ├── calendar.json               # Hijri calendar (schema v1: monthStarts + shared events)
 │   │       ├── roshni.json
 │   │       ├── abbajaan.json
 │   │       └── changelog.json               # Version history (2 live languages)
@@ -152,10 +155,11 @@ kqcmm-web/
 │           ├── hooks/
 │           │   └── useApi.js
 │           └── components/
-│               ├── ContentEditor.jsx  # Type-aware fields + live preview
+│               ├── ContentEditor.jsx  # Type-aware fields + live preview + shared Quick Jump editor
 │               ├── NavEditor.jsx      # Nav reorder + icon picker
 │               ├── StringsEditor.jsx  # UI labels editor
 │               ├── LanguageEditor.jsx # Translation status + CRUD
+│               ├── CalendarEditor.jsx # Hijri calendar (month starts + shared events)
 │               ├── SettingsEditor.jsx # View mode config
 │               └── ui/
 │                   └── Modal.jsx      # Reusable modal dialog
@@ -307,7 +311,7 @@ Global +/−/↺ counter displayed on content pages. In slide mode it sits in a 
 /khatm          → Khatm-e-Khwajagan (32 steps)
 /salim-pappa    → Salim Pappa
 /about          → About KQCMM
-/calendar       → Islamic Calendar
+/calendar       → Islamic Calendar (Hijri date + mapped events)
 /roshni         → Roshni / Chirag Raushan
 /abbajaan       → Abbajaan
 /changelog      → Version history

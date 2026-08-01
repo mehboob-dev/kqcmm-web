@@ -123,7 +123,7 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 /khatm          → Khatm-e-Khwajagan (32 steps, slide mode)
 /salim-pappa    → Salim Pappa
 /about          → About KQCMM (with version)
-/calendar       → Islamic Calendar (9 events)
+/calendar       → Islamic Calendar (Hijri date + mapped events, admin-maintained)
 /roshni         → Roshni / Chirag Raushan
 /abbajaan       → Abbajaan
 /changelog      → Version history

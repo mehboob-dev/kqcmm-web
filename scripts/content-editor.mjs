@@ -15,6 +15,7 @@ import http from 'http'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { validateCalendarConfig } from '../src/utils/hijriCalendar.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -127,7 +128,9 @@ const server = http.createServer((req, res) => {
 
   // ── API ROUTES ──
   if (u.pathname === '/api/pages' && method === 'GET') {
-    return sendJSON(listPages().map(n => ({ name: n, title: n })))
+    // `calendar` is managed by the dedicated Calendar editor (schema-validated),
+    // so it is hidden from the generic Pages list to avoid bypassing validation.
+    return sendJSON(listPages().filter(n => n !== 'calendar').map(n => ({ name: n, title: n })))
   }
 
   // Search
@@ -215,6 +218,27 @@ const server = http.createServer((req, res) => {
       { id: 'dua', name: 'Duas layout (heading + text)' },
       { id: 'fateha', name: 'Fateha layout (master-child cards)' },
     ])
+  }
+
+  // ── CALENDAR ROUTES (dedicated editor, schema-validated) ──
+  if (u.pathname === '/api/calendar' && method === 'GET') {
+    const d = readJSON(path.join(CONTENT_DIR, 'calendar.json'))
+    if (!d) return sendError('Calendar not found', 404)
+    return sendJSON(d)
+  }
+  if (u.pathname === '/api/calendar' && method === 'POST') {
+    let body = ''
+    req.on('data', c => body += c)
+    req.on('end', () => {
+      try {
+        const d = JSON.parse(body)
+        const v = validateCalendarConfig(d)
+        if (!v.ok) return sendError('Invalid calendar data: ' + v.errors.join('; '))
+        writeJSON(path.join(CONTENT_DIR, 'calendar.json'), d)
+        sendJSON({ ok: true })
+      } catch (e) { sendError(e.message) }
+    })
+    return
   }
 
   // ── NAV ROUTES ──

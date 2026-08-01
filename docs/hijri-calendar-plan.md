@@ -1,6 +1,10 @@
 # Hijri Calendar & Islamic Events — Implementation Plan
 
-How to add a Hijri calendar with Islamic events, moon-sighting accuracy, and location-aware dates.
+> **✅ Status: v1 implemented (2026-08-01).** The app now ships an admin-maintained
+> Hijri calendar where the admin sets the Gregorian start date of each Hijri month.
+> See [Content System](content.md) and [Components](components.md) for the current
+> schema and Calendar page. The options below describe the evolution path; the v1
+> approach is documented first.
 
 ---
 
@@ -12,6 +16,48 @@ The Islamic calendar is lunar — months start based on actual moon sighting, wh
 2. Highlights upcoming Islamic events (Ramadan, Eid, Shab-e-Barat, etc.)
 3. Can be adjusted per city/region for moon sighting differences
 4. Works offline as much as possible
+
+---
+
+## v1 (Implemented): Admin-Maintained Month Starts (Recommended)
+
+**Data source:** None — the admin directly enters the Gregorian date each Hijri month begins, based on local moon sighting. No location, API, or pre-calculated table.
+
+**Schema** (`src/config/content/calendar.json`, `schemaVersion: 1`):
+- Top-level `monthStarts`: a rolling 3-Hijri-year window (36 months) **plus one boundary month** (37 total). Each entry is `{ hijriYear, hijriMonth, gregorianStart }`; `gregorianStart` may be `null` until the admin confirms it.
+- Top-level `events`: shared, language-independent rules. Each has a stable `id`, a `rule`, and optional language `translations`.
+- `en`/`hinglish` hold only the localized page title (no duplicated event arrays).
+
+**Event rules:**
+```json
+{ "id": "ashura", "rule": "hijri-fixed", "hijriMonth": 1, "hijriDays": [10], "label": "Ashura" }
+```
+```json
+{ "id": "dec-event", "rule": "gregorian-month-hijri-relative", "gregorianMonth": 12, "hijriDays": [15, 16, 17], "label": "December Observance" }
+```
+
+- **Fixed Hijri:** always maps to the given Hijri month/day each year.
+- **Gregorian-month-relative:** finds the Hijri month whose configured days **all** fall inside the target Gregorian month. Zero matches → unavailable; more than one → invalid (never guessed).
+
+**Derivation** (`src/utils/hijriCalendar.js`, pure, no deps):
+- Strict `YYYY-MM-DD` local-date parsing (never `new Date('YYYY-MM-DD')`).
+- UTC-ordinal day arithmetic so DST never changes day counts.
+- **Today's date** needs only the current month's start (`start + (day−1)`, day capped at 30).
+- **Event days 1–29** map from the month's own start alone. **Day 30** needs the next month's boundary (a 29-day month has no day 30); without it, day-30 events stay unavailable — never guessed.
+- **Fixed events map only against their own `hijriMonth`** — never a different month's start.
+- Produces today's Hijri date, mapped event occurrences (split into upcoming / past), and next-event countdown (0 = today).
+
+**Admin editor:** A dedicated **📅 Calendar** tab in the admin panel edits `monthStarts` (37 date inputs) and shared events with rule-specific controls, validates before saving, and writes via `/api/calendar` (server-side schema validation). `calendar.json` is hidden from the generic Pages editor.
+
+**Migration:** The old string-date events (`{ date: "12", month: "Rabi' al-Awwal" }`) were converted to fixed Hijri rules with IDs and translations preserved.
+
+---
+
+## Evolution Options (future)
+
+The options below were considered for v1 and remain future paths if regional accuracy is ever needed.
+
+### Option 1: Pre-calculated Umm al-Qura (one-size-fits-all)
 
 ---
 
@@ -142,7 +188,7 @@ App:
 
 ---
 
-## Option 5: Hybrid — Pre-calculated + Manual Offset (★ Recommended)
+## Option 5: Hybrid — Pre-calculated + Manual Offset (superseded by v1)
 
 **Data source:** Start with one pre-calculated calendar (e.g., SPI for South Asia since the app's audience is likely South Asian based on Urdu/Hinglish content).
 
@@ -179,26 +225,33 @@ App:
 
 ---
 
-## Why Option 5 is Recommended
+## Why Option 5 was originally preferred (now superseded)
 
-1. **Audience fit** — South Asian (Urdu/Hinglish) audience maps naturally to an SPI-based calendar with monthly offsets
-2. **Works offline** — base calendar bundled, only the small offset JSON needs occasional fetching
+1. **Audience fit** — South Asian (Urdu/Hinglish) audience maps naturally to an SPI-based calendar
+2. **Works offline** — base calendar bundled, only a small offset JSON needs occasional fetching
 3. **Admin-controlled** — same workflow as editing content JSONs, less frequent
 4. **No external API dependency** — no rate limits, downtime, or maintenance of API keys
 5. **Progressive** — start with one city, add more later
 
+**Why v1 replaced it:** the offset model requires cumulative math and admin thinking in
+"±1 days from the base table". The v1 model (admin directly enters each month's Gregorian
+start) matches how a local mosque actually works, has no accumulation bugs, and was smaller
+to build. Offsets could return later if per-region variants are ever wanted.
+
 ---
 
-## Implementation Steps (Option 5)
+## Implementation Notes (v1 shipped)
 
-| Step | What | Notes |
+The v1 build followed a different, simpler shape than Option 5's steps:
+
+| Area | What shipped | Location |
 |---|---|---|
-| 1 | Generate a Hijri calendar JSON (2026–2030) | Use `hijri-js` library or pre-computed table |
-| 2 | Build a `useHijriDate()` hook | Converts today → Hijri using calendar + any active offset |
-| 3 | Create `config/calendar-offset.json` | Admin adjustments — empty to start |
-| 4 | Add city/region picker in settings | Default to auto-detect from locale/timezone |
-| 5 | Rewrite Calendar page | Live Hijri dates + event lookup from `calendar.json` |
-| 6 | Host offset JSON on GitHub Pages | Fetchable URL so admin can update without rebuilding |
+| Data | `monthStarts` (37 slots, nullable) + shared `events` | `src/config/content/calendar.json` |
+| Logic | Pure conversion + event mapping + countdown | `src/utils/hijriCalendar.js` |
+| Tests | 46 unit tests (no framework) | `scripts/test-hijri-calendar.mjs` (`npm test`) |
+| Public UI | Today card, next-event countdown, event list, unavailable states | `src/pages/Calendar.jsx` |
+| Admin | Dedicated 📅 Calendar tab, validated save | `scripts/admin/src/components/CalendarEditor.jsx` + `/api/calendar` |
+| Tooling | fetch/translate scripts skip calendar (admin-managed) | `scripts/fetch-content.mjs`, `scripts/translate-content.mjs` |
 
 ---
 

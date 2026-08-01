@@ -75,7 +75,7 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | `/khatm` | Khatm-e-Khwajagan (32 steps) |
 | `/salim-pappa` | Salim Pappa |
 | `/about` | About KQCMM |
-| `/calendar` | Islamic Calendar |
+| `/calendar` | Islamic Calendar (Hijri date + mapped events) |
 | `/roshni` | Roshni / Chirag Raushan |
 | `/abbajaan` | Abbajaan |
 | `/changelog` | Version history |
@@ -100,6 +100,7 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | **Install App** | Native install button in bottom nav |
 | **Swipe Navigation** | Swipe left/right in slide mode — deliberate drag required (80px threshold, vertical scroll ignored) |
 | **Quick Jump** | Floating book FAB → bottom sheet to jump to key sections (labels auto-derived per language) |
+| **Hijri Calendar** | Admin-maintained month starts → today's Hijri date, mapped events, next-event countdown |
 | **Changelog** | Version history page |
 
 ---
@@ -165,7 +166,7 @@ Full documentation is in the `docs/` folder:
 | [docs/scripts.md](docs/scripts.md) | All CLI tools |
 | [docs/new-developer-guide.md](docs/new-developer-guide.md) | Step-by-step for freshers |
 | [docs/suggestions.md](docs/suggestions.md) | 27 feature ideas |
-| [docs/hijri-calendar-plan.md](docs/hijri-calendar-plan.md) | Islamic calendar implementation plan |
+| [docs/hijri-calendar-plan.md](docs/hijri-calendar-plan.md) | Hijri calendar (v1: admin-maintained month starts) |
 | [docs/index.md](docs/index.md) | Master documentation index |
 
 ---

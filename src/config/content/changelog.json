@@ -3,6 +3,14 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.6.0",
+        "date": "2026-08-01",
+        "changes": [
+          "Hijri Calendar: today's Islamic date, upcoming event countdown, and events mapped automatically",
+          "Admin panel: dedicated Calendar editor to set each Hijri month's start date and manage shared events"
+        ]
+      },
+      {
         "version": "5.5.0",
         "date": "2026-07-29",
         "changes": [
@@ -111,6 +119,14 @@
   "hinglish": {
     "title": "Changelog",
     "versions": [
+      {
+        "version": "5.6.0",
+        "date": "2026-08-01",
+        "changes": [
+          "Hijri Calendar: aaj ki Islami tareekh, upcoming event countdown, aur events khud-ba-khud map hote hain",
+          "Admin panel: dedicated Calendar editor — har Hijri month ki start date set karein aur shared events manage karein"
+        ]
+      },
       {
         "version": "5.5.0",
         "date": "2026-07-29",
