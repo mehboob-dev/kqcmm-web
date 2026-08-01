@@ -52,21 +52,43 @@ A dedicated view for Ramadan (or any month) listing each day's recommended dhikr
 ### 11. Notifications for events
 Remind users before important events (Eid, Shab-e-Barat, monthly chhatti) using web notifications or the existing PWA infrastructure.
 
+### 12. Hijri ↔ Gregorian date converter
+A small tool to answer "what Gregorian date is 15 Shaban?" or "what Hijri date is 1 Aug?" — the conversion engine already exists.
+
+### 13. Coming-up list (next N events)
+Beyond the single "Next Event" strip, show the next N events (e.g. within 30 days) so users can plan ahead.
+
+### 14. Event export / add to calendar
+Copy an event's date or download an `.ics` file to save it into the phone's native calendar app.
+
+### 15. Printable monthly view
+A clean, printable layout of a Hijri/Gregorian month (and its events) for sharing/printing in the community.
+
+---
+
+## 🛠 Admin (content editor)
+
+### 16. Calendar live preview
+The admin Calendar editor saves data but doesn't show the public page — a live preview would reduce trial-and-error.
+
+### 17. Duplicate / clone an event
+Quickly copy an existing event as a template for a similar one.
+
 ---
 
 ## 🎵 Audio & Media
 
-### 12. Audio recitations
+### 18. Audio recitations
 Play MP3 recitations alongside duas/khatm verses. Auto-scroll to highlight current verse.
 
-### 13. Video integration
+### 19. Video integration
 Embed spiritual talks or kalam videos (YouTube / local).
 
 ---
 
 ## ⚙️ Technical
 
-### 14. Accessibility audit
+### 20. Accessibility audit
 - Screen reader labels
 - Keyboard navigation
 - Focus management for modals/drawers
