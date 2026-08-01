@@ -354,14 +354,22 @@ export function enumerateOccurrences(cfg) {
           out.push({ id: ev.id, rule: ev.rule, hijriYear: ms.hijriYear, hijriMonth: ms.hijriMonth, hijriDays: ev.hijriDays, available: false })
         }
       }
-      // Monthly events also map the LAST configured month (days 1-29 need only
-      // the month's own start; day 30 stays unavailable without a boundary).
-      if (isMonthly && monthStarts.length) {
+      // The LAST configured month has no following boundary, so the loop above
+      // skips it. Days 1-29 of a month need only the month's own start (every
+      // Hijri month has at least 29 days; day 30 stays unavailable without a
+      // boundary). Map the last month for BOTH rules when it applies — otherwise
+      // a fixed event landing in the final configured month would never show
+      // (e.g. Eid Milad-un-Nabi in Rabi' al-Awwal 1448, the last slot in the
+      // table). Mirror the loop's unavailable handling too, so a day-30 event
+      // in the last month surfaces as "not configured" instead of vanishing.
+      if (monthStarts.length) {
         const ms = monthStarts[monthStarts.length - 1]
-        if (ms.gregorianStart) {
+        if (ms.gregorianStart && (isMonthly || ms.hijriMonth === ev.hijriMonth)) {
           const r = mapFixedEventToMonth(ev, ms, null)
           if (r.ok) {
             out.push({ id: ev.id, rule: ev.rule, hijriYear: r.hijriYear, hijriMonth: r.hijriMonth, hijriDays: r.hijriDays, gregorianStart: r.gregorianStart, gregorianEnd: r.gregorianEnd, available: true })
+          } else {
+            out.push({ id: ev.id, rule: ev.rule, hijriYear: ms.hijriYear, hijriMonth: ms.hijriMonth, hijriDays: ev.hijriDays, available: false })
           }
         }
       }

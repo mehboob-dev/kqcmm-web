@@ -191,6 +191,29 @@ eq(formatISODate(s29.gregorianStart), '2026-08-13', '29 Safar = 2026-07-16 + 28 
 const s30 = smOccs.find(o => o.id === 'safar30')
 assert(!s30.available, 'day 30 stays unavailable without boundary (could be a 29-day month)')
 
+console.log('--- event mapping: fixed event in the LAST configured month ---')
+// Regression: a hijri-fixed event whose month is the FINAL configured slot was
+// silently dropped (the loop skipped the last month for lack of a boundary).
+// Days 1-29 need only the month's own start, so it must still map.
+const lastMonthCfg = {
+  monthStarts: [
+    { hijriYear: 1448, hijriMonth: 2, gregorianStart: '2026-07-16' },
+    { hijriYear: 1448, hijriMonth: 3, gregorianStart: '2026-08-15' }, // last slot, no next
+  ],
+  events: [
+    { id: 'milad', rule: 'hijri-fixed', hijriMonth: 3, hijriDays: [12], label: 'Eid Milad-un-Nabi' },
+    { id: 'milad30', rule: 'hijri-fixed', hijriMonth: 3, hijriDays: [30] }, // day 30 still needs boundary
+    { id: 'monthlyX', rule: 'hijri-monthly', hijriDays: [5] },
+  ],
+}
+const lmOccs = enumerateOccurrences(lastMonthCfg)
+const milad = lmOccs.find(o => o.id === 'milad')
+assert(milad && milad.available, 'fixed event in last month maps (day 12 needs no boundary)')
+eq(formatISODate(milad.gregorianStart), '2026-08-26', 'Rabi I 12 = 2026-08-15 + 11 = 2026-08-26')
+assert(!lmOccs.find(o => o.id === 'milad30').available, 'day-30 fixed event in last month stays unavailable (no boundary)')
+const monthlyX = lmOccs.filter(o => o.id === 'monthlyX' && o.available)
+eq(monthlyX.length, 2, 'monthly still maps every configured month including the last')
+
 console.log('--- event mapping: gregorian-month-hijri-relative ---')
 // Find a Hijri month whose days 15,16,17 all fall in December 2026.
 // Muharram 1447 = Jun26..Jul25; Safar = Jul26..Aug24; RabiI=Aug25..Sep23; RabiII=Sep24..Oct23;
