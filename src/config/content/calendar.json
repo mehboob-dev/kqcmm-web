@@ -2,6 +2,56 @@
   "schemaVersion": 1,
   "monthStarts": [
     {
+      "hijriYear": 1447,
+      "hijriMonth": 3,
+      "gregorianStart": "2025-08-25"
+    },
+    {
+      "hijriYear": 1447,
+      "hijriMonth": 4,
+      "gregorianStart": "2025-09-24"
+    },
+    {
+      "hijriYear": 1447,
+      "hijriMonth": 5,
+      "gregorianStart": "2025-10-24"
+    },
+    {
+      "hijriYear": 1447,
+      "hijriMonth": 6,
+      "gregorianStart": "2025-11-23"
+    },
+    {
+      "hijriYear": 1447,
+      "hijriMonth": 7,
+      "gregorianStart": "2025-12-22"
+    },
+    {
+      "hijriYear": 1447,
+      "hijriMonth": 8,
+      "gregorianStart": "2026-01-21"
+    },
+    {
+      "hijriYear": 1447,
+      "hijriMonth": 9,
+      "gregorianStart": "2026-02-19"
+    },
+    {
+      "hijriYear": 1447,
+      "hijriMonth": 10,
+      "gregorianStart": "2026-03-21"
+    },
+    {
+      "hijriYear": 1447,
+      "hijriMonth": 11,
+      "gregorianStart": "2026-04-19"
+    },
+    {
+      "hijriYear": 1447,
+      "hijriMonth": 12,
+      "gregorianStart": "2026-05-19"
+    },
+    {
       "hijriYear": 1448,
       "hijriMonth": 1,
       "gregorianStart": "2026-06-17"
