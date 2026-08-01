@@ -7,6 +7,13 @@ const HIJRI_MONTHS = [
   'Ramadan', 'Shawwal', 'Dhul-Qa\'dah', 'Dhul-Hijjah',
 ]
 
+const thStyle = {
+  textAlign: 'left', padding: '8px 10px', fontSize: 11,
+  textTransform: 'uppercase', letterSpacing: '0.4px', color: 'var(--text-muted)',
+  borderBottom: '1px solid var(--border)', background: 'var(--bg-card-alt)',
+}
+const tdStyle = { padding: '6px 10px', verticalAlign: 'middle' }
+
 function clone(o) { return JSON.parse(JSON.stringify(o)) }
 
 export default function CalendarEditor({ api, show }) {
@@ -38,18 +45,49 @@ export default function CalendarEditor({ api, show }) {
   const monthStarts = data.monthStarts || []
   const events = data.events || []
 
-  const setStart = (idx, gregorianStart) => {
+  // ---- month-start helpers (free-form list) ----
+  const setStartField = (idx, field, value) => {
     const d = clone(data)
-    d.monthStarts[idx].gregorianStart = gregorianStart || null
+    d.monthStarts[idx][field] = value
+    update(d)
+  }
+  const addMonthStart = () => {
+    const d = clone(data)
+    // Auto-number: next month after the last row (or fall back to 1448-1)
+    const last = d.monthStarts[d.monthStarts.length - 1]
+    const next = last
+      ? (last.hijriMonth === 12 ? { hijriYear: last.hijriYear + 1, hijriMonth: 1 } : { hijriYear: last.hijriYear, hijriMonth: last.hijriMonth + 1 })
+      : { hijriYear: 1448, hijriMonth: 1 }
+    d.monthStarts = [...(d.monthStarts || []), { hijriYear: next.hijriYear, hijriMonth: next.hijriMonth, gregorianStart: null }]
+    update(d)
+  }
+  const removeMonthStart = (idx) => {
+    const d = clone(data)
+    d.monthStarts.splice(idx, 1)
+    update(d)
+  }
+  const moveMonthStart = (from, to) => {
+    if (to < 0 || to >= (data.monthStarts || []).length) return
+    const d = clone(data)
+    const [it] = d.monthStarts.splice(from, 1)
+    d.monthStarts.splice(to, 0, it)
     update(d)
   }
 
   const save = async () => {
-    const v = validateCalendarConfig(data)
+    // Auto-sort month starts by Hijri year+month so the stored list is always
+    // ordered (validation then sees a clean sequence). Duplicates are still
+    // rejected, not silently dropped.
+    const sorted = clone(data)
+    sorted.monthStarts = (sorted.monthStarts || [])
+      .slice()
+      .sort((a, b) => (a.hijriYear - b.hijriYear) || (a.hijriMonth - b.hijriMonth))
+    const v = validateCalendarConfig(sorted)
     if (!v.ok) { setValidation(v); show('Cannot save — fix validation errors first', 'error'); return }
+    setData(sorted)
     setSaving(true)
     try {
-      await api.saveCalendar(data)
+      await api.saveCalendar(sorted)
       show('Calendar saved!')
     } catch (e) { show('Error: ' + e.message, 'error') }
     finally { setSaving(false) }
@@ -103,31 +141,71 @@ export default function CalendarEditor({ api, show }) {
         </div>
       )}
 
-      {/* Month starts */}
+      {/* Month starts — free-form, compact table */}
       <div className="section-card">
         <div className="section-header">
           <span className="section-title">Month Starts</span>
-          <span className="tag">{monthStarts.length} slots · rolling window + boundary</span>
+          <span className="tag">{monthStarts.length} months · {monthStarts.filter(m => m.gregorianStart).length} configured</span>
         </div>
         <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12 }}>
-          Enter the Gregorian date each Hijri month begins (per local moon sighting). Leave blank for months not yet confirmed. The last slot is the boundary needed to measure the final covered month.
+          Enter the Gregorian date each Hijri month begins (per local moon sighting). Add or remove any month — leave dates blank until confirmed. A month needs the next month's start to place day-30 events.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 8 }}>
-          {monthStarts.map((ms, i) => (
-            <div key={i} className="field-group" style={{ marginBottom: 0 }}>
-              <label className="field-label" htmlFor={`ms-${i}`}>
-                {ms.hijriYear} · {HIJRI_MONTHS[ms.hijriMonth - 1]}
-              </label>
-              <input
-                id={`ms-${i}`}
-                type="date"
-                className="field-input"
-                value={ms.gregorianStart || ''}
-                onChange={e => setStart(i, e.target.value)}
-              />
-            </div>
-          ))}
+
+        <div style={{ maxHeight: 420, overflowY: 'auto', border: '1px solid var(--border)', borderRadius: 8 }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+            <thead style={{ position: 'sticky', top: 0, background: 'var(--bg-card)' }}>
+              <tr>
+                <th style={thStyle}>#</th>
+                <th style={thStyle}>Hijri Year</th>
+                <th style={thStyle}>Hijri Month</th>
+                <th style={thStyle}>Gregorian Start</th>
+                <th style={{ ...thStyle, width: 90 }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {monthStarts.map((ms, i) => (
+                <tr key={i} style={{ borderTop: '1px solid var(--border)' }}>
+                  <td style={tdStyle}><span className="tag">{i + 1}</span></td>
+                  <td style={tdStyle}>
+                    <input
+                      type="number" min={1} className="field-input"
+                      style={{ width: 90 }}
+                      value={ms.hijriYear}
+                      onChange={e => setStartField(i, 'hijriYear', Number(e.target.value) || 1)}
+                    />
+                  </td>
+                  <td style={tdStyle}>
+                    <select
+                      className="field-select"
+                      style={{ width: 150 }}
+                      value={String(ms.hijriMonth)}
+                      onChange={e => setStartField(i, 'hijriMonth', Number(e.target.value))}
+                    >
+                      {HIJRI_MONTHS.map((m, mi) => <option key={mi} value={mi + 1}>{m}</option>)}
+                    </select>
+                  </td>
+                  <td style={tdStyle}>
+                    <input
+                      type="date" className="field-input"
+                      style={{ width: 160 }}
+                      value={ms.gregorianStart || ''}
+                      onChange={e => setStartField(i, 'gregorianStart', e.target.value || null)}
+                    />
+                  </td>
+                  <td style={tdStyle}>
+                    <div className="array-controls">
+                      <button className="btn-icon" onClick={() => moveMonthStart(i, i - 1)} disabled={i === 0} aria-label="Move up">↑</button>
+                      <button className="btn-icon" onClick={() => moveMonthStart(i, i + 1)} disabled={i >= monthStarts.length - 1} aria-label="Move down">↓</button>
+                      <button className="btn-icon danger" onClick={() => removeMonthStart(i)} aria-label="Remove month">✕</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+
+        <button className="btn-add" style={{ marginTop: 10 }} onClick={addMonthStart}>+ Add month</button>
       </div>
 
       {/* Events */}

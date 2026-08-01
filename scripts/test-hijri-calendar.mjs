@@ -375,5 +375,25 @@ eq(upcomingMonthly.length, 1, 'upcoming dedups monthly to next occurrence only')
 // The upcoming monthly occurrence is the next one (Safar 6 = 2026-07-21)
 eq(formatISODate(upcomingMonthly[0].gregorianStart), '2026-07-21', 'upcoming monthly is the next occurrence (Safar 6)')
 
+console.log('--- month-start auto-sort (by hijriYear then hijriMonth) ---')
+// Mirrors the sort applied in the admin CalendarEditor on save.
+const sortMonths = (arr) => arr.slice().sort((a, b) => (a.hijriYear - b.hijriYear) || (a.hijriMonth - b.hijriMonth))
+const scrambled = [
+  { hijriYear: 1449, hijriMonth: 2 },
+  { hijriYear: 1448, hijriMonth: 12 },
+  { hijriYear: 1448, hijriMonth: 1 },
+  { hijriYear: 1449, hijriMonth: 1 },
+  { hijriYear: 1448, hijriMonth: 2 },
+]
+const sorted = sortMonths(scrambled)
+eq(sorted.map(m => `${m.hijriYear}-${m.hijriMonth}`).join(','), '1448-1,1448-2,1448-12,1449-1,1449-2', 'sorts by year then month')
+// Year rollover: Dhul-Hijjah (12) before next year's Muharram (1)
+const rollover = [
+  { hijriYear: 1450, hijriMonth: 1 },
+  { hijriYear: 1449, hijriMonth: 12 },
+]
+const sortedR = sortMonths(rollover)
+eq(sortedR.map(m => `${m.hijriYear}-${m.hijriMonth}`).join(','), '1449-12,1450-1', 'year rollover sorts correctly')
+
 console.log(`\n${pass} passed, ${fail} failed`)
 process.exit(fail ? 1 : 0)
