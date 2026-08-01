@@ -454,3 +454,42 @@ export function hijriMonthOf(monthStarts, date) {
   }
   return anchor ? { year: anchor.hijriYear, month: anchor.hijriMonth } : null
 }
+
+/**
+ * Build a weekday-aligned grid for a Gregorian month. Each cell is
+ * { day, gregorian, hijriDay, hijriMonth, hijriYear, isToday }.
+ *
+ * - `target` = { year, month } (Gregorian; month is 1-based).
+ * - The Gregorian month's weekday alignment comes from its own day 1.
+ * - Each Gregorian day is converted to a Hijri day using the month-start table;
+ *   `hijriDay` is null if that date isn't within a configured month.
+ * - `hasData:false` is never returned — a Gregorian month always exists — but
+ *   cells whose Hijri mapping is unknown have `hijriDay: null`.
+ */
+export function buildGregorianMonthGrid(monthStarts, target, today) {
+  const y = target.year
+  const m = target.month // 1-based
+  const daysInMonth = new Date(y, m, 0).getDate()
+  const firstWeekday = new Date(y, m - 1, 1).getDay()
+  const todayOrd = today ? dayOrdinal(today) : -Infinity
+
+  const cells = []
+  for (let day = 1; day <= daysInMonth; day++) {
+    const g = { y, m, d: day }
+    const hijri = gregorianToHijri(g, monthStarts)
+    cells.push({
+      day,
+      gregorian: g,
+      hijriDay: hijri.ok ? hijri.hijriDay : null,
+      hijriMonth: hijri.ok ? hijri.hijriMonth : null,
+      hijriYear: hijri.ok ? hijri.hijriYear : null,
+      isToday: dayOrdinal(g) === todayOrd,
+    })
+  }
+  return { hasData: true, year: y, month: m, daysInMonth, firstWeekday, cells }
+}
+
+/** The Gregorian { year, month } (1-based) that contains a civil date. */
+export function gregorianMonthOf(date) {
+  return { year: date.y, month: date.m }
+}

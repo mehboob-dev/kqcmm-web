@@ -21,6 +21,8 @@ import {
   nextOccurrence,
   buildMonthGrid,
   hijriMonthOf,
+  buildGregorianMonthGrid,
+  gregorianMonthOf,
 } from '../src/utils/hijriCalendar.js'
 
 let pass = 0, fail = 0
@@ -273,6 +275,27 @@ assert(!emptyGrid.hasData, 'grid without data returns hasData:false')
 const mo = hijriMonthOf(gridCfg.monthStarts, parseISODate('2026-08-01'))
 eq(mo.year, 1448, 'hijriMonthOf year')
 eq(mo.month, 2, 'hijriMonthOf month (Safar)')
+
+console.log('--- gregorian month grid ---')
+// August 2026 has 31 days, starts on a Saturday
+const gg = buildGregorianMonthGrid(gridCfg.monthStarts, { year: 2026, month: 8 }, parseISODate('2026-08-01'))
+assert(gg.hasData, 'gregorian grid always has data')
+eq(gg.daysInMonth, 31, 'August has 31 days')
+eq(gg.firstWeekday, new Date(2026, 7, 1).getDay(), 'Aug 1 2026 weekday (Sat=6)')
+eq(gg.cells.length, 31, '31 cells')
+// Aug 1 is Safar 17 (with our test config Safar starts Jul 16)
+eq(gg.cells[0].day, 1, 'first cell is Aug 1')
+eq(gg.cells[0].hijriDay, 17, 'Aug 1 = Safar 17')
+eq(gg.cells[0].hijriMonth, 2, 'Aug 1 is in month 2 (Safar)')
+assert(gg.cells[0].isToday, 'Aug 1 is today')
+// A date not within any configured month -> hijriDay null
+const gg2 = buildGregorianMonthGrid(gridCfg.monthStarts, { year: 2027, month: 5 }, parseISODate('2026-08-01'))
+assert(gg2.cells[0].hijriDay === null, 'unconfigured date has null hijriDay')
+
+// gregorianMonthOf
+const gmo = gregorianMonthOf({ y: 2026, m: 8, d: 1 })
+eq(gmo.year, 2026, 'gregorianMonthOf year')
+eq(gmo.month, 8, 'gregorianMonthOf month')
 
 console.log(`\n${pass} passed, ${fail} failed`)
 process.exit(fail ? 1 : 0)

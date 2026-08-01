@@ -507,6 +507,31 @@ strong { font-weight: 700; }
   color: var(--text-muted);
   margin-top: 0.15em;
 }
+.cal-grid-toggle {
+  display: flex;
+  gap: 0.3em;
+  margin-bottom: 0.8em;
+  padding: 0.25em;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border);
+  border-radius: 0.8em;
+}
+.cal-toggle-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.8em;
+  font-weight: 700;
+  padding: 0.4em 0.6em;
+  border-radius: 0.6em;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.cal-toggle-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
 .cal-grid-todaybar {
   margin-top: 0.8em;
   padding-top: 0.6em;
@@ -596,6 +621,9 @@ strong { font-weight: 700; }
 }
 .cal-grid-day.has-event:not(.is-today) .cal-grid-greg {
   color: var(--accent);
+}
+.cal-grid-day.no-hijri {
+  opacity: 0.55;
 }
 .cal-grid-dots {
   position: absolute;

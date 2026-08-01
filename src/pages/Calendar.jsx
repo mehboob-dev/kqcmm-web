@@ -13,11 +13,15 @@ import {
   formatISODate,
   buildMonthGrid,
   hijriMonthOf,
+  buildGregorianMonthGrid,
+  gregorianMonthOf,
 } from '../utils/hijriCalendar'
 
 // Weekday header labels (3 letters) — Sunday-first. Localized via toLocaleDateString
 // when available, but a static 3-letter set keeps the grid compact across languages.
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+const GREG_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 function formatDisplayDate({ y, m, d }) {
   const date = new Date(y, m - 1, d)
@@ -33,6 +37,12 @@ export default function Calendar() {
   const { lang } = useLanguage()
   const [strings, setStrings] = useState(null)
   const [today, setToday] = useState(() => todayLocal())
+  // view mode: 'hijri' (Hijri month grid) or 'gregorian' (Gregorian month grid)
+  // Persisted like app settings so the choice survives reloads.
+  const [viewMode, setViewMode] = useState(() => {
+    const saved = localStorage.getItem('kqcmm_calendar_view')
+    return saved === 'gregorian' ? 'gregorian' : 'hijri'
+  })
   // viewed month { year, month } — init to the month containing today
   const [view, setView] = useState(null)
 
@@ -45,23 +55,39 @@ export default function Calendar() {
     return () => clearInterval(id)
   }, [])
 
-  // Initialize view to the current Hijri month, falling back to the configured
-  // min month if today isn't within any configured month. The nav is bounded to
-  // configured months, so the view always lands on a configured month.
+  // Initialize view to the current month (Hijri or Gregorian) based on viewMode
   useEffect(() => {
     if (!view) {
+      if (viewMode === 'gregorian') {
+        setView(gregorianMonthOf(todayLocal()))
+        return
+      }
       const cur = hijriMonthOf(data.monthStarts, todayLocal())
       const fallback = (data.monthStarts || []).find(ms => ms.gregorianStart)
       const target = cur || (fallback ? { year: fallback.hijriYear, month: fallback.hijriMonth } : null)
       if (target) setView(target)
     }
-  }, [view])
+  }, [view, viewMode])
+
+  // Reset view when toggling modes so nav starts at the current month
+  const switchMode = (mode) => {
+    if (mode === viewMode) return
+    setViewMode(mode)
+    localStorage.setItem('kqcmm_calendar_view', mode)
+    if (mode === 'gregorian') setView(gregorianMonthOf(todayLocal()))
+    else {
+      const cur = hijriMonthOf(data.monthStarts, todayLocal())
+      const fallback = (data.monthStarts || []).find(ms => ms.gregorianStart)
+      setView(cur || (fallback ? { year: fallback.hijriYear, month: fallback.hijriMonth } : null))
+    }
+  }
 
   const content = data[lang] || data.en
   const title = content.title
 
   const todayH = todayHijri(data.monthStarts)
   const monthNames = data.monthNames?.[lang] || data.monthNames?.en || []
+  const monthNamesShort = data.monthNamesShort?.[lang] || data.monthNamesShort?.en || []
   const occurrences = enumerateOccurrences(data)
   const next = nextOccurrence(occurrences, today)
   const cal = strings?.calendar || {}
@@ -74,14 +100,20 @@ export default function Calendar() {
     eventByOrd.set(k, (eventByOrd.get(k) || []).concat(o))
   })
 
-  const grid = view ? buildMonthGrid(data.monthStarts, view, today) : { hasData: false }
+  const grid = view
+    ? (viewMode === 'gregorian'
+        ? buildGregorianMonthGrid(data.monthStarts, view, today)
+        : buildMonthGrid(data.monthStarts, view, today))
+    : { hasData: false }
   if (grid.hasData) {
     grid.cells.forEach(cell => {
       cell.events = eventByOrd.get(dayOrdKey(cell.gregorian)) || []
     })
   }
 
-  const currentMonth = hijriMonthOf(data.monthStarts, today)
+  const currentMonth = viewMode === 'gregorian'
+    ? gregorianMonthOf(today)
+    : hijriMonthOf(data.monthStarts, today)
   const isCurrentView = view && currentMonth && view.year === currentMonth.year && view.month === currentMonth.month
 
   // Available occurrences sorted by start date (ascending)
@@ -119,25 +151,26 @@ export default function Calendar() {
     ? { year: configured[configured.length - 1].hijriYear, month: configured[configured.length - 1].hijriMonth }
     : null
   const keyOf = (m) => m ? `${m.year}-${m.month}` : ''
-  const canPrev = minMonth && view && keyOf(view) > keyOf(minMonth)
-  const canNext = maxMonth && view && keyOf(view) < keyOf(maxMonth)
+  // Hijri mode: bound nav to configured min/max. Gregorian mode: unbounded.
+  const canPrev = viewMode === 'gregorian' ? !!view : !!(minMonth && view && keyOf(view) > keyOf(minMonth))
+  const canNext = viewMode === 'gregorian' ? !!view : !!(maxMonth && view && keyOf(view) < keyOf(maxMonth))
 
-  const goPrev = () => setView(prev => {
+  const shiftMonth = (prev, delta) => {
     if (!prev) return prev
-    let next
-    if (prev.month === 1) next = { year: prev.year - 1, month: 12 }
-    else next = { ...prev, month: prev.month - 1 }
-    // bound to configured min
-    if (minMonth && keyOf(next) < keyOf(minMonth)) return prev
+    if (delta === -1 && prev.month === 1) return { year: prev.year - 1, month: 12 }
+    if (delta === 1 && prev.month === 12) return { year: prev.year + 1, month: 1 }
+    return { ...prev, month: prev.month + delta }
+  }
+  const goPrev = () => setView(prev => {
+    const next = shiftMonth(prev, -1)
+    // bound to configured min in Hijri mode
+    if (viewMode === 'hijri' && minMonth && keyOf(next) < keyOf(minMonth)) return prev
     return next
   })
   const goNext = () => setView(prev => {
-    if (!prev) return prev
-    let next
-    if (prev.month === 12) next = { year: prev.year + 1, month: 1 }
-    else next = { ...prev, month: prev.month + 1 }
-    // bound to configured max
-    if (maxMonth && keyOf(next) > keyOf(maxMonth)) return prev
+    const next = shiftMonth(prev, 1)
+    // bound to configured max in Hijri mode
+    if (viewMode === 'hijri' && maxMonth && keyOf(next) > keyOf(maxMonth)) return prev
     return next
   })
   const goToday = () => { if (currentMonth) setView(currentMonth) }
@@ -150,7 +183,7 @@ export default function Calendar() {
       <div key={occ.id + '-' + occ.hijriYear + '-' + occ.hijriMonth} className={'cal-ev' + (past ? ' cal-ev-past' : '')}>
         <div className="cal-ev-date">
           <span className="cal-ev-day">{dayBadge}</span>
-          <span className="cal-ev-mon">{monthNames[occ.hijriMonth - 1] || occ.hijriMonth}</span>
+          <span className="cal-ev-mon">{monthNamesShort[occ.hijriMonth - 1] || occ.hijriMonth}</span>
         </div>
         <div className="cal-ev-body">
           <div className="cal-ev-title">{loc.label}</div>
@@ -172,13 +205,31 @@ export default function Calendar() {
           <button className="cal-nav-btn" onClick={goPrev} disabled={!canPrev} aria-label="Previous month">‹</button>
           <div className="cal-grid-title">
             <div className="cal-grid-month">
-              {grid.hasData ? `${monthNames[grid.month - 1] || grid.month} ${grid.year}` : ''}
+              {grid.hasData
+                ? (viewMode === 'gregorian'
+                    ? `${GREG_MONTHS[grid.month - 1] || grid.month} ${grid.year}`
+                    : `${monthNames[grid.month - 1] || grid.month} ${grid.year}`)
+                : ''}
             </div>
             <div className="cal-grid-sub">
-              {grid.hasData && isCurrentView && todayH.ok ? hijriLabel(todayH.hijriYear, todayH.hijriMonth, todayH.hijriDay, monthNames) : ''}
+              {grid.hasData && isCurrentView && todayH.ok
+                ? hijriLabel(todayH.hijriYear, todayH.hijriMonth, todayH.hijriDay, monthNames)
+                : ''}
             </div>
           </div>
           <button className="cal-nav-btn" onClick={goNext} disabled={!canNext} aria-label="Next month">›</button>
+        </div>
+
+        {/* View mode toggle */}
+        <div className="cal-grid-toggle">
+          <button
+            className={'cal-toggle-btn' + (viewMode === 'hijri' ? ' active' : '')}
+            onClick={() => switchMode('hijri')}
+          >Hijri</button>
+          <button
+            className={'cal-toggle-btn' + (viewMode === 'gregorian' ? ' active' : '')}
+            onClick={() => switchMode('gregorian')}
+          >Gregorian</button>
         </div>
 
         {grid.hasData ? (
@@ -190,12 +241,21 @@ export default function Calendar() {
               {Array.from({ length: grid.firstWeekday }).map((_, i) => <div key={'b' + i} className="cal-grid-day cal-grid-blank" />)}
               {grid.cells.map(cell => (
                 <div
-                  key={cell.hijriDay}
-                  className={'cal-grid-day' + (cell.isToday ? ' is-today' : '') + (cell.events.length ? ' has-event' : '')}
+                  key={viewMode === 'gregorian' ? cell.day : cell.hijriDay}
+                  className={'cal-grid-day' + (cell.isToday ? ' is-today' : '') + (cell.events.length ? ' has-event' : '') + (viewMode === 'gregorian' && cell.hijriDay === null ? ' no-hijri' : '')}
                   title={cell.events.length ? cell.events.map(o => eventById(o.id)?.label || o.id).join(' · ') : ''}
                 >
-                  <span className="cal-grid-daynum">{cell.hijriDay}</span>
-                  <span className="cal-grid-greg">{formatDayMonth(cell.gregorian)}</span>
+                  {viewMode === 'gregorian' ? (
+                    <>
+                      <span className="cal-grid-daynum">{cell.day}</span>
+                      <span className="cal-grid-greg">{cell.hijriDay != null ? `${cell.hijriDay} ${monthNamesShort[cell.hijriMonth - 1] || ''}` : ''}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="cal-grid-daynum">{cell.hijriDay}</span>
+                      <span className="cal-grid-greg">{formatDayMonth(cell.gregorian)}</span>
+                    </>
+                  )}
                   {cell.events.length > 0 && (
                     <span className="cal-grid-dots">
                       {cell.events.map((o, i) => <span key={i} className="cal-grid-dot" />)}
