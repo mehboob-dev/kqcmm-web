@@ -289,7 +289,7 @@ Hijri Islamic calendar page — a full navigable calendar, not a static list.
 - **View toggle:** switch between **Hijri** and **Gregorian** month views. The choice is persisted to `localStorage['kqcmm_calendar_view']`.
 - **Month navigation:** prev/next arrows. In Hijri mode the range is bounded to the configured min/max months (buttons disabled at the limits); Gregorian mode is unbounded. A "Today" button returns to the current month.
 - **Next-event strip:** the earliest upcoming event with its Hijri + Gregorian date and a countdown pill (0 = today).
-- **Event lists:** split into **Upcoming** (earliest future occurrence per event) and **Past** (latest past occurrence, dimmed). An event only appears when its **own** Hijri month's start is set.
+- **Event lists:** split into **Upcoming** (earliest future occurrence per event, ascending) and **Past** (latest past occurrence per event, **descending — newest first**, dimmed). An event only appears when its **own** Hijri month's start is set.
 - **Unavailable list:** events whose mapping isn't yet configured, shown as chips — never guessed.
 
 ### Data & logic
@@ -308,6 +308,7 @@ Thin bar rendered below the app header on **every page**, showing today's Hijri 
 
 ### Behaviour
 - Accent-colored strip with white text (readable across themes).
+- **Clickable** — tapping the strip navigates to `/calendar` (`useNavigate`). Aria-label/title: "Open Islamic calendar".
 - Auto-refreshes across midnight (60s interval).
 - If today's Hijri isn't configured, shows `—`.
 - `em`-sized so it scales with the app's font-size setting.
@@ -331,6 +332,7 @@ Thin bar rendered below the app header on **every page**, showing today's Hijri 
 | `buildGregorianMonthGrid` | Gregorian month grid with each cell's mapped Hijri day/month (null when unconfigured) |
 | `hijriMonthOf` | The Hijri `{year, month}` containing a civil date |
 | `gregorianMonthOf` | The Gregorian `{year, month}` containing a civil date |
+| `splitUpcomingPast` | Splits occurrences into upcoming (ascending) and past (**descending**, newest-first) with the right dedup: fixed events by id, monthly events per `id#year-month` in the past list |
 
 ### Boundary rules (important)
 - **Today's date** needs only the current month's start. `start + (day−1)`, day capped at 30.
@@ -339,7 +341,7 @@ Thin bar rendered below the app header on **every page**, showing today's Hijri 
 - **Fixed events map only against their own `hijriMonth` slot** — never a different month (prevents "27 Safar" for a Rajab-27 event).
 - The next month's boundary is still required to place day-30 events and to validate 29/30-day month lengths.
 
-Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 82 cases).
+Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 98 cases).
 
 ---
 

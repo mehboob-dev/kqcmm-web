@@ -24,7 +24,7 @@ The Islamic calendar is lunar — months start based on actual moon sighting, wh
 **Data source:** None — the admin directly enters the Gregorian date each Hijri month begins, based on local moon sighting. No location, API, or pre-calculated table.
 
 **Schema** (`src/config/content/calendar.json`, `schemaVersion: 1`):
-- Top-level `monthStarts`: a rolling 3-Hijri-year window (36 months) **plus one boundary month** (37 total). Each entry is `{ hijriYear, hijriMonth, gregorianStart }`; `gregorianStart` may be `null` until the admin confirms it.
+- Top-level `monthStarts`: a **free-form** list of `{ hijriYear, hijriMonth, gregorianStart }` entries — admins add/remove any months they need (not a fixed window). `gregorianStart` may be `null` until the admin confirms it.
 - Top-level `events`: shared, language-independent rules. Each has a stable `id`, a `rule`, and optional language `translations`.
 - `en`/`hinglish` hold only the localized page title (no duplicated event arrays).
 
@@ -47,7 +47,7 @@ The Islamic calendar is lunar — months start based on actual moon sighting, wh
 - **Fixed events map only against their own `hijriMonth`** — never a different month's start.
 - Produces today's Hijri date, mapped event occurrences (split into upcoming / past), and next-event countdown (0 = today).
 
-**Admin editor:** A dedicated **📅 Calendar** tab in the admin panel edits `monthStarts` (37 date inputs) and shared events with rule-specific controls, validates before saving, and writes via `/api/calendar` (server-side schema validation). `calendar.json` is hidden from the generic Pages editor.
+**Admin editor:** A dedicated **📅 Calendar** tab in the admin panel edits `monthStarts` as a free-form add/remove/sort table (Hijri year + month + Gregorian start per row) and shared events with rule-specific controls (fixed / monthly / Gregorian-relative), validates before saving, and writes via `/api/calendar` (server-side schema validation). `calendar.json` is hidden from the generic Pages editor.
 
 **Migration:** The old string-date events (`{ date: "12", month: "Rabi' al-Awwal" }`) were converted to fixed Hijri rules with IDs and translations preserved.
 
@@ -246,7 +246,7 @@ The v1 build followed a different, simpler shape than Option 5's steps:
 
 | Area | What shipped | Location |
 |---|---|---|
-| Data | `monthStarts` (37 slots, nullable) + shared `events` | `src/config/content/calendar.json` |
+| Data | `monthStarts` (free-form list, nullable) + shared `events` | `src/config/content/calendar.json` |
 | Logic | Pure conversion + event mapping + countdown | `src/utils/hijriCalendar.js` |
 | Tests | 46 unit tests (no framework) | `scripts/test-hijri-calendar.mjs` (`npm test`) |
 | Public UI | Today card, next-event countdown, event list, unavailable states | `src/pages/Calendar.jsx` |

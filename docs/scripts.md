@@ -22,7 +22,8 @@ A full React-based admin SPA built in `scripts/admin/`. Built automatically befo
 - **Strings Editor** — edit all UI labels (nav text, settings labels) for each language
 - **Language Manager** — translation status overview (what % filled per page per language), clickable percentages to jump to a page in a specific language, side-by-side comparison view, add/remove language across all content pages and strings
 - **Settings Editor** — view mode defaults (list/slide per page)
-- **Calendar Editor** — dedicated 📅 tab for the Hijri calendar: edit the 37 month-start slots (Gregorian start per Hijri month), manage shared events with rule-specific controls, validate before saving via `/api/calendar` (schema-validated)
+- **Calendar Editor** — dedicated 📅 tab for the Hijri calendar: manage **month starts** as a free-form, add/remove/sort table (Hijri year + month + Gregorian start per row, auto-sorts on save, duplicates rejected), manage shared events with rule-specific controls (fixed / monthly / Gregorian-relative), validate before saving via `/api/calendar` (schema-validated)
+- **Header Save** — Calendar, Strings, Nav, and Settings each show a live **● Unsaved / Saved** badge and a **💾 Save** button in the toolbar (matching the Pages tab); status updates as you type
 - **Global Search** — search across all pages and languages
 
 ### 2. Legacy Editor — `/`

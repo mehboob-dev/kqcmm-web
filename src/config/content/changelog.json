@@ -3,6 +3,15 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.8.0",
+        "date": "2026-08-01",
+        "changes": [
+          "Tap the Hijri date strip at the top of any page to open the Islamic Calendar",
+          "Calendar events can repeat every month on a chosen Hijri date",
+          "Past calendar events now listed newest first"
+        ]
+      },
+      {
         "version": "5.7.0",
         "date": "2026-08-01",
         "changes": [
@@ -110,6 +119,15 @@
   "hinglish": {
     "title": "Changelog",
     "versions": [
+      {
+        "version": "5.8.0",
+        "date": "2026-08-01",
+        "changes": [
+          "Har page par upar wali Hijri date strip par tap karke Islamic Calendar khol sakte hain",
+          "Calendar events har mahine ek chosen Hijri date par repeat ho sakte hain",
+          "Past calendar events ab pehle naye (newest first) dikhte hain"
+        ]
+      },
       {
         "version": "5.7.0",
         "date": "2026-08-01",

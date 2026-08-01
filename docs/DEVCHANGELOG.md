@@ -6,6 +6,23 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## 5.8.0 — 2026-08-01
+
+### User-facing
+- Tap the Hijri date strip (top of every page) to open the Islamic Calendar.
+- Calendar events can repeat every month on a chosen Hijri date (`hijri-monthly` rule).
+- Past calendar events listed newest-first (descending).
+
+### Internal / docs
+- `hijri-monthly` event rule: validator + enumeration (incl. last-configured-month pass); admin "Monthly" rule option.
+- Past-list dedup fix: monthly events now show every past occurrence; extracted `splitUpcomingPast` (pure) returning past events descending.
+- Admin: header save button + live saved/unsaved status across Calendar/Strings/Nav/Settings (forwardRef + onStatusChange); `useApi` memoized to stop edits being wiped by re-renders; hooks-order + TDZ bugs fixed.
+- Admin: month-starts editor rebuilt as a compact free-form add/remove/sort table (scales to 100+ months).
+- Clickable `HijriStrip` navigates to `/calendar`.
+- Docs updated (components.md, content.md, CLAUDE.md, README.md, DEVCHANGELOG); version 5.7.0 → 5.8.0.
+
+---
+
 ## 5.7.0 — 2026-08-01
 
 ### User-facing

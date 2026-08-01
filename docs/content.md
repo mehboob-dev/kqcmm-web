@@ -46,7 +46,7 @@ Every content file in `src/config/content/` follows this structure:
 
 `calendar.json` is **not** a normal per-language content file. It uses `schemaVersion: 1` and is admin-managed through the dedicated 📅 Calendar editor, not the generic Pages editor:
 
-- `monthStarts` (top-level, shared): rolling 3-Hijri-year window (36 months) + 1 boundary month = 37 slots. Each `{ hijriYear, hijriMonth, gregorianStart }`; `gregorianStart` is `null` until the admin confirms the moon sighting.
+- `monthStarts` (top-level, shared): a **free-form** list of `{ hijriYear, hijriMonth, gregorianStart }` entries — admins add/remove any months they need (not a fixed window). `gregorianStart` is `null` until the admin confirms the moon sighting.
 - `events` (top-level, shared): language-independent rules with stable IDs.
 - `monthNames` (top-level): localized full Hijri month names per language.
 - `monthNamesShort` (top-level): 3-letter Hijri month abbreviations per language, used in compact grid sub-dates and event date badges.
@@ -55,8 +55,13 @@ Every content file in `src/config/content/` follows this structure:
 Event rules:
 ```json
 { "id": "ashura", "rule": "hijri-fixed", "hijriMonth": 1, "hijriDays": [10], "label": "Ashura" }
+{ "id": "monthly", "rule": "hijri-monthly", "hijriDays": [13], "label": "13th of every month" }
 { "id": "dec-event", "rule": "gregorian-month-hijri-relative", "gregorianMonth": 12, "hijriDays": [15,16,17], "label": "December Observance" }
 ```
+
+- **`hijri-fixed`**: repeats in one specific Hijri month every year.
+- **`hijri-monthly`**: repeats on the same Hijri day in EVERY Hijri month.
+- **`gregorian-month-hijri-relative`**: finds the single Hijri month whose days all fall inside a target Gregorian month.
 
 Derivation lives in `src/utils/hijriCalendar.js` (see [Components](components.md) and [Hijri Calendar Plan](hijri-calendar-plan.md)).
 
