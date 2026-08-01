@@ -339,6 +339,25 @@ strong { font-weight: 700; }
   padding-bottom: 0.5em;
   border-bottom: 2px solid var(--accent);
 }
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  margin-bottom: 1em;
+  padding: 0.5em 1.1em;
+  border: none;
+  border-radius: 1.6em;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.9em;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: opacity 0.15s ease;
+}
+.share-btn:hover { opacity: 0.9; }
+.share-btn:active { opacity: 0.8; }
 .page-section {
   margin-bottom: 1.25em;
 }

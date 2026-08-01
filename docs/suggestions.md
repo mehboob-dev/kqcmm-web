@@ -21,17 +21,23 @@ Smooth slide/fade animations between routes instead of instant cut. Polishes the
 ### 4. Pinned pages
 Let users pin their most-visited pages (e.g., Khatm, Dua) to the top of the side drawer or home page for quick access.
 
+### 5. Reading-mode presets
+Bundle the existing fonts × sizes into a few named presets ("Comfort", "Large Print", "Classic") so users pick a preset instead of fiddling with two separate controls.
+
+### 6. Copy all / print a page
+A "Print" button that opens a clean printable version of a dua/khatm/poetry page, and/or a "copy all" button for the whole page text.
+
 ---
 
 ## 🔍 Content & Discovery
 
-### 5. Daily verse on home page
+### 7. Daily verse on home page
 Show a random dua/verse/kalam that changes daily on the home page. Could rotate through existing content JSONs ("Verse of the Day"). Makes the app feel alive.
 
-### 6. Scroll position memory
+### 8. Scroll position memory
 Remember scroll position on pages like Khatm (32 steps) so users don't lose their place on refresh. Use `sessionStorage` or `localStorage`.
 
-### 7. Bookmarks / favorites
+### 9. Bookmarks / favorites
 Let users bookmark specific verses or sections. Store in IndexedDB or localStorage.
 
 ---
@@ -40,55 +46,55 @@ Let users bookmark specific verses or sections. Store in IndexedDB or localStora
 
 Ideas specific to the calendar, which is now a full navigable feature.
 
-### 8. Calendar as home widget
+### 10. Calendar as home widget
 Surface today's Hijri date and the next event on the **home page** (or as a small card), not just on the calendar page.
 
-### 9. Event tap → detail
+### 11. Event tap → detail
 Tap a calendar event to see its full description, related duas/verses, and the surrounding holy days.
 
-### 10. Ramadan / month planner
+### 12. Ramadan / month planner
 A dedicated view for Ramadan (or any month) listing each day's recommended dhikr/dua, driven by the existing month-start + event data.
 
-### 11. Notifications for events
+### 13. Notifications for events
 Remind users before important events (Eid, Shab-e-Barat, monthly chhatti) using web notifications or the existing PWA infrastructure.
 
-### 12. Hijri ↔ Gregorian date converter
+### 14. Hijri ↔ Gregorian date converter
 A small tool to answer "what Gregorian date is 15 Shaban?" or "what Hijri date is 1 Aug?" — the conversion engine already exists.
 
-### 13. Coming-up list (next N events)
+### 15. Coming-up list (next N events)
 Beyond the single "Next Event" strip, show the next N events (e.g. within 30 days) so users can plan ahead.
 
-### 14. Event export / add to calendar
+### 16. Event export / add to calendar
 Copy an event's date or download an `.ics` file to save it into the phone's native calendar app.
 
-### 15. Printable monthly view
+### 17. Printable monthly view
 A clean, printable layout of a Hijri/Gregorian month (and its events) for sharing/printing in the community.
 
 ---
 
 ## 🛠 Admin (content editor)
 
-### 16. Calendar live preview
+### 18. Calendar live preview
 The admin Calendar editor saves data but doesn't show the public page — a live preview would reduce trial-and-error.
 
-### 17. Duplicate / clone an event
+### 19. Duplicate / clone an event
 Quickly copy an existing event as a template for a similar one.
 
 ---
 
 ## 🎵 Audio & Media
 
-### 18. Audio recitations
+### 20. Audio recitations
 Play MP3 recitations alongside duas/khatm verses. Auto-scroll to highlight current verse.
 
-### 19. Video integration
+### 21. Video integration
 Embed spiritual talks or kalam videos (YouTube / local).
 
 ---
 
 ## ⚙️ Technical
 
-### 20. Accessibility audit
+### 22. Accessibility audit
 - Screen reader labels
 - Keyboard navigation
 - Focus management for modals/drawers
@@ -113,6 +119,9 @@ The Hijri calendar logic is covered by 98 unit tests (`npm test`). Broader smoke
 - **Two-column event lists** — Upcoming and Past each split into Monthly | Other side-by-side columns with scrollable lists; responsive on mobile.
 - **App-wide Hijri strip** — tap the date strip on any page to open the calendar.
 - **Admin Calendar editor** — free-form add/remove/sort month starts and compact event rows, header save + live status.
+
+### D4. Share the app (invite)
+A "Share KQCMM" button on the About page using the Web Share API (with a copy-link fallback) so readers can spread the app to their community.
 
 ---
 

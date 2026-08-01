@@ -52,5 +52,11 @@
     "title": "404",
     "msg": "Page nahi mili",
     "goHome": "← Home jayein"
+  },
+  "share": {
+    "title": "KQCMM Share Karein",
+    "message": "KQCMM — English, Hinglish aur Urdu mein duas, khatm, fateha aur zyada",
+    "copied": "Link copy ho gaya!",
+    "unsupported": "Share karne ke liye link copy karein"
   }
 }

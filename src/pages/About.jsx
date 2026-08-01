@@ -1,15 +1,46 @@
 import SeoHead from '../components/SeoHead'
+import { useState, useEffect } from 'react'
 import { useLanguage } from '../context/LanguageContext'
+import { loadStrings } from '../config/strings'
 import data from '../config/content/about.json'
 
 export default function About() {
   const { lang } = useLanguage()
+  const [strings, setStrings] = useState(null)
+  const [copied, setCopied] = useState(false)
   const content = data[lang] || data.en
+
+  useEffect(() => {
+    loadStrings(lang).then(setStrings)
+  }, [lang])
+
+  const share = strings?.share || {}
+
+  const handleShare = async () => {
+    const url = window.location.origin + import.meta.env.BASE_URL
+    const text = share.message || 'KQCMM'
+    const title = share.title || 'Share KQCMM'
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url })
+        return
+      } catch (e) { /* user cancelled — ignore */ }
+    }
+    // Fallback: copy the link
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (e) { /* clipboard unavailable */ }
+  }
 
   return (
     <div className="content-page">
       <SeoHead title="About" path="/about" description="About Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya (KQCMM) — mission, activities, and contact information." />
       <h2 className="page-title">{content.title}</h2>
+      <button className="share-btn" onClick={handleShare}>
+        {copied ? '✓ ' + (share.copied || 'Link copied!') : '📤 ' + (share.title || 'Share KQCMM')}
+      </button>
       {content.intro && <div className="page-section"><p style={{ whiteSpace: 'pre-line' }}>{content.intro}</p></div>}
       {content.sections?.map((s, i) => (
         <div key={i} className="card">
