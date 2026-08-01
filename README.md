@@ -167,7 +167,7 @@ Full documentation is in the `docs/` folder:
 | [docs/seo.md](docs/seo.md) | SEO, Open Graph, pre-rendering |
 | [docs/scripts.md](docs/scripts.md) | All CLI tools |
 | [docs/new-developer-guide.md](docs/new-developer-guide.md) | Step-by-step for freshers |
-| [docs/suggestions.md](docs/suggestions.md) | 27 feature ideas |
+| [docs/suggestions.md](docs/suggestions.md) | Feature ideas (shipped items marked ✅) |
 | [docs/hijri-calendar-plan.md](docs/hijri-calendar-plan.md) | Hijri calendar (v1: admin-maintained month starts) |
 | [docs/index.md](docs/index.md) | Master documentation index |
 

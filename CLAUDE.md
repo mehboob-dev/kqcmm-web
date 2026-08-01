@@ -484,7 +484,7 @@ Comprehensive docs are in the `docs/` folder:
 | [docs/new-developer-guide.md](docs/new-developer-guide.md) | Step-by-step guide for freshers |
 | [docs/pwa.md](docs/pwa.md) | PWA / offline / service worker |
 | [docs/seo.md](docs/seo.md) | SEO, Open Graph, pre-rendering |
-| [docs/suggestions.md](docs/suggestions.md) | 27 documented feature ideas |
+| [docs/suggestions.md](docs/suggestions.md) | Feature ideas (shipped items marked ✅) |
 
 ---
 

@@ -24,7 +24,7 @@ Welcome to the KQCMM web app documentation. Choose a topic below.
 - [Developer Changelog](DEVCHANGELOG.md) — complete record, including internal/refactor/docs changes
 
 ## Future Ideas
-- [Suggestions](suggestions.md) — 27 documented feature ideas
+- [Suggestions](suggestions.md) — feature ideas (with ✅ for shipped items)
 
 ## Quick Links
 | File | Purpose |
