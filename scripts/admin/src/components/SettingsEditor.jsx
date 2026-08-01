@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
 
-export default function SettingsEditor({ api, show }) {
+const SettingsEditor = forwardRef(function SettingsEditor({ api, show, onStatusChange }, ref) {
   const [view, setView] = useState(null)
   const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -49,6 +49,13 @@ export default function SettingsEditor({ api, show }) {
     setDirty(true)
   }
 
+  // Report dirty/saving to App.jsx so the header badge & Save button update.
+  useEffect(() => { onStatusChange?.({ dirty, saving }) }, [dirty, saving, onStatusChange])
+
+  // Expose save + status to the App.jsx toolbar (header badge & Save button).
+  // MUST be before the early returns (rules of hooks).
+  useImperativeHandle(ref, () => ({ save: saveView, dirty, saving }), [dirty, saving, view])
+
   if (loading) return <div className="section-card"><p style={{ color: 'var(--text-muted)' }}>Loading settings…</p></div>
   if (error) return <div className="section-card"><p style={{ color: 'var(--danger)' }}>Failed: {error}</p><button className="btn btn-ghost" onClick={load} style={{ marginTop: 8 }}>Retry</button></div>
   if (!view) return null
@@ -57,7 +64,6 @@ export default function SettingsEditor({ api, show }) {
     <div style={{ maxWidth: 600 }}>
       <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>
         Default view mode per page. Users can override this in their app settings.
-        {dirty && <span className="status-badge unsaved" style={{ marginLeft: 10 }}>Unsaved</span>}
       </p>
 
       <div className="section-card">
@@ -105,9 +111,8 @@ export default function SettingsEditor({ api, show }) {
         </div>
       </div>
 
-      <button className="btn btn-primary" onClick={saveView} disabled={!dirty || saving} style={{ marginTop: 16 }}>
-        {saving ? 'Saving…' : dirty ? '💾 Save Settings' : '✓ Saved'}
-      </button>
     </div>
   )
-}
+})
+
+export default SettingsEditor

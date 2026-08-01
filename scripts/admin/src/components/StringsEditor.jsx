@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, forwardRef, useImperativeHandle } from 'react'
 
 const KNOWN_LANGS = ['en', 'hinglish', 'urdu']
 
-export default function StringsEditor({ api, show }) {
+const StringsEditor = forwardRef(function StringsEditor({ api, show, onStatusChange }, ref) {
   const [lang, setLang] = useState('en')
   const [data, setData] = useState(null)
   const [dirty, setDirty] = useState(false)
@@ -52,6 +52,13 @@ export default function StringsEditor({ api, show }) {
     setDirty(true)
   }
 
+  // Report dirty/saving to App.jsx so the header badge & Save button update.
+  useEffect(() => { onStatusChange?.({ dirty, saving }) }, [dirty, saving, onStatusChange])
+
+  // Expose save + status to the App.jsx toolbar (header badge & Save button).
+  // MUST be before the early returns (rules of hooks).
+  useImperativeHandle(ref, () => ({ save, dirty, saving }), [dirty, saving, data, lang])
+
   if (loading) return <div className="section-card"><p style={{ color: 'var(--text-muted)' }}>Loading strings...</p></div>
   if (error) return <div className="section-card"><p style={{ color: 'var(--danger)' }}>Failed: {error}</p><button className="btn btn-ghost" onClick={() => load(lang)} style={{ marginTop: 8 }}>Retry</button></div>
   if (!data) return null
@@ -65,17 +72,15 @@ export default function StringsEditor({ api, show }) {
       </div>
       <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>
         UI labels for navigation, settings, and other interface text.
-        {dirty && <span className="status-badge unsaved" style={{ marginLeft: 10 }}>Unsaved</span>}
       </p>
       <div className="section-card" style={{ padding: 16 }}>
         {renderStrings(data, '', handleChange)}
       </div>
-      <button className="btn btn-primary" onClick={save} disabled={!dirty || saving} style={{ marginTop: 12 }}>
-        {saving ? 'Saving…' : dirty ? '💾 Save Strings' : '✓ Saved'}
-      </button>
     </div>
   )
-}
+})
+
+export default StringsEditor
 
 function renderStrings(obj, prefix, onChange) {
   if (typeof obj !== 'object' || obj === null) {

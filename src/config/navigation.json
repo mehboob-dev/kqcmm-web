@@ -33,14 +33,19 @@
       "key": "home"
     },
     {
-      "to": "/dua",
-      "icon": "faMosque",
-      "key": "duas"
+      "to": "/abbajaan",
+      "icon": "faPeopleGroup",
+      "key": "abbajaan"
     },
     {
       "to": "/hmk",
       "icon": "faScroll",
       "key": "hmk"
+    },
+    {
+      "to": "/salim-pappa",
+      "icon": "faUser",
+      "key": "salimPappa"
     },
     {
       "to": "/sijrah-nama",
@@ -58,24 +63,19 @@
       "key": "khatm"
     },
     {
-      "to": "/salim-pappa",
-      "icon": "faUser",
-      "key": "salimPappa"
-    },
-    {
-      "to": "/calendar",
-      "icon": "faCalendar",
-      "key": "calendar"
-    },
-    {
       "to": "/roshni",
       "icon": "faLightbulb",
       "key": "roshni"
     },
     {
-      "to": "/abbajaan",
-      "icon": "faPeopleGroup",
-      "key": "abbajaan"
+      "to": "/dua",
+      "icon": "faMosque",
+      "key": "duas"
+    },
+    {
+      "to": "/calendar",
+      "icon": "faCalendar",
+      "key": "calendar"
     },
     {
       "to": "/about",

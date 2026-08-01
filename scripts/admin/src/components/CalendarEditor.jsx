@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, forwardRef, useImperativeHandle } from 'react'
 import { validateCalendarConfig } from '../../../../src/utils/hijriCalendar.js'
 
 const HIJRI_MONTHS = [
@@ -16,9 +16,10 @@ const tdStyle = { padding: '6px 10px', verticalAlign: 'middle' }
 
 function clone(o) { return JSON.parse(JSON.stringify(o)) }
 
-export default function CalendarEditor({ api, show }) {
+const CalendarEditor = forwardRef(function CalendarEditor({ api, show, onStatusChange }, ref) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
   const [validation, setValidation] = useState({ ok: true, errors: [] })
 
@@ -26,6 +27,7 @@ export default function CalendarEditor({ api, show }) {
     setLoading(true)
     try {
       setData(await api.getCalendar())
+      setDirty(false)
     } catch (e) { show('Error loading calendar: ' + e.message, 'error') }
     finally { setLoading(false) }
   }, [api, show])
@@ -36,8 +38,38 @@ export default function CalendarEditor({ api, show }) {
 
   const update = (next) => {
     setData(next)
+    setDirty(true)
     runValidation(next)
   }
+
+  const save = async () => {
+    // Auto-sort month starts by Hijri year+month so the stored list is always
+    // ordered (validation then sees a clean sequence). Duplicates are still
+    // rejected, not silently dropped.
+    if (!data) return
+    const sorted = clone(data)
+    sorted.monthStarts = (sorted.monthStarts || [])
+      .slice()
+      .sort((a, b) => (a.hijriYear - b.hijriYear) || (a.hijriMonth - b.hijriMonth))
+    const v = validateCalendarConfig(sorted)
+    if (!v.ok) { setValidation(v); show('Cannot save — fix validation errors first', 'error'); return }
+    setData(sorted)
+    setSaving(true)
+    try {
+      await api.saveCalendar(sorted)
+      setDirty(false)
+      show('Calendar saved!')
+    } catch (e) { show('Error: ' + e.message, 'error') }
+    finally { setSaving(false) }
+  }
+
+  // Report dirty/saving to App.jsx so the header badge & Save button update.
+  useEffect(() => { onStatusChange?.({ dirty, saving }) }, [dirty, saving, onStatusChange])
+
+  // Expose save + status to the App.jsx toolbar (header badge & Save button).
+  // MUST be before the early returns (rules of hooks) AND after `save` is
+  // declared (the callback runs during render, so `save` must be initialized).
+  useImperativeHandle(ref, () => ({ save, dirty, saving }), [dirty, saving, data])
 
   if (loading) return <p style={{ color: 'var(--text-muted)', padding: 20 }}>Loading calendar…</p>
   if (!data) return <p style={{ color: 'var(--text-muted)', padding: 20 }}>No calendar data</p>
@@ -51,14 +83,38 @@ export default function CalendarEditor({ api, show }) {
     d.monthStarts[idx][field] = value
     update(d)
   }
-  const addMonthStart = () => {
+  const addMonthStart = (insertAt = null) => {
     const d = clone(data)
-    // Auto-number: next month after the last row (or fall back to 1448-1)
-    const last = d.monthStarts[d.monthStarts.length - 1]
-    const next = last
-      ? (last.hijriMonth === 12 ? { hijriYear: last.hijriYear + 1, hijriMonth: 1 } : { hijriYear: last.hijriYear, hijriMonth: last.hijriMonth + 1 })
-      : { hijriYear: 1448, hijriMonth: 1 }
-    d.monthStarts = [...(d.monthStarts || []), { hijriYear: next.hijriYear, hijriMonth: next.hijriMonth, gregorianStart: null }]
+    const list = d.monthStarts || []
+    // Auto-number so the new row does NOT collide with an existing one.
+    //  - Append (insertAt null): month AFTER the last row.
+    //  - Insert at top (insertAt 0): month BEFORE the first row (extends
+    //    backward, e.g. 1448-1 -> 1447-12).
+    //  - Insert in the middle: month AFTER the row that currently sits at
+    //    (insertAt - 1).
+    let year, month
+    if (insertAt === 0 && list.length) {
+      const first = list[0]
+      year = first.hijriMonth === 1 ? first.hijriYear - 1 : first.hijriYear
+      month = first.hijriMonth === 1 ? 12 : first.hijriMonth - 1
+    } else if (insertAt !== null && insertAt > 0 && list.length) {
+      const base = list[Math.min(insertAt - 1, list.length - 1)]
+      year = base.hijriMonth === 12 ? base.hijriYear + 1 : base.hijriYear
+      month = base.hijriMonth === 12 ? 1 : base.hijriMonth + 1
+    } else if (list.length) {
+      const last = list[list.length - 1]
+      year = last.hijriMonth === 12 ? last.hijriYear + 1 : last.hijriYear
+      month = last.hijriMonth === 12 ? 1 : last.hijriMonth + 1
+    } else {
+      year = 1448; month = 1
+    }
+    const row = { hijriYear: year, hijriMonth: month, gregorianStart: null }
+    if (insertAt !== null) {
+      list.splice(insertAt, 0, row)
+    } else {
+      list.push(row)
+    }
+    d.monthStarts = list
     update(d)
   }
   const removeMonthStart = (idx) => {
@@ -72,25 +128,6 @@ export default function CalendarEditor({ api, show }) {
     const [it] = d.monthStarts.splice(from, 1)
     d.monthStarts.splice(to, 0, it)
     update(d)
-  }
-
-  const save = async () => {
-    // Auto-sort month starts by Hijri year+month so the stored list is always
-    // ordered (validation then sees a clean sequence). Duplicates are still
-    // rejected, not silently dropped.
-    const sorted = clone(data)
-    sorted.monthStarts = (sorted.monthStarts || [])
-      .slice()
-      .sort((a, b) => (a.hijriYear - b.hijriYear) || (a.hijriMonth - b.hijriMonth))
-    const v = validateCalendarConfig(sorted)
-    if (!v.ok) { setValidation(v); show('Cannot save — fix validation errors first', 'error'); return }
-    setData(sorted)
-    setSaving(true)
-    try {
-      await api.saveCalendar(sorted)
-      show('Calendar saved!')
-    } catch (e) { show('Error: ' + e.message, 'error') }
-    finally { setSaving(false) }
   }
 
   // ---- event helpers ----
@@ -150,6 +187,10 @@ export default function CalendarEditor({ api, show }) {
         <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12 }}>
           Enter the Gregorian date each Hijri month begins (per local moon sighting). Add or remove any month — leave dates blank until confirmed. A month needs the next month's start to place day-30 events.
         </p>
+
+        <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+          <button className="btn-add" style={{ flex: 1 }} onClick={() => addMonthStart(0)}>+ Add month at top</button>
+        </div>
 
         <div style={{ maxHeight: 420, overflowY: 'auto', border: '1px solid var(--border)', borderRadius: 8 }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
@@ -310,13 +351,15 @@ export default function CalendarEditor({ api, show }) {
         <button className="btn-add" onClick={addEvent}>+ Add event</button>
       </div>
 
-      {/* Save */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <button className="btn btn-primary" onClick={save} disabled={saving || !validation.ok}>
-          {saving ? 'Saving…' : '💾 Save Calendar'}
-        </button>
-        {!validation.ok && <span style={{ color: 'var(--danger)', fontSize: 12 }}>Fix validation errors to enable save</span>}
-      </div>
+      {/* Validation hint (save lives in the header) */}
+      {!validation.ok && (
+        <div style={{ color: 'var(--danger)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span className="status-badge unsaved">⚠ Fix validation errors to enable save</span>
+        </div>
+      )}
     </div>
   )
-}
+})
+
+export default CalendarEditor
+

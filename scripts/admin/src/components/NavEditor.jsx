@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 
 const ICONS = [
   'faHouse', 'faStar', 'faBook', 'faFire', 'faHandsPraying', 'faScroll', 'faMosque',
@@ -15,7 +15,7 @@ const ICON_EMOJI = {
 
 const GROUP_LABELS = { bottomNav: 'Bottom Navigation', sideDrawer: 'Side Drawer' }
 
-export default function NavEditor({ api, show }) {
+const NavEditor = forwardRef(function NavEditor({ api, show, onStatusChange }, ref) {
   const [nav, setNav] = useState(null)
   const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -76,6 +76,12 @@ export default function NavEditor({ api, show }) {
     setDirty(true)
   }
 
+  // Report dirty/saving to App.jsx so the header badge & Save button update.
+  useEffect(() => { onStatusChange?.({ dirty, saving }) }, [dirty, saving, onStatusChange])
+
+  // Expose save + status to the App.jsx toolbar (header badge & Save button)
+  useImperativeHandle(ref, () => ({ save, dirty, saving }), [dirty, saving, nav])
+
   if (loading) return <div className="section-card"><p style={{ color: 'var(--text-muted)' }}>Loading navigation...</p></div>
   if (error) return <div className="section-card"><p style={{ color: 'var(--danger)' }}>Failed: {error}</p><button className="btn btn-ghost" onClick={load} style={{ marginTop: 8 }}>Retry</button></div>
   if (!nav) return null
@@ -84,7 +90,6 @@ export default function NavEditor({ api, show }) {
     <div style={{ maxWidth: 800 }}>
       <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>
         Rearrange using ↑↓ buttons. All changes save independently from page content.
-        {dirty && <span className="status-badge unsaved" style={{ marginLeft: 10 }}>Unsaved</span>}
       </p>
 
       {['bottomNav', 'sideDrawer'].map(group => (
@@ -121,10 +126,8 @@ export default function NavEditor({ api, show }) {
           </button>
         </div>
       ))}
-
-      <button className="btn btn-primary" onClick={save} disabled={!dirty || saving} style={{ marginTop: 8 }}>
-        {saving ? 'Saving…' : dirty ? '💾 Save Navigation' : '✓ Saved'}
-      </button>
     </div>
   )
-}
+})
+
+export default NavEditor

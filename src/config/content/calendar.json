@@ -517,6 +517,17 @@
       "label": "Chhatti Shareef",
       "description": "Monthly Chhatti Fateha",
       "translations": {}
+    },
+    {
+      "id": "event-1785590843690",
+      "rule": "hijri-monthly",
+      "hijriMonth": 1,
+      "hijriDays": [
+        16
+      ],
+      "label": "17th Shab of Maa Saab Makhdoom Baba",
+      "description": "17th Shab of Maa Saab of Hazrat Makhdoom Fakih Ali Mahimi (Rehmatullah Alahi), Mahim",
+      "translations": {}
     }
   ],
   "en": {

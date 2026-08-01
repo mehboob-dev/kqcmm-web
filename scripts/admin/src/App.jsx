@@ -39,6 +39,29 @@ export default function App() {
   const searchTimer = useRef(null)
   const pageRequest = useRef(0)
   const toastTimer = useRef(null)
+  const navRef = useRef(null)
+  const stringsRef = useRef(null)
+  const calendarRef = useRef(null)
+  const settingsRef = useRef(null)
+  // Header status for non-pages tabs — kept in React state so the toolbar
+  // re-renders when an editor's dirty/saving changes (refs alone wouldn't).
+  const [editorStatus, setEditorStatus] = useState({ dirty: false, saving: false })
+
+  const editorRefFor = (tab) => {
+    if (tab === 'nav') return navRef
+    if (tab === 'strings') return stringsRef
+    if (tab === 'calendar') return calendarRef
+    if (tab === 'settings') return settingsRef
+    return null
+  }
+  const editorState = editorStatus
+  // Stable identity so editor useEffects that depend on onStatusChange don't
+  // re-fire on every App render (which would cause a re-render loop).
+  const handleEditorStatusChange = useCallback((status) => setEditorStatus(status), [])
+  const handleHeaderSave = async () => {
+    const ed = editorRefFor(tab)?.current
+    if (ed && typeof ed.save === 'function') await ed.save()
+  }
 
   const show = useCallback((m, type = 'success') => {
     setToast(m)
@@ -190,7 +213,7 @@ export default function App() {
           {TABS.map(t => (
             <button key={t.key}
               className={'sidebar-tab' + (tab === t.key ? ' active' : '')}
-              onClick={() => setTab(t.key)}
+              onClick={() => { setEditorStatus({ dirty: false, saving: false }); setTab(t.key) }}
               title={t.desc}>
               {t.label}
             </button>
@@ -256,6 +279,16 @@ export default function App() {
               </button>
             </div>
           )}
+          {tab !== 'pages' && editorState && editorRefFor(tab) && (
+            <div className="toolbar-actions">
+              <span className={'status-badge ' + (editorState.dirty ? 'unsaved' : 'saved')}>
+                {editorState.dirty ? '● Unsaved' : 'Saved'}
+              </span>
+              <button className="btn btn-primary" onClick={handleHeaderSave} disabled={!editorState.dirty || editorState.saving}>
+                {editorState.saving ? 'Saving…' : '💾 Save'}
+              </button>
+            </div>
+          )}
         </header>
 
         <div className="content-area">
@@ -269,11 +302,11 @@ export default function App() {
               <div className="empty-hint">Choose from the list on the left, or create a new page</div>
             </div>
           )}
-          {tab === 'nav' && <NavEditor api={api} show={show} />}
-          {tab === 'strings' && <StringsEditor api={api} show={show} />}
+          {tab === 'nav' && <NavEditor ref={navRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
+          {tab === 'strings' && <StringsEditor ref={stringsRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
           {tab === 'lang' && <LanguageEditor api={api} pages={pages} show={show} onJumpToPage={jumpToPage} />}
-          {tab === 'calendar' && <CalendarEditor api={api} show={show} />}
-          {tab === 'settings' && <SettingsEditor api={api} show={show} />}
+          {tab === 'calendar' && <CalendarEditor ref={calendarRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
+          {tab === 'settings' && <SettingsEditor ref={settingsRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
         </div>
       </main>
 

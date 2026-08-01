@@ -15,8 +15,13 @@ async function api(path, opts = {}) {
   return payload
 }
 
+import { useMemo } from 'react'
+
 export function useApi() {
-  return {
+  // Memoized so `api` has a stable identity across renders — otherwise any
+  // parent re-render (e.g. the header status badge) would hand editors a new
+  // api object, re-triggering their load() and wiping in-progress edits.
+  return useMemo(() => ({
     // Pages
     listPages: () => api('/pages'),
     getPage: (name) => api('/page/' + name + '.json'),
@@ -58,5 +63,5 @@ export function useApi() {
     // Language config (LanguageContext.jsx)
     getLangConfig: () => api('/lang-config'),
     saveLangConfig: (langs) => api('/lang-config', { method: 'POST', body: JSON.stringify(langs) }),
-  }
+  }), [])
 }
