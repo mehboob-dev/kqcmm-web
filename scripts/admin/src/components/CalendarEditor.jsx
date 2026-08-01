@@ -130,6 +130,18 @@ const CalendarEditor = forwardRef(function CalendarEditor({ api, show, onStatusC
     update(d)
   }
 
+  // Human-readable "when" for an event, shown in the compact table row.
+  const eventWhen = (ev) => {
+    const days = (ev.hijriDays || []).join(', ')
+    if (ev.rule === 'hijri-fixed') return `Day ${days} of ${HIJRI_MONTHS[(ev.hijriMonth || 1) - 1]}`
+    if (ev.rule === 'hijri-monthly') return `Day ${days} of every month`
+    if (ev.rule === 'gregorian-month-hijri-relative') {
+      const g = ['January','February','March','April','May','June','July','August','September','October','November','December'][(ev.gregorianMonth || 1) - 1]
+      return `Days ${days} of the Hijri month in ${g}`
+    }
+    return ev.rule
+  }
+
   // ---- event helpers ----
   const addEvent = () => {
     const d = clone(data)
@@ -249,106 +261,125 @@ const CalendarEditor = forwardRef(function CalendarEditor({ api, show, onStatusC
         <button className="btn-add" style={{ marginTop: 10 }} onClick={() => addMonthStart()}>+ Add month</button>
       </div>
 
-      {/* Events */}
+      {/* Events — compact table, rows expand to edit */}
       <div className="section-card">
         <div className="section-header">
           <span className="section-title">Events</span>
           <span className="tag">{events.length} events · shared (language-independent)</span>
         </div>
         <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12 }}>
-          Events are defined once and mapped automatically. Use the default label for all languages; add optional per-language overrides below.
+          Events are defined once and mapped automatically. Click a row to edit it — it expands for rule details and optional per-language overrides.
         </p>
-        {events.map((ev, i) => (
-          <div key={i} className="array-item" style={{ marginBottom: 10 }}>
-            <div className="array-header">
-              <span className="array-badge">#{i + 1}</span>
-              <div className="array-controls">
-                <button className="btn-icon" onClick={() => moveEvent(i, i - 1)} disabled={i === 0} aria-label="Move up">↑</button>
-                <button className="btn-icon" onClick={() => moveEvent(i, i + 1)} disabled={i >= events.length - 1} aria-label="Move down">↓</button>
-                <button className="btn-icon danger" onClick={() => removeEvent(i)} aria-label="Delete">✕</button>
-              </div>
+
+        <div style={{ maxHeight: 420, overflowY: 'auto', border: '1px solid var(--border)', borderRadius: 8 }}>
+          {events.length === 0 && (
+            <div style={{ padding: 20, textAlign: 'center', color: 'var(--text-muted)', fontSize: 12 }}>
+              No events yet. Click "+ Add event" below.
             </div>
+          )}
+          {events.map((ev, i) => (
+            <details key={i} style={{ borderTop: '1px solid var(--border)' }}>
+              <summary style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', cursor: 'pointer', listStyle: 'none' }}>
+                <span className="tag">{i + 1}</span>
+                <span style={{ flex: 1, fontWeight: 600, color: 'var(--text-heading)' }}>
+                  {ev.label || ev.id || '(untitled)'}
+                </span>
+                <span className="tag" style={{ color: 'var(--text-muted)' }}>{ev.rule}</span>
+                <span style={{ color: 'var(--text-muted)', fontSize: 12, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 260 }}>
+                  {eventWhen(ev)}
+                </span>
+                <div className="array-controls" style={{ marginLeft: 4 }}>
+                  <button className="btn-icon" onClick={e => { e.preventDefault(); e.stopPropagation(); moveEvent(i, i - 1) }} disabled={i === 0} aria-label="Move up">↑</button>
+                  <button className="btn-icon" onClick={e => { e.preventDefault(); e.stopPropagation(); moveEvent(i, i + 1) }} disabled={i >= events.length - 1} aria-label="Move down">↓</button>
+                  <button className="btn-icon danger" onClick={e => { e.preventDefault(); e.stopPropagation(); removeEvent(i) }} aria-label="Delete">✕</button>
+                </div>
+              </summary>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 8 }}>
-              <div className="field-group" style={{ marginBottom: 0 }}>
-                <label className="field-label" htmlFor={`ev-id-${i}`}>ID</label>
-                <input id={`ev-id-${i}`} className="field-input" value={ev.id || ''} onChange={e => setEvent(i, { id: e.target.value })} />
-              </div>
-              <div className="field-group" style={{ marginBottom: 0 }}>
-                <label className="field-label" htmlFor={`ev-rule-${i}`}>Rule</label>
-                <select id={`ev-rule-${i}`} className="field-select" value={ev.rule} onChange={e => setEvent(i, { rule: e.target.value })}>
-                  <option value="hijri-fixed">Fixed Hijri date</option>
-                  <option value="hijri-monthly">Monthly (every Hijri month)</option>
-                  <option value="gregorian-month-hijri-relative">Hijri days in a Gregorian month</option>
-                </select>
-              </div>
-
-              {ev.rule === 'hijri-fixed' ? (
-                <>
+              {/* Expandable edit form — full width below the row */}
+              <div style={{ padding: '10px 12px 12px', background: 'var(--bg-card-alt)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 8 }}>
                   <div className="field-group" style={{ marginBottom: 0 }}>
-                    <label className="field-label" htmlFor={`ev-hm-${i}`}>Hijri month</label>
-                    <select id={`ev-hm-${i}`} className="field-select" value={String(ev.hijriMonth || 1)} onChange={e => setEvent(i, { hijriMonth: Number(e.target.value) })}>
-                      {HIJRI_MONTHS.map((m, mi) => <option key={mi} value={mi + 1}>{m}</option>)}
+                    <label className="field-label" htmlFor={`ev-id-${i}`}>ID</label>
+                    <input id={`ev-id-${i}`} className="field-input" value={ev.id || ''} onChange={e => setEvent(i, { id: e.target.value })} />
+                  </div>
+                  <div className="field-group" style={{ marginBottom: 0 }}>
+                    <label className="field-label" htmlFor={`ev-rule-${i}`}>Rule</label>
+                    <select id={`ev-rule-${i}`} className="field-select" value={ev.rule} onChange={e => setEvent(i, { rule: e.target.value })}>
+                      <option value="hijri-fixed">Fixed Hijri date</option>
+                      <option value="hijri-monthly">Monthly (every Hijri month)</option>
+                      <option value="gregorian-month-hijri-relative">Hijri days in a Gregorian month</option>
                     </select>
                   </div>
-                  <div className="field-group" style={{ marginBottom: 0 }}>
-                    <label className="field-label" htmlFor={`ev-hd-${i}`}>Hijri day(s)</label>
-                    <input id={`ev-hd-${i}`} className="field-input" value={(ev.hijriDays || []).join(', ')} onChange={e => setEventDays(i, e.target.value)} />
-                  </div>
-                </>
-              ) : ev.rule === 'hijri-monthly' ? (
-                <div className="field-group" style={{ marginBottom: 0 }}>
-                  <label className="field-label" htmlFor={`ev-hd-${i}`}>Hijri day(s) each month</label>
-                  <input id={`ev-hd-${i}`} className="field-input" value={(ev.hijriDays || []).join(', ')} onChange={e => setEventDays(i, e.target.value)} />
-                </div>
-              ) : (
-                <>
-                  <div className="field-group" style={{ marginBottom: 0 }}>
-                    <label className="field-label" htmlFor={`ev-gm-${i}`}>Gregorian month</label>
-                    <select id={`ev-gm-${i}`} className="field-select" value={String(ev.gregorianMonth || 1)} onChange={e => setEvent(i, { gregorianMonth: Number(e.target.value) })}>
-                      {['January','February','March','April','May','June','July','August','September','October','November','December'].map((m, mi) => <option key={mi} value={mi + 1}>{m}</option>)}
-                    </select>
-                  </div>
-                  <div className="field-group" style={{ marginBottom: 0 }}>
-                    <label className="field-label" htmlFor={`ev-hd-${i}`}>Hijri day(s)</label>
-                    <input id={`ev-hd-${i}`} className="field-input" value={(ev.hijriDays || []).join(', ')} onChange={e => setEventDays(i, e.target.value)} />
-                  </div>
-                </>
-              )}
 
-              <div className="field-group" style={{ marginBottom: 0 }}>
-                <label className="field-label" htmlFor={`ev-label-${i}`}>Default label</label>
-                <input id={`ev-label-${i}`} className="field-input" value={ev.label || ''} onChange={e => setEvent(i, { label: e.target.value })} />
-              </div>
-              <div className="field-group" style={{ marginBottom: 0 }}>
-                <label className="field-label" htmlFor={`ev-desc-${i}`}>Default description</label>
-                <input id={`ev-desc-${i}`} className="field-input" value={ev.description || ''} onChange={e => setEvent(i, { description: e.target.value })} />
-              </div>
-            </div>
+                  {ev.rule === 'hijri-fixed' ? (
+                    <>
+                      <div className="field-group" style={{ marginBottom: 0 }}>
+                        <label className="field-label" htmlFor={`ev-hm-${i}`}>Hijri month</label>
+                        <select id={`ev-hm-${i}`} className="field-select" value={String(ev.hijriMonth || 1)} onChange={e => setEvent(i, { hijriMonth: Number(e.target.value) })}>
+                          {HIJRI_MONTHS.map((m, mi) => <option key={mi} value={mi + 1}>{m}</option>)}
+                        </select>
+                      </div>
+                      <div className="field-group" style={{ marginBottom: 0 }}>
+                        <label className="field-label" htmlFor={`ev-hd-${i}`}>Hijri day(s)</label>
+                        <input id={`ev-hd-${i}`} className="field-input" value={(ev.hijriDays || []).join(', ')} onChange={e => setEventDays(i, e.target.value)} />
+                      </div>
+                    </>
+                  ) : ev.rule === 'hijri-monthly' ? (
+                    <div className="field-group" style={{ marginBottom: 0 }}>
+                      <label className="field-label" htmlFor={`ev-hd-${i}`}>Hijri day(s) each month</label>
+                      <input id={`ev-hd-${i}`} className="field-input" value={(ev.hijriDays || []).join(', ')} onChange={e => setEventDays(i, e.target.value)} />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="field-group" style={{ marginBottom: 0 }}>
+                        <label className="field-label" htmlFor={`ev-gm-${i}`}>Gregorian month</label>
+                        <select id={`ev-gm-${i}`} className="field-select" value={String(ev.gregorianMonth || 1)} onChange={e => setEvent(i, { gregorianMonth: Number(e.target.value) })}>
+                          {['January','February','March','April','May','June','July','August','September','October','November','December'].map((m, mi) => <option key={mi} value={mi + 1}>{m}</option>)}
+                        </select>
+                      </div>
+                      <div className="field-group" style={{ marginBottom: 0 }}>
+                        <label className="field-label" htmlFor={`ev-hd-${i}`}>Hijri day(s)</label>
+                        <input id={`ev-hd-${i}`} className="field-input" value={(ev.hijriDays || []).join(', ')} onChange={e => setEventDays(i, e.target.value)} />
+                      </div>
+                    </>
+                  )}
 
-            {/* Optional translations */}
-            <div style={{ marginTop: 10, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              {['en', 'hinglish'].map(lang => (
-                <div key={lang} style={{ flex: '1 1 300px', padding: 8, border: '1px solid var(--border)', borderRadius: 8 }}>
-                  <div className="field-label">{lang} override</div>
-                  <input
-                    className="field-input" style={{ marginBottom: 4 }}
-                    placeholder="Label"
-                    value={ev.translations?.[lang]?.label || ''}
-                    onChange={e => setEventTranslation(i, lang, 'label', e.target.value)}
-                  />
-                  <input
-                    className="field-input"
-                    placeholder="Description"
-                    value={ev.translations?.[lang]?.description || ''}
-                    onChange={e => setEventTranslation(i, lang, 'description', e.target.value)}
-                  />
+                  <div className="field-group" style={{ marginBottom: 0 }}>
+                    <label className="field-label" htmlFor={`ev-label-${i}`}>Default label</label>
+                    <input id={`ev-label-${i}`} className="field-input" value={ev.label || ''} onChange={e => setEvent(i, { label: e.target.value })} />
+                  </div>
+                  <div className="field-group" style={{ marginBottom: 0 }}>
+                    <label className="field-label" htmlFor={`ev-desc-${i}`}>Default description</label>
+                    <input id={`ev-desc-${i}`} className="field-input" value={ev.description || ''} onChange={e => setEvent(i, { description: e.target.value })} />
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        ))}
-        <button className="btn-add" onClick={addEvent}>+ Add event</button>
+
+                {/* Optional translations */}
+                <div style={{ marginTop: 10, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                  {['en', 'hinglish'].map(lang => (
+                    <div key={lang} style={{ flex: '1 1 300px', padding: 8, border: '1px solid var(--border)', borderRadius: 8 }}>
+                      <div className="field-label">{lang} override</div>
+                      <input
+                        className="field-input" style={{ marginBottom: 4 }}
+                        placeholder="Label"
+                        value={ev.translations?.[lang]?.label || ''}
+                        onChange={e => setEventTranslation(i, lang, 'label', e.target.value)}
+                      />
+                      <input
+                        className="field-input"
+                        placeholder="Description"
+                        value={ev.translations?.[lang]?.description || ''}
+                        onChange={e => setEventTranslation(i, lang, 'description', e.target.value)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+
+        <button className="btn-add" style={{ marginTop: 10 }} onClick={addEvent}>+ Add event</button>
       </div>
 
       {/* Validation hint (save lives in the header) */}
