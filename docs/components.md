@@ -289,7 +289,7 @@ Hijri Islamic calendar page — a full navigable calendar, not a static list.
 - **View toggle:** switch between **Hijri** and **Gregorian** month views. The choice is persisted to `localStorage['kqcmm_calendar_view']`.
 - **Month navigation:** prev/next arrows. In Hijri mode the range is bounded to the configured min/max months (buttons disabled at the limits); Gregorian mode is unbounded. A "Today" button returns to the current month.
 - **Next-event strip:** the earliest upcoming event with its Hijri + Gregorian date and a countdown pill (0 = today).
-- **Event lists:** split into **Upcoming** (earliest future occurrence per event, ascending) and **Past** (latest past occurrence per event, **descending — newest first**, dimmed). An event only appears when its **own** Hijri month's start is set.
+- **Event lists:** both **Upcoming** (earliest future occurrence per event, ascending) and **Past** (latest past occurrence per event, **descending — newest first**, dimmed) are always visible, stacked. Each is laid out as **two side-by-side columns — Monthly (recurring every month) and Other (one-off)** — and each column **scrolls internally** within a fixed height so the page never grows endlessly. On narrow/mobile screens (<640px) the two columns stack to one. An event only appears when its **own** Hijri month's start is set.
 - **Unavailable list:** events whose mapping isn't yet configured, shown as chips — never guessed.
 
 ### Data & logic

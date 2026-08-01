@@ -6,6 +6,21 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## 5.9.0 — 2026-08-01
+
+### User-facing
+- Calendar event lists grouped into **Monthly** and **Other** sections, shown side by side (Upcoming and Past both always visible).
+- Each Monthly/Other list **scrolls internally** within a fixed height — the page no longer grows endlessly with recurring events.
+- Two-column layout **stacks to a single column on mobile** (<640px).
+
+### Internal / docs
+- `Calendar.jsx`: event lists split into monthly vs other (rule-based), `EventColumn` renders each as a scrollable vertical column; removed the earlier horizontal-strip/tab approach.
+- `styles.css`: `.cal-col-grid`, `.cal-col`, `.cal-ev-scroll` + a `@media (max-width: 640px)` stack rule.
+- `strings` (en/hinglish): Monthly / Other Events labels.
+- Docs updated (components.md); version 5.8.0 → 5.9.0.
+
+---
+
 ## 5.8.0 — 2026-08-01
 
 ### User-facing

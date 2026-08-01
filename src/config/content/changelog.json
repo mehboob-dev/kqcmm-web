@@ -3,6 +3,14 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.9.0",
+        "date": "2026-08-01",
+        "changes": [
+          "Calendar events grouped into Monthly and Other sections, side by side, with scrollable lists",
+          "Calendar event lists now responsive on mobile"
+        ]
+      },
+      {
         "version": "5.8.0",
         "date": "2026-08-01",
         "changes": [
@@ -119,6 +127,14 @@
   "hinglish": {
     "title": "Changelog",
     "versions": [
+      {
+        "version": "5.9.0",
+        "date": "2026-08-01",
+        "changes": [
+          "Calendar events Monthly aur Other sections mein side-by-side dikhte hain, scrollable lists ke saath",
+          "Calendar event lists mobile par responsive hain"
+        ]
+      },
       {
         "version": "5.8.0",
         "date": "2026-08-01",

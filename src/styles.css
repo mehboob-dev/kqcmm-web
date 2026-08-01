@@ -773,8 +773,62 @@ strong { font-weight: 700; }
   padding: 0.12em 0.5em;
   border-radius: 0.8em;
 }
-
 /* Event cards */
+/* Horizontal event rows (Upcoming / Past) — fixed height, no infinite scroll */
+.cal-row {
+  margin-bottom: 1.4em;
+}
+/* Two side-by-side vertical columns (Monthly | Other) per section */
+.cal-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8em;
+}
+.cal-col {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 0.8em;
+  padding: 0.6em;
+}
+.cal-col-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-heading);
+  font-weight: 700;
+  padding: 0.2em 0.2em 0.5em;
+  margin-bottom: 0.4em;
+  border-bottom: 1px solid var(--border);
+}
+.cal-col .cal-ev-list {
+  margin-bottom: 0;
+}
+.cal-col-empty {
+  color: var(--text-muted);
+  font-size: 0.85em;
+  text-align: center;
+  padding: 1em 0;
+}
+/* Scrollable list inside each column — fixed height, no page growth */
+.cal-ev-scroll {
+  max-height: 20em;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.2em;
+}
+/* Mobile: stack the two columns to a single column */
+@media (max-width: 640px) {
+  .cal-col-grid {
+    grid-template-columns: 1fr;
+  }
+  .cal-ev-scroll {
+    max-height: 14em;
+  }
+}
+
 .cal-ev-list {
   display: flex;
   flex-direction: column;

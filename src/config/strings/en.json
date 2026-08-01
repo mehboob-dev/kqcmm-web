@@ -42,6 +42,8 @@
     "todayLabel": "Today",
     "eventList": "Upcoming Events",
     "pastEvents": "Past Events",
+    "monthlyEvents": "Monthly",
+    "otherEvents": "Other Events",
     "unavailable": "Not yet configured",
     "unavailableHint": "The admin has not yet confirmed the moon sighting for this date.",
     "noUpcoming": "No upcoming events scheduled"

@@ -125,6 +125,13 @@ export default function Calendar() {
 
   const { eventList, pastEvents } = splitUpcomingPast(available, today)
 
+  // Split events by type: monthly (recurring every month) vs. other (one-off).
+  const isMonthly = (occ) => occ.rule === 'hijri-monthly'
+  const monthlyUpcoming = eventList.filter(isMonthly)
+  const otherUpcoming = eventList.filter(o => !isMonthly(o))
+  const monthlyPast = pastEvents.filter(isMonthly)
+  const otherPast = pastEvents.filter(o => !isMonthly(o))
+
   const eventById = (id) => data.events.find(e => e.id === id)
 
   // Configured min/max Hijri months (only slots with a set gregorianStart)
@@ -175,6 +182,25 @@ export default function Calendar() {
           {loc.description && <div className="cal-ev-desc">{loc.description}</div>}
           <div className="cal-ev-greg">{formatDisplayDate(occ.gregorianStart)}</div>
         </div>
+      </div>
+    )
+  }
+
+  // A vertical column (Monthly / Other) that scrolls its list within a fixed
+  // height — keeps the page compact no matter how many events exist.
+  const EventColumn = ({ title, count, items, past }) => {
+    return (
+      <div className="cal-col">
+        <div className="cal-col-head">{title} <span className="cal-sec-count">{count}</span></div>
+        {items.length ? (
+          <div className="cal-ev-scroll">
+            <div className="cal-ev-list">
+              {items.map(occ => renderEventCard(occ, past))}
+            </div>
+          </div>
+        ) : (
+          <div className="cal-col-empty">—</div>
+        )}
       </div>
     )
   }
@@ -295,29 +321,37 @@ export default function Calendar() {
         </div>
       )}
 
-      {/* UPCOMING */}
-      {eventList.length > 0 && (
+      {/* UPCOMING + PAST — both always visible; each shows Monthly | Other
+          as two side-by-side vertical columns */}
+      {(eventList.length > 0 || pastEvents.length > 0) && (
         <>
-          <div className="cal-sec-head">
-            <h3 className="cal-sec-title">{cal.eventList || 'Upcoming Events'}</h3>
-            <span className="cal-sec-count">{eventList.length}</span>
-          </div>
-          <div className="cal-ev-list">
-            {eventList.map(occ => renderEventCard(occ, false))}
-          </div>
-        </>
-      )}
+          {/* Upcoming */}
+          {eventList.length > 0 && (
+            <div className="cal-row">
+              <div className="cal-sec-head">
+                <h3 className="cal-sec-title">{cal.eventList || 'Upcoming Events'}</h3>
+                <span className="cal-sec-count">{eventList.length}</span>
+              </div>
+              <div className="cal-col-grid">
+                <EventColumn title={cal.monthlyEvents || 'Monthly'} count={monthlyUpcoming.length} items={monthlyUpcoming} past={false} />
+                <EventColumn title={cal.otherEvents || 'Other Events'} count={otherUpcoming.length} items={otherUpcoming} past={false} />
+              </div>
+            </div>
+          )}
 
-      {/* PAST */}
-      {pastEvents.length > 0 && (
-        <>
-          <div className="cal-sec-head">
-            <h3 className="cal-sec-title">{cal.pastEvents || 'Past Events'}</h3>
-            <span className="cal-sec-count">{pastEvents.length}</span>
-          </div>
-          <div className="cal-ev-list">
-            {pastEvents.map(occ => renderEventCard(occ, true))}
-          </div>
+          {/* Past */}
+          {pastEvents.length > 0 && (
+            <div className="cal-row">
+              <div className="cal-sec-head">
+                <h3 className="cal-sec-title">{cal.pastEvents || 'Past Events'}</h3>
+                <span className="cal-sec-count">{pastEvents.length}</span>
+              </div>
+              <div className="cal-col-grid">
+                <EventColumn title={cal.monthlyEvents || 'Monthly'} count={monthlyPast.length} items={monthlyPast} past />
+                <EventColumn title={cal.otherEvents || 'Other Events'} count={otherPast.length} items={otherPast} past />
+              </div>
+            </div>
+          )}
         </>
       )}
 
