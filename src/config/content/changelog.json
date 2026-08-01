@@ -3,6 +3,14 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.7.0",
+        "date": "2026-08-01",
+        "changes": [
+          "Calendar page rebuilt as a navigable month grid — switch between Hijri and Gregorian views, browse months, event days marked",
+          "Today's Hijri + Gregorian date shown in a thin strip below the header on every page"
+        ]
+      },
+      {
         "version": "5.6.0",
         "date": "2026-08-01",
         "changes": [
@@ -119,6 +127,14 @@
   "hinglish": {
     "title": "Changelog",
     "versions": [
+      {
+        "version": "5.7.0",
+        "date": "2026-08-01",
+        "changes": [
+          "Calendar page ab ek navigable month grid hai — Hijri aur Gregorian views ke beech switch karein, months browse karein, event days marked hain",
+          "Aaj ki Hijri + Gregorian tareekh har page par header ke neeche thin strip mein dikhti hai"
+        ]
+      },
       {
         "version": "5.6.0",
         "date": "2026-08-01",

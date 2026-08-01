@@ -75,7 +75,7 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | `/khatm` | Khatm-e-Khwajagan (32 steps) |
 | `/salim-pappa` | Salim Pappa |
 | `/about` | About KQCMM |
-| `/calendar` | Islamic Calendar (Hijri date + mapped events) |
+| `/calendar` | Islamic Calendar (navigable Hijri/Gregorian month grid + mapped events) |
 | `/roshni` | Roshni / Chirag Raushan |
 | `/abbajaan` | Abbajaan |
 | `/changelog` | Version history |
@@ -100,7 +100,7 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | **Install App** | Native install button in bottom nav |
 | **Swipe Navigation** | Swipe left/right in slide mode — deliberate drag required (80px threshold, vertical scroll ignored) |
 | **Quick Jump** | Floating book FAB → bottom sheet to jump to key sections (labels auto-derived per language) |
-| **Hijri Calendar** | Admin-maintained month starts → today's Hijri date, mapped events, next-event countdown |
+| **Hijri Calendar** | Admin-maintained month starts → navigable Hijri/Gregorian month grid, mapped events, countdown, app-wide today strip |
 | **Changelog** | Version history page |
 
 ---

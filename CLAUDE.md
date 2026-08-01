@@ -84,7 +84,8 @@ kqcmm-web/
 │   │   ├── SideDrawer.jsx             # Slide-in navigation drawer
 │   │   ├── ContentView.jsx            # List/slide view + counter
 │   │   ├── QuickJump.jsx             # Floating quick-jump bottom sheet (shared, language-independent)
-│   │   ├── Calendar.jsx              # Hijri calendar (today, next-event countdown, mapped events)
+│   │   ├── HijriStrip.jsx            # App-wide thin strip below header (today Hijri + Gregorian + event-today)
+│   │   ├── Calendar.jsx              # Hijri calendar (navigable month grid, Hijri/Gregorian toggle)
 │   │   ├── SplashScreen.jsx           # Splash with countdown
 │   │   ├── SettingsPopup.jsx          # Settings modal
 │   │   ├── FontAwesome.jsx           # Icon component (centralized)
@@ -100,7 +101,7 @@ kqcmm-web/
 │   │   ├── Khatm.jsx                 # Khatm-e-Khwajagan (32 steps)
 │   │   ├── SalimPappa.jsx            # Salim Pappa page
 │   │   ├── About.jsx                 # About KQCMM
-│   │   ├── Calendar.jsx              # Islamic calendar events
+│   │   ├── Calendar.jsx              # Hijri calendar page (month grid + events)
 │   │   ├── Roshni.jsx                # Chirag Raushan / Roshni
 │   │   ├── Abbajaan.jsx              # Abbajaan page
 │   │   ├── Changelog.jsx            # Version history
@@ -311,7 +312,7 @@ Global +/−/↺ counter displayed on content pages. In slide mode it sits in a 
 /khatm          → Khatm-e-Khwajagan (32 steps)
 /salim-pappa    → Salim Pappa
 /about          → About KQCMM
-/calendar       → Islamic Calendar (Hijri date + mapped events)
+/calendar       → Islamic Calendar (navigable Hijri/Gregorian month grid + mapped events)
 /roshni         → Roshni / Chirag Raushan
 /abbajaan       → Abbajaan
 /changelog      → Version history
