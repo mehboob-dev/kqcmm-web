@@ -15,6 +15,7 @@
         "date": "2026-08-01",
         "changes": [
           "Hijri Calendar: today's Islamic date, upcoming event countdown, and events mapped automatically",
+          "Monthly recurring events — repeat on the same Hijri date every month",
           "Admin panel: dedicated Calendar editor to set each Hijri month's start date and manage shared events"
         ]
       },
@@ -22,14 +23,7 @@
         "version": "5.5.0",
         "date": "2026-07-29",
         "changes": [
-          "Admin panel: add/remove languages across all content pages and strings",
-          "Admin panel: click translation % to jump to that page in the target language",
-          "Admin panel: reusable Modal component for create/delete/duplicate dialogs",
-          "Admin panel: responsive layout — collapsible sidebar on mobile",
-          "Admin panel: type-aware content editor with auto-resizing textareas",
-          "Admin panel: visual navigation editor with icon picker, reorder, add/remove",
-          "Admin panel: content search across all pages and languages",
-          "Fixed Sijrah Nama to use ContentView with slide mode"
+          "Improved admin panel: manage languages, translation status, navigation, and page content more easily"
         ]
       },
       {
@@ -37,8 +31,7 @@
         "date": "2026-07-26",
         "changes": [
           "Improved swipe sensitivity in slide mode — accidental touches no longer trigger navigation",
-          "Roshni icon updated to lightbulb (faFire → faLightbulb)",
-          "Dua icon updated to mosque (faHandsPraying → faMosque)"
+          "Updated Roshni and Dua icons"
         ]
       },
       {
@@ -46,75 +39,65 @@
         "date": "2026-07-24",
         "changes": [
           "App auto-updates silently on deploy — no more refresh prompt",
-          "Windows-compatible build script (fs.copyFileSync instead of cp)",
-          "Urdu fonts loaded via Google Fonts (Nastaliq, Naskh, Garamond)",
-          "Cleaned up duplicate string files",
-          "Added 7 new suggestions (27 total), reorganized categories"
+          "Urdu fonts now load properly from Google Fonts"
         ]
       },
       {
         "version": "5.2.0",
         "date": "2026-07-23",
         "changes": [
-          "Added swipe navigation (left/right) in slide mode",
-          "Added Install App button in bottom navigation",
-          "Added Suggestions document with future ideas",
-          "Enhanced About page with version info",
-          "Added Changelog page"
+          "Swipe navigation (left/right) in slide mode",
+          "Install App button in bottom navigation",
+          "New About page with version info",
+          "New Changelog page"
         ]
       },
       {
         "version": "5.1.0",
         "date": "2026-07-22",
         "changes": [
-          "Full SEO with pre-rendering for all 11 routes",
-          "Open Graph and Twitter Card meta tags per page",
-          "OG image for social sharing previews",
-          "Fixed asset paths for direct sub-page access"
+          "Full SEO: unique titles and descriptions per page, social sharing previews"
         ]
       },
       {
         "version": "5.0.0",
         "date": "2026-07-22",
         "changes": [
-          "Service Worker with full offline caching",
-          "PWA manifest with proper icons",
-          "Offline/update toasts",
-          "Splash screen skips on revisit"
+          "Full offline support — the app works without an internet connection",
+          "Installable as an app (PWA) with proper icons",
+          "Splash screen now skips on repeat visits"
         ]
       },
       {
         "version": "4.0.0",
         "date": "2026-07-22",
         "changes": [
-          "Pre-rendering for SEO performance",
-          "Counter bar width fix for desktop",
-          "Home page quick links added (Roshni, Abbajaan)"
+          "Faster page loads with pre-rendered content",
+          "New home page quick links (Roshni, Abbajaan)"
         ]
       },
       {
         "version": "3.0.0",
         "date": "2026-07-21",
         "changes": [
-          "QuickJump navigation added",
-          "All content fully translated (English, Hinglish, Urdu)",
-          "Khatm and Fateha Khwani completed"
+          "QuickJump navigation — jump to key sections of long pages",
+          "Khatm and Fateha Khwani content completed"
         ]
       },
       {
         "version": "2.0.0",
         "date": "2026-07-20",
         "changes": [
-          "Content Editor web UI (npm run edit)",
-          "Master-child card system for Fateha Khwani",
-          "FontAwesome icons throughout"
+          "Content Editor web UI (npm run edit) — edit content without touching files",
+          "Master-child card layout for Fateha Khwani",
+          "Icons throughout the app"
         ]
       },
       {
         "version": "1.0.0",
         "date": "2026-07-10",
         "changes": [
-          "Initial release with all 11 pages",
+          "Initial release with all pages",
           "4 themes (Light, Dark, Sepia, Green)",
           "3 languages (English, Hinglish, Urdu)",
           "17 fonts with 4 sizes",
@@ -140,6 +123,7 @@
         "date": "2026-08-01",
         "changes": [
           "Hijri Calendar: aaj ki Islami tareekh, upcoming event countdown, aur events khud-ba-khud map hote hain",
+          "Monthly recurring events — har mahine usi Hijri date par repeat hote hain",
           "Admin panel: dedicated Calendar editor — har Hijri month ki start date set karein aur shared events manage karein"
         ]
       },
@@ -147,14 +131,7 @@
         "version": "5.5.0",
         "date": "2026-07-29",
         "changes": [
-          "Admin panel: sabhi content pages aur strings mein languages add/remove kar sakte hain",
-          "Admin panel: translation % click karke us page aur language mein ja sakte hain",
-          "Admin panel: naya Modal component — create/delete/duplicate dialogs ke liye",
-          "Admin panel: responsive layout — mobile par sidebar collapse hota hai",
-          "Admin panel: type-aware content editor with auto-resizing textareas",
-          "Admin panel: visual navigation editor — icon picker, reorder, add/remove",
-          "Admin panel: content search across all pages and languages",
-          "Sijrah Nama ko ContentView slide mode mein fix kiya gaya"
+          "Admin panel behtar hua: languages, translation status, navigation, aur page content aasani se manage karein"
         ]
       },
       {
@@ -162,8 +139,7 @@
         "date": "2026-07-26",
         "changes": [
           "Slide mode mein swipe sensitivity behtar ki gayi — ghalti se touch karne se navigation trigger nahi hoti",
-          "Roshni icon lightbulb kar diya (faFire → faLightbulb)",
-          "Dua icon mosque kar diya (faHandsPraying → faMosque)"
+          "Roshni aur Dua icons update kiye"
         ]
       },
       {
@@ -171,49 +147,40 @@
         "date": "2026-07-24",
         "changes": [
           "App ab deploy par automatically update ho jata hai — refresh nahi maangta",
-          "Windows-compatible build script (cp ki jagah fs.copyFileSync)",
-          "Urdu fonts Google Fonts se load hote hain (Nastaliq, Naskh, Garamond)",
-          "Duplicate string files hataye gaye",
-          "7 naye suggestions (total 27), categories reorganize ki gayi"
+          "Urdu fonts ab Google Fonts se theek se load hote hain"
         ]
       },
       {
         "version": "5.2.0",
         "date": "2026-07-23",
         "changes": [
-          "Slide mode mein swipe navigation (left/right) add kiya",
-          "Bottom navigation mein Install App button add kiya",
-          "Suggestions document banaya",
-          "About page mein version info add kiya",
-          "Changelog page add kiya"
+          "Slide mode mein swipe navigation (left/right)",
+          "Bottom navigation mein Install App button",
+          "Naya About page with version info",
+          "Naya Changelog page"
         ]
       },
       {
         "version": "5.1.0",
         "date": "2026-07-22",
         "changes": [
-          "Har page ke liye alag SEO tags",
-          "Open Graph aur Twitter Card tags",
-          "Social sharing ke liye OG image",
-          "Direct sub-page access ke liye asset paths theek kiye"
+          "Full SEO: har page ke liye alag title aur description, social sharing previews"
         ]
       },
       {
         "version": "5.0.0",
         "date": "2026-07-22",
         "changes": [
-          "Service Worker — offline kaam karta hai",
-          "PWA manifest sahi icons ke saath",
-          "Offline aur update ke liye toasts",
-          "Splash screen dubara nahi dikhti"
+          "Full offline support — app bina internet ke bhi kaam karti hai",
+          "App ke roop mein install kar sakte hain (PWA) with proper icons",
+          "Splash screen ab baar baar nahi dikhti"
         ]
       },
       {
         "version": "4.0.0",
         "date": "2026-07-22",
         "changes": [
-          "SEO ke liye pre-rendering",
-          "Counter bar width theek kiya",
+          "Pre-rendered content se pages tez load hote hain",
           "Home page mein naye quick links (Roshni, Abbajaan)"
         ]
       },
@@ -221,25 +188,24 @@
         "version": "3.0.0",
         "date": "2026-07-21",
         "changes": [
-          "QuickJump navigation add kiya",
-          "Teeno languages mein content complete",
-          "Khatm aur Fateha Khwani mukammal"
+          "QuickJump navigation — lambe pages ke key sections par jump karein",
+          "Khatm aur Fateha Khwani content mukammal"
         ]
       },
       {
         "version": "2.0.0",
         "date": "2026-07-20",
         "changes": [
-          "Content Editor web UI (npm run edit)",
-          "Fateha Khwani ke liye master-child cards",
-          "FontAwesome icons"
+          "Content Editor web UI (npm run edit) — files ko chhue bagair content edit karein",
+          "Fateha Khwani ke liye master-child card layout",
+          "App mein icons"
         ]
       },
       {
         "version": "1.0.0",
         "date": "2026-07-10",
         "changes": [
-          "11 pages ke saath pehli release",
+          "Sabhi pages ke saath pehli release",
           "4 themes (Light, Dark, Sepia, Green)",
           "3 languages (English, Hinglish, Urdu)",
           "17 fonts aur 4 sizes",

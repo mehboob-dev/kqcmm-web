@@ -262,3 +262,14 @@ Edit `src/config/content/*.json` files directly:
 2. Each language has `title` + `sections` (or appropriate field names)
 3. Add keys to `src/config/strings/*.json` for nav labels
 4. Keep section structure identical across all languages
+
+---
+
+## Changelog
+
+The version history is split into two records:
+
+- **Public** (`src/config/content/changelog.json`, shown on `/changelog`): user-facing changes only, in each live language.
+- **Developer** (`docs/DEVCHANGELOG.md`): the complete record, including internal/refactor/docs/build changes, curated per version.
+
+When work lands, update both together. Public entries describe only what end users see; dev entries hold everything.

@@ -159,6 +159,7 @@ Full documentation is in the `docs/` folder:
 | [docs/architecture.md](docs/architecture.md) | System architecture, data flow, routes |
 | [docs/components.md](docs/components.md) | Every React component explained |
 | [docs/content.md](docs/content.md) | Content JSON, master-child cards, editing |
+| [docs/DEVCHANGELOG.md](docs/DEVCHANGELOG.md) | Full developer changelog (user-facing + internal) |
 | [docs/styling.md](docs/styling.md) | CSS variables, themes, cards, fonts |
 | [docs/deployment.md](docs/deployment.md) | Building, deploying, troubleshooting |
 | [docs/pwa.md](docs/pwa.md) | PWA / offline / service worker |

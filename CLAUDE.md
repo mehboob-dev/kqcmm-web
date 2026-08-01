@@ -391,13 +391,20 @@ Router basename: `/kqcmm-web/` (set in `vite.config.js` + `main.jsx`).
 
 ## 📝 Changelog
 
-Version history is in `src/config/content/changelog.json` (live languages: en, hinglish). When making significant changes:
+There are **two** changelogs — keep them both in sync when work lands:
 
-1. Add a new entry at the top of the `versions` array with the next version number
-2. List changes as bullet points in the user's language
+1. **Public** (`src/config/content/changelog.json`, shown on `/changelog`) — **user-facing changes only**, in each live language (en, hinglish). Do not list internal/refactor/docs/build/tooling items here.
+2. **Dev** (`docs/DEVCHANGELOG.md`) — the complete record. Curated per-version blocks split into **User-facing** and **Internal / docs**; holds EVERYTHING including items skipped from the public changelog.
+
+When making changes:
+
+1. Add a new entry at the top of `changelog.json`'s `versions` array AND a matching block at the top of `docs/DEVCHANGELOG.md`
+2. Public entries are user-facing only; dev entries hold everything
 3. Update `package.json` version to match
 4. Update the Version card in `src/pages/About.jsx`
 5. Run `npm run build` afterwards to re-prerender
+
+**Skip the version bump** if the change is invisible to end users (refactor, docs-only, internal restructure) — but still record it in `docs/DEVCHANGELOG.md`.
 
 ---
 
