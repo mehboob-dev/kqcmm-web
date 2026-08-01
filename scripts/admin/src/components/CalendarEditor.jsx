@@ -246,7 +246,7 @@ const CalendarEditor = forwardRef(function CalendarEditor({ api, show, onStatusC
           </table>
         </div>
 
-        <button className="btn-add" style={{ marginTop: 10 }} onClick={addMonthStart}>+ Add month</button>
+        <button className="btn-add" style={{ marginTop: 10 }} onClick={() => addMonthStart()}>+ Add month</button>
       </div>
 
       {/* Events */}
