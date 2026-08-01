@@ -162,6 +162,7 @@ Full documentation is in the `docs/` folder:
 | [docs/DEVCHANGELOG.md](docs/DEVCHANGELOG.md) | Full developer changelog (user-facing + internal) |
 | [docs/styling.md](docs/styling.md) | CSS variables, themes, cards, fonts |
 | [docs/deployment.md](docs/deployment.md) | Building, deploying, troubleshooting |
+| [docs/force-build.md](docs/force-build.md) | How to force a deploy when a push is skipped |
 | [docs/pwa.md](docs/pwa.md) | PWA / offline / service worker |
 | [docs/seo.md](docs/seo.md) | SEO, Open Graph, pre-rendering |
 | [docs/scripts.md](docs/scripts.md) | All CLI tools |

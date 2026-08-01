@@ -70,13 +70,11 @@ dist/
 
 ### When the Deploy Is Skipped
 Only pushes that change **buildable code** trigger a rebuild. Pushes touching only
-markdown/docs (`.md` files or `docs/`) are **skipped** via `paths-ignore` — they never
-end up in `dist/`, so no Actions minutes are wasted.
+non-deployed files (`.md`, `docs/`, `scripts/`) are **skipped** via `paths-ignore` — they
+never end up in `dist/`, so no Actions minutes are wasted.
 
-To force a rebuild anyway:
-- **Manual run**: use the **"Run workflow"** button on the Actions tab (the workflow is
-  `workflow_dispatch`-enabled), or
-- **Empty commit**: `git commit --allow-empty -m "force deploy" && git push`
+To force a rebuild anyway, see **[Forcing a Build](force-build.md)** — it covers the
+"Run workflow" button, an empty commit, and touching a buildable file, step by step.
 
 A `concurrency` group also ensures only one deploy runs per branch at a time — a quick
 sequence of pushes cancels the stale in-progress run instead of queueing several builds.
