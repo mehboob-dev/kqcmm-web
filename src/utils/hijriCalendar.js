@@ -522,7 +522,8 @@ export function gregorianMonthOf(date) {
  *    PAST list shows EVERY past occurrence (each is a real past date).
  *
  * Input `available` should already be sorted ascending by gregorianStart.
- * Returns { eventList, pastEvents } (each in ascending date order).
+ * Returns { eventList, pastEvents }. `eventList` is ascending (earliest future
+ * first); `pastEvents` is DESCENDING (newest past first).
  */
 export function splitUpcomingPast(available, today) {
   const todayStr = formatISODate(today)
@@ -533,6 +534,8 @@ export function splitUpcomingPast(available, today) {
     seenUp.add(o.id)
     return true
   })
+  // Walk available in reverse (newest past first), dedup, and DON'T reverse back —
+  // so pastEvents comes out descending (newest first).
   const pastEvents = [...available]
     .reverse()
     .filter(o => {
@@ -542,6 +545,5 @@ export function splitUpcomingPast(available, today) {
       seenPast.add(k)
       return true
     })
-    .reverse()
   return { eventList, pastEvents }
 }

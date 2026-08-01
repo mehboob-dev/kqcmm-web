@@ -361,6 +361,11 @@ eq(pastMonthly.length, 2, 'past list keeps every monthly occurrence (both Muharr
 assert(pastMonthly.some(o => o.hijriMonth === 1), 'past includes 6 Muharram')
 assert(pastMonthly.some(o => o.hijriMonth === 2), 'past includes 6 Safar')
 
+// Past events must be DESCENDING (newest first): Safar 6 (Jul 21), Ashura (Jun 26),
+// Muharram 6 (Jun 22).
+const pastOrder = pastEvents.map(o => formatISODate(o.gregorianStart))
+eq(pastOrder.join(','), '2026-07-21,2026-06-26,2026-06-22', 'past events are sorted newest-first (descending)')
+
 // Fixed events still dedup to one past representative
 eq(pastEvents.filter(o => o.id === 'ashura').length, 1, 'fixed event still dedups to one past occurrence')
 
