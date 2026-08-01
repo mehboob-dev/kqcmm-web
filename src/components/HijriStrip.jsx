@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import data from '../config/content/calendar.json'
 import {
   todayLocal,
@@ -15,6 +16,7 @@ import {
  * there is an event mapped to today.
  */
 export default function HijriStrip({ lang }) {
+  const navigate = useNavigate()
   const [today, setToday] = useState(() => todayLocal())
 
   // Refresh across midnight
@@ -40,7 +42,12 @@ export default function HijriStrip({ lang }) {
     .toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })
 
   return (
-    <div className="hijri-strip">
+    <button
+      className="hijri-strip"
+      onClick={() => navigate('/calendar')}
+      aria-label="Open Islamic calendar"
+      title="Open Islamic calendar"
+    >
       {todayH.ok ? (
         <span className="hijri-strip-hijri">{hijriLabel(todayH.hijriYear, todayH.hijriMonth, todayH.hijriDay, monthNames)}</span>
       ) : (
@@ -54,6 +61,6 @@ export default function HijriStrip({ lang }) {
           {todayEventLabel}
         </span>
       )}
-    </div>
+    </button>
   )
 }

@@ -396,18 +396,29 @@ strong { font-weight: 700; }
 /* Sizing uses em so the calendar inherits the app's font-family and font-size
    settings (set on <main> by FontContext). 1em = the user's chosen size. */
 
-/* HIJRI STRIP — thin app-wide bar below the header */
+/* HIJRI STRIP — thin app-wide bar below the header (clickable -> /calendar) */
 .hijri-strip {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.45em;
+  width: 100%;
   padding: 0.3em 1em;
   background: var(--accent);
   color: #fff;
   font-size: 0.95em;
   line-height: 1.4;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s ease;
+}
+.hijri-strip:hover {
+  opacity: 0.9;
+}
+.hijri-strip:active {
+  opacity: 0.8;
 }
 .hijri-strip-hijri {
   font-weight: 700;
