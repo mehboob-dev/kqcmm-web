@@ -79,18 +79,23 @@ In slide mode, swipe left/right directly on the card area to go to the next/prev
   │  {isSlide ?                           │
   │    <SlideContainer>                   │
   │      <ScrollableCard />               │  ← flex: 1
-  │      <CounterBar />                   │  ← fixed bottom
-  │      <SlideNav />                     │  ← fixed bottom (below counter)
+  │      <FixedBar>                       │  ← one fixed bottom bar:
+  │        <SlideNav /><Counter />        │    slide nav left, counter right
+  │      </FixedBar>                      │
   │    </SlideContainer>                  │
   │  :                                    │
   │    <ListContainer>                    │
   │      {items.map(renderItem)}          │  ← stacked cards
-  │      <CounterBar />                   │  ← fixed bottom
+  │      <FixedBar><Counter /></FixedBar> │  ← fixed bottom (centered counter)
   │    </ListContainer>                   │
   │  }                                    │
   └─────────────────────────────────────────┘
 </ContentView>
 ```
+
+Slide mode renders a **single** fixed bar (slide nav on the left, counter on the
+right), not two separate bars — see the combined bar in `ContentView.jsx`
+(`/* One fixed bar: nav left, counter right */`).
 
 ---
 
@@ -163,7 +168,7 @@ Manages offline/update notifications for the PWA experience.
 ### Behaviour
 | Toast | When | Description |
 |---|---|---|
-| ✅ App updated to latest version | SW auto-update triggers | Auto-dismiss after 100ms (brief green toast) |
+| ✅ App updated to latest version | SW auto-update triggers | Auto-dismiss after 500ms (brief green toast) |
 | 📡 You're offline | Browser goes offline | Fixed red banner at top, hides on reconnect |
 
 ### Integration
@@ -181,7 +186,7 @@ Manages offline/update notifications for the PWA experience.
 - Uses `useRegisterSW()` from `virtual:pwa-register/react` (vite-plugin-pwa's React integration) with `onNeedRefresh` calling `updateServiceWorker(true)` immediately
 - Listens to `navigator.onLine` events for offline detection
 - On update available, new SW activates and page reloads automatically
-- Shows brief "✅ App updated" toast (100ms) after auto-update — no user interaction needed
+- Shows brief "✅ App updated" toast (500ms) after auto-update — no user interaction needed
 
 ---
 
@@ -278,6 +283,51 @@ Labels are **not stored** in the content JSON. Each list entry is just a selecti
 
 ---
 
+## GenericContentPage.jsx + GenericContentRenderer.jsx (custom pages)
+
+Custom pages created/duplicated in the Admin Panel have no dedicated React
+component — they are rendered at their `/slug` route by the generic renderer.
+`pageRoutes.json` marks them with `renderer: "generic"`, and `App.jsx` maps
+those entries to `GenericContentPage` (never a dynamic import from user JSON).
+
+**Files:**
+- `src/pages/GenericContentPage.jsx` — route component: resolves the registry
+  entry for the current path, loads the `contentFile` via `getContent`, picks the
+  locale via `resolveLocale`, and renders `GenericContentRenderer`.
+- `src/components/GenericContentRenderer.jsx` — renders the localized payload.
+- `src/components/genericContent.js` — **pure, testable** helpers:
+  `parseBlock`, `parseMasterChild`, `pickField`, `normalizeGenericContent`,
+  `toPlainNodes`, `cardForItem`.
+
+### Supported content shapes
+The renderer recognizes, in priority order: `sections`, `duas`, `items`,
+`verses`, `lineage`, `paragraphs` (see `COLLECTIONS` in `genericContent.js`).
+- **Plain cards** — `title`/`heading`/`label` as the card title, `text`/`body`/
+  `translation`/`arabic` as the body, newlines preserved (`white-space: pre-line`).
+- **Master-child** — a `text` field containing `|||` splits into blocks; the first
+  `::` in each block separates child title from child text (extra `::` preserved
+  in the body). Master card is `.card`, children are `.card.card-accent`.
+- **Quick Jump** — top-level `quickJump` indices are bounds-filtered against the
+  primary collection and deduped; labels come from `title` (or `heading` for duas).
+
+### Safety rules (important)
+- **No `dangerouslySetInnerHTML`.** User-authored JSON is rendered as plain text.
+  HTML-looking strings (`<script>…</script>`) stay visible as text, never markup.
+- Unknown nested values render as safe text groups with bounded depth (`MAX_DEPTH 6`),
+  item count (`MAX_ARRAY_ITEMS 200`), and string length (`MAX_STRING_LEN 20000`).
+- Missing/empty content shows the standard "No content yet." state — never throws.
+
+### Example custom page content
+```json
+{
+  "quickJump": [0],
+  "en":    { "title": "Retreat", "sections": [{ "title": "Day 1", "text": "…" }] },
+  "hinglish": { "title": "Retreat", "sections": [{ "title": "Day 1", "text": "…" }] }
+}
+```
+
+---
+
 ## Calendar.jsx
 
 Hijri Islamic calendar page — a full navigable calendar, not a static list.
@@ -347,10 +397,11 @@ Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 98 cases).
 
 ## Page Components
 
-All pages follow the same pattern. Content is loaded via the eager glob loader
-(`src/config/content/index.js`) rather than a direct JSON import, so the page
-keeps working if its content file is renamed. The route comes from the
-page-route registry.
+All fixed pages follow the same pattern. Content is loaded via the eager glob
+loader (`src/config/content/index.js`) rather than a direct JSON import, so the
+page keeps working if its content file is renamed. The route comes from the
+page-route registry. **Custom admin-created pages** have no fixed component —
+they render through `GenericContentPage.jsx` (see the section above).
 
 ```jsx
 import { useLanguage } from '../context/LanguageContext'
@@ -424,5 +475,7 @@ Handles **master-child card sections** where content is split into sub-cards usi
 ### ViewContext.jsx
 - State: `slideMode`, `toggleSlideMode`
 - Persistence: localStorage key `kqcmm_view_mode`
-- Reads per-page defaults from `src/config/view.json`
-- Global toggle overrides per-page config
+- Reads the global default from `src/config/view.json` (currently just
+  `{"defaultMode": "slide"}`; a per-page `pages` map is supported by
+  `getPageMode` but not currently populated)
+- Global toggle / saved preference overrides the default

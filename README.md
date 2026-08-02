@@ -80,6 +80,10 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | `/abbajaan` | Abbajaan |
 | `/changelog` | Version history |
 
+Routes are **registry-driven** from `src/config/pageRoutes.json`. Pages created in the
+Admin Panel become public at their `/slug` automatically (rendered by a generic
+content renderer).
+
 ---
 
 ## Features

@@ -121,7 +121,7 @@ kqcmm-web/
 │   │   ├── pageRoutes.json           # Page-route registry (stable id, route, contentFile, aliases)
 │   │   ├── pageRoutes.js             # Registry helpers (pageById, routeForPage)
 │   │   ├── splash.json               # Splash screen config
-│   │   ├── view.json                 # Default view mode per page
+│   │   ├── view.json                 # Default view mode (global default; per-page map supported but unused)
 │   │   ├── strings/                  # UI labels (per live language)
 │   │   │   ├── index.js              # String loader
 │   │   │   ├── en.json
@@ -302,7 +302,7 @@ Same config file, `sideDrawer` array. Icons via FontAwesome (solid).
 | **List** | All items stacked as cards |
 | **Slide** | One card at a time with navigation (⏮ ◀ 1/30 ▶ ⏭) |
 
-Default per page in `src/config/view.json`. Global override in Settings.
+Global default in `src/config/view.json` (currently `slide`). Global override in Settings.
 
 ### Counter Bar
 Global +/−/↺ counter displayed on content pages. In slide mode it sits in a fixed bar with the slide nav. In list mode it appears at the bottom.

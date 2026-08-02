@@ -22,7 +22,7 @@ How to build, deploy, and host the KQCMM web app.
 The `npm run build` command runs three steps:
 
 1. **`vite build`** — Bundles the app into `dist/`
-2. **`node scripts/prerender.mjs`** — Puppeteer generates static HTML for all 12 routes with full SEO meta tags
+2. **`node scripts/prerender.mjs`** — Puppeteer generates static HTML for every registered route (canonical + aliases) from `pageRoutes.json`, including custom admin-created pages, with full SEO meta tags
 3. **`node -e "fs.copyFileSync('dist/index.html','dist/404.html')"`** — SPA fallback for GitHub Pages (uses Node.js for cross-platform compatibility)
 
 ### Output Structure
@@ -102,6 +102,7 @@ on:
     paths-ignore:          # docs-only pushes are skipped (save Actions minutes)
       - '*.md'
       - 'docs/**'
+      - 'scripts/**'
   workflow_dispatch:        # allow manual "Run workflow" from the Actions tab
 permissions:
   contents: read

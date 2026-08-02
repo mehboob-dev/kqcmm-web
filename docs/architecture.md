@@ -197,7 +197,7 @@ rebuild/deploy is required for the public bundle (Vite eager glob).
 | **React DOM** | 18.x | DOM rendering |
 | **React Router** | 6.x | Client-side routing |
 | **Vite** | 5.x | Build tool / dev server |
-| **FontAwesome** | 6.x | Icons (solid only) |
+| **FontAwesome** | 7.x | Icons (solid only) |
 | **react-helmet-async** | 3.x | Dynamic meta tags per page |
 | **vite-plugin-pwa** | 1.x | Service worker + PWA manifest |
 | **Puppeteer** | 25.x | Pre-rendering (build only) |

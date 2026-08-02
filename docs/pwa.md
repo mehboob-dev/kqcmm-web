@@ -30,7 +30,7 @@ The `VitePWA` plugin is configured in `vite.config.js`:
 
 ```javascript
 VitePWA({
-  registerType: 'autoUpdate',       // Auto-update on deploy — no user prompt
+  registerType: 'prompt',           // 'prompt' + PwaSupport calls updateServiceWorker(true) onNeedRefresh → auto-updates
   manifest: {
     name: 'KQCMM — Khanqahe Qadriyah ...',
     short_name: 'KQCMM',
@@ -83,7 +83,7 @@ Renders toast notifications for offline/update events.
 
 | Toast | Trigger | Behaviour |
 |---|---|---|
-| ✅ App upupdated to latest version | SW auto-update triggers | Auto-dismiss after 100ms (brief green toast) |
+| ✅ App upupdated to latest version | SW auto-update triggers | Auto-dismiss after 500ms (brief green toast) |
 | 📡 You're offline | `navigator.onLine` change | Fixed red top banner, auto-hides on reconnect |
 
 #### Integration
@@ -128,7 +128,7 @@ Rendered in `App.jsx` inside the context providers, before `<Routes>`:
 1. User visits app — SW checks for new files in background
 2. If new version found, `updateServiceWorker(true)` is called immediately
 3. New SW activates and page reloads automatically
-4. PwaSupport shows brief "✅ App updated to latest version" toast (100ms)
+4. PwaSupport shows brief "✅ App updated to latest version" toast (500ms)
 5. No user interaction needed — updates happen silently
 
 ---

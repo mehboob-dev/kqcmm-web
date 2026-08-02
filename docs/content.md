@@ -130,6 +130,32 @@ Quick Jump sheet is derived at render time from the source item's own `title`
 
 ---
 
+## Custom Pages (created in the Admin Panel)
+
+Pages created/duplicated via the Admin **Pages** tab are **custom pages**: they get a
+content JSON file in `src/config/content/` **and** a registry entry in
+`src/config/pageRoutes.json` with `{ custom: true, renderer: 'generic' }` and a stable
+`custom-…` id (never derived from the slug, so a rename keeps identity). They render
+publicly at `/slug` through the **generic renderer** — see the collection shapes,
+Quick Jump rules, and **plain-text safety rules** in [`components.md`](components.md)
+(`GenericContentPage` / `GenericContentRenderer`).
+
+Key rules:
+- **Active languages only.** New-page templates generate locales for the languages in
+  `LanguageContext.jsx` only — currently `en`, `hinglish`. If a language is added there,
+  every new/duplicated page automatically gets a locale (data-driven, no hardcoded codes;
+  see `generateTemplate` + `activeLanguages` in `scripts/content-editor.mjs`).
+- **Create/duplicate/delete/rename are transactional** on the content file + registry
+  (+ navigation for delete/rename by stable `pageId`). Collisions, reserved routes
+  (`/`, `/settings`, `/admin`, `/api`), and non-renamable pages (Home, Calendar) are
+  rejected server-side with no partial writes.
+- **Deleting** a custom page removes its content file, registry entry, and any nav
+  references by `pageId`.
+- **Build-time content.** A new/renamed/deleted custom page reaches the public site
+  after `npm run build` + deploy (content is included via Vite's eager glob).
+
+---
+
 ## Language Strings (Navigation & UI)
 
 Labels for navigation, buttons, and UI elements are in `src/config/strings/`:
@@ -188,18 +214,23 @@ in navigation automatically.
     { "pageId": "home", "to": "/", "icon": "faHouse", "key": "home" },
     { "pageId": "khatm", "to": "/khatm", "icon": "faStar", "key": "khatmEKhwajagan" },
     { "pageId": "sijrahNama", "to": "/sijrah-nama", "icon": "faBook", "key": "sijrah" },
-    { "pageId": "roshni", "to": "/roshni", "icon": "faFire", "key": "roshni" },
-    { "pageId": "dua", "to": "/dua", "icon": "faHandsPraying", "key": "duas" }
+    { "pageId": "roshni", "to": "/roshni", "icon": "faLightbulb", "key": "roshni" },
+    { "pageId": "dua", "to": "/dua", "icon": "faMosque", "key": "duas" }
   ],
   "sideDrawer": [
     { "pageId": "home", "to": "/", "icon": "faHouse", "key": "home" },
-    { "pageId": "dua", "to": "/dua", "icon": "faHandsPraying", "key": "duas" },
+    { "pageId": "dua", "to": "/dua", "icon": "faMosque", "key": "duas" },
     ...
   ]
 }
 ```
 
 The `key` field maps to `strings.nav[key]` or `strings.drawer[key]` for the label.
+The `pageId` field is the page's stable registry id (or its content-file basename).
+At render time the app resolves the **live** route from the registry via
+`routeForNavItem` (see `src/config/pageRoutes.js`), so a nav entry keeps working
+even after a page is renamed — a `pageId` entered as a slug (e.g. `my-new-page`)
+resolves just like the opaque id. `to` is the fallback.
 
 ---
 
@@ -229,20 +260,18 @@ The `key` field maps to `strings.nav[key]` or `strings.drawer[key]` for the labe
 
 ## View Mode Defaults
 
+`src/config/view.json` currently holds only a global default:
+
 ```json
 {
-  "defaultMode": "list",
-  "pages": {
-    "dua": "slide",
-    "khatm": "slide",
-    "sijrahNama": "slide",
-    "fatehaKhwani": "slide",
-    "roshni": "slide"
-  }
+  "defaultMode": "slide"
 }
 ```
 
-Pages not listed default to `"list"` mode.
+All pages use this global default. `ViewContext.jsx` (`getPageMode`) applies it
+unless the user has a saved global preference in `localStorage`
+(`kqcmm_view_mode`). A per-page `pages` map may be re-added later via the admin
+**Settings** editor (view config), but it is not currently populated.
 
 ---
 
@@ -253,7 +282,7 @@ Pages not listed default to `"list"` mode.
 npm run edit
 # Opens http://localhost:3030
 ```
-- Sidebar lists all 11 content pages
+- Sidebar lists the 10 generic content pages (calendar is managed by its own 📅 tab, so it is excluded from the Pages list)
 - Language tabs switch between en/hinglish (urdu appears once it ships)
 - Auto-resizing text areas with real Enter for line breaks
 - Add/delete/reorder array items with buttons
