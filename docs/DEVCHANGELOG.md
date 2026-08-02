@@ -16,6 +16,9 @@ Maintain both changelogs together when work lands. Latest version at the top.
 ### Internal / docs
 - `Calendar.jsx`: event lists split into monthly vs other (rule-based), `EventColumn` renders each as a scrollable vertical column; removed the earlier horizontal-strip/tab approach.
 - `styles.css`: `.cal-col-grid`, `.cal-col`, `.cal-ev-scroll` + a `@media (max-width: 640px)` stack rule.
+- Admin Translate page fixes (`LanguageEditor.jsx`): language list now derived from `/api/strings` (not object-key guessing — calendar's `monthNames`/`monthNamesShort` were showing as fake languages); removed detection race and hardcoded lang defaults; empty arrays show `[empty]` not `0/0`.
+- `docs/scripts.md`: documented the translation-% formula (`countFields` in `LanguageEditor.jsx`, `CONTENT_KEYS` list) — raw fill, not translation parity. No public version bump (admin-internal only).
+- `index.html`: removed the browser favicon link. PWA manifest icons (install app) kept.
 - `strings` (en/hinglish): Monthly / Other Events labels.
 - Docs updated (components.md); version 5.8.0 → 5.9.0.
 
