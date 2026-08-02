@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Modal from './ui/Modal.jsx'
 
-const INITIAL_LANGS = ['en', 'hinglish', 'urdu']
 const CONTENT_KEYS = ['title', 'heading', 'text', 'body', 'intro', 'label', 'subtitle']
 
 function countFields(obj, key = '') {
@@ -34,7 +33,7 @@ function pctClass(pct) {
 export default function LanguageEditor({ api, pages, show, onJumpToPage }) {
   const [pageData, setPageData] = useState({})
   const [activePage, setActivePage] = useState(null)
-  const [compareLangs, setCompareLangs] = useState(['en', 'urdu'])
+  const [compareLangs, setCompareLangs] = useState([])
   const [statusLoading, setStatusLoading] = useState(true)
   const [statusErrors, setStatusErrors] = useState(0)
   const mountedRef = useRef(true)
@@ -46,7 +45,7 @@ export default function LanguageEditor({ api, pages, show, onJumpToPage }) {
   const [dialogBusy, setDialogBusy] = useState(false)
   const [dialogError, setDialogError] = useState('')
 
-  const [langList, setLangList] = useState(INITIAL_LANGS)
+  const [langList, setLangList] = useState([])
   const [refreshKey, setRefreshKey] = useState(0)
 
   useEffect(() => {
@@ -58,23 +57,34 @@ export default function LanguageEditor({ api, pages, show, onJumpToPage }) {
     let errCount = 0; let completed = 0
     setStatusLoading(true); setStatusErrors(0); setPageData({})
 
-    const detectedLangs = new Set()
+    // Languages come from the real source of truth (strings/*.json), NOT from
+    // guessing object keys — content files have top-level non-language objects
+    // (calendar.json's monthNames/monthNamesShort) that would otherwise show up
+    // as fake "languages".
+    api.listStringLangs()
+      .then(codes => {
+        if (!mountedRef.current || !codes.length) return
+        setLangList(codes)
+        // Seed compare with the first two real langs on first load, then keep
+        // any existing selection in sync (drop langs that no longer exist).
+        setCompareLangs(prev => {
+          if (prev.length) return prev.filter(l => codes.includes(l))
+          return codes.slice(0, 2)
+        })
+      })
+      .catch(() => { /* keep current langList */ })
 
     pages.forEach(async (p) => {
       try {
         const d = await api.getPage(p.name)
         if (mountedRef.current) {
           setPageData(prev => ({ ...prev, [p.name]: d }))
-          Object.keys(d).forEach(k => {
-            if (typeof d[k] === 'object' && d[k] !== null && !Array.isArray(d[k])) detectedLangs.add(k)
-          })
         }
       } catch { errCount++ }
       finally {
         completed++
         if (completed === pages.length && mountedRef.current) {
           setStatusLoading(false); setStatusErrors(errCount)
-          if (detectedLangs.size > 0) setLangList([...detectedLangs])
         }
       }
     })
@@ -141,9 +151,15 @@ export default function LanguageEditor({ api, pages, show, onJumpToPage }) {
           <button className="btn btn-ghost" style={{ fontSize: 11, padding: '4px 10px' }} onClick={openAddLang}>+ Add Language</button>
           <button className="btn btn-ghost" style={{ fontSize: 11, padding: '4px 10px', color: 'var(--danger)' }} onClick={openRemoveLang}>- Remove Language</button>
         </div>
-        <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>
+        <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 4 }}>
           {statusLoading ? 'Loading page data…' : `${langList.length} languages across ${pages.length} pages`}
           {statusErrors > 0 && <span style={{ color: 'var(--danger)', marginLeft: 8 }}>{statusErrors} page(s) failed to load</span>}
+        </p>
+        <p style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 12 }}>
+          % = non-empty translatable fields ÷ total translatable fields, per language.
+          Only content fields are counted (<code>title</code>, <code>heading</code>, <code>text</code>,
+          <code>body</code>, <code>intro</code>, <code>label</code>, <code>subtitle</code>). A field empty in
+          both languages (or with different field counts per language) will show &lt; 100%.
         </p>
         <div className="table-wrap">
           <div className="table-header">
@@ -281,7 +297,7 @@ function CompareView({ data, langs, depth }) {
             <div style={{ display: 'flex', gap: 8 }}>
               {langs.map(l => {
                 const arr = data[l]?.[k]
-                if (!Array.isArray(arr)) return <div key={l} style={{ flex: 1, fontSize: 11, color: 'var(--danger)' }}>[empty]</div>
+                if (!Array.isArray(arr) || arr.length === 0) return <div key={l} style={{ flex: 1, fontSize: 11, color: 'var(--danger)' }}>[empty]</div>
                 return <div key={l} style={{ flex: 1, fontSize: 11, color: 'var(--text-secondary)' }}>
                   <span style={{ fontWeight: 600 }}>{l}:</span> {arr.filter(Boolean).length}/{arr.length}
                 </div>
