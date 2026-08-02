@@ -1,5 +1,11 @@
 {
-  "quickJump": [0, 1, 2, 3, 4],
+  "quickJump": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
   "en": {
     "title": "Roshni (Chirag Raushan)",
     "sections": [
@@ -46,7 +52,7 @@
       },
       {
         "title": "DUA",
-        "text": "Gamkhar Moinuddin, Madadgar Moinuddin, Aka Moinuddin, Datar Moinuddin, Paishwa Moinuddin, Yawar Moinuddin\nYa Moinuddin Chishti\nKar dijiye paar Kashty\nBa Hake Khwaja e Oosman-e-Harooni\nMadad Kun Ya Khwaja Moinuddin Chishty\n\nBanda e Parwar Digaaram Ummate Ahmad e Nabi\nDost Daar Chaar Yaaram Taabae Aulaadae Ali\nMazhabe Hanfi Daaram Millate Hazrat Khalil\nKhaak Paaye Gause Azam Zere Saaye Har Wali\nGird Gird Aulia Chu Gird Muhammad Mustufa Murtuza Ali\n\nInni Kunto Minaz Zalimeen\nZalimin se bachiye yakhabin\nHar mushkilon se bachiye ya khabin\nHar pareshani ko duur kar digiye ya khabin\nSukh chain ka zindagi digiye ya khabin\nIzzat Abroo ka Zindagi digiye ya Khabin\nHaq Halal ka kamai diviye ya khabin\nRizq main barkat digiye Ya Khabin\nUdaaro se Nijat digiye Ya Khabin\nGunaho ko Maaf kar digiye Ya Khabin\nShariat aur Tareeqat main rakhiye Ya khabin\nSunnat e Rasulallah pe chalne ka Taqaat digiye Ya Khabin\nNamaaz kayam karne ka Shouq digiye Ya khabin\nApke Rahem aur Karam farmaiye Ya Khabin\n\nShah e Marda\nSher e Yazada\nKuwwat e Parwardigar\nLaa Fatah Illah Ali\nLa Saif Illah Zulfiqar\nHar balae raad bashad\nYeh Dua aftad baad\nYa Ali Ya Auliya\nAbul Hasan Shah Abu Tarab\nAl Mustufa asrafil\nHaqun la illah illalah\nMuhammadur Rasoolah (S.A.W.)"
+        "text": "Gamkhar Moinuddin, Madadgar Moinuddin, Aka Moinuddin, Datar Moinuddin, Paishwa Moinuddin, Yawar Moinuddin\nYa Moinuddin Chishti\nKar dijiye paar Kashty\nBa Hake Khwaja e Oosman-e-Harooni\nMadad Kun Ya Khwaja Moinuddin Chishty\n\nBanda e Parwar Digaaram Ummate Ahmad e Nabi\nDost Daar Chaar Yaaram Taabae Aulaadae Ali\nMazhabe Hanfi Daaram Millate Hazrat Khalil\nKhaak Paaye Gause Azam Zere Saaye Har Wali\nGird Gird Aulia Chu Gird Muhammad Mustufa Murtuza Ali\n\nInni Kunto Minaz Zalimeen\nZalimin se bachiye yakhabin\nHar mushkilon se bachiye ya khabin\nHar pareshani ko duur kar digiye ya khabin\nSukh chain ka zindagi digiye ya khabin\nIzzat Abroo ka Zindagi digiye ya Khabin\nHaq Halal ka kamai digiye ya khabin\nRizq main barkat digiye Ya Khabin\nUdaaro se Nijat digiye Ya Khabin\nGunaho ko Maaf kar digiye Ya Khabin\nShariat aur Tareeqat main rakhiye Ya khabin\nSunnat e Rasulallah pe chalne ka Taqaat digiye Ya Khabin\nNamaaz kayam karne ka Shouq digiye Ya khabin\nApke Rahem aur Karam farmaiye Ya Khabin\n\nShah e Marda\nSher e Yazada\nKuwwat e Parwardigar\nLaa Fatah Illah Ali\nLa Saif Illah Zulfiqar\nHar balae raad bashad\nYeh Dua aftad baad\nYa Ali Ya Auliya\nAbul Hasan Shah Abu Tarab\nAl Mustufa asrafil\nHaqun la illah illalah\nMuhammadur Rasoolah (S.A.W.)"
       }
     ]
   }
