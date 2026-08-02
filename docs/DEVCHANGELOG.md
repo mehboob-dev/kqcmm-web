@@ -14,13 +14,22 @@ Maintain both changelogs together when work lands. Latest version at the top.
 - Two-column layout **stacks to a single column on mobile** (<640px).
 
 ### Internal / docs
+- **Custom pages now render publicly.** Admin-created/duplicated pages are registered in `pageRoutes.json` as `{ custom: true, renderer: 'generic' }` with a stable `custom-…` id, routed by `GenericContentPage.jsx`, and rendered by `GenericContentRenderer.jsx`. Supports `sections`/`duas`/`items`/`verses`/`lineage`/`paragraphs`, Fateha `|||`+`::` master-child blocks, and safe plain-text rendering of unknown fields (no raw HTML). Create/duplicate/delete/rename are transactional on content + registry (+ nav for delete). Deleting removes nav refs by `pageId`. NavEditor gained a page-picker and per-row `pageId` editing. Locale fallback lives in `src/config/content/locale.js` (requested → en → first, `quickJump` excluded). Prerender includes custom routes automatically. **Not a user-facing public change** — no version bump in `changelog.json`.
+- Admin panel: added ✏️ **Rename** for fixed pages (slug + route). Renames the content JSON file, updates the public route in the page-route registry, and keeps the old route as a redirect alias so existing links keep working. **Not a user-facing public change** — no version bump in `changelog.json`.
+- New `src/config/pageRoutes.json` registry: stable `id`, `component`, `contentFile`, `route`, `titleKey`, `renamable`, `aliases`. `App.jsx` renders routes from it and adds `<Navigate>` redirects for aliases; `Layout.jsx` title map, `Home.jsx` quick links, `SideDrawer`/`BottomNav`, `HijriStrip`, and `SeoHead` paths all resolve routes from it.
+- New content loader `src/config/content/index.js` (Vite eager glob) — fixed page components load content by basename instead of direct JSON imports, so a rename no longer breaks source imports.
+- `navigation.json` entries gained a stable `pageId` (kept `to`/`key`/`icon` for NavEditor compatibility); nav components prefer the registry route.
+- `scripts/page-rename.mjs`: shared `validateSlug` / `buildRename` / `applyRename` with atomic writes + rollback; CLI `node scripts/page-rename.mjs <pageId> <newSlug> [--dry-run]`.
+- `scripts/content-editor.mjs`: new `POST /api/page/rename`; generic page GET/POST/DELETE/duplicate/create routes now validate names server-side (path-traversal hardening); `/api/pages` returns `pageId`/`route`/`canRename`.
+- `scripts/prerender.mjs`: route list derived from the registry (canonical + aliases).
+- New tests `scripts/test-page-rename.mjs` (slug validation, collision/reserved, rename-back, rollback); wired into `npm test`.
 - `Calendar.jsx`: event lists split into monthly vs other (rule-based), `EventColumn` renders each as a scrollable vertical column; removed the earlier horizontal-strip/tab approach.
 - `styles.css`: `.cal-col-grid`, `.cal-col`, `.cal-ev-scroll` + a `@media (max-width: 640px)` stack rule.
 - Admin Translate page fixes (`LanguageEditor.jsx`): language list now derived from `/api/strings` (not object-key guessing — calendar's `monthNames`/`monthNamesShort` were showing as fake languages); removed detection race and hardcoded lang defaults; empty arrays show `[empty]` not `0/0`.
 - `docs/scripts.md`: documented the translation-% formula (`countFields` in `LanguageEditor.jsx`, `CONTENT_KEYS` list) — raw fill, not translation parity. No public version bump (admin-internal only).
 - `index.html`: removed the browser favicon link. PWA manifest icons (install app) kept.
 - `strings` (en/hinglish): Monthly / Other Events labels.
-- Docs updated (components.md); version 5.8.0 → 5.9.0.
+- Docs updated (CLAUDE.md, docs/architecture.md, docs/scripts.md, docs/seo.md, docs/content.md, docs/components.md); version 5.8.0 → 5.9.0.
 
 ---
 

@@ -2,7 +2,10 @@ import SeoHead from '../components/SeoHead'
 import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
-import data from '../config/content/sijrahNama.json'
+import { getContent } from '../config/content'
+import { routeForPage } from '../config/pageRoutes'
+
+const data = getContent('sijrahNama')
 
 export default function SijrahNama() {
   const { lang } = useLanguage()
@@ -16,7 +19,7 @@ export default function SijrahNama() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Sijrah Nama" path="/sijrah-nama" description="Sacred verses and spiritual poetry from the Chishti tradition — read and reflect on the devotional poetry." />
+      <SeoHead title="Sijrah Nama" path={routeForPage('sijrahNama')} description="Sacred verses and spiritual poetry from the Chishti tradition — read and reflect on the devotional poetry." />
       <h2 className="page-title">{content.title}</h2>
       {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
       {items.length > 0 ? (

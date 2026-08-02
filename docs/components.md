@@ -347,12 +347,19 @@ Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 98 cases).
 
 ## Page Components
 
-All pages follow the same pattern:
+All pages follow the same pattern. Content is loaded via the eager glob loader
+(`src/config/content/index.js`) rather than a direct JSON import, so the page
+keeps working if its content file is renamed. The route comes from the
+page-route registry.
 
 ```jsx
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
-import data from '../config/content/myPage.json'
+import SeoHead from '../components/SeoHead'
+import { getContent } from '../config/content'
+import { routeForPage } from '../config/pageRoutes'
+
+const data = getContent('myPage')
 
 export default function MyPage() {
   const { lang } = useLanguage()

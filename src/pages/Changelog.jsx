@@ -1,6 +1,9 @@
 import SeoHead from '../components/SeoHead'
 import { useLanguage } from '../context/LanguageContext'
-import data from '../config/content/changelog.json'
+import { getContent } from '../config/content'
+import { routeForPage } from '../config/pageRoutes'
+
+const data = getContent('changelog')
 
 export default function Changelog() {
   const { lang } = useLanguage()
@@ -8,7 +11,7 @@ export default function Changelog() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Changelog" path="/changelog" description="Version history and release notes for KQCMM web app." />
+      <SeoHead title="Changelog" path={routeForPage('changelog')} description="Version history and release notes for KQCMM web app." />
       <h2 className="page-title">{content.title || 'Changelog'}</h2>
       {content.versions?.map((v, i) => (
         <div key={i} className="card">

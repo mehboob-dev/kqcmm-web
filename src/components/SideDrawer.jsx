@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import Icon from './FontAwesome'
 import navConfig from '../config/navigation.json'
+import { routeForNavItem } from '../config/pageRoutes'
 
 export default function SideDrawer({ open, onClose, strings }) {
   const location = useLocation()
@@ -17,7 +18,9 @@ export default function SideDrawer({ open, onClose, strings }) {
   }, [open])
 
   const links = navConfig.sideDrawer.map(item => ({
-    to: item.to,
+    // Resolve via registry id, content-file basename, or configured route —
+    // so a nav entry keeps working even if its pageId was entered as a slug.
+    to: routeForNavItem(item),
     icon: item.icon,
     label: strings.drawer?.[item.key] || item.key,
   }))

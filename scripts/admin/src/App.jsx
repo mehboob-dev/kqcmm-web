@@ -97,11 +97,13 @@ export default function App() {
     setDialogError('')
   }
 
-  const closeDialog = () => {
+  // Memoized so the Modal's focus effect (which depends on onClose) does not
+  // re-run on every keystroke and steal focus back to the trigger.
+  const closeDialog = useCallback(() => {
     setDialog(null)
     setDialogError('')
     setTimeout(() => dialogTrigger.current?.focus?.(), 0)
-  }
+  }, [])
 
   const submitDialog = async () => {
     const value = dialogValue.trim().toLowerCase()
@@ -114,6 +116,17 @@ export default function App() {
     try {
       if (dialog === 'create') await api.createPage(value, dialogTemplate)
       if (dialog === 'duplicate') await api.duplicatePage(activePage, value)
+      if (dialog === 'rename') {
+        const page = pages.find(p => p.name === activePage)
+        if (!page?.pageId) { setDialogError('This page cannot be renamed.'); setDialogBusy(false); return }
+        const res = await api.renamePage(page.pageId, value)
+        setPages(await api.listPages())
+        closeDialog()
+        await openPage(res.newFile)
+        show(`Renamed to "/${res.newFile}" — old route /${res.oldFile} still works`)
+        setDialogBusy(false)
+        return
+      }
       setPages(await api.listPages())
       closeDialog()
       if (dialog === 'create' || dialog === 'duplicate') await openPage(value)
@@ -184,6 +197,11 @@ export default function App() {
     confirmNavigation(() => openDialog('duplicate', event.currentTarget))
   }
 
+  const handleRenamePage = (event) => {
+    if (!activePage) return
+    confirmNavigation(() => openDialog('rename', event.currentTarget))
+  }
+
   const jumpToPage = useCallback((name, lang) => {
     confirmNavigation(() => {
       setPendingLang(lang || null)
@@ -195,6 +213,9 @@ export default function App() {
   const filteredPages = searchResults
     ? pages.filter(p => searchResults.some(r => r.name === p.name))
     : pages.filter(p => p.name.toLowerCase().includes(searchQ.toLowerCase()))
+
+  const activePageMeta = activePage ? pages.find(p => p.name === activePage) : null
+  const canRenameActive = !!activePageMeta?.canRename
 
   return (
     <div className="app-layout">
@@ -236,8 +257,9 @@ export default function App() {
                 <button key={p.name}
                   className={'page-item' + (activePage === p.name ? ' active' : '')}
                   onClick={() => openPage(p.name)}>
-                  <span className="page-icon">📄</span>
-                  {p.name}
+                  <span className="page-icon">{p.custom ? '🆕' : '📄'}</span>
+                  <span className="page-item-name">{p.name}</span>
+                  {p.custom && <span className="page-item-tag" title="Custom page (public via generic renderer)">custom</span>}
                 </button>
               ))}
               {filteredPages.length === 0 && (
@@ -257,6 +279,9 @@ export default function App() {
           <button className="btn btn-ghost menu-button" onClick={() => setMobileOpen(true)} aria-label="Open menu">☰</button>
           <h1 className="toolbar-title">
             {tab === 'pages' && (activePage || 'Select a page')}
+            {tab === 'pages' && activePageMeta?.route && (
+              <span className="toolbar-subtitle">/{activePageMeta.route.replace(/^\//, '')}</span>
+            )}
             {tab === 'nav' && 'Navigation Editor'}
             {tab === 'strings' && 'Strings Editor'}
             {tab === 'lang' && 'Translation Manager'}
@@ -271,6 +296,11 @@ export default function App() {
               <button className="btn btn-ghost" onClick={handleDuplicatePage} title="Duplicate this page">
                 📋 Duplicate
               </button>
+              {canRenameActive && (
+                <button className="btn btn-ghost" onClick={handleRenamePage} title="Rename this page (slug + route)">
+                  ✏️ Rename
+                </button>
+              )}
               <button className="btn btn-danger" onClick={event => handleDeletePage(activePage, event)}>
                 🗑 Delete
               </button>
@@ -329,6 +359,21 @@ export default function App() {
         <Modal title="Delete page?" danger onClose={closeDialog}
           actions={<><button className="btn btn-ghost" onClick={closeDialog}>Cancel</button><button className="btn btn-danger" onClick={submitDialog} disabled={dialogBusy}>Delete permanently</button></>}>
           <p className="modal-context">This will permanently delete <strong>{activePage}</strong>. This action cannot be undone.</p>{dialogError && <p className="form-error" role="alert">{dialogError}</p>}
+        </Modal>
+      )}
+      {dialog === 'rename' && (
+        <Modal title="Rename page" onClose={closeDialog}
+          actions={<><button className="btn btn-ghost" onClick={closeDialog}>Cancel</button><button className="btn btn-primary" onClick={submitDialog} disabled={dialogBusy}>Rename</button></>}>
+          <p className="modal-context">Rename <strong>{activePage}</strong> to a new slug.</p>
+          <div className="field-group">
+            <label className="field-label" htmlFor="rename-name">New slug</label>
+            <input id="rename-name" className="field-input" value={dialogValue} onChange={e => setDialogValue(e.target.value)} placeholder="my-new-page" autoComplete="off" />
+            <small className="field-help">Lowercase letters, numbers, and hyphens only. This renames the file <code>{activePage}.json</code> and the public route to <code>/{dialogValue || '…'}</code>.</small>
+          </div>
+          <div className="field-group">
+            <small className="field-help">⚠️ The old URL <code>/{activePage}</code> will keep working as a redirect. You must rebuild and redeploy the app for the new route to go live.</small>
+          </div>
+          {dialogError && <p className="form-error" role="alert">{dialogError}</p>}
         </Modal>
       )}
     </div>

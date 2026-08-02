@@ -48,6 +48,10 @@ Crawler or user → static HTML served → React hydrates client-side
 
 ### Routes Prerendered
 
+The route list is **derived from `src/config/pageRoutes.json`** (canonical routes
+plus any legacy `aliases`), so a renamed page — and its old route — are
+prerendered automatically:
+
 ```
 /kqcmm-web/       → dist/index.html
 /kqcmm-web/dua    → dist/dua/index.html
@@ -62,6 +66,10 @@ Crawler or user → static HTML served → React hydrates client-side
 /kqcmm-web/abbajaan       → dist/abbajaan/index.html
 /kqcmm-web/changelog      → dist/changelog/index.html
 ```
+
+Each alias (e.g. a renamed page's old route) is prerendered to its own
+`dist/<old-slug>/index.html` so GitHub Pages serves a concrete redirect page for
+direct hits on old URLs.
 
 ### Build Integration
 

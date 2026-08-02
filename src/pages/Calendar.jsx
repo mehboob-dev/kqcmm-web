@@ -2,7 +2,10 @@ import SeoHead from '../components/SeoHead'
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { loadStrings } from '../config/strings'
-import data from '../config/content/calendar.json'
+import { getContent } from '../config/content'
+import { routeForPage } from '../config/pageRoutes'
+
+const data = getContent('calendar')
 import {
   todayLocal,
   todayHijri,
@@ -207,7 +210,7 @@ export default function Calendar() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Islamic Calendar" path="/calendar" description="Upcoming Islamic events, important dates, and spiritual observances from the Chishti tradition." />
+      <SeoHead title="Islamic Calendar" path={routeForPage('calendar')} description="Upcoming Islamic events, important dates, and spiritual observances from the Chishti tradition." />
       <h2 className="page-title">{title}</h2>
 
       {/* MONTH GRID */}

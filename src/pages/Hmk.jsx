@@ -1,6 +1,9 @@
 import SeoHead from '../components/SeoHead'
 import { useLanguage } from '../context/LanguageContext'
-import data from '../config/content/hmk.json'
+import { getContent } from '../config/content'
+import { routeForPage } from '../config/pageRoutes'
+
+const data = getContent('hmk')
 
 export default function Hmk() {
   const { lang } = useLanguage()
@@ -8,7 +11,7 @@ export default function Hmk() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Hmk / Kalam" path="/hmk" description="Biography and spiritual kalam of Hajee Mahboob Kassim — devotional poetry and life history." />
+      <SeoHead title="Hmk / Kalam" path={routeForPage('hmk')} description="Biography and spiritual kalam of Hajee Mahboob Kassim — devotional poetry and life history." />
       <h2 className="page-title">{content.title}</h2>
       {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
       {content.paragraphs?.map((p, i) => (

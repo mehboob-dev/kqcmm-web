@@ -114,6 +114,13 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 
 ## Route Map
 
+Routes are **registry-driven** from `src/config/pageRoutes.json` (canonical route,
+stable `id`, content-file basename, localized `titleKey`, `renamable`, and legacy
+`aliases`). `src/App.jsx` renders a component per registered page and adds a
+`<Navigate>` redirect for each alias. Page components load content through the
+eager glob loader in `src/config/content/index.js`, so renaming a page means
+editing the registry + moving the JSON file (no source import rewrites).
+
 ```
 /               → Home page (logo, tagline, 10 quick-link cards)
 /dua            → Duas / Supplications (7 duas in slide mode)
@@ -128,6 +135,20 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 /abbajaan       → Abbajaan
 /changelog      → Version history
 ```
+
+Renaming a registered page (admin Pages tab → ✏️ Rename, or
+`node scripts/page-rename.mjs <pageId> <newSlug>`) moves the content file, updates
+the registry route, and preserves the old route as a redirect alias so existing
+links and bookmarks keep working.
+
+**Custom pages** created/duplicated in the Admin Panel are registered as
+`{ custom: true, renderer: 'generic' }` and rendered at `/slug` by
+`GenericContentPage.jsx` (via `GenericContentRenderer.jsx`). They support the
+common collection shapes and Fateha master-child blocks, render unknown fields
+as safe plain text, and follow locale fallback (requested → en → first).
+Custom pages are fully renameable; deleting one removes its registry entry and
+navigation references. Admin CRUD edits source files + registry only — a
+rebuild/deploy is required for the public bundle (Vite eager glob).
 
 ---
 

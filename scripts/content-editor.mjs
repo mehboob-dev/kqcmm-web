@@ -16,6 +16,19 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { validateCalendarConfig } from '../src/utils/hijriCalendar.js'
+import {
+  buildRename,
+  applyRename,
+  buildCreateCustom,
+  applyCreateCustom,
+  buildDuplicateCustom,
+  applyDuplicateCustom,
+  buildDeleteCustom,
+  applyDeleteCustom,
+  loadRoutes,
+  listPageFiles,
+  isExistingPageName,
+} from './page-rename.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -31,6 +44,41 @@ const PORT = 3030
 const readJSON = (fp) => { try { return JSON.parse(fs.readFileSync(fp, 'utf8')) } catch { return null } }
 const writeJSON = (fp, data) => fs.writeFileSync(fp, JSON.stringify(data, null, 2) + '\n')
 const listPages = () => fs.readdirSync(CONTENT_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', '')).sort()
+
+// Active languages come from LanguageContext.jsx (single source of truth).
+// Returns [{ code, label, dir }] so callers can build future-proof, label-aware
+// content without hardcoding language codes.
+const activeLanguages = () => {
+  try {
+    const raw = fs.readFileSync(LANG_CTX_FILE, 'utf8')
+    const m = raw.match(/const languages = \[([\s\S]*?)\]/)
+    if (!m) return [{ code: 'en', label: 'English', dir: 'ltr' }, { code: 'hinglish', label: 'Hinglish', dir: 'ltr' }]
+    const langs = [...m[1].matchAll(/\{ code:\s*'(\w+)',\s*label:\s*'([^']+)',\s*dir:\s*'(\w+)'\s*\}/g)]
+      .map(x => ({ code: x[1], label: x[2], dir: x[3] }))
+    return langs.length ? langs : [{ code: 'en', label: 'English', dir: 'ltr' }]
+  } catch { return [{ code: 'en', label: 'English', dir: 'ltr' }] }
+}
+
+// Two distinct page-name validators:
+//
+// 1. safePageName — strict lowercase-kebab slug for NEW names (create, rename,
+//    duplicate). New pages must be lowercase to form clean public routes.
+// 2. isExistingPageName (shared from page-rename.mjs) — path-safe for EXISTING
+//    files. Existing content files may be camelCase (e.g. fatehaKhwani.json,
+//    salimPappa.json), so this allows letters/digits/hyphens while still
+//    blocking path traversal. Used for read/edit/delete/info of existing pages.
+const safePageName = (name) => {
+  if (typeof name !== 'string' || !name) return false
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name)
+}
+const safeExistingPageName = isExistingPageName
+const safePagePath = (name) => {
+  const fp = path.join(CONTENT_DIR, name + '.json')
+  // Defense in depth against directory traversal even though both validators
+  // already reject separators: the resolved path must stay inside CONTENT_DIR.
+  if (!fp.startsWith(CONTENT_DIR + path.sep)) return null
+  return fp
+}
 const contentType = (ext) => ({
   '.html': 'text/html; charset=utf-8',
   '.js': 'application/javascript; charset=utf-8',
@@ -42,31 +90,32 @@ const contentType = (ext) => ({
   '.woff2': 'font/woff2',
 }[ext] || 'application/octet-stream')
 
-/* ── TEMPLATES for new pages ── */
+/* ── TEMPLATES for new pages ──
+   Generates content for the currently active languages only (from
+   LanguageContext.jsx). Data-driven and future-proof: no hardcoded language
+   codes or label maps — a new language added to LanguageContext.jsx
+   automatically gets a locale in every new/duplicated page. */
 function generateTemplate(template, name) {
   const title = name.charAt(0).toUpperCase() + name.slice(1).replace(/-/g, ' ')
-  const base = {
-    en: { title: title + ' (English)', sections: [{ title: 'Section 1', text: 'Content here...' }] },
-    hinglish: { title: title + ' (Hinglish)', sections: [{ title: 'Section 1', text: 'Content here...' }] },
-    urdu: { title: title + ' (Urdu)', sections: [{ title: 'Section 1', text: 'Content here...' }] },
-  }
-  if (template === 'dua') {
-    return {
-      quickJump: [0],
-      en: { title: title, duas: [{ heading: '1st DUA', text: 'Dua text...' }] },
-      hinglish: { title: title, duas: [{ heading: '1st Dua', text: 'Dua text...' }] },
-      urdu: { title: title, duas: [{ heading: 'پہلی دعا', text: 'دعا کا متن...' }] },
+  const langs = activeLanguages()
+  // Disambiguated title per language, derived from the language label so a new
+  // language needs no code-specific branch.
+  const langTitle = (lang) => `${title} (${lang.label})`
+
+  const buildLocale = (lang) => {
+    if (template === 'dua') {
+      return { title: langTitle(lang), duas: [{ heading: '1st DUA', text: 'Dua text...' }] }
     }
-  }
-  if (template === 'fateha') {
-    return {
-      quickJump: [0],
-      en: { title: title, sections: [{ title: 'Opening', text: 'Bismillah...\n|||\nSurah...::...\n|||\nDarood...::...' }] },
-      hinglish: { title: title, sections: [{ title: 'Shuruat', text: 'Bismillah...\n|||\nSurah...::...' }] },
-      urdu: { title: title, sections: [{ title: 'شروع', text: 'بسم اللہ...\n|||\nسورہ...::...' }] },
+    if (template === 'fateha') {
+      return { title: langTitle(lang), sections: [{ title: 'Opening', text: 'Bismillah...\n|||\nSurah...::...\n|||\nDarood...::...' }] }
     }
+    return { title: langTitle(lang), sections: [{ title: 'Section 1', text: 'Content here...' }] }
   }
-  return base
+
+  const out = {}
+  langs.forEach(lang => { out[lang.code] = buildLocale(lang) })
+  if (template === 'dua' || template === 'fateha') out.quickJump = [0]
+  return out
 }
 
 /* ── STRINGS fallback for new lang ── */
@@ -130,7 +179,22 @@ const server = http.createServer((req, res) => {
   if (u.pathname === '/api/pages' && method === 'GET') {
     // `calendar` is managed by the dedicated Calendar editor (schema-validated),
     // so it is hidden from the generic Pages list to avoid bypassing validation.
-    return sendJSON(listPages().filter(n => n !== 'calendar').map(n => ({ name: n, title: n })))
+    const routes = loadRoutes()
+    return sendJSON(listPageFiles()
+      .filter(n => n !== 'calendar')
+      .map(n => {
+        const page = routes.find(p => p.contentFile === n)
+        return {
+          name: n,
+          title: n,
+          pageId: page ? page.id : null,
+          route: page ? page.route : null,
+          renderer: page ? page.renderer || 'generic' : null,
+          custom: !!(page && page.custom),
+          canRename: !!page && page.renamable === true,
+          aliases: page ? (page.aliases || []) : [],
+        }
+      }))
   }
 
   // Search
@@ -144,7 +208,8 @@ const server = http.createServer((req, res) => {
   const pageInfoMatch = u.pathname.match(/^\/api\/page\/(.+)\.json\/info$/)
   if (pageInfoMatch && method === 'GET') {
     const name = pageInfoMatch[1]
-    const d = readJSON(path.join(CONTENT_DIR, name + '.json'))
+    if (!safeExistingPageName(name)) return sendError('Invalid page name')
+    const d = readJSON(safePagePath(name))
     if (!d) return sendError('Not found', 404)
     const langs = Object.keys(d).filter(k => typeof d[k] === 'object' && d[k] !== null && !Array.isArray(d[k]))
     return sendJSON({ name, langs, fields: Object.keys(d[langs[0]] || {}) })
@@ -153,29 +218,35 @@ const server = http.createServer((req, res) => {
   // Get / save page
   const pageMatch = u.pathname.match(/^\/api\/page\/(.+)\.json$/)
   if (pageMatch && method === 'GET') {
-    const d = readJSON(path.join(CONTENT_DIR, pageMatch[1] + '.json'))
+    const name = pageMatch[1]
+    if (!safeExistingPageName(name)) return sendError('Invalid page name')
+    const d = readJSON(safePagePath(name))
     if (!d) return sendError('Not found', 404)
     return sendJSON(d)
   }
   if (pageMatch && method === 'POST') {
+    const name = pageMatch[1]
+    if (!safeExistingPageName(name)) return sendError('Invalid page name')
     let body = ''
     req.on('data', c => body += c)
     req.on('end', () => {
       try {
-        writeJSON(path.join(CONTENT_DIR, pageMatch[1] + '.json'), JSON.parse(body))
+        writeJSON(safePagePath(name), JSON.parse(body))
         sendJSON({ ok: true })
       } catch (e) { sendError(e.message) }
     })
     return
   }
   if (pageMatch && method === 'DELETE') {
-    const fp = path.join(CONTENT_DIR, pageMatch[1] + '.json')
-    if (!fs.existsSync(fp)) return sendError('Not found', 404)
-    fs.unlinkSync(fp)
-    return sendJSON({ ok: true })
+    const name = pageMatch[1]
+    if (!safeExistingPageName(name)) return sendError('Invalid page name')
+    const plan = buildDeleteCustom(name)
+    if (!plan.ok) return sendError(plan.error)
+    const result = applyDeleteCustom(plan)
+    return sendJSON({ ok: true, removedNav: result.removedNav })
   }
 
-  // Create page
+  // Create page (custom generic page: content file + registry entry)
   if (u.pathname === '/api/page' && method === 'PUT') {
     let body = ''
     req.on('data', c => body += c)
@@ -183,10 +254,20 @@ const server = http.createServer((req, res) => {
       try {
         const { name, template } = JSON.parse(body)
         if (!name) return sendError('Name required')
-        const fp = path.join(CONTENT_DIR, name + '.json')
-        if (fs.existsSync(fp)) return sendError('Page already exists')
-        writeJSON(fp, generateTemplate(template || '', name))
-        sendJSON({ ok: true })
+        if (!safePageName(name)) return sendError('Invalid page name')
+        const content = generateTemplate(template || '', name)
+        const plan = buildCreateCustom(name, content)
+        if (!plan.ok) return sendError(plan.error)
+        const result = applyCreateCustom(plan)
+        sendJSON({
+          ok: true,
+          pageId: result.entry.id,
+          name: result.contentFile,
+          route: result.entry.route,
+          renderer: result.entry.renderer,
+          custom: true,
+          canRename: true,
+        })
       } catch (e) { sendError(e.message) }
     })
     return
@@ -200,12 +281,44 @@ const server = http.createServer((req, res) => {
       try {
         const { from, to } = JSON.parse(body)
         if (!from || !to) return sendError('from and to required')
-        const src = path.join(CONTENT_DIR, from + '.json')
-        if (!fs.existsSync(src)) return sendError('Source not found', 404)
-        const dst = path.join(CONTENT_DIR, to + '.json')
-        if (fs.existsSync(dst)) return sendError('Destination already exists')
-        fs.copyFileSync(src, dst)
-        sendJSON({ ok: true })
+        if (!safePageName(from) || !safePageName(to)) return sendError('Invalid page name')
+        const plan = buildDuplicateCustom(from, to)
+        if (!plan.ok) return sendError(plan.error)
+        const result = applyDuplicateCustom(plan)
+        sendJSON({
+          ok: true,
+          pageId: result.entry.id,
+          name: result.contentFile,
+          route: result.entry.route,
+          renderer: result.entry.renderer,
+          custom: true,
+          canRename: true,
+        })
+      } catch (e) { sendError(e.message) }
+    })
+    return
+  }
+
+  // Rename a fixed page (slug + registry + navigation, transactional)
+  if (u.pathname === '/api/page/rename' && method === 'POST') {
+    let body = ''
+    req.on('data', c => body += c)
+    req.on('end', () => {
+      try {
+        const { pageId, newSlug } = JSON.parse(body)
+        if (!pageId || !newSlug) return sendError('pageId and newSlug required')
+        const plan = buildRename(pageId, newSlug)
+        if (!plan.ok) return sendError(plan.error)
+        const result = applyRename(plan)
+        sendJSON({
+          ok: true,
+          pageId: result.pageId,
+          oldFile: result.oldFile,
+          newFile: result.newFile,
+          oldRoute: result.oldRoute,
+          newRoute: result.newRoute,
+          alias: result.alias,
+        })
       } catch (e) { sendError(e.message) }
     })
     return

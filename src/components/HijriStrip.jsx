@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import data from '../config/content/calendar.json'
+import { getContent } from '../config/content'
+import { routeForPage } from '../config/pageRoutes'
+
+const data = getContent('calendar')
 import {
   todayLocal,
   todayHijri,
@@ -44,7 +47,7 @@ export default function HijriStrip({ lang }) {
   return (
     <button
       className="hijri-strip"
-      onClick={() => navigate('/calendar')}
+      onClick={() => navigate(routeForPage('calendar'))}
       aria-label="Open Islamic calendar"
       title="Open Islamic calendar"
     >

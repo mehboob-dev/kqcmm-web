@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.5.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.9.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -94,6 +94,7 @@ kqcmm-web/
 │   │
 │   ├── pages/
 │   │   ├── Home.jsx                   # Home with logo + quick links
+│   │   ├── GenericContentPage.jsx     # Custom page renderer (registry renderer: generic)
 │   │   ├── Dua.jsx                    # Duas (supplications)
 │   │   ├── Hmk.jsx                    # Hajee Mahboob Kassim bio
 │   │   ├── SijrahNama.jsx            # Sijrah Nama verses
@@ -116,7 +117,9 @@ kqcmm-web/
 │   │   └── ViewContext.jsx           # View mode (list/slide) state
 │   │
 │   ├── config/
-│   │   ├── navigation.json           # Bottom nav + drawer order/icons
+│   │   ├── navigation.json           # Bottom nav + drawer order/icons (entries carry pageId)
+│   │   ├── pageRoutes.json           # Page-route registry (stable id, route, contentFile, aliases)
+│   │   ├── pageRoutes.js             # Registry helpers (pageById, routeForPage)
 │   │   ├── splash.json               # Splash screen config
 │   │   ├── view.json                 # Default view mode per page
 │   │   ├── strings/                  # UI labels (per live language)
@@ -124,6 +127,8 @@ kqcmm-web/
 │   │   │   ├── en.json
 │   │   │   └── hinglish.json
 │   │   └── content/                  # Page content (per page, en + hinglish; urdu planned)
+│   │       ├── index.js              # Eager glob content loader (getContent)
+│   │       ├── locale.js             # Pure locale resolver (requested→en→first)
 │   │       ├── dua.json
 │   │       ├── hmk.json
 │   │       ├── sijrahNama.json
@@ -140,19 +145,22 @@ kqcmm-web/
 │
 ├── scripts/
 │   ├── content-editor.mjs            # Local web editor (npm run edit)
+│   ├── page-rename.mjs               # Shared page-rename logic + CLI (validateSlug/buildRename/applyRename)
 │   ├── prerender.mjs                 # Puppeteer prerender for SEO
 │   ├── fetch-content.mjs             # Fetches from Firebase Hosting
 │   ├── sync-other-langs.mjs          # Syncs hinglish/urdu from XML
 │   ├── translate-content.mjs         # Translation helper
 │   ├── import-to-firebase.mjs        # Firebase Admin import template
 │   ├── json-to-js.mjs                # JSON→JS converter
+│   ├── test-hijri-calendar.mjs       # Hijri calendar unit tests
+│   ├── test-page-rename.mjs          # Page-rename unit tests
 │   └── admin/                        # React-based admin panel (npm run edit)
 │       ├── package.json
 │       ├── vite.config.js
 │       ├── index.html
 │       └── src/
 │           ├── main.jsx
-│           ├── App.jsx               # Main layout, Page CRUD, dialogs
+│           ├── App.jsx               # Main layout, Page CRUD + rename, dialogs
 │           ├── hooks/
 │           │   └── useApi.js
 │           └── components/
@@ -303,20 +311,46 @@ Global +/−/↺ counter displayed on content pages. In slide mode it sits in a 
 
 ## 🗺 Route Map
 
+Routes are **registry-driven** from `src/config/pageRoutes.json` (canonical `route`,
+stable `id`, content-file basename, localized `titleKey`, `renamable`, and legacy
+`aliases`). `src/App.jsx` renders a component per registered page and adds a
+`<Navigate>` redirect for each alias. Page components load content via the eager
+glob loader in `src/config/content/index.js` — **not** direct JSON imports — so a
+page can be renamed by editing the registry + moving the file without touching
+source code.
+
 ```
-/               → Home
-/dua            → Duas
-/hmk            → Hajee Mahboob Kassim bio
-/sijrah-nama    → Sijrah Nama
-/fateha-khwani  → Fateha Khwani (32 sections)
-/khatm          → Khatm-e-Khwajagan (32 steps)
-/salim-pappa    → Salim Pappa
-/about          → About KQCMM
-/calendar       → Islamic Calendar (navigable Hijri/Gregorian month grid + mapped events)
-/roshni         → Roshni / Chirag Raushan
-/abbajaan       → Abbajaan
-/changelog      → Version history
+/               → Home              (id: home, not renamable)
+/dua            → Duas             (id: dua)
+/hmk            → Hajee Mahboob Kassim bio (id: hmk)
+/sijrah-nama    → Sijrah Nama      (id: sijrahNama)
+/fateha-khwani  → Fateha Khwani (32 sections) (id: fatehaKhwani)
+/khatm          → Khatm-e-Khwajagan (32 steps) (id: khatm)
+/salim-pappa    → Salim Pappa      (id: salimPappa)
+/about          → About KQCMM      (id: about)
+/calendar       → Islamic Calendar (id: calendar, not renamable)
+/roshni         → Roshni / Chirag Raushan (id: roshni)
+/abbajaan       → Abbajaan         (id: abbajaan)
+/changelog      → Version history  (id: changelog)
 ```
+
+**Renaming a page:** use the admin Pages tab → ✏️ Rename (only for renamable
+fixed/custom pages), or `node scripts/page-rename.mjs <pageId> <newSlug>`. This
+moves the content JSON file, updates the registry route, and keeps the old route
+as a redirect alias so old links keep working.
+
+**Custom pages:** pages created/duplicated in the Admin Panel are registered in
+`pageRoutes.json` as `{ custom: true, renderer: 'generic' }` with a stable
+`custom-…` id. They are rendered at `/slug` by `src/pages/GenericContentPage.jsx`
+via the generic renderer (`src/components/GenericContentRenderer.jsx`), which
+supports `sections`/`duas`/`items`/`verses`/`lineage`/`paragraphs`, Fateha-style
+`|||`+`::` master-child blocks, and renders unknown fields as safe plain text
+(never raw HTML). Custom pages are fully renameable (create/duplicate/delete/
+rename are transactional). Navigation references a page by stable `pageId`.
+
+> ⚠️ **Build-time content:** Admin CRUD edits source JSON + the registry only.
+> A new/renamed/deleted custom page reaches the public site after `npm run build`
+> + deploy (content is included via Vite's eager glob).
 
 ---
 
@@ -340,7 +374,7 @@ A full React-based SPA built in `scripts/admin/`. Built automatically before the
 - **🌍 Translate** — translation status table (% filled per page per language), click % to jump to edit, add/remove languages
 - **⚙️ Settings** — default view mode per page
 
-**Page CRUD:** Create new pages from templates (plain, duas layout, fateha layout), duplicate, or delete pages.
+**Page CRUD:** Create new pages from templates (plain, duas layout, fateha layout), duplicate, rename, or delete pages.
 
 ### 2. Legacy Editor — `/`
 The original single-page editor. Simpler but still functional.

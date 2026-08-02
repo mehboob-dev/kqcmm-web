@@ -2,7 +2,10 @@ import SeoHead from '../components/SeoHead'
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { loadStrings } from '../config/strings'
-import data from '../config/content/about.json'
+import { getContent } from '../config/content'
+import { routeForPage } from '../config/pageRoutes'
+
+const data = getContent('about')
 
 export default function About() {
   const { lang } = useLanguage()
@@ -36,7 +39,7 @@ export default function About() {
 
   return (
     <div className="content-page">
-      <SeoHead title="About" path="/about" description="About Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya (KQCMM) — mission, activities, and contact information." />
+      <SeoHead title="About" path={routeForPage('about')} description="About Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya (KQCMM) — mission, activities, and contact information." />
       <h2 className="page-title">{content.title}</h2>
       <button className="share-btn" onClick={handleShare}>
         {copied ? '✓ ' + (share.copied || 'Link copied!') : '📤 ' + (share.title || 'Share KQCMM')}

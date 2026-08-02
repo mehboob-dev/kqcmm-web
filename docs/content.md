@@ -177,20 +177,23 @@ Labels for navigation, buttons, and UI elements are in `src/config/strings/`:
 
 ### Navigation Config (`src/config/navigation.json`)
 
-Controls the order and icons of navigation elements:
+Controls the order and icons of navigation elements. Each entry carries a stable
+`pageId` that maps to the page-route registry; the app resolves the current
+canonical route from the registry at render time, so a page rename is reflected
+in navigation automatically.
 
 ```json
 {
   "bottomNav": [
-    { "to": "/", "icon": "faHouse", "key": "home" },
-    { "to": "/khatm", "icon": "faStar", "key": "khatmEKhwajagan" },
-    { "to": "/sijrah-nama", "icon": "faBook", "key": "sijrah" },
-    { "to": "/roshni", "icon": "faFire", "key": "roshni" },
-    { "to": "/dua", "icon": "faHandsPraying", "key": "duas" }
+    { "pageId": "home", "to": "/", "icon": "faHouse", "key": "home" },
+    { "pageId": "khatm", "to": "/khatm", "icon": "faStar", "key": "khatmEKhwajagan" },
+    { "pageId": "sijrahNama", "to": "/sijrah-nama", "icon": "faBook", "key": "sijrah" },
+    { "pageId": "roshni", "to": "/roshni", "icon": "faFire", "key": "roshni" },
+    { "pageId": "dua", "to": "/dua", "icon": "faHandsPraying", "key": "duas" }
   ],
   "sideDrawer": [
-    { "to": "/", "icon": "faHouse", "key": "home" },
-    { "to": "/dua", "icon": "faHandsPraying", "key": "duas" },
+    { "pageId": "home", "to": "/", "icon": "faHouse", "key": "home" },
+    { "pageId": "dua", "to": "/dua", "icon": "faHandsPraying", "key": "duas" },
     ...
   ]
 }

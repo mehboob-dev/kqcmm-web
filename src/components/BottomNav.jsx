@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Icon from './FontAwesome'
 import navConfig from '../config/navigation.json'
+import { routeForNavItem } from '../config/pageRoutes'
 
 export default function BottomNav({ strings }) {
   const navigate = useNavigate()
@@ -31,7 +32,9 @@ export default function BottomNav({ strings }) {
   }, [])
 
   const items = navConfig.bottomNav.map(item => ({
-    to: item.to,
+    // Resolve via registry id, content-file basename, or configured route —
+    // so a nav entry keeps working even if its pageId was entered as a slug.
+    to: routeForNavItem(item),
     icon: item.icon,
     label: strings.nav?.[item.key] || item.key,
   }))

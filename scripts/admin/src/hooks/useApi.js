@@ -29,6 +29,7 @@ export function useApi() {
     createPage: (name, template) => api('/page', { method: 'PUT', body: JSON.stringify({ name, template }) }),
     deletePage: (name) => api('/page/' + name + '.json', { method: 'DELETE' }),
     duplicatePage: (from, to) => api('/page/duplicate', { method: 'POST', body: JSON.stringify({ from, to }) }),
+    renamePage: (pageId, newSlug) => api('/page/rename', { method: 'POST', body: JSON.stringify({ pageId, newSlug }) }),
 
     // Navigation
     getNav: () => api('/nav'),

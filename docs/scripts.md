@@ -17,7 +17,9 @@ A full React-based admin SPA built in `scripts/admin/`. Built automatically befo
 **Features:**
 - **Content Manager** — type-aware fields (titles, textareas, numbers), add/delete/reorder items in arrays, live card preview while you type
 - **Quick Jump Editor** — shared, language-independent editor for a page's `quickJump` list: add/remove/reorder entries, pick each target from a dropdown of the source items (sections/duas), no per-language labels to maintain
-- **Page CRUD** — create new pages from templates (plain, duas layout, fateha layout), delete, duplicate
+- **Page CRUD** — create new pages from templates (plain, duas layout, fateha layout), delete, duplicate, **rename** (slug + route)
+- **Page Rename** — rename a fixed or custom page's slug: renames the content JSON file, updates the public route in the page-route registry, and keeps the old route as a redirect alias. Home, the dedicated Calendar page, and protected fixed pages cannot be renamed.
+- **Custom pages** — created/duplicated pages get a stable `custom-…` registry id and are rendered publicly at `/slug` via the generic renderer. Deleting a custom page also removes its registry entry and navigation references.
 - **Navigation Editor** — reorder bottom nav and side drawer, pick icons from a visual selector, edit paths and keys inline
 - **Strings Editor** — edit all UI labels (nav text, settings labels) for each language
 - **Language Manager** — translation status overview (what % filled per page per language), clickable percentages to jump to a page in a specific language, side-by-side comparison view, add/remove language across all content pages and strings. **How the % works:** `% = non-empty translatable fields ÷ total translatable fields`, per language, computed by `countFields` in `LanguageEditor.jsx`. Only these keys count as translatable content: `title`, `heading`, `text`, `body`, `intro`, `label`, `subtitle`. It measures **raw fill, not translation parity** — a field empty in both languages (or a language with a different field count) shows `< 100%`. The language list comes from `/api/strings` (real codes), not hardcoded keys.
@@ -37,8 +39,9 @@ The original single-page editor. Simpler but still functional.
 | `/api/page/{name}.json` | GET | Get page content |
 | `/api/page/{name}.json` | POST | Save page content |
 | `/api/page/{name}.json` | DELETE | Delete a page |
-| `/api/page` | PUT | Create a new page |
-| `/api/page/duplicate` | POST | Duplicate a page |
+| `/api/page` | PUT | Create a new custom page (content file + registry entry with stable `custom-…` id) |
+| `/api/page/duplicate` | POST | Duplicate a page (new stable id, no alias copy) |
+| `/api/page/rename` | POST | Rename a fixed or custom page (body: `{ pageId, newSlug }`). Renames the JSON file, updates the registry route, keeps the old route as a redirect alias. Rejects non-renamable pages and invalid/colliding slugs. |
 | `/api/search?q=` | GET | Search across all content |
 | `/api/nav` | GET | Get navigation config |
 | `/api/nav` | POST | Save navigation config |

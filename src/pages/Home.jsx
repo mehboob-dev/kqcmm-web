@@ -1,18 +1,21 @@
 import SeoHead from '../components/SeoHead'
 import { Link, useOutletContext } from 'react-router-dom'
+import { routeForPage } from '../config/pageRoutes'
 
 const quickLinks = [
-  { to: '/dua', icon: '🤲', labelKey: 'duas' },
-  { to: '/hmk', icon: '📜', labelKey: 'hmk' },
-  { to: '/sijrah-nama', icon: '📖', labelKey: 'sijrah' },
-  { to: '/fateha-khwani', icon: '🕌', labelKey: 'fatehaKhwani' },
-  { to: '/khatm', icon: '✨', labelKey: 'khatm' },
-  { to: '/salim-pappa', icon: '👤', labelKey: 'salimPappa' },
-  { to: '/roshni', icon: '🕯️', labelKey: 'roshni' },
-  { to: '/abbajaan', icon: '👳', labelKey: 'abbajaan' },
-  { to: '/calendar', icon: '📅', labelKey: 'calendar' },
-  { to: '/about', icon: 'ℹ️', labelKey: 'about' },
+  { to: () => routeForPage('dua'), icon: '🤲', labelKey: 'duas' },
+  { to: () => routeForPage('hmk'), icon: '📜', labelKey: 'hmk' },
+  { to: () => routeForPage('sijrahNama'), icon: '📖', labelKey: 'sijrah' },
+  { to: () => routeForPage('fatehaKhwani'), icon: '🕌', labelKey: 'fatehaKhwani' },
+  { to: () => routeForPage('khatm'), icon: '✨', labelKey: 'khatm' },
+  { to: () => routeForPage('salimPappa'), icon: '👤', labelKey: 'salimPappa' },
+  { to: () => routeForPage('roshni'), icon: '🕯️', labelKey: 'roshni' },
+  { to: () => routeForPage('abbajaan'), icon: '👳', labelKey: 'abbajaan' },
+  { to: () => routeForPage('calendar'), icon: '📅', labelKey: 'calendar' },
+  { to: () => routeForPage('about'), icon: 'ℹ️', labelKey: 'about' },
 ]
+
+const homePageRoutes = quickLinks.map(link => ({ ...link, to: link.to() }))
 
 export default function Home() {
   const { strings } = useOutletContext()
@@ -26,7 +29,7 @@ export default function Home() {
       <p className="home-subtitle">{strings.tagline}</p>
       <p className="home-desc">{strings.home.welcome}</p>
       <div className="home-quick-links">
-        {quickLinks.map((link) => {
+        {homePageRoutes.map((link) => {
           const label = strings.drawer[link.labelKey] || link.labelKey
           return (
             <Link key={link.to} to={link.to} className="quick-link">

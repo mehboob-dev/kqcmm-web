@@ -3,7 +3,10 @@ import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
 import QuickJump from '../components/QuickJump'
-import data from '../config/content/roshni.json'
+import { getContent } from '../config/content'
+import { routeForPage } from '../config/pageRoutes'
+
+const data = getContent('roshni')
 
 export default function Roshni() {
   const { lang } = useLanguage()
@@ -12,7 +15,7 @@ export default function Roshni() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Roshni" path="/roshni" description="Chirag Raushan / Roshni — spiritual illumination and devotional content from the Chishti tradition." />
+      <SeoHead title="Roshni" path={routeForPage('roshni')} description="Chirag Raushan / Roshni — spiritual illumination and devotional content from the Chishti tradition." />
       <h2 className="page-title">{content.title}</h2>
       {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
       <ContentView

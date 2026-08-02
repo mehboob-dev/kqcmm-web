@@ -3,7 +3,10 @@ import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
 import QuickJump from '../components/QuickJump'
-import data from '../config/content/fatehaKhwani.json'
+import { getContent } from '../config/content'
+import { routeForPage } from '../config/pageRoutes'
+
+const data = getContent('fatehaKhwani')
 
 export default function FatehaKhwani() {
   const { lang } = useLanguage()
@@ -12,7 +15,7 @@ export default function FatehaKhwani() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Fateha Khwani" path="/fateha-khwani" description="Traditional gathering for Qur'an recitation and du'a — dedicate the reward (thawab) of recitation to your loved ones." />
+      <SeoHead title="Fateha Khwani" path={routeForPage('fatehaKhwani')} description="Traditional gathering for Qur'an recitation and du'a — dedicate the reward (thawab) of recitation to your loved ones." />
       <h2 className="page-title">{content.title}</h2>
       {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
       <ContentView

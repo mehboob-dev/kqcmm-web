@@ -3,6 +3,9 @@ import { useLocation, Outlet } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { useFont } from '../context/FontContext'
 import { loadStrings } from '../config/strings'
+import { getContent, resolveLocale } from '../config/content'
+import { pageByRoute } from '../config/pageRoutes'
+import pageRoutes from '../config/pageRoutes.json'
 import SideDrawer from './SideDrawer'
 import BottomNav from './BottomNav'
 import SettingsPopup from './SettingsPopup'
@@ -26,24 +29,29 @@ export default function Layout() {
     if (mainRef.current) mainRef.current.scrollTop = 0
   }, [location.pathname])
 
-  // Page title lookup from strings
-  const pageTitleMap = strings ? {
-    '/': strings.appName,
-    '/dua': strings.drawer.duas,
-    '/hmk': strings.drawer.hmk,
-    '/sijrah-nama': strings.drawer.sijrahNama,
-    '/fateha-khwani': strings.drawer.fatehaKhwani,
-    '/khatm': strings.drawer.khatm,
-    '/salim-pappa': strings.drawer.salimPappa,
-    '/about': strings.drawer.about,
-    '/calendar': strings.drawer.calendar,
-    '/roshni': strings.drawer.roshni,
-    '/abbajaan': strings.drawer.abbajaan,
-    '/changelog': strings.drawer.changelog,
-    '/settings': strings.settings.title,
-  } : {}
+  // Page title lookup driven by the page-route registry so a renamed route
+  // keeps the correct header title. Aliases redirect before they render, so the
+  // map only needs canonical routes.
+  const pageTitleMap = strings ? pageRoutes.reduce((map, page) => {
+    if (page.route === '/') map[page.route] = strings.appName
+    else if (page.titleKey) map[page.route] = strings.drawer?.[page.titleKey] || page.route
+    return map
+  }, { '/settings': strings.settings.title }) : {}
 
-  const title = pageTitleMap[location.pathname] || (strings?.appName || 'KQCMM')
+  // Custom pages (renderer: generic) have no string key — fall back to the
+  // localized content title, then a humanized slug, then the app name.
+  let title = pageTitleMap[location.pathname]
+  if (!title) {
+    const entry = pageByRoute(location.pathname)
+    if (entry && entry.renderer === 'generic') {
+      try {
+        const data = entry.contentFile ? getContent(entry.contentFile) : null
+        const locale = data ? resolveLocale(data, lang) : null
+        title = locale?.title || (entry.route || '').replace(/^\//, '').replace(/-/g, ' ')
+      } catch { /* fall through */ }
+    }
+  }
+  title = title || (strings?.appName || 'KQCMM')
   const showBack = location.pathname !== '/'
 
   return (

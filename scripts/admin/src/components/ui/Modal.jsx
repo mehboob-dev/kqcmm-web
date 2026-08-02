@@ -2,7 +2,13 @@ import { useEffect, useRef } from 'react'
 
 export default function Modal({ title, children, onClose, actions, danger = false }) {
   const dialogRef = useRef(null)
-  const previousFocus = useRef(document.activeElement)
+  // Captured once per mount (not re-read on every render) so the restore-on-
+  // unmount cleanup always targets the element that was focused before the
+  // dialog opened, and so effect re-runs never steal focus back to it.
+  const previousFocusRef = useRef(null)
+  if (previousFocusRef.current === null) {
+    previousFocusRef.current = document.activeElement
+  }
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -24,7 +30,7 @@ export default function Modal({ title, children, onClose, actions, danger = fals
     document.addEventListener('keydown', onKeyDown)
     return () => {
       document.removeEventListener('keydown', onKeyDown)
-      previousFocus.current?.focus?.()
+      previousFocusRef.current?.focus?.()
     }
   }, [onClose])
 

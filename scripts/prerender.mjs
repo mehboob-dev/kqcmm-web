@@ -8,20 +8,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const dist = join(__dirname, '..', 'dist')
 const BASENAME = '/kqcmm-web'
 
-const routes = [
-  BASENAME + '/',
-  BASENAME + '/dua',
-  BASENAME + '/hmk',
-  BASENAME + '/sijrah-nama',
-  BASENAME + '/fateha-khwani',
-  BASENAME + '/khatm',
-  BASENAME + '/salim-pappa',
-  BASENAME + '/about',
-  BASENAME + '/calendar',
-  BASENAME + '/roshni',
-  BASENAME + '/abbajaan',
-  BASENAME + '/changelog',
-]
+// Routes are derived from the page-route registry so a renamed page (and its
+// legacy alias) get prerendered static HTML without maintaining a separate list.
+const pageRoutes = JSON.parse(readFileSync(join(__dirname, '..', 'src/config/pageRoutes.json'), 'utf8'))
+const routes = pageRoutes.flatMap(page => [
+  BASENAME + page.route,
+  ...(page.aliases || []).map(alias => BASENAME + alias),
+])
 
 // Static file server that handles the /kqcmm-web/ basename prefix
 function startServer(port) {

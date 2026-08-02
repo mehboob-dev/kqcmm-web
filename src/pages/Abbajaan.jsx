@@ -1,6 +1,9 @@
 import SeoHead from '../components/SeoHead'
 import { useLanguage } from '../context/LanguageContext'
-import data from '../config/content/abbajaan.json'
+import { getContent } from '../config/content'
+import { routeForPage } from '../config/pageRoutes'
+
+const data = getContent('abbajaan')
 
 export default function Abbajaan() {
   const { lang } = useLanguage()
@@ -8,7 +11,7 @@ export default function Abbajaan() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Abbajaan" path="/abbajaan" description="Dedicated page for Abbajaan — life, teachings, and memories from the Chishti spiritual tradition." />
+      <SeoHead title="Abbajaan" path={routeForPage('abbajaan')} description="Dedicated page for Abbajaan — life, teachings, and memories from the Chishti spiritual tradition." />
       <h2 className="page-title">{content.title}</h2>
       {content.sections?.map((s, i) => (
         <div key={i} className="card">

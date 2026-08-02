@@ -1,0 +1,110 @@
+[
+  {
+    "id": "home",
+    "component": "Home",
+    "contentFile": null,
+    "route": "/",
+    "titleKey": null,
+    "renamable": false,
+    "aliases": []
+  },
+  {
+    "id": "dua",
+    "component": "Dua",
+    "contentFile": "dua",
+    "route": "/dua",
+    "titleKey": "duas",
+    "renamable": true,
+    "aliases": []
+  },
+  {
+    "id": "hmk",
+    "component": "Hmk",
+    "contentFile": "hmk",
+    "route": "/hmk",
+    "titleKey": "hmk",
+    "renamable": true,
+    "aliases": []
+  },
+  {
+    "id": "sijrahNama",
+    "component": "SijrahNama",
+    "contentFile": "sijrahNama",
+    "route": "/sijrah-nama",
+    "titleKey": "sijrahNama",
+    "renamable": true,
+    "aliases": []
+  },
+  {
+    "id": "fatehaKhwani",
+    "component": "FatehaKhwani",
+    "contentFile": "fatehaKhwani",
+    "route": "/fateha-khwani",
+    "titleKey": "fatehaKhwani",
+    "renamable": true,
+    "aliases": []
+  },
+  {
+    "id": "khatm",
+    "component": "Khatm",
+    "contentFile": "khatm",
+    "route": "/khatm",
+    "titleKey": "khatm",
+    "renamable": true,
+    "aliases": []
+  },
+  {
+    "id": "salimPappa",
+    "component": "SalimPappa",
+    "contentFile": "salimPappa",
+    "route": "/salim-pappa",
+    "titleKey": "salimPappa",
+    "renamable": true,
+    "aliases": []
+  },
+  {
+    "id": "about",
+    "component": "About",
+    "contentFile": "about",
+    "route": "/about",
+    "titleKey": "about",
+    "renamable": true,
+    "aliases": []
+  },
+  {
+    "id": "calendar",
+    "component": "Calendar",
+    "contentFile": "calendar",
+    "route": "/calendar",
+    "titleKey": "calendar",
+    "renamable": false,
+    "aliases": []
+  },
+  {
+    "id": "roshni",
+    "component": "Roshni",
+    "contentFile": "roshni",
+    "route": "/roshni",
+    "titleKey": "roshni",
+    "renamable": true,
+    "aliases": []
+  },
+  {
+    "id": "abbajaan",
+    "component": "Abbajaan",
+    "contentFile": "abbajaan",
+    "route": "/abbajaan",
+    "titleKey": "abbajaan",
+    "renamable": true,
+    "aliases": []
+  },
+  {
+    "id": "changelog",
+    "component": "Changelog",
+    "contentFile": "changelog",
+    "route": "/changelog",
+    "titleKey": "changelog",
+    "renamable": true,
+    "aliases": []
+  }
+]

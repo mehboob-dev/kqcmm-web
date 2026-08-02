@@ -17,6 +17,7 @@ const GROUP_LABELS = { bottomNav: 'Bottom Navigation', sideDrawer: 'Side Drawer'
 
 const NavEditor = forwardRef(function NavEditor({ api, show, onStatusChange }, ref) {
   const [nav, setNav] = useState(null)
+  const [pages, setPages] = useState([])
   const [dirty, setDirty] = useState(false)
   const [saving, setSaving] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -30,6 +31,7 @@ const NavEditor = forwardRef(function NavEditor({ api, show, onStatusChange }, r
     setError(null)
     try {
       setNav(await api.getNav())
+      try { setPages(await api.listPages()) } catch { /* pages optional */ }
     } catch (e) {
       setError(e.message)
     } finally {
@@ -67,8 +69,18 @@ const NavEditor = forwardRef(function NavEditor({ api, show, onStatusChange }, r
   }
 
   const addItem = (group) => {
-    setNav({ ...nav, [group]: [...nav[group], { to: '/new-page', icon: 'faStar', key: 'newPage' }] })
+    // Blank manual entry — use the registry's "add page" picker (above) for a
+    // real page. Keep this row editable but avoid a dead /new-page route.
+    setNav({ ...nav, [group]: [...nav[group], { pageId: '', to: '', icon: 'faStar', key: '' }] })
     setDirty(true)
+    show('Fill in the route/path and page id, or use "Add a page" above')
+  }
+
+  const addPageItem = (group, page) => {
+    const key = page.route.replace(/^\//, '').replace(/-/g, '')
+    setNav({ ...nav, [group]: [...nav[group], { pageId: page.pageId || '', to: page.route, icon: 'faBook', key }] })
+    setDirty(true)
+    show(`Added "${page.route}"`)
   }
 
   const updateItem = (group, i, field, value) => {
@@ -90,7 +102,36 @@ const NavEditor = forwardRef(function NavEditor({ api, show, onStatusChange }, r
     <div style={{ maxWidth: 800 }}>
       <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>
         Rearrange using ↑↓ buttons. All changes save independently from page content.
+        <strong> pageId</strong> = the page's stable id (e.g. <code>custom-x4l</code>) — but you can also type
+        the page slug (e.g. <code>my-new-page</code>); the app resolves both to the live route.
       </p>
+
+      {/* Page picker: quickly add a registry page (fixed or custom) to a nav group */}
+      <div className="section-card" style={{ marginBottom: 20 }}>
+        <div className="section-header">
+          <span className="section-title">Add a page to navigation</span>
+          <span className="tag">{pages.length} registry pages</span>
+        </div>
+        {pages.length > 0 ? (
+          ['bottomNav', 'sideDrawer'].map(group => (
+            <div key={group} style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 8 }}>
+              <span style={{ fontSize: 12, color: 'var(--text-muted)', width: 110 }}>{GROUP_LABELS[group]}</span>
+              <select
+                className="field-select"
+                value=""
+                onChange={e => { const p = pages.find(x => x.name === e.target.value); if (p) addPageItem(group, p) }}
+                style={{ flex: 1 }}
+                aria-label={`Add page to ${group}`}
+              >
+                <option value="">Add a page…</option>
+                {pages.map(p => <option key={p.name} value={p.name}>{p.route || '/' + p.name}{p.custom ? ' (custom)' : ''}</option>)}
+              </select>
+            </div>
+          ))
+        ) : (
+          <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>No registry pages available.</p>
+        )}
+      </div>
 
       {['bottomNav', 'sideDrawer'].map(group => (
         <div key={group} style={{ marginBottom: 28 }}>
@@ -101,9 +142,13 @@ const NavEditor = forwardRef(function NavEditor({ api, show, onStatusChange }, r
           {nav[group]?.length ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               {nav[group].map((item, i) => (
-                <div key={item.key + i} className="nav-row">
+                // Stable key (index only) so editing the `key` field does not
+                // remount the row and steal focus on every keystroke.
+                <div key={'nav-' + group + '-' + i} className="nav-row">
                   <span className="tag" style={{ minWidth: 30, textAlign: 'center' }}>#{i + 1}</span>
                   <span style={{ fontSize: 16, flexShrink: 0 }}>{ICON_EMOJI[item.icon] || '🔄'}</span>
+                  <input value={item.pageId || ''} onChange={e => updateItem(group, i, 'pageId', e.target.value)}
+                    className="field-input" style={{ width: 130 }} placeholder="pageId" aria-label="Page id" />
                   <input value={item.to} onChange={e => updateItem(group, i, 'to', e.target.value)}
                     className="field-input" style={{ width: 130 }} placeholder="/path" aria-label="Route path" />
                   <input value={item.key} onChange={e => updateItem(group, i, 'key', e.target.value)}

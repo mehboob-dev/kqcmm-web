@@ -1,26 +1,31 @@
 {
   "bottomNav": [
     {
+      "pageId": "home",
       "to": "/",
       "icon": "faHouse",
       "key": "home"
     },
     {
+      "pageId": "khatm",
       "to": "/khatm",
       "icon": "faStar",
       "key": "khatmEKhwajagan"
     },
     {
+      "pageId": "sijrahNama",
       "to": "/sijrah-nama",
       "icon": "faBook",
       "key": "sijrah"
     },
     {
+      "pageId": "roshni",
       "to": "/roshni",
       "icon": "faLightbulb",
       "key": "roshni"
     },
     {
+      "pageId": "dua",
       "to": "/dua",
       "icon": "faMosque",
       "key": "duas"
@@ -28,61 +33,73 @@
   ],
   "sideDrawer": [
     {
+      "pageId": "home",
       "to": "/",
       "icon": "faHouse",
       "key": "home"
     },
     {
+      "pageId": "abbajaan",
       "to": "/abbajaan",
       "icon": "faPeopleGroup",
       "key": "abbajaan"
     },
     {
+      "pageId": "hmk",
       "to": "/hmk",
       "icon": "faScroll",
       "key": "hmk"
     },
     {
+      "pageId": "salimPappa",
       "to": "/salim-pappa",
       "icon": "faUser",
       "key": "salimPappa"
     },
     {
+      "pageId": "sijrahNama",
       "to": "/sijrah-nama",
       "icon": "faBook",
       "key": "sijrahNama"
     },
     {
+      "pageId": "fatehaKhwani",
       "to": "/fateha-khwani",
       "icon": "faMosque",
       "key": "fatehaKhwani"
     },
     {
+      "pageId": "khatm",
       "to": "/khatm",
       "icon": "faStar",
       "key": "khatm"
     },
     {
+      "pageId": "roshni",
       "to": "/roshni",
       "icon": "faLightbulb",
       "key": "roshni"
     },
     {
+      "pageId": "dua",
       "to": "/dua",
       "icon": "faMosque",
       "key": "duas"
     },
     {
+      "pageId": "calendar",
       "to": "/calendar",
       "icon": "faCalendar",
       "key": "calendar"
     },
     {
+      "pageId": "about",
       "to": "/about",
       "icon": "faCircleInfo",
       "key": "about"
     },
     {
+      "pageId": "changelog",
       "to": "/changelog",
       "icon": "faClockRotateLeft",
       "key": "changelog"

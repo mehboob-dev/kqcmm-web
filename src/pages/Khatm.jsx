@@ -3,7 +3,10 @@ import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
 import QuickJump from '../components/QuickJump'
-import data from '../config/content/khatm.json'
+import { getContent } from '../config/content'
+import { routeForPage } from '../config/pageRoutes'
+
+const data = getContent('khatm')
 
 export default function Khatm() {
   const { lang } = useLanguage()
@@ -12,7 +15,7 @@ export default function Khatm() {
 
   return (
     <div className="content-page">
-      <SeoHead title="Khatm-e-Khwajagan" path="/khatm" description="30-step spiritual dhikr with Quranic recitations, salawat, and dhikr in remembrance of the Chishti masters (Khwajagan)." />
+      <SeoHead title="Khatm-e-Khwajagan" path={routeForPage('khatm')} description="30-step spiritual dhikr with Quranic recitations, salawat, and dhikr in remembrance of the Chishti masters (Khwajagan)." />
       <h2 className="page-title">{content.title}</h2>
       {content.intro && <div className="page-section"><p style={{ whiteSpace: 'pre-line' }}>{content.intro}</p></div>}
       <ContentView
