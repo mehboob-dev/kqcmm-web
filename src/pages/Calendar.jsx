@@ -103,6 +103,16 @@ export default function Calendar() {
   const next = nextOccurrence(occurrences, today)
   const cal = strings?.calendar || {}
 
+  // All available occurrences whose Gregorian start date is TODAY. Unlike the
+  // single "Next Event" strip, this lists every event mapped to today, split
+  // into Monthly | Other columns like the upcoming section.
+  const todayStr = formatISODate(today)
+  const todayEvents = occurrences
+    .filter(o => o.available && o.gregorianStart && formatISODate(o.gregorianStart) === todayStr)
+  const isMonthly = (occ) => occ.rule === 'hijri-monthly'
+  const todayMonthly = todayEvents.filter(isMonthly)
+  const todayOther = todayEvents.filter(o => !isMonthly(o))
+
   // Map event ids -> Gregorian day ordinal for marking grid cells
   const dayOrdKey = ({ y, m, d }) => `${y}-${m}-${d}`
   const eventByOrd = new Map()
@@ -135,7 +145,6 @@ export default function Calendar() {
   const { eventList, pastEvents } = splitUpcomingPast(available, today)
 
   // Split events by type: monthly (recurring every month) vs. other (one-off).
-  const isMonthly = (occ) => occ.rule === 'hijri-monthly'
   const monthlyUpcoming = eventList.filter(isMonthly)
   const otherUpcoming = eventList.filter(o => !isMonthly(o))
   const monthlyPast = pastEvents.filter(isMonthly)
@@ -311,8 +320,21 @@ export default function Calendar() {
         )}
       </div>
 
-      {/* NEXT EVENT STRIP */}
-      {next ? (
+      {/* TODAY'S EVENTS — all events mapped to today, split into
+          Monthly | Other columns. When none are scheduled today, show the
+          next upcoming event as a countdown strip instead. */}
+      {todayEvents.length > 0 ? (
+        <div className="cal-row">
+          <div className="cal-sec-head">
+            <h3 className="cal-sec-title">{cal.todayEvents || "Today's Events"}</h3>
+            <span className="cal-sec-count">{todayEvents.length}</span>
+          </div>
+          <div className="cal-col-grid">
+            <EventColumn title={cal.monthlyEvents || 'Monthly'} count={todayMonthly.length} items={todayMonthly} past={false} />
+            <EventColumn title={cal.otherEvents || 'Other Events'} count={todayOther.length} items={todayOther} past={false} />
+          </div>
+        </div>
+      ) : next ? (
         <div className="cal-nextstrip">
           <div className="cal-nextstrip-body">
             <div className="cal-nextstrip-label">{cal.nextEvent || 'Next Event'}</div>

@@ -46,7 +46,8 @@
     "otherEvents": "Other Events",
     "unavailable": "Not yet configured",
     "unavailableHint": "The admin has not yet confirmed the moon sighting for this date.",
-    "noUpcoming": "No upcoming events scheduled"
+    "noUpcoming": "No upcoming events scheduled",
+    "todayEvents": "Today's Events"
   },
   "notFound": {
     "title": "404",
