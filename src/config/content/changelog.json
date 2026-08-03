@@ -3,6 +3,16 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.10.0",
+        "date": "2026-08-03",
+        "changes": [
+          "Islamic calendar now includes 2,350 Blessed Days events — Urs (passing) dates, birthdays and special nights across all Hijri months",
+          "New Rose theme added to Settings",
+          "Font size choices extended — X-Small (12px) to XX-Large (24px)",
+          "Calendar grid and Hijri strip show capped event dots (+N marker) so busy dates stay compact"
+        ]
+      },
+      {
         "version": "5.9.0",
         "date": "2026-08-01",
         "changes": [
@@ -127,6 +137,16 @@
   "hinglish": {
     "title": "Changelog",
     "versions": [
+      {
+        "version": "5.10.0",
+        "date": "2026-08-03",
+        "changes": [
+          "Islami calendar mein ab 2,350 Blessed Days events shamil hain — saare Hijri mahino ke Urs, wiladat aur khaas raatein",
+          "Settings mein naya Rose theme add hua",
+          "Font size ke naye options — X-Small (12px) se XX-Large (24px) tak",
+          "Calendar grid aur Hijri strip par capped event dots (+N marker) — busy dates compact rehte hain"
+        ]
+      },
       {
         "version": "5.9.0",
         "date": "2026-08-01",

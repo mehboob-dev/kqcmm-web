@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.9.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.10.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -152,6 +152,8 @@ kqcmm-web/
 │   ├── translate-content.mjs         # Translation helper
 │   ├── import-to-firebase.mjs        # Firebase Admin import template
 │   ├── json-to-js.mjs                # JSON→JS converter
+│   ├── generate-calendar-events.mjs  # Imports Blessed Days dataset into calendar.json (npm run calendar:gen)
+│   ├── data/events_merged.json       # Recovered 2,350-record source (filesystem-only, never bundled)
 │   ├── test-hijri-calendar.mjs       # Hijri calendar unit tests
 │   ├── test-page-rename.mjs          # Page-rename unit tests
 │   └── admin/                        # React-based admin panel (npm run edit)
@@ -263,6 +265,7 @@ Language switch triggers re-render of all text via context. RTL direction sets `
 | `dark` | Dark navy `#1a1a2e` | Purple `#7c5cfc` |
 | `sepia` | Brown `#5c3a1e` | Gold `#b8860b` |
 | `green` | Dark green `#1b5e20` | Green `#2e7d32` |
+| `rose` | Deep rose `#9d2b4a` | Pink `#c2185b` |
 
 Default: `green`. Theme set via `data-theme` attribute on `<html>`.
 
@@ -272,7 +275,7 @@ Default: `green`. Theme set via `data-theme` attribute on `<html>`.
 
 17 font families including: System, Serif, Sans, Monospace, Bookman, Garamond, Palatino, Georgia, Tahoma, Trebuchet, Verdana, Times New Roman, Courier New, Lucida Console, Urdu Nastaliq, Urdu Naskh, Mehr Nastaliq.
 
-4 sizes: Small (14px), Medium (16px), Large (18px), X-Large (21px).
+6 sizes: X-Small (12px), Small (14px), Medium (16px), Large (18px), X-Large (21px), XX-Large (24px).
 
 Font size is applied via inline `fontSize` on `<main>` element. Content children use `em` units.
 
@@ -473,6 +476,7 @@ The editor server at `scripts/content-editor.mjs` serves both the Admin Panel an
 | Script | Command | Purpose |
 |---|---|---|
 | `content-editor.mjs` | `npm run edit` | Local web content editor |
+| `generate-calendar-events.mjs` | `npm run calendar:gen` | Import Blessed Days dataset into `calendar.json` (idempotent) |
 | `sync-other-langs.mjs` | `node scripts/sync-other-langs.mjs` | Sync hinglish/urdu from Quran XML |
 | `fetch-content.mjs` | `npm run fetch-content` | Pull from Firebase Hosting |
 | `translate-content.mjs` | `node scripts/translate-content.mjs` | Translate content to languages |

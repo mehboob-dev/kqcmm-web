@@ -65,7 +65,7 @@ Event rules:
 
 Derivation lives in `src/utils/hijriCalendar.js` (see [Components](components.md) and [Hijri Calendar Plan](hijri-calendar-plan.md)).
 
-**Behavioral rules:** today's date resolves from the current month's start alone; event days 1–29 map from their month's start; day 30 needs the next month's boundary; fixed events only map to their own `hijriMonth`. The Calendar page shows a navigable month grid (Hijri or Gregorian view, toggle persisted in localStorage), upcoming and past events as separate sections, and an app-wide Hijri date strip below the header.
+**Behavioral rules:** today's date resolves from the current month's start alone; event days 1–29 map from their month's start; **day 30 defaults to valid** — every month is treated as 30 days long until a next-month boundary is set, and once the boundary is set only the proven length renders (so a 29-day month excludes day 30, and the last configured month with no boundary still shows day 30); fixed events only map to their own `hijriMonth`. The Calendar page shows a navigable month grid (Hijri or Gregorian view, toggle persisted in localStorage), upcoming and past events as separate sections, and an app-wide Hijri date strip below the header.
 
 ---
 

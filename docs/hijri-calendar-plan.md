@@ -43,7 +43,7 @@ The Islamic calendar is lunar — months start based on actual moon sighting, wh
 - Strict `YYYY-MM-DD` local-date parsing (never `new Date('YYYY-MM-DD')`).
 - UTC-ordinal day arithmetic so DST never changes day counts.
 - **Today's date** needs only the current month's start (`start + (day−1)`, day capped at 30).
-- **Event days 1–29** map from the month's own start alone. **Day 30** needs the next month's boundary (a 29-day month has no day 30); without it, day-30 events stay unavailable — never guessed.
+- **Event days 1–29** map from the month's own start alone. **Day 30 defaults to valid**: every month is treated as 30 days long until a next-month boundary is set. Once set, only the proven length renders — a 29-day month excludes day 30 (that date doesn't exist that year), and the last configured month with no boundary still shows day 30.
 - **Fixed events map only against their own `hijriMonth`** — never a different month's start.
 - Produces today's Hijri date, mapped event occurrences (split into upcoming / past), and next-event countdown (0 = today).
 
@@ -248,10 +248,28 @@ The v1 build followed a different, simpler shape than Option 5's steps:
 |---|---|---|
 | Data | `monthStarts` (free-form list, nullable) + shared `events` | `src/config/content/calendar.json` |
 | Logic | Pure conversion + event mapping + countdown | `src/utils/hijriCalendar.js` |
-| Tests | 46 unit tests (no framework) | `scripts/test-hijri-calendar.mjs` (`npm test`) |
-| Public UI | Today card, next-event countdown, event list, unavailable states | `src/pages/Calendar.jsx` |
+| Tests | 123 unit tests (no framework) | `scripts/test-hijri-calendar.mjs` (`npm test`) |
+| Public UI | Today card, next-event countdown, event list | `src/pages/Calendar.jsx` |
 | Admin | Dedicated 📅 Calendar tab, validated save | `scripts/admin/src/components/CalendarEditor.jsx` + `/api/calendar` |
 | Tooling | fetch/translate scripts skip calendar (admin-managed) | `scripts/fetch-content.mjs`, `scripts/translate-content.mjs` |
+
+---
+
+## Blessed Days Dataset (recovered, v5.10.0)
+
+The Islamic calendar now ships with **2,364 events**: the original 14 admin-managed events plus **2,350 individual `hijri-fixed` events** imported from the Blessed Days (thesunniway) dataset.
+
+**Source of truth** — `scripts/data/events_merged.json` (2,350 records, ~1.9 MB). Each record has `id`, `englishName`/`urduName`, `day` (1–30), `month` (1–12), `wisalDate`, `eventType`/`eventEnglishName` (`PASSING OF` ×2,343, `BIRTHDAY OF` ×5, `BIG NIGHT` ×2), and `englishSuffix` honorifics.
+
+**Generator** — `scripts/generate-calendar-events.mjs` (`npm run calendar:gen`):
+- Reads `scripts/data/events_merged.json` + current `calendar.json`; deterministic + idempotent.
+- Preserves all existing events; appends one event per record, id `thesunniway-<source id>`, `rule: hijri-fixed`, `hijriMonth`/`hijriDays` from source month/day.
+- Label = `englishName` + `(englishSuffix)`; description = event type + `Wisal: N AH` when a meaningful year exists. No `translations` — source Urdu is preserved in `scripts/data/` only, not exposed as Hinglish.
+- Sorted by month, day, numeric source id. The raw JSON lives under `scripts/` so it is **never bundled** into the Vite output.
+
+**Regeneration:** after editing the source, run `npm run calendar:gen` and commit both the generator output and any script changes. Tests (`scripts/test-hijri-calendar.mjs`) assert count, uniqueness, 1:1 source mapping, and the label/description policy.
+
+**Edge cases:** day-30 events in a month whose boundary proves 29 days are year-dependently excluded (the month has no 30th that year) — correct per the "default to 30 until proven" rule. The "Not yet configured" section was removed from the UI; the grid caps event dots at 3 with a `+N` marker, and the Hijri strip shows a capped dot cluster instead of event text.
 
 ---
 

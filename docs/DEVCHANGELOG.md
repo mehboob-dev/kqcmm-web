@@ -6,6 +6,23 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## 5.10.0 — 2026-08-03
+
+### User-facing
+- **Islamic calendar ships 2,350 Blessed Days events** — Urs (passing) dates of Sufi awliya and scholars, plus birthdays and special nights, across all 12 Hijri months. Imported from the recovered thesunniway dataset via a deterministic generator (`npm run calendar:gen`); kept as individual `hijri-fixed` events alongside the original 14 admin-managed events (2,364 total).
+- **New Rose theme** in Settings (Light/Dark/Sepia/Green/Rose).
+- **Two more font sizes** — X-Small (12px) and XX-Large (24px), six sizes total.
+- **Capped event dots** — calendar grid cells (max 3 dots + `+N`) and the Hijri strip (dot cluster, no event text) stay compact on busy dates.
+- **Removed "Not yet configured" section** — unplaceable events are no longer listed as chips.
+
+### Internal / docs
+- **Day-30 rule changed** (`src/utils/hijriCalendar.js` `mapFixedEventToMonth`): day-30 events now default to valid — every month is treated as 30 days until a next-month boundary is set; once set, only the proven length renders (29-day months exclude day 30; the last boundary-less month keeps day 30).
+- **Hijri grid bug fixed** (`buildMonthGrid`): grid hardcoded 30 cells, so a 29-day month rendered a phantom "30 Muharram" (= actually 1 Safar). Grid now caps at the proven length (fallback 30 only without a boundary), matching the Gregorian view.
+- **New generator** `scripts/generate-calendar-events.mjs` (`npm run calendar:gen`) + committed source `scripts/data/events_merged.json` (2,350 records, filesystem-only, never Vite-bundled). Deterministic + idempotent: preserves existing events, id `thesunniway-<id>`, label = englishName + suffix, description = event type + wisal year, no translations.
+- **Theme/font counts updated repo-wide** — 5 themes (Light/Dark/Sepia/Green/Rose), 6 font sizes (12–24px); docs (README, CLAUDE.md, `docs/styling.md`, `docs/components.md`, `docs/architecture.md`, `docs/new-developer-guide.md`, `docs/hijri-calendar-plan.md`, `docs/content.md`, `docs/scripts.md`) refreshed; `docs/hijri-calendar-plan.md` test count 46→123.
+
+---
+
 ## 5.9.0 — 2026-08-03 (analytics)
 
 ### Internal / docs

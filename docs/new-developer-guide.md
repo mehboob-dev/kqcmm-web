@@ -68,7 +68,7 @@ kqcmm-web/
 │   │   └── NotFound.jsx          ← 404 page
 │   │
 │   ├── context/                  ← React Context providers
-│   │   ├── ThemeContext.jsx       ← Light/Dark/Sepia/Green
+│   │   ├── ThemeContext.jsx       ← Light/Dark/Sepia/Green/Rose
 │   │   ├── LanguageContext.jsx    ← English/Hinglish (Urdu planned)
 │   │   ├── FontContext.jsx       ← Font family + size
 │   │   └── ViewContext.jsx       ← List/Slide mode

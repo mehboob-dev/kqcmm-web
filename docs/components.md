@@ -139,9 +139,9 @@ Modal popup for user preferences.
 | Section | Options | Persistence |
 |---|---|---|
 | Language | English, Hinglish (Urdu: planned) | localStorage |
-| Theme | Light, Dark, Sepia, Green | localStorage |
+| Theme | Light, Dark, Sepia, Green, Rose | localStorage |
 | Font Family | 17 options | localStorage |
-| Font Size | Small/Medium/Large/X-Large | localStorage |
+| Font Size | X-Small → XX-Large (6 sizes, 12–24px) | localStorage |
 | View Mode | List / Slide | localStorage |
 
 ---
@@ -335,12 +335,12 @@ Hijri Islamic calendar page — a full navigable calendar, not a static list.
 **File:** `src/pages/Calendar.jsx`
 
 ### Behaviour
-- **Month grid card:** a weekday-aligned grid of the current month with event dots on event days and today's cell highlighted. Each cell shows the primary day number plus a mapped sub-date (Hijri day + Gregorian date in Hijri view; Gregorian day + short Hijri month/day in Gregorian view).
+- **Month grid card:** a weekday-aligned grid of the current month with event dots on event days and today's cell highlighted. Each cell shows the primary day number plus a mapped sub-date (Hijri day + Gregorian date in Hijri view; Gregorian day + short Hijri month/day in Gregorian view). Event dots are capped at `GRID_MAX_DOTS = 3` per cell with a `+N` marker (busy days can hold ~27 events); the cell tooltip shows "N events".
 - **View toggle:** switch between **Hijri** and **Gregorian** month views. The choice is persisted to `localStorage['kqcmm_calendar_view']`.
 - **Month navigation:** prev/next arrows. In Hijri mode the range is bounded to the configured min/max months (buttons disabled at the limits); Gregorian mode is unbounded. A "Today" button returns to the current month.
 - **Next-event strip:** the earliest upcoming event with its Hijri + Gregorian date and a countdown pill (0 = today).
 - **Event lists:** both **Upcoming** (earliest future occurrence per event, ascending) and **Past** (latest past occurrence per event, **descending — newest first**, dimmed) are always visible, stacked. Each is laid out as **two side-by-side columns — Monthly (recurring every month) and Other (one-off)** — and each column **scrolls internally** within a fixed height so the page never grows endlessly. On narrow/mobile screens (<640px) the two columns stack to one. An event only appears when its **own** Hijri month's start is set.
-- **Unavailable list:** events whose mapping isn't yet configured, shown as chips — never guessed.
+- **No "Not yet configured" section** — the chips list of unplaceable events was removed; unplaceable events are simply not shown.
 
 ### Data & logic
 - Reads the shared, top-level data from `src/config/content/calendar.json` (schema v1).
@@ -352,7 +352,7 @@ Hijri Islamic calendar page — a full navigable calendar, not a static list.
 
 ## HijriStrip.jsx (app-wide date strip)
 
-Thin bar rendered below the app header on **every page**, showing today's Hijri date, Gregorian date (with year), and a pill indicator with the event name when an event is mapped to today.
+Thin bar rendered below the app header on **every page**, showing today's Hijri date, Gregorian date (with year), and a capped dot cluster when events map to today.
 
 **File:** `src/components/HijriStrip.jsx`
 
@@ -361,6 +361,7 @@ Thin bar rendered below the app header on **every page**, showing today's Hijri 
 - **Clickable** — tapping the strip navigates to `/calendar` (`useNavigate`). Aria-label/title: "Open Islamic calendar".
 - Auto-refreshes across midnight (60s interval).
 - If today's Hijri isn't configured, shows `—`.
+- **Event indicator** — no event text (labels crowd the strip and are one tap away); instead a cluster of one dot per event, capped at `MAX_DOTS = 3`, with a `+N` marker when there are more.
 - `em`-sized so it scales with the app's font-size setting.
 
 ---
@@ -387,11 +388,11 @@ Thin bar rendered below the app header on **every page**, showing today's Hijri 
 ### Boundary rules (important)
 - **Today's date** needs only the current month's start. `start + (day−1)`, day capped at 30.
 - **Event days 1–29** map from the month's own start alone (`start + (day−1)`) — every Hijri month has at least 29 days.
-- **Event day 30** requires the next month's boundary (a 29-day month has no day 30) — otherwise unavailable, never guessed.
+- **Event day 30 defaults to valid** — every month is treated as 30 days long until a next-month boundary is set. Once the boundary is set, only the proven length renders: a 29-day month excludes day 30 (that date doesn't exist that year); the last configured month with no boundary still shows day 30.
 - **Fixed events map only against their own `hijriMonth` slot** — never a different month (prevents "27 Safar" for a Rajab-27 event).
-- The next month's boundary is still required to place day-30 events and to validate 29/30-day month lengths.
+- The next month's boundary also validates 29/30-day month lengths and caps the Hijri grid at the proven length (no phantom "30 Muharram" spilling into Safar 1).
 
-Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 98 cases).
+Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 123 cases).
 
 ---
 
@@ -469,7 +470,7 @@ Handles **master-child card sections** where content is split into sub-cards usi
 ### FontContext.jsx
 - State: `fontFamily`, `fontSize`, `changeFontFamily`, `changeFontSize`, `fontFamilies`, `fontSizes`
 - Persistence: localStorage keys `kqcmm_font_family`, `kqcmm_font_size`
-- 17 font families, 4 sizes
+- 17 font families, 6 sizes (12–24px)
 - Font size applied as base on `<main>`, children use em
 
 ### ViewContext.jsx

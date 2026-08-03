@@ -6,7 +6,7 @@ Complete reference for CSS, theming, responsive design, and card system.
 
 ## Theme System
 
-Four themes are defined via CSS custom properties on `[data-theme]`:
+Five themes are defined via CSS custom properties on `[data-theme]` (Light, Dark, Sepia, Green, Rose):
 
 ```css
 :root, [data-theme="light"] {
@@ -31,13 +31,13 @@ Four themes are defined via CSS custom properties on `[data-theme]`:
 
 ### Theme Comparison
 
-| Property | Light | Dark | Sepia | Green |
-|---|---|---|---|---|
-| `--bg` | `#f5f5f5` | `#0f0f1a` | `#faf0e6` | `#e8f5e9` |
-| `--bg-header` | `#fdfdfd` | `#1a1a2e` | `#5c3a1e` | `#1b5e20` |
-| `--accent` | `#4a6cf7` | `#7c5cfc` | `#b8860b` | `#2e7d32` |
-| `--text` | `#222` | `#e0e0e0` | `#3e2c1a` | `#1b3a1b` |
-| `--header-text` | `#333` | `#e0e0e0` | `#f0e8d8` | `#e0e0e0` |
+| Property | Light | Dark | Sepia | Green | Rose |
+|---|---|---|---|---|---|
+| `--bg` | `#f5f5f5` | `#0f0f1a` | `#faf0e6` | `#e8f5e9` | `#fdf0f2` |
+| `--bg-header` | `#fdfdfd` | `#1a1a2e` | `#5c3a1e` | `#1b5e20` | `#9d2b4a` |
+| `--accent` | `#4a6cf7` | `#7c5cfc` | `#b8860b` | `#2e7d32` | `#c2185b` |
+| `--text` | `#222` | `#e0e0e0` | `#3e2c1a` | `#1b3a1b` | `#3a1622` |
+| `--header-text` | `#333` | `#e0e0e0` | `#f0e8d8` | `#e0e0e0` | `#fdf0f2` |
 
 ### Adding a New Theme
 1. Add a new `[data-theme="name"]` block in `styles.css`
@@ -164,10 +164,12 @@ const fontFamilies = [
 ### Font Sizes
 | ID | Label | Size |
 |---|---|---|
+| xs | X-Small | 12px |
 | small | Small | 14px |
 | medium | Medium | 16px |
 | large | Large | 18px |
 | xlarge | X-Large | 21px |
+| xxl | XX-Large | 24px |
 
 ### Size Cascade
 Font size is applied as a base on `<main>`, and all content elements use `em` units:
