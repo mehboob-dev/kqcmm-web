@@ -126,7 +126,6 @@ export default function Calendar() {
   const available = occurrences
     .filter(o => o.available && o.gregorianStart)
     .sort((a, b) => formatISODate(a.gregorianStart) < formatISODate(b.gregorianStart) ? -1 : 1)
-  const unavailable = occurrences.filter(o => !o.available)
 
   const { eventList, pastEvents } = splitUpcomingPast(available, today)
 
@@ -360,20 +359,6 @@ export default function Calendar() {
             </div>
           )}
         </>
-      )}
-
-      {/* UNAVAILABLE */}
-      {unavailable.length > 0 && (
-        <div className="cal-unavail">
-          <div className="cal-unavail-title">{cal.unavailable || 'Not yet configured'}</div>
-          <div className="cal-unavail-chips">
-            {unavailable.map((occ, i) => {
-              const e = eventById(occ.id)
-              const loc = localizedEvent(e, lang, monthNames)
-              return <span key={i} className="cal-unavail-chip">{loc.label}</span>
-            })}
-          </div>
-        </div>
       )}
     </div>
   )

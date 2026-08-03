@@ -243,12 +243,14 @@ function mapFixedEventToMonth(ev, ms, nextMs) {
   if (!start) return unavailable()
   const startOrd = dayOrdinal(start)
   const next = anchorDate(nextMs)
-  const monthLen = next ? dayOrdinal(next) - startOrd : 30 // conservative until known
+  const monthLen = next ? dayOrdinal(next) - startOrd : 30 // optimistic 30 until proven
 
   const gregorianDays = ev.hijriDays
     .map(d => ({ d, ord: startOrd + d - 1 }))
-    // day 30 is only valid when the next boundary proves the month has 30 days
-    .filter(({ d }) => d <= 29 || (next && d <= monthLen))
+    // Day 30 defaults to valid: every month is treated as 30 days long until a
+    // next-month boundary proves otherwise. Only when the boundary is set and
+    // shows this month is genuinely 29 days is day 30 excluded.
+    .filter(({ d }) => d <= 29 || !next || monthLen >= 30)
     .map(({ d, ord }) => ({ d, date: ordinalToDate(ord) }))
     .sort((a, b) => a.d - b.d)
 
@@ -452,9 +454,13 @@ export function buildMonthGrid(monthStarts, target, today) {
     (ms.hijriYear === target.year + 1 && target.month === 12 && ms.hijriMonth === 1)
   )
   const nextStart = next ? anchorDate(next) : null
-  const monthLen = 30
-
   const startOrd = dayOrdinal(start)
+  // Month length: default to 30 (optimistic — treat every month as 30 days until
+  // the next boundary is set). Once the boundary is set, cap the grid at the
+  // proven length so a 29-day month does NOT render a phantom day 30 that spills
+  // into the next month (e.g. "30 Muharram" = actually 1 Safar in the Gregorian view).
+  const monthLen = nextStart ? dayOrdinal(nextStart) - startOrd : 30
+
   const todayOrd = today ? dayOrdinal(today) : -Infinity
   const firstWeekday = new Date(start.y, start.m - 1, start.d).getDay()
 

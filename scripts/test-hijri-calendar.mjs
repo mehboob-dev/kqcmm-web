@@ -154,7 +154,9 @@ eq(formatISODate(mOccs[1].gregorianStart), '2026-08-07', 'Safar 13 = 2026-08-07'
 // All share the same event id + rule
 assert(mOccs.every(o => o.id === 'monthly13' && o.rule === 'hijri-monthly'), 'monthly occurrences share id/rule')
 
-// Monthly event with day 30: only available in months proven to have 30 days
+// Monthly event with day 30: available by default (assume 30-day); only excluded
+// when a set boundary proves the month is 29 days. Here Muharram has a 30-day
+// boundary (Jun26->Jul26), so it stays available.
 const m30Cfg = {
   monthStarts: [
     { hijriYear: 1447, hijriMonth: 1, gregorianStart: '2026-06-26' },
@@ -165,8 +167,9 @@ const m30Cfg = {
   ],
 }
 const m30Occs = enumerateOccurrences(m30Cfg).filter(o => o.available)
-eq(m30Occs.length, 1, 'day-30 monthly event only in proven-30-day months')
+eq(m30Occs.length, 2, 'day-30 monthly event available in both months (Muharram proven 30-day + last month defaults 30-day)')
 eq(formatISODate(m30Occs[0].gregorianStart), '2026-07-25', 'Muharram 30 = 2026-06-26 + 29 = 2026-07-25')
+eq(formatISODate(m30Occs[1].gregorianStart), '2026-08-24', 'Safar 30 = 2026-07-26 + 29 = 2026-08-24 (last month, no boundary -> defaults to available)')
 
 console.log('--- event mapping: no boundary needed for days 1-29 ---')
 // User scenario: only 1 Safar is set. "20 Safar" = start + 19 days, no boundary needed.
@@ -178,7 +181,7 @@ const singleMonth = {
   events: [
     { id: 'safar20', rule: 'hijri-fixed', hijriMonth: 2, hijriDays: [20] },
     { id: 'safar29', rule: 'hijri-fixed', hijriMonth: 2, hijriDays: [29] },
-    { id: 'safar30', rule: 'hijri-fixed', hijriMonth: 2, hijriDays: [30] }, // needs boundary
+    { id: 'safar30', rule: 'hijri-fixed', hijriMonth: 2, hijriDays: [30] }, // no boundary -> defaults to available
   ],
 }
 const smOccs = enumerateOccurrences(singleMonth)
@@ -189,7 +192,8 @@ const s29 = smOccs.find(o => o.id === 'safar29')
 assert(s29.available, 'day 29 maps without boundary')
 eq(formatISODate(s29.gregorianStart), '2026-08-13', '29 Safar = 2026-07-16 + 28 = 2026-08-13')
 const s30 = smOccs.find(o => o.id === 'safar30')
-assert(!s30.available, 'day 30 stays unavailable without boundary (could be a 29-day month)')
+assert(s30.available, 'day 30 defaults to available without boundary (assume 30-day until proven)')
+eq(formatISODate(s30.gregorianStart), '2026-08-14', '30 Safar = 2026-07-16 + 29 = 2026-08-14')
 
 console.log('--- event mapping: fixed event in the LAST configured month ---')
 // Regression: a hijri-fixed event whose month is the FINAL configured slot was
@@ -202,7 +206,7 @@ const lastMonthCfg = {
   ],
   events: [
     { id: 'milad', rule: 'hijri-fixed', hijriMonth: 3, hijriDays: [12], label: 'Eid Milad-un-Nabi' },
-    { id: 'milad30', rule: 'hijri-fixed', hijriMonth: 3, hijriDays: [30] }, // day 30 still needs boundary
+    { id: 'milad30', rule: 'hijri-fixed', hijriMonth: 3, hijriDays: [30] }, // last slot, no next boundary -> defaults to available
     { id: 'monthlyX', rule: 'hijri-monthly', hijriDays: [5] },
   ],
 }
@@ -210,7 +214,7 @@ const lmOccs = enumerateOccurrences(lastMonthCfg)
 const milad = lmOccs.find(o => o.id === 'milad')
 assert(milad && milad.available, 'fixed event in last month maps (day 12 needs no boundary)')
 eq(formatISODate(milad.gregorianStart), '2026-08-26', 'Rabi I 12 = 2026-08-15 + 11 = 2026-08-26')
-assert(!lmOccs.find(o => o.id === 'milad30').available, 'day-30 fixed event in last month stays unavailable (no boundary)')
+assert(lmOccs.find(o => o.id === 'milad30').available, 'day-30 fixed event in last month defaults to available (assume 30-day until proven)')
 const monthlyX = lmOccs.filter(o => o.id === 'monthlyX' && o.available)
 eq(monthlyX.length, 2, 'monthly still maps every configured month including the last')
 
@@ -323,8 +327,10 @@ eq(formatISODate(g.cells[29].gregorian), '2026-08-14', 'Safar 30 -> 2026-08-14')
 // Navigate to a different month (Muharram 1448)
 const g2 = buildMonthGrid(gridCfg.monthStarts, { year: 1448, month: 1 }, parseISODate('2026-08-01'))
 assert(g2.hasData, 'previous month grid builds')
-eq(g2.cells.length, 30, 'Muharram also 30 cells')
+eq(g2.monthLen, 29, 'Muharram 1448 grid caps at proven 29 days (Jun17->Jul16)')
+eq(g2.cells.length, 29, 'Muharram has 29 cells, not a phantom day 30')
 eq(formatISODate(g2.cells[0].gregorian), '2026-06-17', 'Muharram 1 -> 2026-06-17')
+eq(formatISODate(g2.cells[28].gregorian), '2026-07-15', '29 Muharram -> 2026-07-15 (day 30 spills into Safar 1)')
 assert(!g2.cells.some(c => c.isToday), 'no today cell when viewing a past month')
 
 // No month start set -> hasData false
@@ -422,6 +428,69 @@ const rollover = [
 ]
 const sortedR = sortMonths(rollover)
 eq(sortedR.map(m => `${m.hijriYear}-${m.hijriMonth}`).join(','), '1449-12,1450-1', 'year rollover sorts correctly')
+
+console.log('--- generated Blessed Days events (thesunniway-*) ---')
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
+import { eventLabel, eventDescription } from './generate-calendar-events.mjs'
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const calendarFile = join(__dirname, '..', 'src', 'config', 'content', 'calendar.json')
+const sourceFile = join(__dirname, 'data', 'events_merged.json')
+const calendar = JSON.parse(readFileSync(calendarFile, 'utf8'))
+const source = JSON.parse(readFileSync(sourceFile, 'utf8'))
+
+// Full generated config must pass the existing validator.
+const genValidate = validateCalendarConfig(calendar)
+assert(genValidate.ok, 'generated calendar passes validateCalendarConfig', JSON.stringify(genValidate.errors || []).slice(0, 300))
+
+const allEvents = calendar.events || []
+const genIds = allEvents.filter(e => e.id.startsWith('thesunniway-'))
+const legacyIds = allEvents.filter(e => !e.id.startsWith('thesunniway-'))
+
+eq(source.length, 2350, 'source has 2350 records')
+eq(genIds.length, 2350, 'exactly 2350 generated thesunniway-* events')
+eq(legacyIds.length, 14, 'the 14 existing KQCMM events are preserved')
+eq(new Set(genIds.map(e => e.id)).size, 2350, 'generated event ids are unique')
+
+// One-to-one mapping to source ids (thesunniway-<source id>).
+const sourceIds = new Set(source.map(r => String(r.id)))
+const genIdNums = genIds.map(e => e.id.replace(/^thesunniway-/, ''))
+assert(genIdNums.every(id => sourceIds.has(id)), 'every generated id maps to a source id')
+assert(source.every(r => genIdNums.includes(String(r.id))), 'every source id has a generated event')
+
+// Rule / month / day invariants.
+assert(genIds.every(e => e.rule === 'hijri-fixed'), 'all generated events are hijri-fixed')
+assert(genIds.every(e => e.hijriMonth >= 1 && e.hijriMonth <= 12), 'all generated months in 1..12')
+assert(genIds.every(e => Array.isArray(e.hijriDays) && e.hijriDays.length === 1 && e.hijriDays[0] >= 1 && e.hijriDays[0] <= 30), 'all generated hijriDays valid')
+
+// Label / description mapping policy.
+const sample = source.find(r => r.id === '2')
+const label2 = eventLabel(sample)
+assert(label2.includes('Hadrat Abu Bakr Muhammad bin Ibrahim Sawsi'), 'label includes englishName')
+assert(label2.includes('Alayhir Rahmah'), 'label includes englishSuffix')
+const noWisal = source.find(r => !r.wisalDate || r.wisalDate === '-' || r.wisalDate === 'NULL' || r.wisalDate === null)
+const wisalSample = source.find(r => /^\d{3,4}$/.test(String(r.wisalDate)))
+eq(eventDescription(wisalSample).includes('Wisal'), true, 'meaningful wisal year appears in description')
+assert(!eventDescription(noWisal).includes('Wisal'), 'no wisal when wisalDate is missing/placeholder')
+assert(!eventLabel(sample).includes('PASSING OF'), 'label does not embed event type (type stays in description)')
+
+// Ordering: generated events are sorted by month, then day, then numeric id.
+const sortedCheck = genIds.every((e, i) => {
+  if (i === 0) return true
+  const a = genIds[i - 1], b = e
+  const monthDiff = a.hijriMonth - b.hijriMonth
+  if (monthDiff) return monthDiff < 0
+  const dayDiff = a.hijriDays[0] - b.hijriDays[0]
+  if (dayDiff) return dayDiff < 0
+  return Number(a.id.replace(/\D/g, '')) <= Number(b.id.replace(/\D/g, ''))
+})
+assert(sortedCheck, 'generated events are deterministically sorted (month, day, id)')
+
+// Known edge: a single day-30 event in the last configured month (Safar 1448)
+// has no following boundary and is expected to surface as unavailable.
+const safar30 = genIds.filter(e => e.hijriMonth === 2 && e.hijriDays[0] === 30)
+eq(safar30.length, 1, 'exactly one day-30 Safar event (thesunniway-490) exists')
 
 console.log(`\n${pass} passed, ${fail} failed`)
 process.exit(fail ? 1 : 0)

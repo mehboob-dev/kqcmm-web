@@ -11,6 +11,7 @@
     "fetch-content": "node scripts/fetch-content.mjs",
     "fetch-firebase": "node scripts/fetch-content.mjs",
     "test": "node scripts/test-hijri-calendar.mjs && node scripts/test-page-rename.mjs && node scripts/test-generic-content.mjs",
+    "calendar:gen": "node scripts/generate-calendar-events.mjs",
     "deploy": "npm run build && npx gh-pages -d dist"
   },
   "dependencies": {
