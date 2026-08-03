@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { trackCounter, trackSlideView } from '../utils/analytics'
 import { useView } from '../context/ViewContext'
 
 export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }) {
@@ -62,16 +63,20 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
     touchMoved.current = false
   }
 
-  const resetCount = () => setCount(0)
-  const incCount = () => setCount(c => c + 1)
-  const decCount = () => setCount(c => Math.max(0, c - 1))
+  const resetCount = () => { setCount(0); trackCounter('reset', 0) }
+  const incCount = () => { setCount(c => c + 1); trackCounter('inc', count + 1) }
+  const decCount = () => { setCount(c => Math.max(0, c - 1)); trackCounter('dec', Math.max(0, count - 1)) }
 
   if (!items || items.length === 0) {
     return <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No content yet.</p>
   }
 
   const total = items.length
-  const goTo = (idx) => setCurrentIdx(Math.max(0, Math.min(idx, total - 1)))
+  const goTo = (idx) => {
+    const target = Math.max(0, Math.min(idx, total - 1))
+    if (target !== currentIdx) trackSlideView(pageKey, target)
+    setCurrentIdx(target)
+  }
   const hasPrev = currentIdx > 0
   const hasNext = currentIdx < total - 1
 

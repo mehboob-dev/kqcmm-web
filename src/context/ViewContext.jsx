@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback } from 'react'
+import { trackViewMode } from '../utils/analytics'
 import viewConfig from '../config/view.json'
 
 const ViewContext = createContext()
@@ -13,6 +14,7 @@ export function ViewProvider({ children }) {
     setSlideMode(prev => {
       const next = !prev
       localStorage.setItem('kqcmm_view_mode', next ? 'slide' : 'list')
+      trackViewMode(next ? 'slide' : 'list')
       return next
     })
   }, [])

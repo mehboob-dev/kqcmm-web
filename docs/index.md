@@ -16,6 +16,7 @@ Welcome to the KQCMM web app documentation. Choose a topic below.
 - [Forcing a Build](force-build.md) — step-by-step ways to trigger a deploy when a push is skipped
 - [PWA & Offline Support](pwa.md) — Service worker, caching, installable app
 - [SEO & Pre-rendering](seo.md) — Meta tags, OG images, Puppeteer prerender
+- [Analytics (GA4)](analytics.md) — Usage tracking, what's measured, activation
 - [Scripts Reference](scripts.md) — All CLI tools and utilities
 - [Hijri Calendar Plan](hijri-calendar-plan.md) — Islamic calendar (v1 implemented: admin-maintained month starts)
 

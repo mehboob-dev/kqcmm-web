@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useLocation, Outlet } from 'react-router-dom'
+import { trackPageView } from '../utils/analytics'
 import { useLanguage } from '../context/LanguageContext'
 import { useFont } from '../context/FontContext'
 import { loadStrings } from '../config/strings'
@@ -29,6 +30,13 @@ export default function Layout() {
   // Scroll to top on page navigation
   useEffect(() => {
     if (mainRef.current) mainRef.current.scrollTop = 0
+  }, [location.pathname])
+
+  // Track SPA route changes as GA4 page views. The basename (/kqcmm-web/) is
+  // stripped so the path matches what prerendered SEO pages record.
+  useEffect(() => {
+    const path = location.pathname === '/' ? '/' : location.pathname.replace(/^\/kqcmm-web\/?/, '/')
+    trackPageView(path, strings?.appName)
   }, [location.pathname])
 
   // Page title lookup driven by the page-route registry so a renamed route

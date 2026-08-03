@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback } from 'react'
+import { trackLanguage } from '../utils/analytics'
 
 const languages = [
   { code: 'en', label: 'English', dir: 'ltr' },
@@ -17,6 +18,7 @@ export function LanguageProvider({ children }) {
     localStorage.setItem('kqcmm_lang', code)
     document.documentElement.dir = languages.find(l => l.code === code)?.dir || 'ltr'
     document.documentElement.lang = code
+    trackLanguage(code)
   }, [])
 
   // Set initial dir/lang

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
+import { trackInstall } from '../utils/analytics'
 
 export default function PwaSupport() {
   const [offline, setOffline] = useState(!navigator.onLine)
@@ -29,9 +30,12 @@ export default function PwaSupport() {
     const handleOffline = () => setOffline(true)
     window.addEventListener('online', handleOnline)
     window.addEventListener('offline', handleOffline)
+    const handleAppInstalled = () => trackInstall()
+    window.addEventListener('appinstalled', handleAppInstalled)
     return () => {
       window.removeEventListener('online', handleOnline)
       window.removeEventListener('offline', handleOffline)
+      window.removeEventListener('appinstalled', handleAppInstalled)
     }
   }, [])
 

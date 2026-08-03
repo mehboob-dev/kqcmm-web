@@ -6,6 +6,17 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## 5.9.0 — 2026-08-03 (analytics)
+
+### Internal / docs
+- **Google Analytics 4 tracking added** (`index.html` gtag snippet + `src/utils/analytics.js`).
+  - No public changelog/version bump — invisible to end users.
+  - To activate: replace the `G-XXXXXXX` placeholder Measurement ID with the real GA4 property ID in `index.html`.
+  - SPA page views tracked in `Layout.jsx` via `useLocation` (basename stripped). Custom events: `select_language`, `select_theme`, `select_view_mode`, `counter_use` (ContentView), `slide_view` (slide nav), `splash_skip`, `pwa_install` (appinstalled).
+  - `gtag()` is a safe no-op until the ID is configured; never breaks the app.
+
+---
+
 ## 5.9.0 — 2026-08-01
 
 ### User-facing

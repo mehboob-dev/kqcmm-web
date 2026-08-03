@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { trackSplashSkip } from '../utils/analytics'
 import config from '../config/splash.json'
 
 export default function SplashScreen({ onDone }) {
@@ -6,6 +7,7 @@ export default function SplashScreen({ onDone }) {
   const [count, setCount] = useState(config.duration)
 
   const skip = useCallback(() => {
+    trackSplashSkip()
     setFadeOut(true)
     setTimeout(() => onDone(), config.fadeTransition || 400)
   }, [onDone])

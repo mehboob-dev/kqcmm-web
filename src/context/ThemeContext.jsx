@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react'
+import { trackTheme } from '../utils/analytics'
 
 const themes = [
   { id: 'light', label: 'Light' },
@@ -17,6 +18,7 @@ export function ThemeProvider({ children }) {
   const changeTheme = useCallback((id) => {
     setTheme(id)
     localStorage.setItem('kqcmm_theme', id)
+    trackTheme(id)
   }, [])
 
   useEffect(() => {
