@@ -22,10 +22,12 @@ const fontFamilies = [
 ]
 
 const fontSizes = [
+  { id: 'xs', label: 'X-Small', size: '12px' },
   { id: 'small', label: 'Small', size: '14px' },
   { id: 'medium', label: 'Medium', size: '16px' },
   { id: 'large', label: 'Large', size: '18px' },
   { id: 'xlarge', label: 'X-Large', size: '21px' },
+  { id: 'xxl', label: 'XX-Large', size: '24px' },
 ]
 
 const FontContext = createContext()

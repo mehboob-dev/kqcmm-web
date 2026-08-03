@@ -6,6 +6,7 @@ const themes = [
   { id: 'dark', label: 'Dark' },
   { id: 'sepia', label: 'Sepia' },
   { id: 'green', label: 'Green' },
+  { id: 'rose', label: 'Rose' },
 ]
 
 const ThemeContext = createContext()
