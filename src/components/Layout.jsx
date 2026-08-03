@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useLocation, Outlet } from 'react-router-dom'
-import { trackPageView } from '../utils/analytics'
+import { trackPageView, trackShare } from '../utils/analytics'
 import { useLanguage } from '../context/LanguageContext'
 import { useFont } from '../context/FontContext'
 import { loadStrings } from '../config/strings'
@@ -94,6 +94,7 @@ export default function Layout() {
     if (navigator.share) {
       try {
         await navigator.share({ title, text, url })
+        trackShare('webshare')
         return
       } catch (e) { /* user cancelled — ignore */ }
     }

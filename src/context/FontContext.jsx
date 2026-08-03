@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback } from 'react'
+import { trackFontSize, trackFontFamily } from '../utils/analytics'
 
 const fontFamilies = [
   { id: 'system', label: 'System Default', family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif' },
@@ -40,11 +41,13 @@ export function FontProvider({ children }) {
   const changeFontFamily = useCallback((id) => {
     setFontFamily(id)
     localStorage.setItem('kqcmm_font_family', id)
+    trackFontFamily(id)
   }, [])
 
   const changeFontSize = useCallback((id) => {
     setFontSize(id)
     localStorage.setItem('kqcmm_font_size', id)
+    trackFontSize(id)
   }, [])
 
   const currentFont = fontFamilies.find(f => f.id === fontFamily) || fontFamilies[0]

@@ -27,6 +27,18 @@ match the pre-rendered SEO pages (`/dua`, `/khatm`, ...).
 | `slide_view` | user navigates slides | `ContentView` |
 | `splash_skip` | user taps splash to skip it | `SplashScreen` |
 | `pwa_install` | user installs the app | `PwaSupport` (`appinstalled`) |
+| `share_used` | user taps Share in the header | `Layout` (`share_method` param) |
+| `quick_jump_open` / `quick_jump_select` | user opens / jumps via quick-jump | `QuickJump` (`page`, `section_index`) |
+| `adjust_font_size` / `select_font_family` | user changes font size/family | `FontContext` |
+| `calendar_nav` | user navigates months/years | `Calendar` (`calendar_direction`, `year`, `month`) |
+| `calendar_toggle` | user toggles Hijri/Gregorian | `Calendar` (`calendar_view`) |
+| `exception` | uncaught JS error / promise rejection | global handlers (see below) |
+
+**Error tracking:** `src/utils/analytics.js` installs global `error` and
+`unhandledrejection` listeners (via `initErrorTracking()` called in
+`main.jsx`) that fire GA4 `exception` events. 3rd-party (googletagmanager)
+errors are skipped so GA's own scripts never create noise. See the
+`exception` event in GA under **Reports → Events**.
 
 ## Activating (one-time setup)
 
@@ -54,3 +66,6 @@ flow, wire GA's Consent Mode (`gtag('consent', ...)`) rather than a custom banne
   slot into standard GA4 reports with no extra custom-dimension setup.
 - `src/utils/analytics.js` is a defensive wrapper around the global `gtag()` —
   it never throws and degrades to a no-op if the script hasn't loaded.
+- **GA console configuration** (conversions, own-traffic exclusion, dashboard,
+  enhanced measurement) is separate — see
+  [docs/ga4-setup.md](ga4-setup.md).

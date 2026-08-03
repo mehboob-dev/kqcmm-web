@@ -30,7 +30,7 @@ export default function Dua() {
         )}
       />
       {data.quickJump && (
-        <QuickJump indices={data.quickJump} sourceItems={content.duas} labelKey="heading" onJump={setJumpToIdx} />
+        <QuickJump page="dua" indices={data.quickJump} sourceItems={content.duas} labelKey="heading" onJump={setJumpToIdx} />
       )}
     </div>
   )

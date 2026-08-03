@@ -14,6 +14,9 @@ Maintain both changelogs together when work lands. Latest version at the top.
   - To activate: replace the `G-XXXXXXX` placeholder Measurement ID with the real GA4 property ID in `index.html`.
   - SPA page views tracked in `Layout.jsx` via `useLocation` (basename stripped). Custom events: `select_language`, `select_theme`, `select_view_mode`, `counter_use` (ContentView), `slide_view` (slide nav), `splash_skip`, `pwa_install` (appinstalled).
   - `gtag()` is a safe no-op until the ID is configured; never breaks the app.
+- **GA4 error tracking** — `src/utils/analytics.js` adds `initErrorTracking()` (called in `main.jsx`) wiring global `error` / `unhandledrejection` to GA4 `exception` events. GA-script errors are skipped. No public bump.
+- **More granular GA4 events** — `share_used` (Layout share), `quick_jump_open`/`quick_jump_select` (QuickJump, new `page` prop at its 4 call sites: Dua/FatehaKhwani/Khatm/Roshni), `adjust_font_size`/`select_font_family` (FontContext), `calendar_nav`/`calendar_toggle` (Calendar prev/next/today + Hijri↔Gregorian switch).
+- **New docs** — `docs/ga4-setup.md` (GA console steps for conversions, own-traffic IP exclusion, custom dimensions + dashboard, enhanced measurement); linked from README, docs/index.md, docs/analytics.md, `analytics.md` events table + error tracking section updated. Internal — no public changelog/version bump.
 
 ---
 

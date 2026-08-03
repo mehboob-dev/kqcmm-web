@@ -42,7 +42,7 @@ export default function Roshni() {
         </div>
       )}
       {data.quickJump && (
-        <QuickJump indices={data.quickJump} sourceItems={content.sections} labelKey="title" onJump={setJumpToIdx} />
+        <QuickJump page="roshni" indices={data.quickJump} sourceItems={content.sections} labelKey="title" onJump={setJumpToIdx} />
       )}
     </div>
   )

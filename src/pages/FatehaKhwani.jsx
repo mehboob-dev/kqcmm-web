@@ -51,7 +51,7 @@ export default function FatehaKhwani() {
         }}
       />
       {data.quickJump && (
-        <QuickJump indices={data.quickJump} sourceItems={content.sections} labelKey="title" onJump={setJumpToIdx} />
+        <QuickJump page="fateha-khwani" indices={data.quickJump} sourceItems={content.sections} labelKey="title" onJump={setJumpToIdx} />
       )}
     </div>
   )

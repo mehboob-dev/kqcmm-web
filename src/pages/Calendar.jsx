@@ -1,6 +1,7 @@
 import SeoHead from '../components/SeoHead'
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../context/LanguageContext'
+import { trackCalendarNav, trackCalendarToggle } from '../utils/analytics'
 import { loadStrings } from '../config/strings'
 import { getContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
@@ -78,6 +79,7 @@ export default function Calendar() {
     if (mode === viewMode) return
     setViewMode(mode)
     localStorage.setItem('kqcmm_calendar_view', mode)
+    trackCalendarToggle(mode)
     if (mode === 'gregorian') setView(gregorianMonthOf(todayLocal()))
     else {
       const cur = hijriMonthOf(data.monthStarts, todayLocal())
@@ -160,15 +162,17 @@ export default function Calendar() {
     const next = shiftMonth(prev, -1)
     // bound to configured min in Hijri mode
     if (viewMode === 'hijri' && minMonth && keyOf(next) < keyOf(minMonth)) return prev
+    trackCalendarNav('prev', next.year, next.month)
     return next
   })
   const goNext = () => setView(prev => {
     const next = shiftMonth(prev, 1)
     // bound to configured max in Hijri mode
     if (viewMode === 'hijri' && maxMonth && keyOf(next) > keyOf(maxMonth)) return prev
+    trackCalendarNav('next', next.year, next.month)
     return next
   })
-  const goToday = () => { if (currentMonth) setView(currentMonth) }
+  const goToday = () => { if (currentMonth) { trackCalendarNav('today', currentMonth.year, currentMonth.month); setView(currentMonth) } }
 
   const renderEventCard = (occ, past) => {
     const e = eventById(occ.id)

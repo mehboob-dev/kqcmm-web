@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import { trackQuickJumpOpen, trackQuickJumpSelect } from '../utils/analytics'
 
 // QuickJump is language-independent: `indices` is a shared list of selection
 // indices (same across all languages). Labels are derived from the source
 // items (e.g. sections/duas) so each language automatically shows its own
 // title/heading without storing duplicate labels in the content JSON.
-export default function QuickJump({ indices, sourceItems, labelKey, onJump }) {
+export default function QuickJump({ indices, sourceItems, labelKey, onJump, page }) {
   const [open, setOpen] = useState(false)
 
   const items = (indices || [])
@@ -18,6 +19,7 @@ export default function QuickJump({ indices, sourceItems, labelKey, onJump }) {
 
   const handleSelect = (idx) => {
     onJump(idx)
+    trackQuickJumpSelect(page, idx)
     setOpen(false)
   }
 
@@ -25,7 +27,7 @@ export default function QuickJump({ indices, sourceItems, labelKey, onJump }) {
     <>
       {/* FAB — floating book icon */}
       <button
-        onClick={() => setOpen(true)}
+        onClick={() => { trackQuickJumpOpen(page); setOpen(true) }}
         style={{
           position: 'fixed',
           bottom: 'calc(var(--bottom-nav-height, 56px) + 56px)',

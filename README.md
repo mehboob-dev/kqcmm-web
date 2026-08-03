@@ -170,6 +170,7 @@ Full documentation is in the `docs/` folder:
 | [docs/pwa.md](docs/pwa.md) | PWA / offline / service worker |
 | [docs/seo.md](docs/seo.md) | SEO, Open Graph, pre-rendering |
 | [docs/analytics.md](docs/analytics.md) | GA4 usage tracking, what's measured, activation |
+| [docs/ga4-setup.md](docs/ga4-setup.md) | GA4 console steps: conversions, own-traffic exclusion, dashboard, enhanced measurement |
 | [docs/scripts.md](docs/scripts.md) | All CLI tools |
 | [docs/new-developer-guide.md](docs/new-developer-guide.md) | Step-by-step for freshers |
 | [docs/suggestions.md](docs/suggestions.md) | Feature ideas (shipped items marked ✅) |
