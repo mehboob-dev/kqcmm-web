@@ -456,17 +456,10 @@ strong { font-weight: 700; }
 .hijri-strip-event {
   display: inline-flex;
   align-items: center;
-  gap: 0.35em;
+  gap: 0.3em;
   padding: 0.05em 0.6em;
   border-radius: 1em;
   background: rgba(255, 255, 255, 0.18);
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.95em;
-  max-width: 12em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 .hijri-strip-event-dot {
   width: 0.5em;
@@ -474,6 +467,13 @@ strong { font-weight: 700; }
   border-radius: 50%;
   background: #fff;
   flex-shrink: 0;
+}
+.hijri-strip-more {
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85em;
+  line-height: 1;
+  opacity: 0.9;
 }
 
 /* Month grid card */
@@ -662,6 +662,7 @@ strong { font-weight: 700; }
   right: 0;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 0.2em;
 }
 .cal-grid-dot {
@@ -672,6 +673,16 @@ strong { font-weight: 700; }
 }
 .cal-grid-day.is-today .cal-grid-dot {
   background: #fff;
+}
+.cal-grid-more {
+  font-size: 0.7em;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0.9;
+}
+.cal-grid-day.is-today .cal-grid-more {
+  color: #fff;
 }
 .cal-grid-legend {
   display: flex;

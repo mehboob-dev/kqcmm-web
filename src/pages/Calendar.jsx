@@ -26,6 +26,11 @@ import {
 // when available, but a static 3-letter set keeps the grid compact across languages.
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
+// Maximum number of event dots shown on a single grid cell. Days can hold many
+// events (up to ~27 from the recovered dataset), so cap the dots and show a
+// "+N" marker instead of flooding the cell.
+const GRID_MAX_DOTS = 3
+
 const GREG_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 function formatDisplayDate({ y, m, d }) {
@@ -260,7 +265,7 @@ export default function Calendar() {
                 <div
                   key={viewMode === 'gregorian' ? cell.day : cell.hijriDay}
                   className={'cal-grid-day' + (cell.isToday ? ' is-today' : '') + (cell.events.length ? ' has-event' : '') + (viewMode === 'gregorian' && cell.hijriDay === null ? ' no-hijri' : '')}
-                  title={cell.events.length ? cell.events.map(o => eventById(o.id)?.label || o.id).join(' · ') : ''}
+                  title={cell.events.length ? `${cell.events.length} event${cell.events.length > 1 ? 's' : ''}` : ''}
                 >
                   {viewMode === 'gregorian' ? (
                     <>
@@ -275,7 +280,12 @@ export default function Calendar() {
                   )}
                   {cell.events.length > 0 && (
                     <span className="cal-grid-dots">
-                      {cell.events.map((o, i) => <span key={i} className="cal-grid-dot" />)}
+                      {Array.from({ length: Math.min(cell.events.length, GRID_MAX_DOTS) }).map((_, i) =>
+                        <span key={i} className="cal-grid-dot" />
+                      )}
+                      {cell.events.length > GRID_MAX_DOTS && (
+                        <span className="cal-grid-more">+{cell.events.length - GRID_MAX_DOTS}</span>
+                      )}
                     </span>
                   )}
                 </div>

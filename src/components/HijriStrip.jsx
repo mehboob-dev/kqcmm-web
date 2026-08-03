@@ -8,15 +8,20 @@ import {
   todayLocal,
   todayHijri,
   enumerateOccurrences,
-  localizedEvent,
   hijriLabel,
   formatISODate,
 } from '../utils/hijriCalendar'
 
+// Maximum number of event dots shown in the strip. When there are more events
+// than this, render the cap plus a "+" dot so the user knows the count is higher
+// without crowding the strip.
+const MAX_DOTS = 3
+
 /**
  * Thin, app-wide strip rendered below the header on every page.
- * Shows today's Hijri date, Gregorian date, and a small indicator when
- * there is an event mapped to today.
+ * Shows today's Hijri date, Gregorian date, and a small dot cluster when
+ * there are events mapped to today (no event text — the label would crowd the
+ * strip and is one tap away on the calendar page).
  */
 export default function HijriStrip({ lang }) {
   const navigate = useNavigate()
@@ -35,11 +40,10 @@ export default function HijriStrip({ lang }) {
   const todayEvents = enumerateOccurrences(data)
     .filter(o => o.available && o.gregorianStart && formatISODate(o.gregorianStart) === todayStr)
 
-  const todayEventLabel = (() => {
-    if (todayEvents.length === 0) return null
-    const ev = data.events.find(e => e.id === todayEvents[0].id)
-    return ev ? localizedEvent(ev, lang, monthNames).label : todayEvents[0].id
-  })()
+  const eventCount = todayEvents.length
+  const showDots = eventCount > 0
+  const shownDots = Math.min(eventCount, MAX_DOTS)
+  const hasMore = eventCount > MAX_DOTS
 
   const gregLabel = new Date(today.y, today.m - 1, today.d)
     .toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })
@@ -58,10 +62,12 @@ export default function HijriStrip({ lang }) {
       )}
       <span className="hijri-strip-sep">·</span>
       <span className="hijri-strip-greg">{gregLabel}</span>
-      {todayEventLabel && (
-        <span className="hijri-strip-event" title={todayEventLabel}>
-          <span className="hijri-strip-event-dot" />
-          {todayEventLabel}
+      {showDots && (
+        <span className="hijri-strip-event">
+          {Array.from({ length: shownDots }).map((_, i) => (
+            <span key={i} className="hijri-strip-event-dot" />
+          ))}
+          {hasMore && <span className="hijri-strip-more">+{eventCount - MAX_DOTS}</span>}
         </span>
       )}
     </button>
