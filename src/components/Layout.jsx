@@ -10,10 +10,12 @@ import SideDrawer from './SideDrawer'
 import BottomNav from './BottomNav'
 import SettingsPopup from './SettingsPopup'
 import HijriStrip from './HijriStrip'
+import Icon from './FontAwesome'
 
 export default function Layout() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
   const [strings, setStrings] = useState(null)
   const location = useLocation()
   const { lang } = useLanguage()
@@ -54,6 +56,53 @@ export default function Layout() {
   title = title || (strings?.appName || 'KQCMM')
   const showBack = location.pathname !== '/'
 
+  const share = strings?.share || {}
+
+  // Legacy copy fallback that works even over plain http:// (no secure context),
+  // e.g. mobile devices hitting the dev server on a LAN IP. The modern
+  // clipboard/share APIs are HTTPS-only, so execCommand + a hidden textarea
+  // covers the non-secure case.
+  const copyLegacy = (text) => {
+    const ta = document.createElement('textarea')
+    ta.value = text
+    ta.setAttribute('readonly', '')
+    ta.style.position = 'fixed'
+    ta.style.opacity = '0'
+    document.body.appendChild(ta)
+    const selected = document.getSelection?.().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false
+    ta.select()
+    ta.setSelectionRange(0, ta.value.length)
+    let ok = false
+    try { ok = document.execCommand('copy') } catch (e) { /* unsupported */ }
+    document.body.removeChild(ta)
+    if (selected) document.getSelection().removeAllRanges()
+    return ok
+  }
+
+  const handleShare = async () => {
+    const url = window.location.origin + import.meta.env.BASE_URL
+    const text = share.message || 'KQCMM'
+    const title = share.title || 'Share KQCMM'
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url })
+        return
+      } catch (e) { /* user cancelled — ignore */ }
+    }
+    // Fallback 1: modern clipboard API (HTTPS only)
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+      return
+    } catch (e) { /* clipboard unavailable — try legacy */ }
+    // Fallback 2: legacy textarea copy (plain HTTP / older mobile browsers)
+    const ok = copyLegacy(url)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+    if (!ok) alert(share.message || url)
+  }
+
   return (
     <div
       className="app-shell"
@@ -67,6 +116,9 @@ export default function Layout() {
           ☰
         </button>
         <span className="app-title">{title}</span>
+        <button className="hamburger-btn" onClick={handleShare} aria-label={share.title || 'Share'} style={{ fontSize: 26 }}>
+          {copied ? <Icon name="faCheck" /> : <Icon name="faShareNodes" />}
+        </button>
         <button className="hamburger-btn" onClick={() => setSettingsOpen(true)} aria-label="Settings" style={{ fontSize: 18 }}>
           <span style={{ fontSize: 40 }}>⚙</span>
         </button>
