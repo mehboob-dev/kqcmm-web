@@ -93,6 +93,8 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { height: 100%; -webkit-tap-highlight-color: transparent; }
 body {
+  margin: 0; /* explicit: the UA default 8px body margin shifts the whole app
+                down and pushes the bottom nav past the viewport */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
@@ -186,6 +188,11 @@ strong { font-weight: 700; }
 /* ===== MAIN CONTENT ===== */
 .main-content {
   flex: 1;
+  /* Flex items default to min-height:auto (won't shrink below content), which
+       pushed the bottom nav past the viewport when content was tall. min-height:0
+       lets main shrink so the shell column exactly fits the viewport and the nav
+       stays flush at the bottom. */
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -203,7 +210,11 @@ strong { font-weight: 700; }
   padding-bottom: env(safe-area-inset-bottom, 0);
   position: relative;
   z-index: 50;
-  height: var(--bottom-nav-height, 56px);
+  /* Natural content height. The nav's own size must NOT be driven by the
+       JS-published var (vh - nav.top) — that would loop: height depends on
+       top, top depends on height. The var is only consumed by fixed bars
+       (counter, slide nav, quick jump) so they sit flush against the nav. */
+  height: auto;
 }
 .nav-item {
   flex: 1;

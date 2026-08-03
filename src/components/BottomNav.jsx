@@ -12,10 +12,23 @@ export default function BottomNav({ strings }) {
   const [isInstalled, setIsInstalled] = useState(false)
 
   useEffect(() => {
-    if (ref.current) {
-      const h = ref.current.offsetHeight
-      document.documentElement.style.setProperty('--bottom-nav-height', h + 'px')
+    if (!ref.current) return
+    // Publish the distance from the viewport bottom to the nav's TOP edge, so
+    // fixed bars (counter, slide nav, quick jump) sit flush against the nav.
+    // Using the nav's own height would be off by the safe-area inset
+    // (padding-bottom: env(safe-area-inset-bottom)) which makes the nav extend
+    // past the viewport — leaving a visible gap above it. ResizeObserver keeps
+    // the value in sync when the install button appears/disappears, fonts load,
+    // or safe-area padding changes.
+    const nav = ref.current
+    const publish = () => {
+      const gap = Math.round(window.innerHeight - nav.getBoundingClientRect().top)
+      document.documentElement.style.setProperty('--bottom-nav-height', gap + 'px')
     }
+    publish()
+    const ro = new ResizeObserver(publish)
+    ro.observe(nav)
+    return () => ro.disconnect()
   }, [])
 
   useEffect(() => {
