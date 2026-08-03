@@ -151,7 +151,11 @@ export default function Calendar() {
   const maxMonth = configured.length
     ? { year: configured[configured.length - 1].hijriYear, month: configured[configured.length - 1].hijriMonth }
     : null
-  const keyOf = (m) => m ? `${m.year}-${m.month}` : ''
+  // Numeric month key for chronological comparisons. A string like
+  // `${year}-${month}` sorts incorrectly (e.g. "1447-11" < "1447-3"
+  // lexicographically), which disabled backward navigation past month 12 of
+  // 1447 — making the first configured month unreachable in the Hijri grid.
+  const keyOf = (m) => m ? m.year * 100 + m.month : 0
   // Hijri mode: bound nav to configured min/max. Gregorian mode: unbounded.
   const canPrev = viewMode === 'gregorian' ? !!view : !!(minMonth && view && keyOf(view) > keyOf(minMonth))
   const canNext = viewMode === 'gregorian' ? !!view : !!(maxMonth && view && keyOf(view) < keyOf(maxMonth))
