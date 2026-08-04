@@ -74,7 +74,7 @@ kqcmm-web/
 │   │   └── ViewContext.jsx       ← List/Slide mode
 │   │
 │   ├── config/                   ← Configuration (edit these often)
-│   │   ├── content/              ← ALL page content (11 JSON files)
+│   │   ├── content/              ← ALL page content, split per language folder (en/, hinglish/)
 │   │   ├── strings/              ← UI labels per language
 │   │   ├── navigation.json       ← Nav order and icons
 │   │   ├── splash.json           ← Splash screen settings
@@ -107,10 +107,9 @@ kqcmm-web/
 ## How to Make Common Changes
 
 ### Change Text on a Page
-1. Open `src/config/content/dua.json` (or whichever page)
-2. Find the language section (`en` or `hinglish`; `urdu` is planned)
-3. Edit the text inside the JSON
-4. Save → browser auto-reloads
+1. Open `src/config/content/en/dua.json` (or `hinglish/` for the other language; whichever page)
+2. Edit the text inside the JSON (each language folder holds that language's content)
+3. Save → browser auto-reloads
 
 **OR** use the editor: `npm run edit` → click page → edit text → Save
 

@@ -6,6 +6,48 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## Dev (unreleased) — split-language content migration
+
+> **No public version bump** — this is a pure internal refactor with no user-visible
+> change (identical UI, content, and routes). Recorded here for the complete history;
+> the public changelog was intentionally NOT bumped.
+
+### Internal / docs
+- **Content split per language folder.** Moved `src/config/content/*.json` (flat,
+  all-languages-in-one-file) → `src/config/content/{en,hinglish}/*.json` (one folder
+  per live language, one file per page). Shared top-level metadata (`quickJump`,
+  `schemaVersion`) stays at the top of each file; only that language's content lives
+  under its key. One-shot `scripts/migrate-to-split-languages.mjs` performed the split
+  (kept for the record; re-running errors since the flat files are gone).
+- **New dynamic loader.** `src/config/content/index.js` now exposes
+  `usePageContent(lang, file)` — a `import.meta.glob('./*/*.json')` loader that
+  code-splits per language and falls back to `en/` when a page is missing in the active
+  language. All 12 page components + HijriStrip + GenericContentPage + Layout now
+  async-load content and render a `Loading...` state (no module-scope JSON imports).
+  `hasContent(lang, file)` / `getContent(lang, file)` gained the language parameter.
+- **Calendar special case.** `en/calendar.json` is the source of truth: `monthStarts`,
+  its own `monthNames`/`monthNamesShort`, and `events` carrying a `translations`
+  `{lang: {label, description}}` map. `hinglish/calendar.json` has inline Hinglish
+  `label`/`description` per event. Admin Calendar editor flattens/rebuilds both via
+  `mergeCalendarData` / `writeCalendarSplit` in `scripts/content-editor.mjs`.
+- **Admin across languages.** `listPages` reads from `en/`; add/remove-language copies
+  into every language folder; `page-rename.mjs` walks `getActiveLanguageDirs()` and
+  moves the file in each, transactionally with rollback, keeping the old route as an
+  alias. `generate-calendar-events.mjs` writes both en + hinglish calendar files.
+- **Hydration gated to production** (`import.meta.env.PROD`) in `main.jsx` — local dev
+  uses `createRoot` to avoid hydration mismatch on dynamic/localStorage content.
+- **`hijriLabel`** gained a `lang` parameter (Urdu/Arabic year suffix `ھ`); all call
+  sites (HijriStrip, Calendar) pass it.
+- **Tests sandboxed.** `page-rename.mjs` exposes `overridePaths()` / `restorePaths()`;
+  `test-page-rename.mjs` now writes to an `fs.mkdtempSync` temp dir instead of the repo
+  — the old runs had left `apply-test-*` artifacts in `src/config/content/` that got
+  bundled into production. Leftover artifacts deleted.
+- Docs updated (`docs/content.md`, `docs/architecture.md` data flow, `CLAUDE.md` tree +
+  content architecture, `README.md`, `MEMORY.md`, `docs/components.md`, `docs/scripts.md`,
+  `docs/new-developer-guide.md`) for the split-language structure.
+
+---
+
 ## 5.12.1 — 2026-08-05
 
 ### User-facing

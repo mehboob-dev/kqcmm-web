@@ -128,26 +128,24 @@ kqcmm-web/
 │   │   │   ├── index.js              # String loader
 │   │   │   ├── en.json
 │   │   │   └── hinglish.json
-│   │   └── content/                  # Page content (per page, en + hinglish; urdu planned)
-│   │       ├── index.js              # Eager glob content loader (getContent)
+│   │   └── content/                  # Page content, split per language folder (en/, hinglish/; urdu planned)
+│   │       ├── index.js              # usePageContent(lang, file) — dynamic loader, code-split per language (getContent)
 │   │       ├── locale.js             # Pure locale resolver (requested→en→first)
-│   │       ├── dua.json
-│   │       ├── hmk.json
-│   │       ├── sijrahNama.json
-│   │       ├── fatehaKhwani.json
-│   │       ├── khatm.json
-│   │       ├── salimPappa.json
-│   │       ├── about.json
-│   │       ├── calendar.json               # Hijri calendar (schema v1: monthStarts + shared events)
-│   │       ├── roshni.json
-│   │       ├── abbajaan.json
-│   │       └── changelog.json               # Version history (2 live languages)
+│   │       ├── en/                   # English content — one file per page (11 pages)
+│   │       │   ├── dua.json
+│   │       │   ├── khatm.json
+│   │       │   ├── calendar.json     # Hijri calendar (schema v1: monthStarts + events + translations map)
+│   │       │   └── ...               # hmk, sijrahNama, fatehaKhwani, salimPappa, about, roshni, abbajaan, changelog
+│   │       └── hinglish/             # Hinglish content — mirrors en/ (11 pages)
+│   │           ├── dua.json
+│   │           └── ...
 │   │
 │   └── scripts/                       # CLI tools (see below)
 │
 ├── scripts/
 │   ├── content-editor.mjs            # Local web editor (npm run edit)
-│   ├── page-rename.mjs               # Shared page-rename logic + CLI (validateSlug/buildRename/applyRename)
+│   ├── page-rename.mjs               # Shared page-rename logic + CLI (validateSlug/buildRename/applyRename; sandbox overridePaths for tests)
+│   ├── migrate-to-split-languages.mjs # One-shot: moved flat content/*.json → content/{lang}/*.json (already run; re-running errors)
 │   ├── prerender.mjs                 # Puppeteer prerender for SEO
 │   ├── fetch-content.mjs             # Fetches from Firebase Hosting
 │   ├── sync-other-langs.mjs          # Syncs hinglish/urdu from XML
@@ -188,7 +186,11 @@ kqcmm-web/
 
 ### Content JSON Structure
 
-Each content file has the same shape across the live languages (en, hinglish — urdu planned).
+Content is stored **per language folder** — `src/config/content/en/{page}.json`
+and `src/config/content/hinglish/{page}.json` (urdu planned). Each file holds the
+shared top-level metadata plus **only that language's** content, and is loaded
+dynamically via `usePageContent(lang, file)` (code-split per language; falls back to
+`en/` when a page is missing in the active language).
 `quickJump` is a **top-level**, language-independent list of selection indices (labels are
 derived from each section's `title`/`heading` at render time — see
 [`QuickJump.jsx`](/kqcmm-web/src/components/QuickJump.jsx)):
@@ -196,9 +198,7 @@ derived from each section's `title`/`heading` at render time — see
 ```json
 {
   "quickJump": [0, 22, 29],
-  "en": { "title": "...", "sections": [...] },
-  "hinglish": { "title": "...", "sections": [...] },
-  "urdu": { "title": "...", "sections": [...] }
+  "en": { "title": "...", "sections": [...] }
 }
 ```
 
@@ -325,10 +325,10 @@ Global +/−/↺ counter displayed on content pages. In slide mode it sits in a 
 Routes are **registry-driven** from `src/config/pageRoutes.json` (canonical `route`,
 stable `id`, content-file basename, localized `titleKey`, `renamable`, and legacy
 `aliases`). `src/App.jsx` renders a component per registered page and adds a
-`<Navigate>` redirect for each alias. Page components load content via the eager
-glob loader in `src/config/content/index.js` — **not** direct JSON imports — so a
-page can be renamed by editing the registry + moving the file without touching
-source code.
+`<Navigate>` redirect for each alias. Page components load content via the
+dynamic `usePageContent(lang, file)` loader in `src/config/content/index.js` —
+**not** direct JSON imports — so a page can be renamed by editing the registry +
+moving the file (in every language folder) without touching source code.
 
 ```
 /               → Home              (id: home, not renamable)
@@ -438,7 +438,7 @@ Router basename: `/kqcmm-web/` (set in `vite.config.js` + `main.jsx`).
 
 There are **two** changelogs — keep them both in sync when work lands:
 
-1. **Public** (`src/config/content/changelog.json`, shown on `/changelog`) — **user-facing changes only**, in each live language (en, hinglish). Do not list internal/refactor/docs/build/tooling items here.
+1. **Public** (`src/config/content/{en,hinglish}/changelog.json`, shown on `/changelog`) — **user-facing changes only**, in each live language (en, hinglish). Do not list internal/refactor/docs/build/tooling items here.
 2. **Dev** (`docs/DEVCHANGELOG.md`) — the complete record. Curated per-version blocks split into **User-facing** and **Internal / docs**; holds EVERYTHING including items skipped from the public changelog.
 
 When making changes:
@@ -499,7 +499,7 @@ The editor server at `scripts/content-editor.mjs` serves both the Admin Panel an
 | Quran XML (Transliteration) | `D:/Work/KQCMM/QuranSharif-IrfanUlQuran/en_simple_transliteration1.xml` | Hinglish transliteration |
 | Quran XML (Urdu) | `D:/Work/KQCMM/QuranSharif-IrfanUlQuran/iq_ur.xml` | Urdu translation |
 | JSON (processed) | — | All processed into per-page content JSONs |
-| Content JSONs | `src/config/content/*.json` | Page-specific content |
+| Content JSONs | `src/config/content/{lang}/*.json` | Page-specific content, split per language |
 
 ---
 
@@ -538,7 +538,7 @@ Comprehensive docs are in the `docs/` folder:
 
 1. **SPA + GitHub Pages**: Uses `404.html` hack for client-side routing
 2. **No build-time CMS**: Content is local JSON, edited via standalone editor or direct file editing
-3. **Triple-language**: Same JSON structure, different text per language
+3. **Per-language folders**: Content is split into `src/config/content/{lang}/` folders; same page structure across languages, loaded dynamically per language (falls back to `en/`)
 4. **Context over Redux**: Simple app, React Context is sufficient
 5. **CSS variables over CSS-in-JS**: Single stylesheet, theme vars change everywhere
 6. **Fixed counter/slide nav**: Uses `position: fixed` with `bottom` matching the bottom nav height (set dynamically via CSS var `--bottom-nav-height`)

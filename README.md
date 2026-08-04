@@ -39,7 +39,7 @@ npm run edit         # Content editor (localhost:3030)
 
 ```
 src/
-├── config/content/   ← All page content (11 JSON files, en + hinglish each; urdu planned)
+├── config/content/   ← All page content, split per language folder (en/, hinglish/; urdu planned)
 ├── config/strings/   ← UI labels and nav text
 ├── components/       ← Reusable UI (Layout, ContentView, BottomNav, etc.)
 ├── pages/            ← One component per route
@@ -112,13 +112,16 @@ content renderer).
 
 ## Content
 
-All content is in `src/config/content/*.json`. Each file has the same structure for the shipped languages (en/hinglish; urdu planned). `quickJump` is a top-level, language-independent list of selection indices (labels derive from each section's `title`/`heading`):
+All content is in `src/config/content/{lang}/` — one folder per live language
+(`en/`, `hinglish/`; urdu planned), each holding one JSON file per page. Pages
+load their content dynamically per language via `usePageContent(lang, file)`
+(falls back to `en/`). `quickJump` is a top-level, language-independent list of
+selection indices (labels derive from each section's `title`/`heading`):
 
 ```json
 {
   "quickJump": [0, 22, 29],
-  "en": { "title": "...", "sections": [...] },
-  "hinglish": { "title": "...", "sections": [...] }
+  "en": { "title": "...", "sections": [...] }
 }
 ```
 

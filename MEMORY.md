@@ -39,7 +39,7 @@ npm run preview     # Preview production build
 
 | Path | Purpose |
 |---|---|
-| `src/config/content/` | All page content (11 JSON files, 10 editable + changelog) |
+| `src/config/content/` | Page content split per language folder (en/, hinglish/ — 11 pages each, 10 editable + changelog) |
 | `src/config/strings/` | UI labels and navigation text |
 | `src/components/` | Reusable UI components |
 | `src/pages/` | One component per route |
@@ -50,7 +50,7 @@ npm run preview     # Preview production build
 ## Key Architecture Decisions
 
 1. **SPA + GitHub Pages** — 404.html hack for client-side routing
-2. **Local JSON content** — No database, all content in `src/config/content/*.json`
+2. **Local JSON content** — No database; content lives in per-language folders `src/config/content/{lang}/`
 3. **CSS variables** — Single stylesheet, theme vars change everywhere
 4. **Context over Redux** — Simple enough app for React Context
 5. **FontAwesome icons** — Consistent rendering across all devices

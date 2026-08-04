@@ -6,8 +6,26 @@ How content flows from source files to the user's screen, with examples for each
 
 ## Content JSON Structure
 
-Every content file in `src/config/content/` follows this structure:
+Content is split **per language into its own folder**: `src/config/content/{lang}/{page}.json`
+(`en/`, `hinglish/` today; `urdu/` planned). Each file holds the page's shared
+top-level metadata (`quickJump`, `schemaVersion`) plus **only that language's**
+content. The loader (`src/config/content/index.js`) globs `./*/*.json` and falls
+back to `en/` when a language lacks a page, so a missing translation never 404s.
 
+File layout:
+```
+src/config/content/
+├── index.js            # usePageContent(lang, file) — dynamic, code-split per language
+├── locale.js           # pure resolveLocale (requested → en → first), unit-testable
+├── en/
+│   ├── dua.json        # { quickJump, en: {...} }
+│   └── ...             # 11 pages total
+└── hinglish/
+    ├── dua.json        # { quickJump, hinglish: {...} }
+    └── ...
+```
+
+Per-file structure (`src/config/content/en/dua.json`):
 ```json
 {
   "quickJump": [0, 3, 7],
@@ -20,14 +38,16 @@ Every content file in `src/config/content/` follows this structure:
         "text": "Card text content with\nline breaks supported here"
       }
     ]
-  },
-  "hinglish": {
-    "title": "Page Title in Hinglish",
-    "sections": [ ... ]
   }
-  // "urdu": { "title": "اردو میں صفحہ کا عنوان", "sections": [...] }  ← planned (add when translating)
 }
 ```
+
+Each language's file mirrors the old multi-language shape but keeps only that
+language's key, so `data[lang] || data.en` still works at render time. The
+`usePageContent(lang, contentFile)` hook (in `src/config/content/index.js`) returns
+the **language-specific** file — pages call it and render a `Loading...` state until
+the chunk arrives. Vite code-splits each language, so clients only download the
+active language's data for the current page.
 
 ### Common Field Types
 
@@ -44,13 +64,21 @@ Every content file in `src/config/content/` follows this structure:
 
 ### Calendar page (schema v1) — special case
 
-`calendar.json` is **not** a normal per-language content file. It uses `schemaVersion: 1` and is admin-managed through the dedicated 📅 Calendar editor, not the generic Pages editor:
+The calendar is **split per language** like every page, but its two files are the
+**only** ones with a special shape, and they are admin-managed through the dedicated
+📅 Calendar editor, not the generic Pages editor.
 
-- `monthStarts` (top-level, shared): a **free-form** list of `{ hijriYear, hijriMonth, gregorianStart }` entries — admins add/remove any months they need (not a fixed window). `gregorianStart` is `null` until the admin confirms the moon sighting.
-- `events` (top-level, shared): language-independent rules with stable IDs.
-- `monthNames` (top-level): localized full Hijri month names per language.
-- `monthNamesShort` (top-level): 3-letter Hijri month abbreviations per language, used in compact grid sub-dates and event date badges.
-- `en` / `hinglish`: only the localized page `title`.
+- **`src/config/content/en/calendar.json`** is the **source of truth** for shared data:
+  - `monthStarts` (top-level): a **free-form** list of `{ hijriYear, hijriMonth, gregorianStart }` entries — admins add/remove any months they need (not a fixed window). `gregorianStart` is `null` until the admin confirms the moon sighting.
+  - `monthNames` / `monthNamesShort` (top-level): **this file's own** localized month names (English).
+  - `events` (top-level): the full event list, **each event carrying a `translations` map** `{ lang: { label, description } }` for the other languages.
+  - `en`: the localized page `title`.
+- **`src/config/content/hinglish/calendar.json`**: same `schemaVersion`/`monthStarts`, its own `monthNames`/`monthNamesShort`, and `events` **without** the translations map — each event's `label`/`description` are the Hinglish values inline.
+
+On save, the Calendar editor flattens/rebuilds both files via `mergeCalendarData` /
+`writeCalendarSplit` in `scripts/content-editor.mjs`: it merges each language's events
+into the `translations` map on the `en` master, then rewrites both files. `monthStarts`
+is kept in sync everywhere — edit it once, it lands in both files.
 
 Event rules:
 ```json
@@ -133,26 +161,29 @@ Quick Jump sheet is derived at render time from the source item's own `title`
 ## Custom Pages (created in the Admin Panel)
 
 Pages created/duplicated via the Admin **Pages** tab are **custom pages**: they get a
-content JSON file in `src/config/content/` **and** a registry entry in
-`src/config/pageRoutes.json` with `{ custom: true, renderer: 'generic' }` and a stable
-`custom-…` id (never derived from the slug, so a rename keeps identity). They render
-publicly at `/slug` through the **generic renderer** — see the collection shapes,
-Quick Jump rules, and **plain-text safety rules** in [`components.md`](components.md)
-(`GenericContentPage` / `GenericContentRenderer`).
+content JSON file in **each active language folder** (`src/config/content/{lang}/`)
+**and** a registry entry in `src/config/pageRoutes.json` with
+`{ custom: true, renderer: 'generic' }` and a stable `custom-…` id (never derived from
+the slug, so a rename keeps identity). They render publicly at `/slug` through the
+**generic renderer** — see the collection shapes, Quick Jump rules, and **plain-text
+safety rules** in [`components.md`](components.md) (`GenericContentPage` /
+`GenericContentRenderer`).
 
 Key rules:
 - **Active languages only.** New-page templates generate locales for the languages in
   `LanguageContext.jsx` only — currently `en`, `hinglish`. If a language is added there,
   every new/duplicated page automatically gets a locale (data-driven, no hardcoded codes;
   see `generateTemplate` + `activeLanguages` in `scripts/content-editor.mjs`).
-- **Create/duplicate/delete/rename are transactional** on the content file + registry
-  (+ navigation for delete/rename by stable `pageId`). Collisions, reserved routes
-  (`/`, `/settings`, `/admin`, `/api`), and non-renamable pages (Home, Calendar) are
-  rejected server-side with no partial writes.
-- **Deleting** a custom page removes its content file, registry entry, and any nav
-  references by `pageId`.
+- **Create/duplicate/delete/rename are transactional** across **every** active language
+  folder + the registry (+ navigation for delete/rename by stable `pageId`). Collisions,
+  reserved routes (`/`, `/settings`, `/admin`, `/api`), and non-renamable pages (Home,
+  Calendar) are rejected server-side with no partial writes.
+- **Deleting** a custom page removes its content files (all languages), registry entry,
+  and any nav references by `pageId`.
+- **Rename** moves the file in every language folder and keeps the old route as a
+  redirect alias (`scripts/page-rename.mjs` walks `getActiveLanguageDirs()`).
 - **Build-time content.** A new/renamed/deleted custom page reaches the public site
-  after `npm run build` + deploy (content is included via Vite's eager glob).
+  after `npm run build` + deploy (content is included via the Vite glob).
 
 ---
 
@@ -286,17 +317,17 @@ npm run edit
 - Language tabs switch between en/hinglish (urdu appears once it ships)
 - Auto-resizing text areas with real Enter for line breaks
 - Add/delete/reorder array items with buttons
-- Save button writes back to `src/config/content/*.json`
+- Save button writes back to `src/config/content/{lang}/pagename.json`
 
 ### Direct JSON Editing
-Edit `src/config/content/*.json` files directly:
+Edit `src/config/content/{lang}/pagename.json` files directly:
 - Use `\n` for line breaks inside strings
-- Keep both language sections (en/hinglish) in sync — and urdu when added
+- Edit each language folder separately (en/, hinglish/) — and urdu/ when added
 - Run `npm run build` to verify
 
 ### Content Checklist for New Pages
-1. Create `src/config/content/pagename.json` with en/hinglish (urdu: planned)
-2. Each language has `title` + `sections` (or appropriate field names)
+1. Create `src/config/content/en/pagename.json` AND `src/config/content/hinglish/pagename.json` (urdu: planned)
+2. Each language file has `title` + `sections` (or appropriate field names)
 3. Add keys to `src/config/strings/*.json` for nav labels
 4. Keep section structure identical across all languages
 

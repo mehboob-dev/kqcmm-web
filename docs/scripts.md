@@ -18,8 +18,8 @@ A full React-based admin SPA built in `scripts/admin/`. Built automatically befo
 - **Content Manager** — type-aware fields (titles, textareas, numbers), add/delete/reorder items in arrays, live card preview while you type
 - **Quick Jump Editor** — shared, language-independent editor for a page's `quickJump` list: add/remove/reorder entries, pick each target from a dropdown of the source items (sections/duas), no per-language labels to maintain
 - **Page CRUD** — create new pages from templates (plain, duas layout, fateha layout), delete, duplicate, **rename** (slug + route)
-- **Page Rename** — rename a fixed or custom page's slug: renames the content JSON file, updates the public route in the page-route registry, and keeps the old route as a redirect alias. Home, the dedicated Calendar page, and protected fixed pages cannot be renamed.
-- **Custom pages** — created/duplicated pages get a stable `custom-…` registry id and are rendered publicly at `/slug` via the generic renderer. Deleting a custom page also removes its registry entry and navigation references.
+- **Page Rename** — rename a fixed or custom page's slug: renames the content JSON file **in every active language folder** (`src/config/content/{lang}/`), updates the public route in the page-route registry, and keeps the old route as a redirect alias. Home, the dedicated Calendar page, and protected fixed pages cannot be renamed. Rename is transactional with rollback (see `page-rename.mjs`).
+- **Custom pages** — created/duplicated pages get a stable `custom-…` registry id and are rendered publicly at `/slug` via the generic renderer. Deleting a custom page also removes its content files (all languages), registry entry, and navigation references.
 - **Navigation Editor** — reorder bottom nav and side drawer, pick icons from a visual selector, edit paths and keys inline
 - **Strings Editor** — edit all UI labels (nav text, settings labels) for each language
 - **Language Manager** — translation status overview (what % filled per page per language), clickable percentages to jump to a page in a specific language, side-by-side comparison view, add/remove language across all content pages and strings. **How the % works:** `% = non-empty translatable fields ÷ total translatable fields`, per language, computed by `countFields` in `LanguageEditor.jsx`. Only these keys count as translatable content: `title`, `heading`, `text`, `body`, `intro`, `label`, `subtitle`. It measures **raw fill, not translation parity** — a field empty in both languages (or a language with a different field count) shows `< 100%`. The language list comes from `/api/strings` (real codes), not hardcoded keys.
@@ -152,8 +152,8 @@ Uses regex to extract Materialize collapsible sections and `<p>` tags from the o
 
 Deterministic, idempotent generator that imports the recovered Blessed Days dataset into the Islamic calendar.
 
-- **Reads** `scripts/data/events_merged.json` (2,350 records) + the current `src/config/content/calendar.json`.
-- **Preserves** all existing events; **appends** one `hijri-fixed` event per record with id `thesunniway-<source id>`, `hijriMonth`/`hijriDays` from source `month`/`day`.
+- **Reads** `scripts/data/events_merged.json` (2,350 records) + the current **language-split** calendar files `src/config/content/en/calendar.json` and `src/config/content/hinglish/calendar.json`.
+- **Preserves** all existing events in both files; **appends** one `hijri-fixed` event per record with id `thesunniway-<source id>`, `hijriMonth`/`hijriDays` from source `month`/`day`.
 - **Label** = `englishName` + `(englishSuffix)`; **description** = event type + `Wisal: N AH` when a meaningful wisal year exists (skips `-`/`NULL`/empty). No `translations` — source Urdu stays in `scripts/data/` only.
 - **Sorts** generated events by month, day, numeric source id; rewrites only prior `thesunniway-*` entries (reruns replace, never duplicate).
 - The raw JSON lives under `scripts/`, so it is **never Vite-bundled** into the browser output.
@@ -175,7 +175,7 @@ Template for importing local JSON content into Firestore. Requires Firebase Admi
 **File:** `scripts/json-to-js.mjs`  
 **Usage:** `node scripts/json-to-js.mjs`
 
-Converts all `src/config/content/*.json` files to `.js` modules. Useful if you need template literals for multiline editing (deprecated — use the content editor instead).
+Converts all `src/config/content/{lang}/*.json` files to `.js` modules. Useful if you need template literals for multiline editing (deprecated — use the content editor instead).
 
 ---
 

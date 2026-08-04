@@ -118,8 +118,9 @@ Routes are **registry-driven** from `src/config/pageRoutes.json` (canonical rout
 stable `id`, content-file basename, localized `titleKey`, `renamable`, and legacy
 `aliases`). `src/App.jsx` renders a component per registered page and adds a
 `<Navigate>` redirect for each alias. Page components load content through the
-eager glob loader in `src/config/content/index.js`, so renaming a page means
-editing the registry + moving the JSON file (no source import rewrites).
+dynamic `usePageContent(lang, file)` loader in `src/config/content/index.js`, so
+renaming a page means editing the registry + moving the JSON file (in every language
+folder) — no source import rewrites.
 
 ```
 /               → Home page (logo, tagline, 10 quick-link cards)
@@ -180,9 +181,11 @@ rebuild/deploy is required for the public bundle (Vite eager glob).
                   │     Page Component            │
                   │  (Dua.jsx, Khatm.jsx, ...)    │
                   │                               │
-                  │  import data from             │
-                  │  src/config/content/dua.json  │
-                  │  data[lang] || data.en        │
+                  │  usePageContent(lang, file)   │
+                  │  → async loads                 │
+                  │  src/config/content/{lang}/   │
+                  │    dua.json (en/ or hinglish/) │
+                  │  data[lang] || data.en         │
                   └──────────┬──────────────────┘  │
                              │
                              ▼

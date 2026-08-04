@@ -301,8 +301,8 @@ those entries to `GenericContentPage` (never a dynamic import from user JSON).
 
 **Files:**
 - `src/pages/GenericContentPage.jsx` — route component: resolves the registry
-  entry for the current path, loads the `contentFile` via `getContent`, picks the
-  locale via `resolveLocale`, and renders `GenericContentRenderer`.
+  entry for the current path, loads the `contentFile` via `usePageContent(lang, file)`,
+  picks the locale via `resolveLocale`, and renders `GenericContentRenderer`.
 - `src/components/GenericContentRenderer.jsx` — renders the localized payload.
 - `src/components/genericContent.js` — **pure, testable** helpers:
   `parseBlock`, `parseMasterChild`, `pickField`, `normalizeGenericContent`,
@@ -487,24 +487,28 @@ Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 123 cases).
 
 ## Page Components
 
-All fixed pages follow the same pattern. Content is loaded via the eager glob
-loader (`src/config/content/index.js`) rather than a direct JSON import, so the
-page keeps working if its content file is renamed. The route comes from the
-page-route registry. **Custom admin-created pages** have no fixed component —
-they render through `GenericContentPage.jsx` (see the section above).
+All fixed pages follow the same pattern. Content is loaded via the **dynamic**
+`usePageContent(lang, file)` hook (`src/config/content/index.js`) rather than a
+direct JSON import, so the page keeps working if its content file is renamed and
+each language's data is code-split. The route comes from the page-route registry.
+**Custom admin-created pages** have no fixed component — they render through
+`GenericContentPage.jsx` (see the section above).
 
 ```jsx
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
 import SeoHead from '../components/SeoHead'
-import { getContent } from '../config/content'
+import { usePageContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
-
-const data = getContent('myPage')
 
 export default function MyPage() {
   const { lang } = useLanguage()
-  const content = data[lang] || data.en
+  const { data, loading } = usePageContent(lang, 'myPage')
+
+  if (loading || !data) {
+    return <div className="content-page"><p style={{ textAlign: 'center', padding: 40 }}>Loading...</p></div>
+  }
+  const content = data[lang] || data.en || {}
 
   return (
     <div className="content-page">
