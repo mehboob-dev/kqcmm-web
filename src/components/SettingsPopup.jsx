@@ -87,6 +87,19 @@ export default function SettingsPopup({ strings, onClose, onReplayTour }) {
         {/* scrollable body */}
         <div style={{ padding: '12px 24px 24px', overflowY: 'auto' }}>
 
+        {/* Replay walkthrough */}
+        {onReplayTour && (
+          <button
+            onClick={onReplayTour}
+            style={{
+              width: '100%', marginBottom: 12, padding: '10px 14px', borderRadius: 8,
+              cursor: 'pointer', fontSize: '0.9em', fontFamily: 'inherit',
+              background: 'transparent', color: 'var(--text)',
+              border: '1px solid var(--border)',
+            }}
+          >{strings.onboarding?.replay || 'Replay walkthrough'}</button>
+        )}
+
         {/* Language */}
         <div className="card" style={{ padding: 14, marginBottom: 12 }}>
           <div className="card-title" style={{ marginBottom: 8, color: 'var(--accent)', fontSize: 13 }}>{strings.settings.language}</div>
@@ -135,19 +148,6 @@ export default function SettingsPopup({ strings, onClose, onReplayTour }) {
             >📖 Slide</button>
           </div>
         </div>
-
-        {/* Replay walkthrough */}
-        {onReplayTour && (
-          <button
-            onClick={onReplayTour}
-            style={{
-              width: '100%', marginTop: 12, padding: '10px 14px', borderRadius: 8,
-              cursor: 'pointer', fontSize: '0.9em', fontFamily: 'inherit',
-              background: 'transparent', color: 'var(--text)',
-              border: '1px solid var(--border)',
-            }}
-          >{strings.onboarding?.replay || 'Replay walkthrough'}</button>
-        )}
         </div>
       </div>
     </>

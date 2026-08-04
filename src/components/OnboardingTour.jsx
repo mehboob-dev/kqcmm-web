@@ -108,7 +108,10 @@ export default function OnboardingTour({ strings, pathname, replayToken, navigat
     setNavPending(false)
     restoreViewMode()
     restoreFocus()
-  }, [restoreFocus, restoreViewMode])
+    // The tour can end away from Home — the home flow's final route-choice step
+    // (choose-dua) leaves the user on /dua. Land them back on the home page.
+    if (navigate && pathname !== '/') navigate('/')
+  }, [navigate, pathname, restoreFocus, restoreViewMode])
 
   const skip = useCallback((reason = 'button') => {
     markOnboardingSkipped()

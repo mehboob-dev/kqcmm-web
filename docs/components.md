@@ -141,11 +141,17 @@ Modal popup for user preferences.
 ### Controls
 | Section | Options | Persistence |
 |---|---|---|
+| Replay walkthrough (top, when `onReplayTour` provided) | — | — |
 | Language | English, Hinglish (Urdu: planned) | localStorage |
 | Theme | Light, Dark, Sepia, Green, Rose | localStorage |
 | Font Family | 17 options | localStorage |
 | Font Size | X-Small → XX-Large (6 sizes, 12–24px) | localStorage |
 | View Mode | List / Slide | localStorage |
+
+The **Replay walkthrough** button sits at the **top** of the popup body, above the
+Language section. It calls `onReplayTour` (rendered only when that prop is
+provided, i.e. from Layout), which closes the popup and bumps Layout's
+`replayToken` to start a fresh full tour run.
 
 ---
 
@@ -407,6 +413,9 @@ route-independent overlay that focuses the app shell, never a page in the router
   (guided-taps, forces slide mode via `setViewMode('slide')`) → return-home-sijrah
   (guided bottom-home) → choose-sijrah / choose-roshni / choose-dua (route-choice) →
   header-menu / header-settings / hijri-strip (guided-taps) → finish.
+  **On finish (Finish/Done):** the tour marks itself completed and, because the
+  final route-choice step leaves the user off Home (on `/dua`/`/roshni` etc.),
+  navigates back to `/` so the user lands on the home page.
 - **Deep link (any other path)** → 5 shell steps only: welcome, header-menu,
   header-settings, hijri-strip, finish. Never navigates and never auto-runs (auto
   start is still gated to `/`).
