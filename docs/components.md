@@ -338,7 +338,7 @@ Hijri Islamic calendar page — a full navigable calendar, not a static list.
 - **Month grid card:** a weekday-aligned grid of the current month with event dots on event days and today's cell highlighted. Each cell shows the primary day number plus a mapped sub-date (Hijri day + Gregorian date in Hijri view; Gregorian day + short Hijri month/day in Gregorian view). Event dots are capped at `GRID_MAX_DOTS = 3` per cell with a `+N` marker (busy days can hold ~27 events); the cell tooltip shows "N events".
 - **View toggle:** switch between **Hijri** and **Gregorian** month views. The choice is persisted to `localStorage['kqcmm_calendar_view']`.
 - **Month navigation:** prev/next arrows. In Hijri mode the range is bounded to the configured min/max months (buttons disabled at the limits); Gregorian mode is unbounded. A "Today" button returns to the current month.
-- **Next-event strip:** the earliest upcoming event with its Hijri + Gregorian date and a countdown pill (0 = today).
+- **Today's Events section:** when events are mapped to today, lists **all** of them split into **Monthly | Other** columns (same layout as Upcoming/Past). When no events fall on today, shows the **next-event countdown strip** instead (earliest upcoming event with Hijri + Gregorian date and a countdown pill, 0 = today); if nothing is scheduled at all, shows the empty state.
 - **Event lists:** both **Upcoming** (earliest future occurrence per event, ascending) and **Past** (latest past occurrence per event, **descending — newest first**, dimmed) are always visible, stacked. Each is laid out as **two side-by-side columns — Monthly (recurring every month) and Other (one-off)** — and each column **scrolls internally** within a fixed height so the page never grows endlessly. On narrow/mobile screens (<640px) the two columns stack to one. An event only appears when its **own** Hijri month's start is set.
 - **No "Not yet configured" section** — the chips list of unplaceable events was removed; unplaceable events are simply not shown.
 
@@ -347,6 +347,7 @@ Hijri Islamic calendar page — a full navigable calendar, not a static list.
 - Uses `src/utils/hijriCalendar.js` for all conversion/mapping.
 - 3-letter Hijri month abbreviations come from `monthNamesShort` in `calendar.json`.
 - UI labels from `strings.calendar` in `src/config/strings/*.json`.
+- **Derived data is memoized** (`occurrences`, `todayEvents`, sorted `available`) with `useMemo`, and the sort comparator returns `0` for equal dates (tie-breaking by `id`). This keeps list identities/order stable across the 60s today-tick re-render — an unstable comparator reordered same-day events and snapped the scroll containers back to top mid-scroll.
 
 ---
 

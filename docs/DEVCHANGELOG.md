@@ -6,6 +6,22 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## 5.10.1 — 2026-08-04
+
+### User-facing
+- **Today's Events section on the calendar** — when events fall on today, all of them are listed (split into Monthly | Other columns, same as Upcoming/Past); otherwise the previous next-event countdown strip shows.
+- **Fixed: bottom nav / counter bar gap** — the fixed counter and slide bars sat ~8px above the nav on devices with an 8px safe-area inset, and the nav itself was shifted 8px past the viewport bottom (UA body margin).
+- **Fixed: Hijri grid month navigation** — the min/max nav bounds compared month keys as strings ("1447-11" < "1447-3"), disabling the prev arrow at 1447-12 so the first configured month was unreachable. Now a numeric key (year×100 + month).
+- **Fixed: event list scroll jump** — the calendar's event list columns snapped to top mid-scroll because the sort comparator never returned 0 for equal dates and the occurrence lists were recomputed each render (60s today tick). Memoized + stable comparator.
+
+### Internal / docs
+- **Calendar.jsx**: `useMemo` on `occurrences`/`todayEvents`/`available`; stable sort (0 for equal, tie-break by `id`); consolidated duplicate `isMonthly`.
+- **Layout geometry fixes** (`BottomNav.jsx`, `styles.css`): `--bottom-nav-height` now published as `window.innerHeight − nav.getBoundingClientRect().top` via a ResizeObserver (absorbs safe-area automatically); explicit `body { margin: 0 }`; `min-height: 0` on `.main-content`; `.bottom-nav { height: auto }` (the var must not drive the nav's own height — feedback loop).
+- **Strings**: `calendar.todayEvents` added to en/hinglish.
+- Docs updated (`docs/components.md`): Today's Events section, memoization/scroll-stability note.
+
+---
+
 ## 5.10.0 — 2026-08-03
 
 ### User-facing

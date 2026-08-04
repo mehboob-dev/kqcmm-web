@@ -3,6 +3,16 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.10.1",
+        "date": "2026-08-04",
+        "changes": [
+          "Calendar now shows ALL of today's events (split into Monthly and Other) instead of just the next event",
+          "Fixed the gap between the counter bar and the bottom navigation bar",
+          "Fixed the Hijri calendar grid navigation so all months are reachable",
+          "Fixed the event list jumping back to the top while scrolling"
+        ]
+      },
+      {
         "version": "5.10.0",
         "date": "2026-08-03",
         "changes": [
@@ -137,6 +147,16 @@
   "hinglish": {
     "title": "Changelog",
     "versions": [
+      {
+        "version": "5.10.1",
+        "date": "2026-08-04",
+        "changes": [
+          "Calendar ab aaj ke saare events dikhata hai (Monthly aur Other mein) — sirf agla event nahi",
+          "Counter bar aur bottom navigation ke beech ka gap theek kiya gaya",
+          "Hijri calendar grid navigation theek ki gayi — saare mahine reachable hain",
+          "Event list scroll karte waqt upar jump hone wali problem theek hui"
+        ]
+      },
       {
         "version": "5.10.0",
         "date": "2026-08-03",
