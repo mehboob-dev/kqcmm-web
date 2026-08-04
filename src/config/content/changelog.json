@@ -3,6 +3,13 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.12.1",
+        "date": "2026-08-05",
+        "changes": [
+          "Fixed: events happening today no longer appear twice — once in Today's Events and again in Upcoming Events."
+        ]
+      },
+      {
         "version": "5.12.0",
         "date": "2026-08-05",
         "changes": [
@@ -162,6 +169,13 @@
   "hinglish": {
     "title": "Changelog",
     "versions": [
+      {
+        "version": "5.12.1",
+        "date": "2026-08-05",
+        "changes": [
+          "Fix: aaj hone wale events ab do baar nahi dikhte — ek baar Today's Events mein aur phir Upcoming Events mein."
+        ]
+      },
       {
         "version": "5.12.0",
         "date": "2026-08-05",

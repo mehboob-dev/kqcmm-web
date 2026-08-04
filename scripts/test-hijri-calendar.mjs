@@ -401,6 +401,27 @@ eq(pastEvents.filter(o => o.id === 'ashura').length, 1, 'fixed event still dedup
 // No upcoming (all past) with today = 2026-08-01
 eq(eventList.length, 0, 'no upcoming events when all are past')
 
+// Today's events are NOT listed as upcoming — the calendar shows them in its
+// own "Today's Events" section. We add a TODAY-dated fixed event (Safar 17,
+// which is 2026-08-01) and assert it appears in neither the upcoming nor the
+// past list (already covered above for past; here we confirm the upcoming side).
+const todayEventCfg = {
+  monthStarts: [
+    { hijriYear: 1448, hijriMonth: 2, gregorianStart: '2026-07-16' },
+  ],
+  events: [
+    { id: 'today-event', rule: 'hijri-fixed', hijriMonth: 2, hijriDays: [17], label: 'Today Event' },
+    { id: 'future-event', rule: 'hijri-fixed', hijriMonth: 2, hijriDays: [20], label: 'Future Event' },
+  ],
+}
+const todayEventOccs = enumerateOccurrences(todayEventCfg)
+  .filter(o => o.available && o.gregorianStart)
+  .sort((a, b) => formatISODate(a.gregorianStart) < formatISODate(b.gregorianStart) ? -1 : 1)
+const { eventList: todayUpList, pastEvents: todayPastList } = splitUpcomingPast(todayEventOccs, parseISODate('2026-08-01'))
+assert(!todayUpList.some(o => o.id === 'today-event'), 'today-dated event is excluded from upcoming')
+assert(todayUpList.some(o => o.id === 'future-event'), 'future event still listed as upcoming')
+assert(!todayPastList.some(o => o.id === 'today-event'), 'today-dated event is excluded from past')
+
 // Upcoming dedup: pick an earlier "today" so Chhatti's NEXT occurrence (Safar 6,
 // 2026-07-21) is upcoming, and there is exactly ONE of them in the list.
 const { eventList: upList } = splitUpcomingPast(splitOccs, parseISODate('2026-07-01'))

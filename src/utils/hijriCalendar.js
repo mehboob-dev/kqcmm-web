@@ -527,13 +527,17 @@ export function gregorianMonthOf(date) {
 }
 
 /**
- * Split available occurrences into upcoming (>= today) and past (< today)
+ * Split available occurrences into upcoming (> today) and past (< today)
  * lists for display, applying the right dedup:
  *  - Fixed events produce one occurrence per Hijri year, so only a single
  *    representative should be listed (dedup by id).
  *  - Monthly events produce a distinct occurrence per Hijri month. The UPCOMING
  *    list shows only the next one (dedup by id, to avoid flooding), but the
  *    PAST list shows EVERY past occurrence (each is a real past date).
+ *
+ * Occurrences mapped to TODAY are excluded from both lists — the calendar page
+ * shows them in its dedicated "Today's Events" section, so they must not also
+ * appear under "Upcoming Events".
  *
  * Input `available` should already be sorted ascending by gregorianStart.
  * Returns { eventList, pastEvents }. `eventList` is ascending (earliest future
@@ -543,7 +547,8 @@ export function splitUpcomingPast(available, today) {
   const todayStr = formatISODate(today)
   const seenUp = new Set(), seenPast = new Set()
   const eventList = available.filter(o => {
-    if (o.gregorianStart && formatISODate(o.gregorianStart) < todayStr) return false
+    // Strictly after today — today's events live in their own section.
+    if (o.gregorianStart && formatISODate(o.gregorianStart) <= todayStr) return false
     if (seenUp.has(o.id)) return false
     seenUp.add(o.id)
     return true

@@ -6,6 +6,18 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## 5.12.1 — 2026-08-05
+
+### User-facing
+- **Fixed: today's events no longer appear twice** — an event happening today was shown both in the new "Today's Events" section *and* again at the top of "Upcoming Events". Today's events now appear only in the Today's Events section.
+
+### Internal / docs
+- **`src/utils/hijriCalendar.js` `splitUpcomingPast`**: the upcoming boundary changed from `>= today` to `> today` (and the docstring updated), so events mapped to today are excluded from the upcoming list. Today's events already live in their own section on the Calendar page (`todayEvents` in `src/pages/Calendar.jsx`).
+- **New tests** in `scripts/test-hijri-calendar.mjs` — a today-dated fixed event must be excluded from *both* the upcoming and past lists, while a strictly-future event stays in upcoming. Test count 123 → 126.
+- Public changelog (en + hinglish) 5.12.1 entry; version 5.12.0 → 5.12.1 (bug-fix patch).
+
+---
+
 ## 5.12.0 — 2026-08-05
 
 ### User-facing
