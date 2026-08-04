@@ -97,9 +97,12 @@ async function prerender() {
         console.log(`    [pageerror] ${err.message}`)
       })
 
-      // Skip splash screen during prerender
+      // Skip splash screen + first-run onboarding during prerender so the
+      // static HTML never captures the overlay (both would be persisted in SEO
+      // output and pollute the page).
       await page.evaluateOnNewDocument(() => {
         sessionStorage.setItem('kqcmm_splash', '1')
+        localStorage.setItem('kqcmm_onboarding_v1', JSON.stringify({ version: 1, status: 'completed', completedAt: 'prerender' }))
       })
 
       await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 })
@@ -117,6 +120,11 @@ async function prerender() {
       if (rootContent === '' || rootContent === 'empty') {
         console.log(`    ⚠ Root empty — React may not have rendered`)
       }
+
+      // Smoke check: the first-run tour must not appear in prerendered output
+      const tourVisible = await page.evaluate(() =>
+        !!document.querySelector('[data-tour-role="tour"], [data-tour-role="language"]'))
+      if (tourVisible) console.log(`    ⚠ Onboarding overlay captured in prerender — check kqcmm_onboarding_v1 seeding`)
 
       const html = await page.content()
       await page.close()

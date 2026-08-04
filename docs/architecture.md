@@ -167,6 +167,13 @@ rebuild/deploy is required for the public bundle (Vite eager glob).
                   │     LanguageContext.jsx       │
                   │  loadStrings(lang) → strings  │
                   └──────────┬──────────────────┘  │
+                             │ strings ready        ▼ OnboardingTour
+                             │          ┌────────────────────────────┐
+                             │          │  Layout mounts the first-run│
+                             │          │  walkthrough after strings  │
+                             │          │  load (auto-starts on '/';  │
+                             │          │  Replay from Settings)      │
+                             │          └────────────────────────────┘
                              │ props via Outlet
                              ▼
                   ┌─────────────────────────────┐

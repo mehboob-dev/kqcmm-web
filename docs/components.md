@@ -17,6 +17,8 @@ The root layout component that wraps all pages.
 - Loads language strings on language change
 - Scrolls to top on page navigation
 - Applies font family and font size via inline styles
+- Mounts the **OnboardingTour** walkthrough (see [OnboardingTour.jsx](#onboardingtourjsx-first-run-walkthrough)) after strings load; auto-starts only on `/`, and exposes a `Replay walkthrough` action through SettingsPopup (`onReplayTour` → bump `replayToken`)
+- Auto-closes the side drawer / settings popup when a tour step moves off their controls (MutationObserver on `data-tour-step` on `<body>`)
 
 ### State
 | Variable | Type | Purpose |
@@ -24,6 +26,7 @@ The root layout component that wraps all pages.
 | `drawerOpen` | boolean | Controls side drawer visibility |
 | `settingsOpen` | boolean | Controls settings modal visibility |
 | `strings` | object/null | Loaded language strings |
+| `replayToken` | number | Incremented each time the walkthrough is replayed, forcing a fresh OnboardingTour run |
 
 ### Page Title Lookup
 Uses a `pageTitleMap` object to translate route paths to display titles from the current language's strings. Includes routes for all 12 pages plus settings.
@@ -367,6 +370,82 @@ Thin bar rendered below the app header on **every page**, showing today's Hijri 
 
 ---
 
+## OnboardingTour.jsx (first-run walkthrough)
+
+**File:** `src/components/OnboardingTour.jsx` — mounted from `Layout.jsx`. A guided,
+accessibility-aware walkthrough of the app. On first visit it opens on the home
+route (and an optional language chooser if no language is saved); it can be replayed
+from SettingsPopup ("Replay walkthrough"). This is a purely user-facing feature — a
+route-independent overlay that focuses the app shell, never a page in the router.
+
+### Run lifecycle & persistence
+- Persistence/step logic live in the pure helper `src/utils/onboarding.js`
+  (testable without a browser — see `scripts/test-onboarding.mjs`).
+- Storage record: localStorage key `kqcmm_onboarding_v1`,
+  `{ version: 1, status: 'completed'|'skipped', completedAt: ISO }`.
+  `readOnboardingState` returns `null` on any malformed/blocked storage, so a
+  broken localStorage never crashes or mis-triggers the tour.
+- `shouldStartOnboarding(state)` → auto-start only when **no** record exists
+  (so both `completed` and `skipped` suppress the automatic run).
+- `needsLanguageChoice()` shows the lang chooser only when `kqcmm_lang` is
+  unset. The chooser's English/Hinglish button calls `onFinish(lang)` →
+  `changeLang()` in Layout; Close/Skip dismisses without saving a language.
+- Replay is a distinct run: `replayToken > 0` always starts from `/` regardless
+  of the current route; a fresh token resets `startPathRef` synchronously.
+
+### Step types (`onboardingStepsForPath(pathname, ONBOARDING_TARGETS)`)
+| Type | Behaviour |
+|---|---|
+| `info` | Centered card (welcome, page-explainer, finish); no target |
+| `spotlight` | Highlight a persistent shell target without requiring a tap |
+| `nav` | **Legacy** programmatic route change — **not used by the home flow** |
+| `guided-tap` | Highlight a real control; advance **only** when the user taps it (real click handler still runs; `setTimeout(advance, 0)` lets its React state update first) |
+| `route-choice` | Highlight a real home link/bottom-nav button; the *user's* click navigates, and the tour advances once `pathname === step.to`. One guaranteed fallback: if the target is missing, the plain Next button becomes available so the user can't be trapped |
+
+- **Home route (`/`)** → 18 steps: welcome → home-links spotlight → choose-fateha
+  (route-choice) → content-reading → slide-next/prev/end, counter-inc/dec/reset
+  (guided-taps, forces slide mode via `setViewMode('slide')`) → return-home-sijrah
+  (guided bottom-home) → choose-sijrah / choose-roshni / choose-dua (route-choice) →
+  header-menu / header-settings / hijri-strip (guided-taps) → finish.
+- **Deep link (any other path)** → 5 shell steps only: welcome, header-menu,
+  header-settings, hijri-strip, finish. Never navigates and never auto-runs (auto
+  start is still gated to `/`).
+
+### Target hooks
+Steps locate real controls via `data-tour` attributes added in each component
+(the map is `ONBOARDING_TARGETS` in `onboarding.js`): `home-links` & `home-link-*`
+(Home quick links), `bottom-home` / `bottom-nav-*` (BottomNav), `header-menu` /
+`header-settings` (Layout header), `hijri-strip` (HijriStrip), `slide-*` and
+`counter-*` (ContentView). Targets must be present to show — MutationObserver /
+ResizeObserver track late-mounted and off-screen elements, and `scrollIntoView`
+brings off-screen targets into view.
+
+### Accessibility & modal behaviour
+- The shell becomes modal (`inert` attribute on `#root`) for `info`/`spotlight`/
+  `nav` steps; `guided-tap` steps are pointer-transparent (`tour-backdrop-live`)
+  so the real control stays reachable.
+- `Esc` dismisses with reason `escape`; Tab focus is trapped inside the panel;
+  the panel receives focus on step change and returns focus to the opener on
+  finish/skip.
+- Strings under `strings.onboarding` (en + hinglish) — titles/bodies per step id,
+  `progress` = `"Step {current} of {total}"`, and actions (Next/Back/Skip/Finish/
+  Replay).
+
+### CSS
+All `.tour-*` classes live in `src/styles.css` (backdrop, spotlight, panel,
+buttons, lang chooser). `z-index: 1000–1002` — above header(100)/drawer(201)/
+settings(301), below splash/PWA toasts(9999).
+
+### Analytics
+`src/utils/analytics.js` adds `onboarding_start{source: automatic|replay}`,
+`onboarding_step{step_id, step_index}`, `onboarding_complete`,
+`onboarding_skip{reason}`.
+
+### Pre-render integration
+`scripts/prerender.mjs` seeds `localStorage.setItem('kqcmm_onboarding_v1', …status: completed…)` so the static HTML never captures the tour overlay, and logs a warning if the tour still appears in prerendered output.
+
+---
+
 ## hijriCalendar.js (pure date/logic util)
 
 **File:** `src/utils/hijriCalendar.js` — dependency-free, timezone-safe.
@@ -458,7 +537,7 @@ Handles **master-child card sections** where content is split into sub-cards usi
 - Persistence: localStorage key `kqcmm_theme`
 - Default: `green`
 - Sets `data-theme` attribute on `<html>`
-- Themes: light, dark, sepia, green
+- Themes: light, dark, sepia, green, rose
 
 ### LanguageContext.jsx
 - State: `lang`, `changeLang`, `languages`, `current`
@@ -475,9 +554,12 @@ Handles **master-child card sections** where content is split into sub-cards usi
 - Font size applied as base on `<main>`, children use em
 
 ### ViewContext.jsx
-- State: `slideMode`, `toggleSlideMode`
+- State: `slideMode`, `setSlideMode`, `setViewMode`, `toggleSlideMode`, `getPageMode`
 - Persistence: localStorage key `kqcmm_view_mode`
 - Reads the global default from `src/config/view.json` (currently just
   `{"defaultMode": "slide"}`; a per-page `pages` map is supported by
   `getPageMode` but not currently populated)
+- `setViewMode(mode, { track })` persists the choice and optionally fires the
+  `select_view_mode` GA4 event — used by OnboardingTour to force slide mode
+  during the demonstration and restore the user's original value after
 - Global toggle / saved preference overrides the default

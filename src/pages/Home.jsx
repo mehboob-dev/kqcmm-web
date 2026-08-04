@@ -28,11 +28,16 @@ export default function Home() {
       <h1 className="home-title">KQCMM</h1>
       <p className="home-subtitle">{strings.tagline}</p>
       <p className="home-desc">{strings.home.welcome}</p>
-      <div className="home-quick-links">
+      <div className="home-quick-links" data-tour="home-links">
         {homePageRoutes.map((link) => {
           const label = strings.drawer[link.labelKey] || link.labelKey
           return (
-            <Link key={link.to} to={link.to} className="quick-link">
+            <Link
+              key={link.to}
+              to={link.to}
+              className="quick-link"
+              data-tour={`home-link-${link.labelKey}`}
+            >
               <span className="ql-icon">{link.icon}</span>
               <span className="ql-label">{label}</span>
             </Link>

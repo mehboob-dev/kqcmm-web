@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.10.1** — see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.11.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -87,7 +87,8 @@ kqcmm-web/
 │   │   ├── HijriStrip.jsx            # App-wide thin strip below header (today Hijri + Gregorian + event-today)
 │   │   ├── Calendar.jsx              # Hijri calendar (navigable month grid, Hijri/Gregorian toggle)
 │   │   ├── SplashScreen.jsx           # Splash with countdown
-│   │   ├── SettingsPopup.jsx          # Settings modal
+│   │   ├── SettingsPopup.jsx          # Settings modal (+ Replay walkthrough button)
+│   │   ├── OnboardingTour.jsx        # First-run walkthrough (guided-tap overlay, data-tour hooks)
 │   │   ├── FontAwesome.jsx           # Icon component (centralized)
 │   │   ├── PwaSupport.jsx            # Offline/update toasts
 │   │   └── SeoHead.jsx              # Per-page meta tags (Helmet)
@@ -109,12 +110,13 @@ kqcmm-web/
 │   │   └── NotFound.jsx              # 404 page
 │   │
 │   ├── utils/
-│   │   └── hijriCalendar.js         # Hijri date conversion + event mapping (pure, tested)
+│   │   ├── hijriCalendar.js         # Hijri date conversion + event mapping (pure, tested)
+│   │   └── onboarding.js            # Onboarding persistence + step-sequence helpers (pure, tested)
 │   ├── context/
-│   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green)
+│   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green/rose)
 │   │   ├── LanguageContext.jsx       # Language state (en/hinglish/urdu)
 │   │   ├── FontContext.jsx           # Font family + size state
-│   │   └── ViewContext.jsx           # View mode (list/slide) state
+│   │   └── ViewContext.jsx           # View mode (list/slide) state (+ setViewMode)
 │   │
 │   ├── config/
 │   │   ├── navigation.json           # Bottom nav + drawer order/icons (entries carry pageId)
@@ -156,6 +158,7 @@ kqcmm-web/
 │   ├── data/events_merged.json       # Recovered 2,350-record source (filesystem-only, never bundled)
 │   ├── test-hijri-calendar.mjs       # Hijri calendar unit tests
 │   ├── test-page-rename.mjs          # Page-rename unit tests
+│   ├── test-onboarding.mjs           # Onboarding walkthrough unit tests
 │   └── admin/                        # React-based admin panel (npm run edit)
 │       ├── package.json
 │       ├── vite.config.js

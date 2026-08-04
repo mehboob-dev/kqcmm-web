@@ -21,6 +21,9 @@ Welcome to the KQCMM web app documentation. Choose a topic below.
 - [Scripts Reference](scripts.md) — All CLI tools and utilities
 - [Hijri Calendar Plan](hijri-calendar-plan.md) — Islamic calendar (v1 implemented: admin-maintained month starts)
 
+## Onboarding
+- [OnboardingTour walkthrough](components.md#onboardingtourjsx-first-run-walkthrough) — the first-run guided tour (see also `docs/scripts.md` for its tests)
+
 ## Release Notes
 - [Public Changelog](content.md#changelog) — user-facing changes only (shown on `/changelog`)
 - [Developer Changelog](DEVCHANGELOG.md) — complete record, including internal/refactor/docs changes

@@ -3,6 +3,13 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.11.0",
+        "date": "2026-08-05",
+        "changes": [
+          "A friendly guided tour now welcomes first-time visitors — choose your language, then walk through the home cards, reading, counter and navigation. You can skip it, or replay it any time from Settings."
+        ]
+      },
+      {
         "version": "5.10.1",
         "date": "2026-08-04",
         "changes": [
@@ -147,6 +154,13 @@
   "hinglish": {
     "title": "Changelog",
     "versions": [
+      {
+        "version": "5.11.0",
+        "date": "2026-08-05",
+        "changes": [
+          "Pehli baar aane wale visitors ke liye ek aasaan guided tour — apni zaban chunein, phir home cards, reading, counter aur navigation say waqif hon. Skip kar sakte hain, ya Settings se kabhi bhi dobara chala sakte hain."
+        ]
+      },
       {
         "version": "5.10.1",
         "date": "2026-08-04",

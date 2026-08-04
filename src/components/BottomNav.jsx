@@ -50,6 +50,7 @@ export default function BottomNav({ strings }) {
     to: routeForNavItem(item),
     icon: item.icon,
     label: strings.nav?.[item.key] || item.key,
+    pageId: item.pageId,
   }))
 
   const handleInstall = async () => {
@@ -63,12 +64,13 @@ export default function BottomNav({ strings }) {
   }
 
   return (
-    <nav className="bottom-nav" ref={ref}>
+    <nav className="bottom-nav" data-tour="bottom-nav" ref={ref}>
       {items.map((item) => (
         <button
             key={item.to}
             onClick={() => navigate(item.to, { replace: true })}
             className={`nav-item${location.pathname === item.to ? ' active' : ''}`}
+            data-tour={item.pageId === 'home' ? 'bottom-home' : `bottom-nav-${item.pageId}`}
         >
           <Icon name={item.icon} className="nav-icon" />
           {item.label}

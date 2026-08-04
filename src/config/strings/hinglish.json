@@ -59,5 +59,113 @@
     "message": "KQCMM — English, Hinglish aur Urdu mein duas, khatm, fateha aur zyada",
     "copied": "Link copy ho gaya!",
     "unsupported": "Share karne ke liye link copy karein"
+  },
+  "onboarding": {
+    "langTitle": "Choose language",
+    "langSub": "Apni zaban chunein",
+    "langEnglish": "English",
+    "langHinglish": "Hinglish",
+    "langContinue": "Continue",
+    "langClose": "Close",
+    "title": "KQCMM mein khush aamdeed",
+    "welcomeTitle": "Assalamu Alaikum, khush aamdeed",
+    "welcomeBody": "Is app mein duas, khatm, fateha khwani, sijrah nama, biographies aur Islami calendar sab hain. Ek chhota sa tour le lein — asaan hai, aur aap kabhi bhi skip ya dobara dekh sakte hain.",
+    "next": "Agla",
+    "back": "Peeche",
+    "skip": "Tour chhodein",
+    "done": "Khatam karein",
+    "close": "Band karein",
+    "progress": "Qadam {current} az {total}",
+    "replay": "Walkthrough dobara chalein",
+    "readAloud": "Content ko khuli kitab ya e-book ki tarah padhein — ek card ke baad doosra, bade aur saaf harf mein.",
+    "steps": {
+      "home-links": {
+        "title": "Yahan se shuru karein — home cards",
+        "body": "Ye cards aapka main darwaza hain. Dua par tap karke duas padhein, Khatm-e-Khwajagan khatm ke liye, Sijrah Nama, Fateha Khwani, biographies aur mazeed. Har card ek section khulta hai. Bade aur asaan dabaane ke liye hain."
+      },
+      "content-reading": {
+        "title": "Ek page padhna",
+        "body": "Jab aap koi section kholeinge to content cards ki shakal mein bade saaf harf mein aayega — jaise ek khuli kitab. Neeche scroll karke har card padhein. Neeche ek counter (+, -) milega taake aap duaa ya zikr ko gin saken, aur aage peechhe jane ke buttons bhi. Ek chhota book icon (quick jump) bhi hai jisse aap seedha kisi bhi hisse tak ja sakte hain."
+      },
+      "header-menu": {
+        "title": "Menu button",
+        "body": "Is button ko dabayein — poori menu khul jaati hai. Isme har page hai — Home, biographies, Fateha Khwani, Khatm, Roshni, Duas, Calendar aur About. Kabhi bhi Home jane ke liye menu mein Home chunein ya neeche house icon dabayein."
+      },
+      "header-settings": {
+        "title": "Settings — apne hisaab se banayein",
+        "body": "Is gear ko dabayein to app ka layout badal sakte hain. Zaban chunein, theme (rang) aankhon ke liye asaan banayein, text ka size bada ya chhota karein, aur font badlein. Kuch bhi bigar nahi sakta — kabhi bhi wapas aakar theek kar sakte hain."
+      },
+      "hijri-strip": {
+        "title": "Islami tareekh ki patti",
+        "body": "Ye patti upar se thodi neeche aaj ki Hijri aur Gregorian tareekh dikhati hai, aur khaas events bhi mark karti hai. Is par tap karein to poora Islami Calendar khulta hai, jahan aap mahine dekh sakte hain aur ahem tareekhein milti hain."
+      },
+      "welcome": {
+        "title": "Assalamu Alaikum, khush aamdeed",
+        "body": "Is app mein duas, khatm, fateha khwani, sijrah nama, biographies aur Islami calendar sab hain. Ek chhota sa tour le lein — asaan hai, aur aap kabhi bhi skip ya dobara dekh sakte hain."
+      },
+      "choose-fateha": {
+        "title": "Fateha Khwani chunein",
+        "body": "Home page par Fateha Khwani card ko khud dabayein. Hum aapke intezar mein rahenge."
+      },
+      "slide-next": {
+        "title": "Agla button — ▶",
+        "body": "Neeche buttons dekhein? ▶ button dabayein to agla card khulta hai. Abhi ise dabakar dekhein."
+      },
+      "slide-prev": {
+        "title": "Peechla button — ◀",
+        "body": "Shabash! Ab ◀ button dabayein — ek card peeche. Jaise kitab ka waraq ulatna."
+      },
+      "slide-end": {
+        "title": "Shuru ya aakhir tak jump",
+        "body": "⏮ button pehle card par le jaata hai, aur ⏭ seedha aakhri card par. Ab ⏭ dabayein — ye woh hai jisme do arrow right ki taraf hain."
+      },
+      "counter-inc": {
+        "title": "Counter — ginne ke liye",
+        "body": "Plus (+) button aapke liye gin leta hai, ek dabane par ek. Jab aap koi dua ya zikr baar baar padhte hain to ye bahut kaam aata hai. Ab + button dabayein aur number badhta dekhein."
+      },
+      "counter-dec": {
+        "title": "Counter — neeche aana",
+        "body": "Agar galti se zyada daba diya to − (minus) button se neeche aa sakte hain. Ab − button dabakar dekhein."
+      },
+      "counter-reset": {
+        "title": "Counter — dobara shuru",
+        "body": "↺ button count ko wapas zero kar deta hai, taake aap nayi shuruaat kar saken. Ab ↺ button dabayein."
+      },
+      "choose-sijrah": {
+        "title": "Sijrah Nama chunein",
+        "body": "Home par wapas aakar Sijrah Nama card ko khud dabayein."
+      },
+      "return-home-sijrah": {
+        "title": "Home wapas jayein",
+        "body": "Ab Sijrah Nama chunnay ke liye neeche Home button dabayein."
+      },
+      "choose-roshni": {
+        "title": "Roshni chunein",
+        "body": "Neeche bottom navigation bar mein Roshni button ko dabayein."
+      },
+      "return-home-roshni": {
+        "title": "Home wapas jayein",
+        "body": "Ab Roshni chunnay ke liye neeche Home button dabayein."
+      },
+      "choose-dua": {
+        "title": "Duas chunein",
+        "body": "Neeche bottom navigation bar mein Dua button ko dabayein."
+      },
+      "return-home-dua": {
+        "title": "Home wapas jayein",
+        "body": "Ab Duas chunnay ke liye neeche Home button dabayein."
+      },
+      "finish": {
+        "title": "Aap tayyar hain",
+        "body": "Bas itna hi hai. Home se koi bhi card kholein, ya menu se explore karein. Agar chahein to Settings mein Replay walkthrough dabakar ye tour dobara dekh sakte hain."
+      }
+    },
+    "finishTitle": "Aap tayyar hain",
+    "finishBody": "Bas itna hi hai. Home se koi bhi card kholein, ya menu se explore karein. Agar chahein to Settings mein Replay walkthrough dabakar ye tour dobara dekh sakte hain.",
+    "finish": {
+      "title": "Aap tayyar hain",
+      "body": "Bas itna hi hai. Home se koi bhi card kholein, ya menu se explore karein. Agar chahein to Settings mein Replay walkthrough dabakar ye tour dobara dekh sakte hain."
+    },
+    "tapHint": "Highlight kiye gaye button ko dabayein"
   }
 }

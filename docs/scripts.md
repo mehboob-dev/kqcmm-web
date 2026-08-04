@@ -179,6 +179,35 @@ Converts all `src/config/content/*.json` files to `.js` modules. Useful if you n
 
 ---
 
+## Onboarding Walkthrough Tests (test-onboarding.mjs)
+
+**File:** `scripts/test-onboarding.mjs` — runs under `npm test`.
+
+Unit tests for the pure onboarding helpers in `src/utils/onboarding.js`, with no
+browser or framework. A fake `storage` (Map-backed) is injected to exercise:
+
+- **Record parse** — `readOnboardingState` returns `null` for no value, malformed
+  JSON, empty object, unknown `version`, unknown `status`, or blocked/failing
+  storage; parses valid `{version:1, status:'completed'|'skipped'}` records.
+- **Start/skip gate** — `shouldStartOnboarding` returns `true` only with **no**
+  record (both `completed` and `skipped` suppress the automatic run).
+- **Write/clear tolerance** — `markOnboardingCompleted` / `markOnboardingSkipped` /
+  `clearOnboardingState` never throw, even when storage throws.
+- **Language chooser gate** — `needsLanguageChoice` is `true` only when `kqcmm_lang`
+  is unset (storage failure safely returns `false`).
+- **Step sequences** — `onboardingStepsForPath('/')` yields **18 steps** with exactly
+  4 `route-choice` steps and one `return-home-*` guided step; each choice targets
+  the correct `data-tour` hook and destination route; the last step is `finish`.
+  Deep-link (`/khatm`) yields **5 shell steps** (`welcome,header-menu,
+  header-settings,hijri-strip,finish`), never navigates, and omits `home-links`.
+- **Constants** — `ONBOARDING_KEY = 'kqcmm_onboarding_v1'`, `ONBOARDING_VERSION = 1`.
+
+The `ONBOARDING_TARGETS` map (frozen `data-tour` query strings) is exported from
+`src/utils/onboarding.js` and shared by the generator, the tour component, and
+these tests, so step targets cannot drift between UI and test.
+
+---
+
 ## Troubleshooting Scripts
 
 | Symptom | Likely Cause | Fix |

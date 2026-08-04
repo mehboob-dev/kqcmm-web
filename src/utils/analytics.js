@@ -94,6 +94,17 @@ export const trackCalendarNav = (direction, year, month) =>
 /** User toggled the Hijri/Gregorian display in the calendar. */
 export const trackCalendarToggle = (view) => trackEvent('calendar_toggle', { calendar_view: view })
 
+// --- Onboarding (walkthrough) -------------------------------------------------
+
+/** The first-run walkthrough started (automatic or replay). */
+export const trackOnboardingStart = (source) => trackEvent('onboarding_start', { source })
+/** A walkthrough step became active. */
+export const trackOnboardingStep = (stepId, index) => trackEvent('onboarding_step', { step_id: stepId, step_index: index })
+/** The user finished the walkthrough. */
+export const trackOnboardingComplete = () => trackEvent('onboarding_complete')
+/** The user skipped/dismissed the walkthrough. */
+export const trackOnboardingSkip = (reason) => trackEvent('onboarding_skip', { reason })
+
 // --- Error tracking (C) ------------------------------------------------------
 
 /**

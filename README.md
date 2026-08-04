@@ -106,6 +106,7 @@ content renderer).
 | **Quick Jump** | Floating book FAB → bottom sheet to jump to key sections (labels auto-derived per language) |
 | **Hijri Calendar** | Admin-maintained month starts → navigable Hijri/Gregorian month grid, mapped events, countdown, app-wide today strip |
 | **Changelog** | Version history page |
+| **Onboarding Walkthrough** | First-run guided tour (choose language, spotlight key controls, guided taps on real buttons), replayable from Settings |
 
 ---
 
@@ -150,7 +151,7 @@ npx gh-pages -d dist
 Each route is pre-rendered into a static HTML file at build time (`dist/{route}/index.html`) via Puppeteer. This handles direct URL access and gives social media crawlers proper meta tags. The `404.html` fallback covers any unmapped routes.
 
 ### Pre-rendering
-The build script runs `node scripts/prerender.mjs` after `vite build`, which uses Puppeteer to render all 11 routes and save their HTML with full SEO tags baked in.
+The build script runs `node scripts/prerender.mjs` after `vite build`, which uses Puppeteer to render all 12 registered routes (canonical + alias, including custom admin pages) and save their HTML with full SEO tags baked in. It also seeds the onboarding-completed flag so the first-run tour never leaks into the prerendered HTML.
 
 ---
 

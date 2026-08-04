@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { useTheme } from '../context/ThemeContext'
 import { useFont } from '../context/FontContext'
@@ -31,11 +32,18 @@ function OptionRow({ label, options, value, onChange }) {
   )
 }
 
-export default function SettingsPopup({ strings, onClose }) {
+export default function SettingsPopup({ strings, onClose, onReplayTour }) {
   const { lang, changeLang, languages } = useLanguage()
   const { theme, changeTheme, themes } = useTheme()
   const { fontFamily, fontSize, changeFontFamily, changeFontSize, fontFamilies, fontSizes } = useFont()
   const { slideMode, toggleSlideMode } = useView()
+
+  useEffect(() => {
+    document.body.classList.add('settings-open')
+    return () => {
+      document.body.classList.remove('settings-open')
+    }
+  }, [])
 
   return (
     <>
@@ -127,6 +135,19 @@ export default function SettingsPopup({ strings, onClose }) {
             >📖 Slide</button>
           </div>
         </div>
+
+        {/* Replay walkthrough */}
+        {onReplayTour && (
+          <button
+            onClick={onReplayTour}
+            style={{
+              width: '100%', marginTop: 12, padding: '10px 14px', borderRadius: 8,
+              cursor: 'pointer', fontSize: '0.9em', fontFamily: 'inherit',
+              background: 'transparent', color: 'var(--text)',
+              border: '1px solid var(--border)',
+            }}
+          >{strings.onboarding?.replay || 'Replay walkthrough'}</button>
+        )}
         </div>
       </div>
     </>

@@ -19,6 +19,13 @@ export function ViewProvider({ children }) {
     })
   }, [])
 
+  const setViewMode = useCallback((mode, { track = false } = {}) => {
+    const nextSlide = mode === 'slide'
+    setSlideMode(nextSlide)
+    localStorage.setItem('kqcmm_view_mode', nextSlide ? 'slide' : 'list')
+    if (track) trackViewMode(nextSlide ? 'slide' : 'list')
+  }, [])
+
   const getPageMode = useCallback((pageKey) => {
     // When user has set a global preference, it overrides everything
     const saved = localStorage.getItem('kqcmm_view_mode')
@@ -29,7 +36,7 @@ export function ViewProvider({ children }) {
   }, [slideMode])
 
   return (
-    <ViewContext.Provider value={{ slideMode, toggleSlideMode, getPageMode }}>
+    <ViewContext.Provider value={{ slideMode, setSlideMode, setViewMode, toggleSlideMode, getPageMode }}>
       {children}
     </ViewContext.Provider>
   )

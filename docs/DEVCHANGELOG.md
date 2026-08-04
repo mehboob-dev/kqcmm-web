@@ -6,6 +6,26 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## 5.11.0 — 2026-08-05
+
+### User-facing
+- **First-run onboarding walkthrough** — a friendly guided tour greets new visitors on the Home page. It offers a language chooser (English/Hinglish) when no language is saved, spotlights the home cards, demonstrates reading in slide mode with the counter, and guides the user through the menu, settings, and the Hijri date strip. The user drives every step (real guided taps on actual controls); Skip / Esc / Close dismiss it, and **Replay walkthrough** in Settings runs the full demonstration from any route.
+
+### Internal / docs
+- **New `src/components/OnboardingTour.jsx`** — portal-based overlay (`createPortal` to `document.body`) with spotlight highlighting, guided-tap and route-choice step types, `inert`-based modal shell (with live pointer-transparent exceptions for guided taps), Tab focus trap, Esc to skip, focus restore to opener, and automatic drawer/settings close as steps move off those controls. Mounted in `Layout.jsx`; step plan captured per-run (`startPathRef`) so navigation never reorders it.
+- **New `src/utils/onboarding.js`** (pure helpers): versioned record `kqcmm_onboarding_v1` (`version:1, status:'completed'|'skipped'`, plus `completedAt`); storage-failure tolerance; `shouldStartOnboarding` (auto-run only with no record); `needsLanguageChoice` (no saved `kqcmm_lang`); deep-link-aware `onboardingStepsForPath` (Home = 18 steps, deep link = 5 shell steps); frozen `ONBOARDING_TARGETS` map of `data-tour` hooks shared by tests and UI.
+- **`data-tour` hooks added** — BottomNav (`bottom-nav`, per-item `bottom-nav-<pageId>`, `bottom-home`), Home quick links (`home-links`, `home-link-<labelKey>`), Layout header (`header-menu`, `header-settings`, `header-share`), HijriStrip (`hijri-strip`), ContentView counter (`counter`, `counter-inc/dec/reset`) and slide nav (`slide-nav`, `slide-first/prev/next/last`); aria-labels added on the previously text-only ±/↺/nav buttons.
+- **`ViewContext.jsx`**: added `setViewMode(mode, { track })` (persists + optional GA4 `select_view_mode`); OnboardingTour forces slide mode for the demonstration and restores the user's original value via `import.meta`-free `setViewMode`/`restoreViewMode`.
+- **`SettingsPopup.jsx`**: optional `onReplayTour` prop renders a "Replay walkthrough" button; adds a `settings-open` class on `<body>` while open.
+- **Analytics** (`src/utils/analytics.js`): `onboarding_start{source}`, `onboarding_step{step_id, step_index}`, `onboarding_complete`, `onboarding_skip{reason}`.
+- **Strings**: `onboarding` block (lang safe, titles/bodies per step, `progress` "Step {current} of {total}", Next/Back/Skip/Finish/Replay) added to en + hinglish.
+- **Styles** (`src/styles.css`): `.tour-*` classes (backdrop, spotlight, panel, buttons, lang chooser) at `z-index` 1000–1002 (above header/drawer/settings, below splash/PWA toasts).
+- **Prerender** (`scripts/prerender.mjs`): seeds `kqcmm_onboarding_v1` as completed so the static HTML never captures the tour overlay, plus a smoke-check warning if the tour still appears in output.
+- **New test** `scripts/test-onboarding.mjs` (pure, fake-storage; validates record parse, start/skip gate, step counts & target/order for home vs deep-link) — wired into `npm test`.
+- Docs updated (`docs/components.md` new OnboardingTour section + Layout/ViewContext/SettingsPopup, CLAUDE.md project tree, README); version 5.10.1 → 5.11.0, public changelog bumped (new feature).
+
+---
+
 ## 5.10.1 — 2026-08-04
 
 ### User-facing

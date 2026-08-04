@@ -82,16 +82,16 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
 
   // Shared counter component
   const counterSection = (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <button onClick={decCount} style={circleBtn('var(--accent)', 34)}>−</button>
-      <span style={{
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }} data-tour="counter">
+      <button data-tour="counter-dec" onClick={decCount} style={circleBtn('var(--accent)', 34)} aria-label="Decrease count">−</button>
+      <span data-tour="counter-value" style={{
         fontSize: 20, fontWeight: 800, color: 'var(--text-heading)',
         minWidth: 38, textAlign: 'center', fontVariantNumeric: 'tabular-nums',
       }}>{count}</span>
-      <button onClick={incCount} style={circleBtn('var(--accent)', 34)}>+</button>
-      <button onClick={resetCount} style={{
+      <button data-tour="counter-inc" onClick={incCount} style={circleBtn('var(--accent)', 34)} aria-label="Increase count">+</button>
+      <button data-tour="counter-reset" onClick={resetCount} style={{
         ...circleBtn('var(--accent)', 28), fontSize: 12, borderRadius: 6,
-      }}>↺</button>
+      }} aria-label="Reset count">↺</button>
     </div>
   )
 
@@ -158,14 +158,14 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
           pointerEvents: 'auto',
         }}>
         {/* Slide nav */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <button onClick={() => goTo(0)} disabled={!hasPrev} style={navBtn(!hasPrev)}>⏮</button>
-          <button onClick={() => goTo(currentIdx - 1)} disabled={!hasPrev} style={navBtn(!hasPrev)}>◀</button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }} data-tour="slide-nav">
+          <button data-tour="slide-first" onClick={() => goTo(0)} disabled={!hasPrev} style={navBtn(!hasPrev)} aria-label="First">⏮</button>
+          <button data-tour="slide-prev" onClick={() => goTo(currentIdx - 1)} disabled={!hasPrev} style={navBtn(!hasPrev)} aria-label="Previous">◀</button>
           <span style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 600, minWidth: 50, textAlign: 'center' }}>
             {currentIdx + 1}/{total}
           </span>
-          <button onClick={() => goTo(currentIdx + 1)} disabled={!hasNext} style={navBtn(!hasNext)}>▶</button>
-          <button onClick={() => goTo(total - 1)} disabled={!hasNext} style={navBtn(!hasNext)}>⏭</button>
+          <button data-tour="slide-next" onClick={() => goTo(currentIdx + 1)} disabled={!hasNext} style={navBtn(!hasNext)} aria-label="Next">▶</button>
+          <button data-tour="slide-last" onClick={() => goTo(total - 1)} disabled={!hasNext} style={navBtn(!hasNext)} aria-label="Last">⏭</button>
         </div>
         {/* Counter */}
         {counterSection}

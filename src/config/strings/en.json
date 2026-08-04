@@ -59,5 +59,113 @@
     "message": "KQCMM — duas, khatm, fateha and more in English, Hinglish and Urdu",
     "copied": "Link copied!",
     "unsupported": "Copy the link to share"
+  },
+  "onboarding": {
+    "langTitle": "Choose language",
+    "langSub": "Apni zaban chunein",
+    "langEnglish": "English",
+    "langHinglish": "Hinglish",
+    "langContinue": "Continue",
+    "langClose": "Close",
+    "title": "Welcome to KQCMM",
+    "welcomeTitle": "Assalamu Alaikum, and welcome",
+    "welcomeBody": "This app brings together duas, khatm, fateha khwani, sijrah nama, biographies and the Islamic calendar. Take a few moments for a short tour — it is easy to follow, and you can skip or come back to it any time.",
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip tour",
+    "done": "Finish",
+    "close": "Close",
+    "progress": "Step {current} of {total}",
+    "replay": "Replay walkthrough",
+    "readAloud": "Read the content like an open book or an e-book — one card after another, in large, clear text.",
+    "steps": {
+      "home-links": {
+        "title": "Start here — the home cards",
+        "body": "These cards are your main doorway. Tap Dua to read duas, Khatm-e-Khwajagan for the khatm, Sijrah Nama, Fateha Khwani, biographies and more. Each card opens one section. Large and easy to press."
+      },
+      "content-reading": {
+        "title": "Reading a page",
+        "body": "When you open a section, the content appears as a series of cards, in large clear text — like an open book. Scroll down to read each one. At the bottom you will find a counter (+, –) to help you keep count of repeated duas or zikr, and buttons to move forwards and backwards. There is also a quick-jump button (a small book icon) to skip straight to a chosen part."
+      },
+      "header-menu": {
+        "title": "The menu button",
+        "body": "Tap this button to open the full menu. It lists every page — including Home, the biographies, Fateha Khwani, Khatm, Roshni, Duas, the Calendar and About. To go Home at any time, choose Home from the menu or tap the house icon at the bottom."
+      },
+      "header-settings": {
+        "title": "Settings — make it comfortable for you",
+        "body": "Tap this gear to change how the app looks. You can pick your language, change the theme (colour) to something easy on your eyes, choose a bigger or smaller text size, and change the font. Nothing here can be broken — you can always return and adjust."
+      },
+      "hijri-strip": {
+        "title": "The Islamic date strip",
+        "body": "This band just below the top shows today’s Hijri date and the Gregorian date, and marks special events. Tap it to open the full Islamic Calendar, where you can browse months and see important dates."
+      },
+      "welcome": {
+        "title": "Assalamu Alaikum, and welcome",
+        "body": "This app brings together duas, khatm, fateha khwani, sijrah nama, biographies and the Islamic calendar. Take a few moments for a short tour — it is easy to follow, and you can skip or come back to it any time."
+      },
+      "choose-fateha": {
+        "title": "Choose Fateha Khwani",
+        "body": "Please tap the Fateha Khwani card on the Home page. We will wait for you to choose it."
+      },
+      "slide-next": {
+        "title": "The next button — ▶",
+        "body": "See the buttons at the bottom of the page? Press the ▶ button to move to the next card. Go ahead and press it now."
+      },
+      "slide-prev": {
+        "title": "The previous button — ◀",
+        "body": "Well done! Now press the ◀ button to go back one card. It works just like turning a page backwards."
+      },
+      "slide-end": {
+        "title": "Jump to the start or the end",
+        "body": "The ⏮ button takes you to the very first card, and the ⏭ button takes you straight to the last card. Press ⏭ now — it is the one with two arrows pointing right."
+      },
+      "counter-inc": {
+        "title": "The counter — keep count",
+        "body": "The plus (+) button counts for you, one press at a time. This is very useful when you repeat a dua or a zikr many times. Press the + button now and watch the number go up."
+      },
+      "counter-dec": {
+        "title": "The counter — going down",
+        "body": "If you press too many times by mistake, press the − (minus) button to go back down. Try pressing the − button now."
+      },
+      "counter-reset": {
+        "title": "The counter — start again",
+        "body": "The ↺ button brings the count back to zero, so you can start counting afresh. Press the ↺ button now."
+      },
+      "choose-sijrah": {
+        "title": "Choose Sijrah Nama",
+        "body": "When you return Home, please tap the Sijrah Nama card yourself."
+      },
+      "return-home-sijrah": {
+        "title": "Return Home",
+        "body": "Tap the Home button at the bottom to choose Sijrah Nama next."
+      },
+      "choose-roshni": {
+        "title": "Choose Roshni",
+        "body": "Please tap the Roshni button in the bottom navigation bar to open it next."
+      },
+      "return-home-roshni": {
+        "title": "Return Home",
+        "body": "Tap the Home button at the bottom to choose Roshni next."
+      },
+      "choose-dua": {
+        "title": "Choose Duas",
+        "body": "Please tap the Dua button in the bottom navigation bar to open it next."
+      },
+      "return-home-dua": {
+        "title": "Return Home",
+        "body": "Tap the Home button at the bottom to choose Duas next."
+      },
+      "finish": {
+        "title": "You are ready",
+        "body": "That is everything. Open any card from Home, or use the menu to explore. If you wish, come back to Settings later and press 'Replay walkthrough' to see this tour again."
+      }
+    },
+    "finishTitle": "You are ready",
+    "finishBody": "That is everything. Open any card from Home, or use the menu to explore. If you wish, come back to Settings later and press ‘Replay walkthrough’ to see this tour again.",
+    "finish": {
+      "title": "You are ready",
+      "body": "That is everything. Open any card from Home, or use the menu to explore. If you wish, come back to Settings later and press ‘Replay walkthrough’ to see this tour again."
+    },
+    "tapHint": "Press the highlighted button"
   }
 }

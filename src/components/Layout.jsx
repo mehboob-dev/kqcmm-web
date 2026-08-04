@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useLocation, Outlet } from 'react-router-dom'
+import { useLocation, useNavigate, Outlet } from 'react-router-dom'
 import { trackPageView, trackShare } from '../utils/analytics'
 import { useLanguage } from '../context/LanguageContext'
 import { useFont } from '../context/FontContext'
@@ -12,14 +12,17 @@ import BottomNav from './BottomNav'
 import SettingsPopup from './SettingsPopup'
 import HijriStrip from './HijriStrip'
 import Icon from './FontAwesome'
+import OnboardingTour from './OnboardingTour'
 
 export default function Layout() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const [strings, setStrings] = useState(null)
+  const [replayToken, setReplayToken] = useState(0)
   const location = useLocation()
-  const { lang } = useLanguage()
+  const navigate = useNavigate()
+  const { lang, changeLang } = useLanguage()
   const { currentFont, currentSize } = useFont()
   const mainRef = useRef(null)
 
@@ -38,6 +41,31 @@ export default function Layout() {
     const path = location.pathname === '/' ? '/' : location.pathname.replace(/^\/kqcmm-web\/?/, '/')
     trackPageView(path, strings?.appName)
   }, [location.pathname])
+  // Auto-close sidebar drawer and settings popup with a short delay when the onboarding tour advances past their steps
+  useEffect(() => {
+    if (typeof MutationObserver === 'undefined') return undefined
+    let timer1 = null
+    let timer2 = null
+    const sync = () => {
+      const step = document.body.getAttribute('data-tour-step')
+      if (step && step !== 'header-settings') {
+        if (timer1) clearTimeout(timer1)
+        timer1 = setTimeout(() => setSettingsOpen(false), 600)
+      }
+      if (step && step !== 'header-menu') {
+        if (timer2) clearTimeout(timer2)
+        timer2 = setTimeout(() => setDrawerOpen(false), 600)
+      }
+    }
+    sync()
+    const observer = new MutationObserver(sync)
+    observer.observe(document.body, { attributes: true, attributeFilter: ['data-tour-step'] })
+    return () => {
+      observer.disconnect()
+      if (timer1) clearTimeout(timer1)
+      if (timer2) clearTimeout(timer2)
+    }
+  }, [])
 
   // Page title lookup driven by the page-route registry so a renamed route
   // keeps the correct header title. Aliases redirect before they render, so the
@@ -121,14 +149,14 @@ export default function Layout() {
     >
       {/* HEADER */}
       <header className="app-header">
-        <button className="hamburger-btn" onClick={() => setDrawerOpen(true)} aria-label="Menu">
+        <button className="hamburger-btn" data-tour="header-menu" onClick={() => setDrawerOpen(true)} aria-label="Menu">
           ☰
         </button>
         <span className="app-title">{title}</span>
-        <button className="hamburger-btn" onClick={handleShare} aria-label={share.title || 'Share'} style={{ fontSize: 26 }}>
+        <button className="hamburger-btn" data-tour="header-share" onClick={handleShare} aria-label={share.title || 'Share'} style={{ fontSize: 26 }}>
           {copied ? <Icon name="faCheck" /> : <Icon name="faShareNodes" />}
         </button>
-        <button className="hamburger-btn" onClick={() => setSettingsOpen(true)} aria-label="Settings" style={{ fontSize: 18 }}>
+        <button className="hamburger-btn" data-tour="header-settings" onClick={() => setSettingsOpen(true)} aria-label="Settings" style={{ fontSize: 18 }}>
           <span style={{ fontSize: 40 }}>⚙</span>
         </button>
       </header>
@@ -148,7 +176,10 @@ export default function Layout() {
       {strings && <SideDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} strings={strings} />}
 
       {/* SETTINGS POPUP */}
-      {strings && settingsOpen && <SettingsPopup strings={strings} onClose={() => setSettingsOpen(false)} />}
+      {strings && settingsOpen && <SettingsPopup strings={strings} onClose={() => setSettingsOpen(false)} onReplayTour={() => { setSettingsOpen(false); setReplayToken(t => t + 1) }} />}
+
+      {/* FIRST-RUN WALKTHROUGH — mounted after strings load; auto-starts on '/' */}
+      {strings && <OnboardingTour strings={strings} lang={lang} pathname={location.pathname} replayToken={replayToken} navigate={navigate} onFinish={(code) => code && changeLang(code)} />}
     </div>
   )
 }

@@ -107,7 +107,7 @@ Suggestions that have been shipped, kept for the record.
 The app-wide `HijriStrip` below the header shows today's Hijri + Gregorian date (with the year) on every page, and is tappable to open the full Islamic Calendar.
 
 ### D2. Unit tests
-The Hijri calendar logic is covered by 98 unit tests (`npm test`). Broader smoke tests for rendering key pages would still be valuable.
+The Hijri calendar logic is covered by 123 unit tests (`npm test`), and the onboarding walkthrough helpers by a further 46. Broader smoke tests for rendering key pages would still be valuable.
 
 ### D3. Recently shipped calendar features
 - **Hijri Calendar** (v5.6.0) — admin-maintained month starts, today's date, next-event countdown, events mapped automatically.
