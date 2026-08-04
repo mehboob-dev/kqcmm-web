@@ -1,5 +1,5 @@
 import SeoHead from '../components/SeoHead'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { trackCalendarNav, trackCalendarToggle } from '../utils/analytics'
 import { loadStrings } from '../config/strings'
@@ -99,17 +99,24 @@ export default function Calendar() {
   const todayH = todayHijri(data.monthStarts)
   const monthNames = data.monthNames?.[lang] || data.monthNames?.en || []
   const monthNamesShort = data.monthNamesShort?.[lang] || data.monthNamesShort?.en || []
-  const occurrences = enumerateOccurrences(data)
+  // Memoize occurrence derivation: enumerateOccurrences builds brand-new object
+  // identities every render. Without memoization the 60s today-tick re-render
+  // would recompute + re-sort the lists, and an inconsistent sort comparator
+  // (ties returning 1 both ways) could reorder equal-date items — causing React
+  // to move DOM nodes and snap scroll back to the top mid-scroll.
+  const occurrences = useMemo(() => enumerateOccurrences(data), [data])
   const next = nextOccurrence(occurrences, today)
   const cal = strings?.calendar || {}
+
+  const isMonthly = (occ) => occ.rule === 'hijri-monthly'
 
   // All available occurrences whose Gregorian start date is TODAY. Unlike the
   // single "Next Event" strip, this lists every event mapped to today, split
   // into Monthly | Other columns like the upcoming section.
   const todayStr = formatISODate(today)
-  const todayEvents = occurrences
-    .filter(o => o.available && o.gregorianStart && formatISODate(o.gregorianStart) === todayStr)
-  const isMonthly = (occ) => occ.rule === 'hijri-monthly'
+  const todayEvents = useMemo(() => occurrences
+    .filter(o => o.available && o.gregorianStart && formatISODate(o.gregorianStart) === todayStr),
+  [occurrences, today])
   const todayMonthly = todayEvents.filter(isMonthly)
   const todayOther = todayEvents.filter(o => !isMonthly(o))
 
@@ -137,10 +144,18 @@ export default function Calendar() {
     : hijriMonthOf(data.monthStarts, today)
   const isCurrentView = view && currentMonth && view.year === currentMonth.year && view.month === currentMonth.month
 
-  // Available occurrences sorted by start date (ascending)
-  const available = occurrences
+  // Available occurrences sorted by start date (ascending). The comparator must
+  // return 0 for equal dates (and tie-break by id) so equal-date items keep a
+  // deterministic order — an inconsistent comparator can reorder same-day events
+  // on re-render, which remounts list rows and resets the scroll position.
+  const available = useMemo(() => occurrences
     .filter(o => o.available && o.gregorianStart)
-    .sort((a, b) => formatISODate(a.gregorianStart) < formatISODate(b.gregorianStart) ? -1 : 1)
+    .sort((a, b) => {
+      const sa = formatISODate(a.gregorianStart), sb = formatISODate(b.gregorianStart)
+      if (sa < sb) return -1
+      if (sa > sb) return 1
+      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0
+    }), [occurrences])
 
   const { eventList, pastEvents } = splitUpcomingPast(available, today)
 
