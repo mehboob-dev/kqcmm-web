@@ -3,6 +3,14 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.12.0",
+        "date": "2026-08-05",
+        "changes": [
+          "Three new themes! Indigo, Teal, and a true-black OLED dark mode that saves battery on OLED screens.",
+          "Theme picker now shows colored swatch circles at a glance, instead of text buttons."
+        ]
+      },
+      {
         "version": "5.11.0",
         "date": "2026-08-05",
         "changes": [
@@ -154,6 +162,14 @@
   "hinglish": {
     "title": "Changelog",
     "versions": [
+      {
+        "version": "5.12.0",
+        "date": "2026-08-05",
+        "changes": [
+          "Teen naye themes! Indigo, Teal, aur ek bilkul kala OLED dark mode jo OLED screens par battery bachata hai.",
+          "Theme picker ab text buttons ki jagah rang-birange swatch circles dikhata hai — ek nazar mein samajh aa jata hai."
+        ]
+      },
       {
         "version": "5.11.0",
         "date": "2026-08-05",

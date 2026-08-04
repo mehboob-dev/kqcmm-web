@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.11.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.12.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -113,7 +113,7 @@ kqcmm-web/
 │   │   ├── hijriCalendar.js         # Hijri date conversion + event mapping (pure, tested)
 │   │   └── onboarding.js            # Onboarding persistence + step-sequence helpers (pure, tested)
 │   ├── context/
-│   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green/rose)
+│   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green/rose/indigo/teal/oled + swatches)
 │   │   ├── LanguageContext.jsx       # Language state (en/hinglish/urdu)
 │   │   ├── FontContext.jsx           # Font family + size state
 │   │   └── ViewContext.jsx           # View mode (list/slide) state (+ setViewMode)
@@ -269,8 +269,13 @@ Language switch triggers re-render of all text via context. RTL direction sets `
 | `sepia` | Brown `#5c3a1e` | Gold `#b8860b` |
 | `green` | Dark green `#1b5e20` | Green `#2e7d32` |
 | `rose` | Deep rose `#9d2b4a` | Pink `#c2185b` |
+| `indigo` | Indigo `#3f3aa8` | Violet `#4f3fd1` |
+| `teal` | Deep teal `#115e59` | Teal `#0f766e` |
+| `oled` | Pure black `#000000` | Emerald `#10b981` |
 
-Default: `green`. Theme set via `data-theme` attribute on `<html>`.
+Default: `green`. Theme set via `data-theme` attribute on `<html>`. Settings
+shows each theme as a color swatch circle (page background + accent dot) — see
+`docs/styling.md` *Theme Swatches*.
 
 ---
 

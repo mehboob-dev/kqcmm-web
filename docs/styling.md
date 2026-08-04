@@ -6,7 +6,7 @@ Complete reference for CSS, theming, responsive design, and card system.
 
 ## Theme System
 
-Five themes are defined via CSS custom properties on `[data-theme]` (Light, Dark, Sepia, Green, Rose):
+Eight themes are defined via CSS custom properties on `[data-theme]` (Light, Dark, Sepia, Green, Rose, Indigo, Teal, OLED):
 
 ```css
 :root, [data-theme="light"] {
@@ -31,18 +31,28 @@ Five themes are defined via CSS custom properties on `[data-theme]` (Light, Dark
 
 ### Theme Comparison
 
-| Property | Light | Dark | Sepia | Green | Rose |
-|---|---|---|---|---|---|
-| `--bg` | `#f5f5f5` | `#0f0f1a` | `#faf0e6` | `#e8f5e9` | `#fdf0f2` |
-| `--bg-header` | `#fdfdfd` | `#1a1a2e` | `#5c3a1e` | `#1b5e20` | `#9d2b4a` |
-| `--accent` | `#4a6cf7` | `#7c5cfc` | `#b8860b` | `#2e7d32` | `#c2185b` |
-| `--text` | `#222` | `#e0e0e0` | `#3e2c1a` | `#1b3a1b` | `#3a1622` |
-| `--header-text` | `#333` | `#e0e0e0` | `#f0e8d8` | `#e0e0e0` | `#fdf0f2` |
+| Property | Light | Dark | Sepia | Green | Rose | Indigo | Teal | OLED |
+|---|---|---|---|---|---|---|---|---|
+| `--bg` | `#f5f5f5` | `#0f0f1a` | `#faf0e6` | `#e8f5e9` | `#fdf0f2` | `#eef1fb` | `#e6f5f2` | `#000000` |
+| `--bg-header` | `#fdfdfd` | `#1a1a2e` | `#5c3a1e` | `#1b5e20` | `#9d2b4a` | `#3f3aa8` | `#115e59` | `#000000` |
+| `--accent` | `#4a6cf7` | `#7c5cfc` | `#b8860b` | `#2e7d32` | `#c2185b` | `#4f3fd1` | `#0f766e` | `#10b981` |
+| `--text` | `#222` | `#e0e0e0` | `#3e2c1a` | `#1b3a1b` | `#3a1622` | `#22223f` | `#0f2e2a` | `#e8e8e8` |
+| `--header-text` | `#333` | `#e0e0e0` | `#f0e8d8` | `#e0e0e0` | `#fdf0f2` | `#ececfb` | `#e0f5f0` | `#e8e8e8` |
+
+### Theme Swatches (Settings picker)
+The Settings popup shows each theme as a colored circle instead of a text button.
+Each theme in `src/context/ThemeContext.jsx` carries a `swatch: { bg, accent }`
+pair — `bg` is the theme's page background, `accent` its accent color. The
+swatch circle is filled with `bg` and carries an `accent` dot, so Light (white)
+and OLED (pure black) are distinguishable at a glance. `OptionRow` in
+`SettingsPopup.jsx` auto-detects swatches via `options.some(opt => opt.swatch)`;
+all other option rows (language/font/size) keep text buttons. Keep `swatch`
+values in sync with the CSS variables when editing a palette.
 
 ### Adding a New Theme
 1. Add a new `[data-theme="name"]` block in `styles.css`
 2. Define all CSS custom properties
-3. Add to `themes` array in `src/context/ThemeContext.jsx`
+3. Add to `themes` array in `src/context/ThemeContext.jsx` (with a `swatch: { bg, accent }` pair)
 
 ---
 

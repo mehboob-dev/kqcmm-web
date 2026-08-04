@@ -5,28 +5,83 @@ import { useFont } from '../context/FontContext'
 import { useView } from '../context/ViewContext'
 
 function OptionRow({ label, options, value, onChange }) {
+  const isSwatch = options.some(opt => opt.swatch)
   return (
     <div style={{ marginBottom: 12 }}>
       <div style={{ fontSize: '0.85em', color: 'var(--text-muted)', marginBottom: 6 }}>{label}</div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-        {options.map(opt => (
-          <button
-            key={opt.id || opt.code}
-            onClick={() => onChange(opt.id || opt.code)}
-            style={{
-              padding: '6px 14px',
-              borderRadius: 8,
-              border: value === (opt.id || opt.code) ? '2px solid var(--accent)' : '1px solid var(--border)',
-              background: value === (opt.id || opt.code) ? 'var(--accent-bg)' : 'transparent',
-              color: 'var(--text)',
-              fontSize: '0.9em',
-              cursor: 'pointer',
-              fontFamily: opt.family || 'inherit',
-            }}
-          >
-            {opt.label}
-          </button>
-        ))}
+        {options.map(opt => {
+          const selected = value === (opt.id || opt.code)
+          if (isSwatch) {
+            return (
+              <button
+                key={opt.id || opt.code}
+                onClick={() => onChange(opt.id || opt.code)}
+                title={opt.label}
+                aria-label={`${opt.label} theme`}
+                aria-pressed={selected}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 4,
+                  padding: 4,
+                  border: 'none',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                }}
+              >
+                <span
+                  role="img"
+                  aria-hidden="true"
+                  style={{
+                    width: 34, height: 34, borderRadius: '50%',
+                    border: selected ? '2px solid var(--text)' : '1px solid var(--border)',
+                    outline: selected ? '2px solid var(--bg-card)' : 'none',
+                    outlineOffset: -5,
+                    boxShadow: selected
+                      ? '0 0 0 3px var(--accent)'
+                      : 'inset 0 0 0 1px rgba(0,0,0,0.04)',
+                    background: opt.swatch.bg,
+                    position: 'relative',
+                  }}
+                >
+                  <span
+                    style={{
+                      position: 'absolute',
+                      left: '50%', top: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      width: 14, height: 14, borderRadius: '50%',
+                      background: opt.swatch.accent,
+                    }}
+                  />
+                </span>
+                <span style={{ fontSize: '0.72em', fontWeight: selected ? 700 : 400, color: selected ? 'var(--text-heading)' : 'var(--text-muted)' }}>
+                  {opt.label}
+                </span>
+              </button>
+            )
+          }
+          return (
+            <button
+              key={opt.id || opt.code}
+              onClick={() => onChange(opt.id || opt.code)}
+              style={{
+                padding: '6px 14px',
+                borderRadius: 8,
+                border: selected ? '2px solid var(--accent)' : '1px solid var(--border)',
+                background: selected ? 'var(--accent-bg)' : 'transparent',
+                color: 'var(--text)',
+                fontSize: '0.9em',
+                cursor: 'pointer',
+                fontFamily: opt.family || 'inherit',
+              }}
+            >
+              {opt.label}
+            </button>
+          )
+        })}
       </div>
     </div>
   )

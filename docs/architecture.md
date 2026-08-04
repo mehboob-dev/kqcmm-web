@@ -85,7 +85,7 @@ A spiritual web platform serving followers of the Chishti Sufi order. Displays d
 │  │  │  🌐 Language      │                                       │   │
 │  │  │  [English][Hinglish]  (Urdu: planned)                      │   │   │
 │  │  │  🎨 Theme         │                                       │   │
-│  │  │  [Light][Dark][Sepia][Green][Rose]                         │   │   │
+│  │  │  ●●●●●●●●  (8 color swatches)                             │   │   │
 │  │  │  🔤 Font          │                                       │   │
 │  │  │  [System][Serif]...                                        │   │   │
 │  │  │  📐 Font Size     │                                       │   │

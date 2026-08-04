@@ -6,6 +6,20 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## 5.12.0 — 2026-08-05
+
+### User-facing
+- **Three new themes** — **Indigo** (deep indigo header, violet accent, light lavender page), **Teal** (deep teal header, teal accent, mint page), and **OLED** (true-black `#000000` page/cards, emerald accent — saves battery on OLED screens).
+- **Theme swatches in Settings** — the theme picker now shows colored circle swatches (page background + accent dot, with the theme name beneath) instead of text buttons, so themes are recognizable at a glance.
+
+### Internal / docs
+- **`src/context/ThemeContext.jsx`**: `themes` array grew 5 → 8; each entry now carries `swatch: { bg, accent }` (taken from the theme's CSS variables) used by the Settings picker. 8 themes total (light, dark, sepia, green, rose, indigo, teal, oled). `ThemeProvider` also now **validates the stored theme against known ids** — a stale/garbage `kqcmm_theme` value (e.g. from a removed theme) falls back to `green` instead of setting an unknown `data-theme` with no CSS block, which previously rendered an unstyled page with no matching swatch selected.
+- **`src/styles.css`**: three new `[data-theme]` blocks (indigo, teal, oled) defining the full 16-variable set each — all old themes' variables are covered, and the app's `--bg`-driven surfaces (body, shell) respond to OLED `#000000` automatically. Contrast verified: all new text/bg pairs ≥ 12:1; header-text on header ≥ 6.6:1; muted text on page ≥ 4.2:1 (consistent with existing light theme's muted legibility).
+- **`src/components/SettingsPopup.jsx`**: `OptionRow` auto-detects swatch options via `options.some(opt => opt.swatch)` — theme row renders circular two-tone swatches with labels + `aria-pressed`/`aria-label`; all other rows (language/font/size) keep text buttons.
+- Docs updated (`README.md`, `CLAUDE.md` theme table + tree, `MEMORY.md`, `docs/styling.md` theme system + comparison table + new "Theme Swatches" section + "Adding a New Theme" step, `docs/components.md` ThemeContext + SettingsPopup tables, `docs/architecture.md` settings diagram, `docs/new-developer-guide.md`); version 5.11.0 → 5.12.0, public changelog bumped (new feature) in en + hinglish.
+
+---
+
 ## 5.11.0 — 2026-08-05
 
 ### User-facing

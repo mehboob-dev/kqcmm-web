@@ -143,7 +143,7 @@ Modal popup for user preferences.
 |---|---|---|
 | Replay walkthrough (top, when `onReplayTour` provided) | — | — |
 | Language | English, Hinglish (Urdu: planned) | localStorage |
-| Theme | Light, Dark, Sepia, Green, Rose | localStorage |
+| Theme | Light, Dark, Sepia, Green, Rose, Indigo, Teal, OLED (shown as color swatches) | localStorage |
 | Font Family | 17 options | localStorage |
 | Font Size | X-Small → XX-Large (6 sizes, 12–24px) | localStorage |
 | View Mode | List / Slide | localStorage |
@@ -546,7 +546,8 @@ Handles **master-child card sections** where content is split into sub-cards usi
 - Persistence: localStorage key `kqcmm_theme`
 - Default: `green`
 - Sets `data-theme` attribute on `<html>`
-- Themes: light, dark, sepia, green, rose
+- Themes: light, dark, sepia, green, rose, indigo, teal, oled
+- Each theme entry carries a `swatch: { bg, accent }` used by the Settings picker circles
 
 ### LanguageContext.jsx
 - State: `lang`, `changeLang`, `languages`, `current`

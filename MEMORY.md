@@ -4,7 +4,7 @@
 **KQCMM** — Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya  
 A spiritual web platform for followers of the Chishti Sufi order.  
 Built with React 18 + Vite 5. Hosted on GitHub Pages.  
-2 live languages: English, Hinglish (Urdu planned) | 5 themes: Light, Dark, Sepia, Green, Rose | 17 fonts, 6 sizes
+2 live languages: English, Hinglish (Urdu planned) | 8 themes: Light, Dark, Sepia, Green, Rose, Indigo, Teal, OLED | 17 fonts, 6 sizes
 
 ## Documentation Index
 
