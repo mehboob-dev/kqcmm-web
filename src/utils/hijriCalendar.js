@@ -400,9 +400,12 @@ export function localizedEvent(event, lang, monthNames) {
 }
 
 /** Human Hijri label, e.g. "10 Muharram 1448". */
-export function hijriLabel(hijriYear, hijriMonth, hijriDay, monthNames) {
+export function hijriLabel(hijriYear, hijriMonth, hijriDay, monthNames, lang) {
   const names = monthNames || []
   const monthName = names[hijriMonth - 1] || String(hijriMonth)
+  if (lang === 'ur' || lang === 'ar') {
+    return `${hijriDay} ${monthName} ${hijriYear}ھ`
+  }
   return `${hijriDay} ${monthName} ${hijriYear}`
 }
 

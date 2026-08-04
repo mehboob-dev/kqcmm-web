@@ -62,66 +62,34 @@
       "gregorianStart": "2026-07-16"
     }
   ],
-  "monthNames": {
-    "en": [
-      "Muharram",
-      "Safar",
-      "Rabi' al-Awwal",
-      "Rabi' al-Thani",
-      "Jumada al-Awwal",
-      "Jumada al-Thani",
-      "Rajab",
-      "Sha'ban",
-      "Ramadan",
-      "Shawwal",
-      "Dhul-Qa'dah",
-      "Dhul-Hijjah"
-    ],
-    "hinglish": [
-      "Muharram",
-      "Safar",
-      "Rabi-ul-Awwal",
-      "Rabi-ul-Sani",
-      "Jumada-ul-Awwal",
-      "Jumada-ul-Sani",
-      "Rajab",
-      "Shaban",
-      "Ramadan",
-      "Shawwal",
-      "Zilqad",
-      "Zilhaj"
-    ]
-  },
-  "monthNamesShort": {
-    "en": [
-      "Muh",
-      "Saf",
-      "Rabi I",
-      "Rabi II",
-      "Jum I",
-      "Jum II",
-      "Raj",
-      "Sha'",
-      "Ram",
-      "Shaw",
-      "Dhu-Q",
-      "Dhu-H"
-    ],
-    "hinglish": [
-      "Muh",
-      "Saf",
-      "Rabi I",
-      "Rabi II",
-      "Jum I",
-      "Jum II",
-      "Raj",
-      "Shab",
-      "Ram",
-      "Shaw",
-      "Zil-Q",
-      "Zil-H"
-    ]
-  },
+  "monthNames": [
+    "Muharram",
+    "Safar",
+    "Rabi-ul-Awwal",
+    "Rabi-ul-Sani",
+    "Jumada-ul-Awwal",
+    "Jumada-ul-Sani",
+    "Rajab",
+    "Shaban",
+    "Ramadan",
+    "Shawwal",
+    "Zilqad",
+    "Zilhaj"
+  ],
+  "monthNamesShort": [
+    "Muh",
+    "Saf",
+    "Rabi I",
+    "Rabi II",
+    "Jum I",
+    "Jum II",
+    "Raj",
+    "Shab",
+    "Ram",
+    "Shaw",
+    "Zil-Q",
+    "Zil-H"
+  ],
   "events": [
     {
       "id": "islamic-new-year",
@@ -130,14 +98,8 @@
       "hijriDays": [
         1
       ],
-      "label": "Islamic New Year",
-      "description": "Beginning of the Islamic calendar year",
-      "translations": {
-        "hinglish": {
-          "label": "Islami Naya Saal",
-          "description": "Islami calendar ka aaghaz"
-        }
-      }
+      "label": "Islami Naya Saal",
+      "description": "Islami calendar ka aaghaz"
     },
     {
       "id": "ashura",
@@ -146,14 +108,8 @@
       "hijriDays": [
         10
       ],
-      "label": "Day of Ashura",
-      "description": "Remembrance of Imam Husayn (AS)",
-      "translations": {
-        "hinglish": {
-          "label": "Ashura ka din",
-          "description": "Imam Husayn (AS) ki yaad"
-        }
-      }
+      "label": "Ashura ka din",
+      "description": "Imam Husayn (AS) ki yaad"
     },
     {
       "id": "eid-milad-un-nabi",
@@ -163,13 +119,7 @@
         12
       ],
       "label": "Eid Milad-un-Nabi ﷺ",
-      "description": "Birth of the Holy Prophet Muhammad ﷺ",
-      "translations": {
-        "hinglish": {
-          "label": "Eid Milad-un-Nabi ﷺ",
-          "description": "Paighambar-e-Islam ﷺ ki wiladat"
-        }
-      }
+      "description": "Paighambar-e-Islam ﷺ ki wiladat"
     },
     {
       "id": "isra-wal-miraj",
@@ -179,13 +129,7 @@
         27
       ],
       "label": "Isra wal Miraj",
-      "description": "Night Journey and Ascension of the Prophet ﷺ",
-      "translations": {
-        "hinglish": {
-          "label": "Isra wal Miraj",
-          "description": "Nabi ﷺ ka miraj"
-        }
-      }
+      "description": "Nabi ﷺ ka miraj"
     },
     {
       "id": "shab-e-barat",
@@ -195,13 +139,7 @@
         15
       ],
       "label": "Shab-e-Barat",
-      "description": "Night of forgiveness",
-      "translations": {
-        "hinglish": {
-          "label": "Shab-e-Barat",
-          "description": "Bakhshish ki raat"
-        }
-      }
+      "description": "Bakhshish ki raat"
     },
     {
       "id": "ramadan-begins",
@@ -210,14 +148,8 @@
       "hijriDays": [
         1
       ],
-      "label": "Ramadan begins",
-      "description": "Month of fasting begins",
-      "translations": {
-        "hinglish": {
-          "label": "Ramadan ka aaghaz",
-          "description": "Roze ka mahina shuru"
-        }
-      }
+      "label": "Ramadan ka aaghaz",
+      "description": "Roze ka mahina shuru"
     },
     {
       "id": "laylat-ul-qadr",
@@ -226,14 +158,8 @@
       "hijriDays": [
         27
       ],
-      "label": "Laylat-ul-Qadr",
-      "description": "Night of Power",
-      "translations": {
-        "hinglish": {
-          "label": "Shab-e-Qadr",
-          "description": "Qadr ki raat"
-        }
-      }
+      "label": "Shab-e-Qadr",
+      "description": "Qadr ki raat"
     },
     {
       "id": "eid-ul-fitr",
@@ -243,13 +169,7 @@
         1
       ],
       "label": "Eid-ul-Fitr",
-      "description": "Festival of breaking the fast",
-      "translations": {
-        "hinglish": {
-          "label": "Eid-ul-Fitr",
-          "description": "Roze ke baad ki Eid"
-        }
-      }
+      "description": "Roze ke baad ki Eid"
     },
     {
       "id": "eid-ul-adha",
@@ -259,13 +179,7 @@
         10
       ],
       "label": "Eid-ul-Adha",
-      "description": "Festival of sacrifice",
-      "translations": {
-        "hinglish": {
-          "label": "Eid-ul-Adha",
-          "description": "Qurbani ki Eid"
-        }
-      }
+      "description": "Qurbani ki Eid"
     },
     {
       "id": "chhatti-shareef",
@@ -275,8 +189,7 @@
         6
       ],
       "label": "Chhatti Shareef",
-      "description": "Monthly Chhatti Fateha",
-      "translations": {}
+      "description": "Monthly Chhatti Fateha"
     },
     {
       "id": "event-1785590843690",
@@ -286,8 +199,7 @@
         17
       ],
       "label": "Shab of Maa Saab Makhdoom Baba",
-      "description": "17th Shab of Maa Saab of Hazrat Makhdoom Fakih Ali Mahimi (Rehmatullah Alahi), Mahim",
-      "translations": {}
+      "description": "17th Shab of Maa Saab of Hazrat Makhdoom Fakih Ali Mahimi (Rehmatullah Alahi), Mahim"
     },
     {
       "id": "monthly-barvee-shareef",
@@ -297,8 +209,7 @@
         12
       ],
       "label": "Monthly Barvee Shareef",
-      "description": "",
-      "translations": {}
+      "description": ""
     },
     {
       "id": "monthly-gvarvee-shareef",
@@ -308,8 +219,7 @@
         11
       ],
       "label": "Monthly Gvarvee Shareef",
-      "description": "",
-      "translations": {}
+      "description": ""
     },
     {
       "id": "monthly-ekisvee-shareef",
@@ -319,8 +229,7 @@
         21
       ],
       "label": "Monthly Ekisvee Shareef",
-      "description": "",
-      "translations": {}
+      "description": ""
     },
     {
       "id": "thesunniway-2",
@@ -23823,9 +23732,6 @@
       "description": "PASSING OF · Wisal: 187 AH"
     }
   ],
-  "en": {
-    "title": "Islamic Calendar"
-  },
   "hinglish": {
     "title": "Islami Calendar"
   }

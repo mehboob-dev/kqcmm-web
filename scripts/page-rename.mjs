@@ -29,10 +29,22 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-export const ROOT = path.resolve(__dirname, '..')
-export const CONTENT_DIR = path.resolve(ROOT, 'src/config/content')
-export const NAV_FILE = path.resolve(ROOT, 'src/config/navigation.json')
-export const ROUTES_FILE = path.resolve(ROOT, 'src/config/pageRoutes.json')
+export let ROOT = path.resolve(__dirname, '..')
+export let CONTENT_DIR = path.resolve(ROOT, 'src/config/content')
+export let NAV_FILE = path.resolve(ROOT, 'src/config/navigation.json')
+export let ROUTES_FILE = path.resolve(ROOT, 'src/config/pageRoutes.json')
+
+export function overridePaths(paths) {
+  if (paths.contentDir) CONTENT_DIR = paths.contentDir
+  if (paths.navFile) NAV_FILE = paths.navFile
+  if (paths.routesFile) ROUTES_FILE = paths.routesFile
+}
+
+export function restorePaths() {
+  CONTENT_DIR = path.resolve(ROOT, 'src/config/content')
+  NAV_FILE = path.resolve(ROOT, 'src/config/navigation.json')
+  ROUTES_FILE = path.resolve(ROOT, 'src/config/pageRoutes.json')
+}
 
 // Reserved paths the app/router already claims (or that would be ambiguous).
 const RESERVED_ROUTES = new Set([
@@ -60,9 +72,22 @@ export function writeJSONAtomic(fp, data) {
   fs.renameSync(tmp, fp)
 }
 
+export function getActiveLanguageDirs() {
+  try {
+    const dirs = fs.readdirSync(CONTENT_DIR, { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory() && dirent.name !== '.claude' && dirent.name !== '.git' && dirent.name !== 'scratch')
+      .map(dirent => dirent.name)
+    return dirs.length ? dirs : ['en']
+  } catch {
+    return ['en']
+  }
+}
+
 export function listPageFiles() {
   try {
-    return fs.readdirSync(CONTENT_DIR)
+    const enDir = path.join(CONTENT_DIR, 'en')
+    if (!fs.existsSync(enDir)) return []
+    return fs.readdirSync(enDir)
       .filter(f => f.endsWith('.json'))
       .map(f => f.replace(/\.json$/, ''))
       .sort()
@@ -116,10 +141,10 @@ export function buildRename(pageId, newSlug, opts = {}) {
   const oldRoute = page.route
   const newRoute = '/' + newSlug
 
-  // Filesystem checks (only performed against real state).
-  const srcPath = path.join(CONTENT_DIR, oldFile + '.json')
-  if (!opts.skipFsChecks && !fs.existsSync(srcPath)) return { ok: false, error: `Content file "${oldFile}.json" not found` }
-  const dstPath = path.join(CONTENT_DIR, newFile + '.json')
+  // Filesystem checks (only performed against real state, using 'en' as reference).
+  const srcPath = path.join(CONTENT_DIR, 'en', oldFile + '.json')
+  if (!opts.skipFsChecks && !fs.existsSync(srcPath)) return { ok: false, error: `Content file "en/${oldFile}.json" not found` }
+  const dstPath = path.join(CONTENT_DIR, 'en', newFile + '.json')
   if (!opts.skipFsChecks && fs.existsSync(dstPath)) return { ok: false, error: `A page named "${newSlug}" already exists` }
 
   // Route collision checks (registry is the source of truth). The page's own
@@ -178,26 +203,39 @@ export function buildRename(pageId, newSlug, opts = {}) {
 export function applyRename(plan) {
   if (!plan || !plan.ok) throw new Error('Invalid rename plan')
   const { oldFile, newFile, routes, nav } = plan.result
-  const srcPath = path.join(CONTENT_DIR, oldFile + '.json')
-  const dstPath = path.join(CONTENT_DIR, newFile + '.json')
+  const activeDirs = getActiveLanguageDirs()
 
-  if (!fs.existsSync(srcPath)) throw new Error(`Content file "${oldFile}.json" not found`)
-  if (fs.existsSync(dstPath)) throw new Error(`A page named "${newFile}" already exists`)
+  activeDirs.forEach(dir => {
+    const src = path.join(CONTENT_DIR, dir, oldFile + '.json')
+    const dst = path.join(CONTENT_DIR, dir, newFile + '.json')
+    if (!fs.existsSync(src)) throw new Error(`Content file "${dir}/${oldFile}.json" not found`)
+    if (fs.existsSync(dst)) throw new Error(`A page named "${newFile}" already exists in ${dir}`)
+  })
 
   const prevRoutes = loadRoutes()
   const prevNav = readJSON(NAV_FILE) || { bottomNav: [], sideDrawer: [] }
+  const renamedDirs = []
 
   try {
-    // 1. Move content file (atomic via copy + rename; fs.renameSync works across same dir)
-    fs.renameSync(srcPath, dstPath)
+    // 1. Move content file in all active language directories
+    activeDirs.forEach(dir => {
+      const src = path.join(CONTENT_DIR, dir, oldFile + '.json')
+      const dst = path.join(CONTENT_DIR, dir, newFile + '.json')
+      fs.renameSync(src, dst)
+      renamedDirs.push(dir)
+    })
 
     // 2. Registry + nav (atomic writes)
     writeJSONAtomic(ROUTES_FILE, routes)
     writeJSONAtomic(NAV_FILE, nav)
   } catch (e) {
-    // Rollback: restore file name + configs
+    // Rollback: restore file names + configs
     try {
-      if (fs.existsSync(dstPath) && !fs.existsSync(srcPath)) fs.renameSync(dstPath, srcPath)
+      renamedDirs.forEach(dir => {
+        const src = path.join(CONTENT_DIR, dir, oldFile + '.json')
+        const dst = path.join(CONTENT_DIR, dir, newFile + '.json')
+        if (fs.existsSync(dst) && !fs.existsSync(src)) fs.renameSync(dst, src)
+      })
       writeJSONAtomic(ROUTES_FILE, prevRoutes)
       writeJSONAtomic(NAV_FILE, prevNav)
     } catch (rollbackErr) {
@@ -262,15 +300,40 @@ export function applyCreateCustom(plan) {
   if (!plan || !plan.ok) throw new Error('Invalid create plan')
   const { entry, routes, contentFile, content } = plan.result
   if (content === undefined || content === null) throw new Error('Create plan has no content')
-  const fp = path.join(CONTENT_DIR, contentFile + '.json')
-  if (fs.existsSync(fp)) throw new Error(`A page named "${contentFile}" already exists`)
+  
+  const activeDirs = getActiveLanguageDirs()
+  activeDirs.forEach(dir => {
+    const fp = path.join(CONTENT_DIR, dir, contentFile + '.json')
+    if (fs.existsSync(fp)) throw new Error(`A page named "${contentFile}" already exists in ${dir}`)
+  })
+
   const prevRoutes = loadRoutes()
+  const createdFiles = []
   try {
-    writeJSONAtomic(fp, content)
+    activeDirs.forEach(dir => {
+      const fp = path.join(CONTENT_DIR, dir, contentFile + '.json')
+      const dirPath = path.dirname(fp)
+      if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true })
+      
+      const split = {}
+      if (content.quickJump) split.quickJump = content.quickJump
+      if (content[dir]) {
+        split[dir] = content[dir]
+      } else {
+        const firstKey = Object.keys(content).find(k => k !== 'quickJump' && typeof content[k] === 'object' && content[k] !== null)
+        split[dir] = firstKey ? JSON.parse(JSON.stringify(content[firstKey])) : { title: entry.route.replace(/^\//, ''), sections: [] }
+      }
+      
+      writeJSONAtomic(fp, split)
+      createdFiles.push(fp)
+    })
+    
     writeJSONAtomic(ROUTES_FILE, routes)
   } catch (e) {
     try {
-      if (fs.existsSync(fp)) fs.unlinkSync(fp)
+      createdFiles.forEach(fp => {
+        if (fs.existsSync(fp)) fs.unlinkSync(fp)
+      })
       writeJSONAtomic(ROUTES_FILE, prevRoutes)
     } catch (rollbackErr) {
       throw new Error(`Create failed and rollback also failed: ${rollbackErr.message}`)
@@ -288,8 +351,8 @@ export function buildDuplicateCustom(from, to, opts = {}) {
   const toErr = validateSlug(to)
   if (toErr) return { ok: false, error: toErr }
 
-  const srcPath = path.join(CONTENT_DIR, from + '.json')
-  if (!opts.skipFsChecks && !fs.existsSync(srcPath)) return { ok: false, error: `Source page "${from}" not found`, status: 404 }
+  const srcPath = path.join(CONTENT_DIR, 'en', from + '.json')
+  if (!opts.skipFsChecks && !fs.existsSync(srcPath)) return { ok: false, error: `Source page "en/${from}.json" not found`, status: 404 }
 
   const route = '/' + to
   const routeErr = validateRoute(route, routes, routes.flatMap(p => (p.aliases || [])))
@@ -310,23 +373,40 @@ export function buildDuplicateCustom(from, to, opts = {}) {
     renamable: true,
     aliases: [],
   }
-  return { ok: true, result: { entry, routes: [...routes, entry], srcPath, contentFile: to, route } }
+  return { ok: true, result: { entry, routes: [...routes, entry], oldFile: from, contentFile: to, route } }
 }
 
 /** Apply a duplicate-custom plan (copy file + add registry entry atomically). */
 export function applyDuplicateCustom(plan) {
   if (!plan || !plan.ok) throw new Error('Invalid duplicate plan')
-  const { entry, routes, srcPath, contentFile } = plan.result
-  const dstPath = path.join(CONTENT_DIR, contentFile + '.json')
-  if (!fs.existsSync(srcPath)) throw new Error('Source page not found')
-  if (fs.existsSync(dstPath)) throw new Error(`A page named "${contentFile}" already exists`)
+  const { entry, routes, oldFile, contentFile } = plan.result
+  const activeDirs = getActiveLanguageDirs()
+
+  activeDirs.forEach(dir => {
+    const src = path.join(CONTENT_DIR, dir, oldFile + '.json')
+    const dst = path.join(CONTENT_DIR, dir, contentFile + '.json')
+    if (!fs.existsSync(src)) throw new Error(`Source file not found: ${dir}/${oldFile}.json`)
+    if (fs.existsSync(dst)) throw new Error(`Destination already exists: ${dir}/${contentFile}.json`)
+  })
+
   const prevRoutes = loadRoutes()
+  const copiedFiles = []
   try {
-    fs.copyFileSync(srcPath, dstPath)
+    activeDirs.forEach(dir => {
+      const src = path.join(CONTENT_DIR, dir, oldFile + '.json')
+      const dst = path.join(CONTENT_DIR, dir, contentFile + '.json')
+      const dirPath = path.dirname(dst)
+      if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true })
+      
+      fs.copyFileSync(src, dst)
+      copiedFiles.push(dst)
+    })
     writeJSONAtomic(ROUTES_FILE, routes)
   } catch (e) {
     try {
-      if (fs.existsSync(dstPath)) fs.unlinkSync(dstPath)
+      copiedFiles.forEach(fp => {
+        if (fs.existsSync(fp)) fs.unlinkSync(fp)
+      })
       writeJSONAtomic(ROUTES_FILE, prevRoutes)
     } catch (rollbackErr) {
       throw new Error(`Duplicate failed and rollback also failed: ${rollbackErr.message}`)
@@ -362,16 +442,30 @@ export function buildDeleteCustom(contentFile, opts = {}) {
 export function applyDeleteCustom(plan) {
   if (!plan || !plan.ok) throw new Error('Invalid delete plan')
   const { routes, nav, contentFile } = plan.result
-  const fp = path.join(CONTENT_DIR, contentFile + '.json')
-  if (!fs.existsSync(fp)) throw new Error(`Page "${contentFile}" not found`)
+  const activeDirs = getActiveLanguageDirs()
+
+  activeDirs.forEach(dir => {
+    const fp = path.join(CONTENT_DIR, dir, contentFile + '.json')
+    if (!fs.existsSync(fp)) throw new Error(`Page file not found: ${dir}/${contentFile}.json`)
+  })
+
   const prevRoutes = loadRoutes()
   const prevNav = readJSON(NAV_FILE) || { bottomNav: [], sideDrawer: [] }
+  const deletedFiles = []
   try {
-    fs.unlinkSync(fp)
+    activeDirs.forEach(dir => {
+      const fp = path.join(CONTENT_DIR, dir, contentFile + '.json')
+      const data = readJSON(fp)
+      fs.unlinkSync(fp)
+      deletedFiles.push({ fp, data })
+    })
     writeJSONAtomic(ROUTES_FILE, routes)
     writeJSONAtomic(NAV_FILE, nav)
   } catch (e) {
     try {
+      deletedFiles.forEach(item => {
+        writeJSONAtomic(item.fp, item.data)
+      })
       writeJSONAtomic(ROUTES_FILE, prevRoutes)
       writeJSONAtomic(NAV_FILE, prevNav)
     } catch (rollbackErr) {

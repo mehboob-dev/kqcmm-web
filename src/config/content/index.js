@@ -1,24 +1,62 @@
-// Content loader.
-//
-// Page components resolve content through this loader by content-file basename
-// (from the page-route registry) rather than importing a specific JSON file, so
-// a rename can move the file on disk and update the registry without touching
-// component source. Content files are statically included at build time via
-// Vite's eager glob — a file created or renamed by the Admin Panel is only
-// included in the bundle after `npm run build`.
-const contentModules = import.meta.glob('./*.json', {
-  eager: true,
-  import: 'default',
-})
+import { useState, useEffect } from 'react'
 
-export function hasContent(contentFile) {
-  return !!contentModules[`./${contentFile}.json`]
+// Code-split dynamic content loader.
+//
+// Page components load content dynamically by language and filename. Vite splits
+// each language's JSON files into separate chunks, so clients only download
+// the active language's data for the current page.
+
+const contentModules = import.meta.glob('./*/*.json', { import: 'default' })
+
+export function hasContent(lang, contentFile) {
+  const path = `./${lang}/${contentFile}.json`
+  return !!contentModules[path] || !!contentModules[`./en/${contentFile}.json`]
 }
 
-export function getContent(contentFile) {
-  const data = contentModules[`./${contentFile}.json`]
-  if (!data) throw new Error(`Missing content file: ${contentFile}.json`)
-  return data
+export async function getContent(lang, contentFile) {
+  const path = `./${lang}/${contentFile}.json`
+  const loadFn = contentModules[path]
+  if (!loadFn) {
+    // Fallback to English
+    const fallbackPath = `./en/${contentFile}.json`
+    const fallbackFn = contentModules[fallbackPath]
+    if (!fallbackFn) throw new Error(`Missing content file: ${contentFile}.json`)
+    return await fallbackFn()
+  }
+  return await loadFn()
+}
+
+// React Hook to fetch page content dynamically.
+export function usePageContent(lang, contentFile) {
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    let active = true
+    setLoading(true)
+    if (!contentFile) {
+      setData(null)
+      setLoading(false)
+      return
+    }
+    getContent(lang, contentFile)
+      .then(res => {
+        if (active) {
+          setData(res)
+          setLoading(false)
+        }
+      })
+      .catch(err => {
+        if (active) {
+          setError(err)
+          setLoading(false)
+        }
+      })
+    return () => { active = false }
+  }, [lang, contentFile])
+
+  return { data, loading, error }
 }
 
 // Re-export the pure locale resolver (also available standalone for tests).

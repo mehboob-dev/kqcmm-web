@@ -43,7 +43,173 @@ const PORT = 3030
 /* ── helpers ── */
 const readJSON = (fp) => { try { return JSON.parse(fs.readFileSync(fp, 'utf8')) } catch { return null } }
 const writeJSON = (fp, data) => fs.writeFileSync(fp, JSON.stringify(data, null, 2) + '\n')
-const listPages = () => fs.readdirSync(CONTENT_DIR).filter(f => f.endsWith('.json')).map(f => f.replace('.json', '')).sort()
+const listPages = () => {
+  const enDir = path.join(CONTENT_DIR, 'en')
+  if (!fs.existsSync(enDir)) return []
+  return fs.readdirSync(enDir).filter(f => f.endsWith('.json')).map(f => f.replace('.json', '')).sort()
+}
+
+// Special Calendar merge/split helpers
+function mergeCalendarData(activeLangs) {
+  const enPath = path.join(CONTENT_DIR, 'en', 'calendar.json')
+  if (!fs.existsSync(enPath)) return null
+  const enCal = readJSON(enPath)
+  if (!enCal) return null
+  
+  const merged = {
+    schemaVersion: enCal.schemaVersion,
+    monthStarts: enCal.monthStarts,
+    monthNames: {},
+    monthNamesShort: {},
+    events: []
+  }
+  
+  activeLangs.forEach(lang => {
+    const lp = path.join(CONTENT_DIR, lang.code, 'calendar.json')
+    if (fs.existsSync(lp)) {
+      const lCal = readJSON(lp)
+      if (lCal) {
+        merged.monthNames[lang.code] = lCal.monthNames || []
+        merged.monthNamesShort[lang.code] = lCal.monthNamesShort || []
+        if (lCal[lang.code]) {
+          merged[lang.code] = lCal[lang.code]
+        }
+      }
+    }
+  })
+  
+  const enEvents = enCal.events || []
+  const otherLangs = activeLangs.filter(l => l.code !== 'en')
+  
+  const eventMap = new Map()
+  enEvents.forEach(ev => {
+    eventMap.set(ev.id, {
+      ...ev,
+      translations: {}
+    })
+  })
+  
+  otherLangs.forEach(lang => {
+    const lp = path.join(CONTENT_DIR, lang.code, 'calendar.json')
+    if (fs.existsSync(lp)) {
+      const lCal = readJSON(lp)
+      if (lCal && lCal.events) {
+        lCal.events.forEach(ev => {
+          const enEv = eventMap.get(ev.id)
+          if (enEv) {
+            enEv.translations[lang.code] = {
+              label: ev.label,
+              description: ev.description
+            }
+          }
+        })
+      }
+    }
+  })
+  
+  merged.events = Array.from(eventMap.values())
+  return merged
+}
+
+function writeCalendarSplit(mergedData, activeLangs) {
+  const enCal = {
+    schemaVersion: mergedData.schemaVersion,
+    monthStarts: mergedData.monthStarts,
+    monthNames: mergedData.monthNames?.en || [],
+    monthNamesShort: mergedData.monthNamesShort?.en || [],
+    events: (mergedData.events || []).map(ev => {
+      const copy = { ...ev }
+      delete copy.translations
+      return copy
+    }),
+    en: mergedData.en || { title: "Islamic Calendar" }
+  }
+  const enPath = path.join(CONTENT_DIR, 'en', 'calendar.json')
+  const enDir = path.dirname(enPath)
+  if (!fs.existsSync(enDir)) fs.mkdirSync(enDir, { recursive: true })
+  writeJSON(enPath, enCal)
+  
+  const otherLangs = activeLangs.filter(l => l.code !== 'en')
+  otherLangs.forEach(lang => {
+    const lCal = {
+      schemaVersion: mergedData.schemaVersion,
+      monthStarts: mergedData.monthStarts,
+      monthNames: mergedData.monthNames?.[lang.code] || [],
+      monthNamesShort: mergedData.monthNamesShort?.[lang.code] || [],
+      events: (mergedData.events || []).map(ev => {
+        const trans = ev.translations?.[lang.code] || {}
+        return {
+          id: ev.id,
+          rule: ev.rule,
+          hijriMonth: ev.hijriMonth,
+          hijriDays: ev.hijriDays,
+          gregorianMonth: ev.gregorianMonth,
+          label: trans.label || ev.label,
+          description: trans.description || ev.description
+        }
+      }),
+      [lang.code]: mergedData[lang.code] || { title: lang.code === 'hinglish' ? "Islami Calendar" : "Islamic Calendar" }
+    }
+    const lp = path.join(CONTENT_DIR, lang.code, 'calendar.json')
+    const dir = path.dirname(lp)
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+    writeJSON(lp, lCal)
+  })
+}
+
+function readPageMerged(name) {
+  const activeLangs = activeLanguages()
+  
+  if (name === 'calendar') {
+    return mergeCalendarData(activeLangs)
+  }
+  
+  const enPath = path.join(CONTENT_DIR, 'en', name + '.json')
+  if (!fs.existsSync(enPath)) return null
+  const enData = readJSON(enPath)
+  if (!enData) return null
+  
+  const merged = {}
+  if (enData.quickJump) merged.quickJump = enData.quickJump
+  if (enData.schemaVersion) merged.schemaVersion = enData.schemaVersion
+  
+  activeLangs.forEach(lang => {
+    const lp = path.join(CONTENT_DIR, lang.code, name + '.json')
+    if (fs.existsSync(lp)) {
+      const lData = readJSON(lp)
+      if (lData && lData[lang.code]) {
+        merged[lang.code] = lData[lang.code]
+      }
+    }
+  })
+  
+  return merged
+}
+
+function writePageSplit(name, mergedData) {
+  const activeLangs = activeLanguages()
+  
+  if (name === 'calendar') {
+    return writeCalendarSplit(mergedData, activeLangs)
+  }
+  
+  activeLangs.forEach(lang => {
+    const split = {}
+    if (mergedData.quickJump) split.quickJump = mergedData.quickJump
+    if (mergedData.schemaVersion) split.schemaVersion = mergedData.schemaVersion
+    
+    if (mergedData[lang.code]) {
+      split[lang.code] = mergedData[lang.code]
+    } else {
+      split[lang.code] = { title: name, sections: [] }
+    }
+    
+    const lp = path.join(CONTENT_DIR, lang.code, name + '.json')
+    const dir = path.dirname(lp)
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+    writeJSON(lp, split)
+  })
+}
 
 // Active languages come from LanguageContext.jsx (single source of truth).
 // Returns [{ code, label, dir }] so callers can build future-proof, label-aware
@@ -209,7 +375,7 @@ const server = http.createServer((req, res) => {
   if (pageInfoMatch && method === 'GET') {
     const name = pageInfoMatch[1]
     if (!safeExistingPageName(name)) return sendError('Invalid page name')
-    const d = readJSON(safePagePath(name))
+    const d = readPageMerged(name)
     if (!d) return sendError('Not found', 404)
     const langs = Object.keys(d).filter(k => typeof d[k] === 'object' && d[k] !== null && !Array.isArray(d[k]))
     return sendJSON({ name, langs, fields: Object.keys(d[langs[0]] || {}) })
@@ -220,7 +386,7 @@ const server = http.createServer((req, res) => {
   if (pageMatch && method === 'GET') {
     const name = pageMatch[1]
     if (!safeExistingPageName(name)) return sendError('Invalid page name')
-    const d = readJSON(safePagePath(name))
+    const d = readPageMerged(name)
     if (!d) return sendError('Not found', 404)
     return sendJSON(d)
   }
@@ -231,7 +397,7 @@ const server = http.createServer((req, res) => {
     req.on('data', c => body += c)
     req.on('end', () => {
       try {
-        writeJSON(safePagePath(name), JSON.parse(body))
+        writePageSplit(name, JSON.parse(body))
         sendJSON({ ok: true })
       } catch (e) { sendError(e.message) }
     })
@@ -335,7 +501,8 @@ const server = http.createServer((req, res) => {
 
   // ── CALENDAR ROUTES (dedicated editor, schema-validated) ──
   if (u.pathname === '/api/calendar' && method === 'GET') {
-    const d = readJSON(path.join(CONTENT_DIR, 'calendar.json'))
+    const activeLangs = activeLanguages()
+    const d = mergeCalendarData(activeLangs)
     if (!d) return sendError('Calendar not found', 404)
     return sendJSON(d)
   }
@@ -347,7 +514,8 @@ const server = http.createServer((req, res) => {
         const d = JSON.parse(body)
         const v = validateCalendarConfig(d)
         if (!v.ok) return sendError('Invalid calendar data: ' + v.errors.join('; '))
-        writeJSON(path.join(CONTENT_DIR, 'calendar.json'), d)
+        const activeLangs = activeLanguages()
+        writeCalendarSplit(d, activeLangs)
         sendJSON({ ok: true })
       } catch (e) { sendError(e.message) }
     })
@@ -421,21 +589,49 @@ const server = http.createServer((req, res) => {
       try {
         const { lang, sourceLang } = JSON.parse(body)
         if (!lang) return sendError('Language code required')
+        
+        const langDir = path.join(CONTENT_DIR, lang)
+        if (!fs.existsSync(langDir)) {
+          fs.mkdirSync(langDir, { recursive: true })
+        }
+        
         let modified = 0
         listPages().forEach(name => {
-          const fp = path.join(CONTENT_DIR, name + '.json')
-          const d = readJSON(fp)
+          const srcL = sourceLang || 'en'
+          const srcFp = path.join(CONTENT_DIR, srcL, name + '.json')
+          const dstFp = path.join(CONTENT_DIR, lang, name + '.json')
+          if (fs.existsSync(dstFp)) return // already exists
+          
+          const d = readJSON(srcFp)
           if (!d) return
-          if (d[lang]) return // already exists
-          if (sourceLang && d[sourceLang]) {
-            d[lang] = JSON.parse(JSON.stringify(d[sourceLang]))
+          
+          const newLangData = {}
+          if (d.quickJump) newLangData.quickJump = d.quickJump
+          if (d.schemaVersion) newLangData.schemaVersion = d.schemaVersion
+          if (d.monthStarts) newLangData.monthStarts = d.monthStarts // for calendar
+          
+          if (name === 'calendar') {
+            newLangData.monthNames = d.monthNames || []
+            newLangData.monthNamesShort = d.monthNamesShort || []
+            newLangData.events = (d.events || []).map(ev => ({
+              id: ev.id,
+              rule: ev.rule,
+              hijriMonth: ev.hijriMonth,
+              hijriDays: ev.hijriDays,
+              gregorianMonth: ev.gregorianMonth,
+              label: ev.label,
+              description: ev.description
+            }))
           } else {
-            // Create empty structure based on first available lang
-            const first = Object.keys(d).find(k => typeof d[k] === 'object' && d[k] !== null && !Array.isArray(d[k]))
-            if (first) d[lang] = JSON.parse(JSON.stringify(d[first]))
-            else d[lang] = { title: '', sections: [] }
+            if (d[srcL]) {
+              newLangData[lang] = JSON.parse(JSON.stringify(d[srcL]))
+            } else {
+              const firstKey = Object.keys(d).find(k => k !== 'quickJump' && typeof d[k] === 'object' && d[k] !== null)
+              newLangData[lang] = firstKey ? JSON.parse(JSON.stringify(d[firstKey])) : { title: '', sections: [] }
+            }
           }
-          writeJSON(fp, d)
+          
+          writeJSON(dstFp, newLangData)
           modified++
         })
         // Also create strings if not exists
@@ -461,15 +657,18 @@ const server = http.createServer((req, res) => {
         const { lang } = JSON.parse(body)
         if (!lang) return sendError('Language code required')
         if (lang === 'en') return sendError('Cannot remove English')
+        
+        const langDir = path.join(CONTENT_DIR, lang)
         let modified = 0
-        listPages().forEach(name => {
-          const fp = path.join(CONTENT_DIR, name + '.json')
-          const d = readJSON(fp)
-          if (!d || !d[lang]) return
-          delete d[lang]
-          writeJSON(fp, d)
-          modified++
-        })
+        if (fs.existsSync(langDir)) {
+          const files = fs.readdirSync(langDir)
+          files.forEach(f => {
+            fs.unlinkSync(path.join(langDir, f))
+            modified++
+          })
+          fs.rmdirSync(langDir)
+        }
+        
         // Also remove strings
         const stringsFp = path.join(STRINGS_DIR, lang + '.json')
         if (fs.existsSync(stringsFp)) {

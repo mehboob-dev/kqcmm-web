@@ -1,31 +1,23 @@
 #!/usr/bin/env node
 /**
- * Generate the recovered Blessed-Days calendar events into calendar.json.
+ * Generate the recovered Blessed-Days calendar events into language-split calendar.json files.
  *
  * Reads:
- *   1. The current calendar config (src/config/content/calendar.json)
+ *   1. The current calendar configs (src/config/content/en/calendar.json & hinglish/calendar.json)
  *   2. The recovered source records  (scripts/data/events_merged.json)
  *
- * Writes back calendar.json with ALL existing KQCMM events preserved, plus one
- * `hijri-fixed` event per recovered record. Records imported from the source are
- * namespaced with a `thesunniway-` id prefix. Regeneration is deterministic and
- * idempotent: prior generated entries are replaced, never duplicated.
- *
- * Usage:
- *   node scripts/generate-calendar-events.mjs
- *   node scripts/generate-calendar-events.mjs --source <path to events_merged.json>
- *
- * The generator only performs filesystem I/O on the two JSON files above; the
- * recovered JSON is NOT importable by the Vite bundle (it is never under src/).
+ * Writes back both calendar.json files with ALL existing KQCMM events preserved, plus one
+ * `hijri-fixed` event per recovered record.
  */
-import { readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join, resolve } from 'node:path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const repoRoot = join(__dirname, '..')
 
-const calendarPath = join(repoRoot, 'src', 'config', 'content', 'calendar.json')
+const enCalendarPath = join(repoRoot, 'src', 'config', 'content', 'en', 'calendar.json')
+const hinglishCalendarPath = join(repoRoot, 'src', 'config', 'content', 'hinglish', 'calendar.json')
 const defaultSource = join(__dirname, 'data', 'events_merged.json')
 
 const SOURCE_PREFIX = 'thesunniway-'
@@ -55,7 +47,6 @@ export function eventLabel(rec) {
 export function eventDescription(rec) {
   const parts = []
   if (rec.eventEnglishName) parts.push(rec.eventEnglishName)
-  // Normalize a meaningful numeric wisal year (source uses "-" / "" / "NULL" for n/a).
   const wis = String(rec.wisalDate == null ? '' : rec.wisalDate).trim()
   if (wis && wis !== '-' && !/^(null|none|n\/a)$/i.test(wis)) {
     parts.push(`Wisal: ${wis} AH`)
@@ -102,11 +93,11 @@ function eventSortKey(ev, recId) {
 
 function main() {
   const args = parseArgs(process.argv.slice(2))
-  const calendar = readJson(calendarPath)
+  const enCal = readJson(enCalendarPath)
   const source = readJson(args.source)
   if (!Array.isArray(source)) throw new Error(`Source file ${args.source} must be a JSON array of records`)
 
-  const { kept } = splitEvents(calendar.events || [])
+  const { kept: keptEn } = splitEvents(enCal.events || [])
 
   const generated = source
     .map((rec, idx) => ({ rec, ev: toEvent(rec, idx) }))
@@ -119,13 +110,19 @@ function main() {
     })
     .map(({ ev }) => ev)
 
-  calendar.events = [...kept, ...generated]
-  writeFileSync(calendarPath, JSON.stringify(calendar, null, 2) + '\n', 'utf8')
+  // Update English Calendar
+  enCal.events = [...keptEn, ...generated]
+  writeFileSync(enCalendarPath, JSON.stringify(enCal, null, 2) + '\n', 'utf8')
+  console.log('en/calendar.json regenerated successfully.')
 
-  console.log('calendar.json regenerated:')
-  console.log(`  existing events kept  : ${kept.length}`)
-  console.log(`  generated events      : ${generated.length}`)
-  console.log(`  total events          : ${calendar.events.length}`)
+  // Update Hinglish Calendar
+  if (existsSync(hinglishCalendarPath)) {
+    const hingCal = readJson(hinglishCalendarPath)
+    const { kept: keptHing } = splitEvents(hingCal.events || [])
+    hingCal.events = [...keptHing, ...generated]
+    writeFileSync(hinglishCalendarPath, JSON.stringify(hingCal, null, 2) + '\n', 'utf8')
+    console.log('hinglish/calendar.json regenerated successfully.')
+  }
 }
 
 main()

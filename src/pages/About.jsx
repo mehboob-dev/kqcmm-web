@@ -2,19 +2,29 @@ import SeoHead from '../components/SeoHead'
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { loadStrings } from '../config/strings'
-import { getContent } from '../config/content'
+import { usePageContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
-
-const data = getContent('about')
 
 export default function About() {
   const { lang } = useLanguage()
+  const { data, loading } = usePageContent(lang, 'about')
   const [strings, setStrings] = useState(null)
-  const content = data[lang] || data.en
 
   useEffect(() => {
     loadStrings(lang).then(setStrings)
   }, [lang])
+
+  if (loading || !data) {
+    return (
+      <div className="content-page">
+        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
+          Loading...
+        </p>
+      </div>
+    )
+  }
+
+  const content = data[lang] || data.en || {}
 
   return (
     <div className="content-page">

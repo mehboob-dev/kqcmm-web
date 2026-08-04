@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 import SeoHead from '../components/SeoHead'
 import GenericContentRenderer from '../components/GenericContentRenderer'
 import { useLanguage } from '../context/LanguageContext'
-import { getContent, resolveLocale } from '../config/content'
+import { usePageContent, resolveLocale } from '../config/content'
 import { pageByRoute } from '../config/pageRoutes'
 import pageRoutes from '../config/pageRoutes.json'
 
@@ -24,15 +24,19 @@ export default function GenericContentPage() {
   const contentFile = entry?.contentFile || params.slug
   const pageKey = pageKeyFor(entry, route)
 
-  let data = null
-  let content = null
-  try {
-    data = contentFile ? getContent(contentFile) : null
-    content = data ? resolveLocale(data, lang) : null
-  } catch {
-    content = null
+  const { data, loading } = usePageContent(lang, contentFile)
+
+  if (loading) {
+    return (
+      <div className="content-page">
+        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
+          Loading...
+        </p>
+      </div>
+    )
   }
 
+  const content = data ? resolveLocale(data, lang) : null
   const title = content?.title || entry?.route?.replace(/^\//, '') || 'Page'
 
   return (

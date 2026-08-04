@@ -3,15 +3,25 @@ import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
 import QuickJump from '../components/QuickJump'
-import { getContent } from '../config/content'
+import { usePageContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
-
-const data = getContent('dua')
 
 export default function Dua() {
   const { lang } = useLanguage()
-  const content = data[lang] || data.en
+  const { data, loading } = usePageContent(lang, 'dua')
   const [jumpToIdx, setJumpToIdx] = useState()
+
+  if (loading || !data) {
+    return (
+      <div className="content-page">
+        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
+          Loading...
+        </p>
+      </div>
+    )
+  }
+
+  const content = data[lang] || data.en || {}
 
   return (
     <div className="content-page">

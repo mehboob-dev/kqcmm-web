@@ -1,13 +1,23 @@
 import SeoHead from '../components/SeoHead'
 import { useLanguage } from '../context/LanguageContext'
-import { getContent } from '../config/content'
+import { usePageContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
-
-const data = getContent('changelog')
 
 export default function Changelog() {
   const { lang } = useLanguage()
-  const content = data[lang] || data.en
+  const { data, loading } = usePageContent(lang, 'changelog')
+
+  if (loading || !data) {
+    return (
+      <div className="content-page">
+        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
+          Loading...
+        </p>
+      </div>
+    )
+  }
+
+  const content = data[lang] || data.en || {}
 
   return (
     <div className="content-page">

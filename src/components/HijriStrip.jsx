@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getContent } from '../config/content'
+import { usePageContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
 
-const data = getContent('calendar')
 import {
   todayLocal,
   todayHijri,
@@ -26,6 +25,7 @@ const MAX_DOTS = 3
 export default function HijriStrip({ lang }) {
   const navigate = useNavigate()
   const [today, setToday] = useState(() => todayLocal())
+  const { data, loading } = usePageContent(lang, 'calendar')
 
   // Refresh across midnight
   useEffect(() => {
@@ -33,7 +33,15 @@ export default function HijriStrip({ lang }) {
     return () => clearInterval(id)
   }, [])
 
-  const monthNames = data.monthNames?.[lang] || data.monthNames?.en || []
+  if (loading || !data) {
+    return (
+      <div className="hijri-strip" style={{ opacity: 0.5, pointerEvents: 'none' }}>
+        <span className="hijri-strip-hijri">—</span>
+      </div>
+    )
+  }
+
+  const monthNames = data.monthNames || []
   const todayH = todayHijri(data.monthStarts)
   const todayStr = formatISODate(today)
 
@@ -57,7 +65,7 @@ export default function HijriStrip({ lang }) {
       title="Open Islamic calendar"
     >
       {todayH.ok ? (
-        <span className="hijri-strip-hijri">{hijriLabel(todayH.hijriYear, todayH.hijriMonth, todayH.hijriDay, monthNames)}</span>
+        <span className="hijri-strip-hijri">{hijriLabel(todayH.hijriYear, todayH.hijriMonth, todayH.hijriDay, monthNames, lang)}</span>
       ) : (
         <span className="hijri-strip-hijri hijri-strip-na">—</span>
       )}

@@ -10,8 +10,9 @@ import './styles.css'
 initErrorTracking()
 
 const basename = '/kqcmm-web/'
+const rootEl = document.getElementById('root')
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const app = (
   <React.StrictMode>
     <HelmetProvider>
       <BrowserRouter basename={basename} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
@@ -20,3 +21,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </HelmetProvider>
   </React.StrictMode>
 )
+
+if (import.meta.env.PROD && rootEl && rootEl.hasChildNodes()) {
+  ReactDOM.hydrateRoot(rootEl, app)
+} else if (rootEl) {
+  ReactDOM.createRoot(rootEl).render(app)
+}

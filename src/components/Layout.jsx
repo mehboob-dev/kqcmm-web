@@ -67,6 +67,8 @@ export default function Layout() {
     }
   }, [])
 
+  const [customTitle, setCustomTitle] = useState('')
+
   // Page title lookup driven by the page-route registry so a renamed route
   // keeps the correct header title. Aliases redirect before they render, so the
   // map only needs canonical routes.
@@ -76,18 +78,35 @@ export default function Layout() {
     return map
   }, { '/settings': strings.settings.title }) : {}
 
+  useEffect(() => {
+    const entry = pageByRoute(location.pathname)
+    if (entry && entry.renderer === 'generic') {
+      if (entry.contentFile) {
+        getContent(lang, entry.contentFile)
+          .then(data => {
+            const locale = data ? resolveLocale(data, lang) : null
+            if (locale?.title) {
+              setCustomTitle(locale.title)
+            } else {
+              setCustomTitle((entry.route || '').replace(/^\//, '').replace(/-/g, ' '))
+            }
+          })
+          .catch(() => {
+            setCustomTitle((entry.route || '').replace(/^\//, '').replace(/-/g, ' '))
+          })
+      } else {
+        setCustomTitle((entry.route || '').replace(/^\//, '').replace(/-/g, ' '))
+      }
+    } else {
+      setCustomTitle('')
+    }
+  }, [location.pathname, lang])
+
   // Custom pages (renderer: generic) have no string key — fall back to the
   // localized content title, then a humanized slug, then the app name.
   let title = pageTitleMap[location.pathname]
   if (!title) {
-    const entry = pageByRoute(location.pathname)
-    if (entry && entry.renderer === 'generic') {
-      try {
-        const data = entry.contentFile ? getContent(entry.contentFile) : null
-        const locale = data ? resolveLocale(data, lang) : null
-        title = locale?.title || (entry.route || '').replace(/^\//, '').replace(/-/g, ' ')
-      } catch { /* fall through */ }
-    }
+    title = customTitle || (pageByRoute(location.pathname)?.route || '').replace(/^\//, '').replace(/-/g, ' ')
   }
   title = title || (strings?.appName || 'KQCMM')
   const showBack = location.pathname !== '/'

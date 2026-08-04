@@ -2,14 +2,24 @@ import SeoHead from '../components/SeoHead'
 import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
-import { getContent } from '../config/content'
+import { usePageContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
-
-const data = getContent('sijrahNama')
 
 export default function SijrahNama() {
   const { lang } = useLanguage()
-  const content = data[lang] || data.en
+  const { data, loading } = usePageContent(lang, 'sijrahNama')
+
+  if (loading || !data) {
+    return (
+      <div className="content-page">
+        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
+          Loading...
+        </p>
+      </div>
+    )
+  }
+
+  const content = data[lang] || data.en || {}
 
   // Build a combined items array from verses + lineage
   const items = [

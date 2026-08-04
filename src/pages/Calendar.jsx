@@ -3,10 +3,8 @@ import { useState, useEffect, useMemo } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { trackCalendarNav, trackCalendarToggle } from '../utils/analytics'
 import { loadStrings } from '../config/strings'
-import { getContent } from '../config/content'
+import { usePageContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
-
-const data = getContent('calendar')
 import {
   todayLocal,
   todayHijri,
@@ -45,6 +43,7 @@ function formatDayMonth({ y, m, d }) {
 
 export default function Calendar() {
   const { lang } = useLanguage()
+  const { data, loading } = usePageContent(lang, 'calendar')
   const [strings, setStrings] = useState(null)
   const [today, setToday] = useState(() => todayLocal())
   // view mode: 'hijri' (Hijri month grid) or 'gregorian' (Gregorian month grid)
@@ -67,6 +66,7 @@ export default function Calendar() {
 
   // Initialize view to the current month (Hijri or Gregorian) based on viewMode
   useEffect(() => {
+    if (!data) return
     if (!view) {
       if (viewMode === 'gregorian') {
         setView(gregorianMonthOf(todayLocal()))
@@ -77,10 +77,11 @@ export default function Calendar() {
       const target = cur || (fallback ? { year: fallback.hijriYear, month: fallback.hijriMonth } : null)
       if (target) setView(target)
     }
-  }, [view, viewMode])
+  }, [view, viewMode, data])
 
   // Reset view when toggling modes so nav starts at the current month
   const switchMode = (mode) => {
+    if (!data) return
     if (mode === viewMode) return
     setViewMode(mode)
     localStorage.setItem('kqcmm_calendar_view', mode)
@@ -93,30 +94,60 @@ export default function Calendar() {
     }
   }
 
-  const content = data[lang] || data.en
-  const title = content.title
-
-  const todayH = todayHijri(data.monthStarts)
-  const monthNames = data.monthNames?.[lang] || data.monthNames?.en || []
-  const monthNamesShort = data.monthNamesShort?.[lang] || data.monthNamesShort?.en || []
   // Memoize occurrence derivation: enumerateOccurrences builds brand-new object
   // identities every render. Without memoization the 60s today-tick re-render
   // would recompute + re-sort the lists, and an inconsistent sort comparator
   // (ties returning 1 both ways) could reorder equal-date items — causing React
   // to move DOM nodes and snap scroll back to the top mid-scroll.
-  const occurrences = useMemo(() => enumerateOccurrences(data), [data])
+  const occurrences = useMemo(() => {
+    if (!data) return []
+    return enumerateOccurrences(data)
+  }, [data])
+
+  const todayStr = formatISODate(today)
+  const todayEvents = useMemo(() => {
+    if (!occurrences) return []
+    return occurrences.filter(o => o.available && o.gregorianStart && formatISODate(o.gregorianStart) === todayStr)
+  }, [occurrences, todayStr])
+
+  // Available occurrences sorted by start date (ascending). The comparator must
+  // return 0 for equal dates (and tie-break by id) so equal-date items keep a
+  // deterministic order — an inconsistent comparator can reorder same-day events
+  // on re-render, which remounts list rows and resets the scroll position.
+  const available = useMemo(() => {
+    if (!occurrences) return []
+    return occurrences
+      .filter(o => o.available && o.gregorianStart)
+      .sort((a, b) => {
+        const sa = formatISODate(a.gregorianStart), sb = formatISODate(b.gregorianStart)
+        if (sa < sb) return -1
+        if (sa > sb) return 1
+        return a.id < b.id ? -1 : a.id > b.id ? 1 : 0
+      })
+  }, [occurrences])
+
+  if (loading || !data) {
+    return (
+      <div className="content-page">
+        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
+          Loading...
+        </p>
+      </div>
+    )
+  }
+
+  const content = data[lang] || data.en
+  const title = content.title
+
+  const todayH = todayHijri(data.monthStarts)
+  const monthNames = data.monthNames || []
+  const monthNamesShort = data.monthNamesShort || []
+
   const next = nextOccurrence(occurrences, today)
   const cal = strings?.calendar || {}
 
   const isMonthly = (occ) => occ.rule === 'hijri-monthly'
 
-  // All available occurrences whose Gregorian start date is TODAY. Unlike the
-  // single "Next Event" strip, this lists every event mapped to today, split
-  // into Monthly | Other columns like the upcoming section.
-  const todayStr = formatISODate(today)
-  const todayEvents = useMemo(() => occurrences
-    .filter(o => o.available && o.gregorianStart && formatISODate(o.gregorianStart) === todayStr),
-  [occurrences, today])
   const todayMonthly = todayEvents.filter(isMonthly)
   const todayOther = todayEvents.filter(o => !isMonthly(o))
 
@@ -143,19 +174,6 @@ export default function Calendar() {
     ? gregorianMonthOf(today)
     : hijriMonthOf(data.monthStarts, today)
   const isCurrentView = view && currentMonth && view.year === currentMonth.year && view.month === currentMonth.month
-
-  // Available occurrences sorted by start date (ascending). The comparator must
-  // return 0 for equal dates (and tie-break by id) so equal-date items keep a
-  // deterministic order — an inconsistent comparator can reorder same-day events
-  // on re-render, which remounts list rows and resets the scroll position.
-  const available = useMemo(() => occurrences
-    .filter(o => o.available && o.gregorianStart)
-    .sort((a, b) => {
-      const sa = formatISODate(a.gregorianStart), sb = formatISODate(b.gregorianStart)
-      if (sa < sb) return -1
-      if (sa > sb) return 1
-      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0
-    }), [occurrences])
 
   const { eventList, pastEvents } = splitUpcomingPast(available, today)
 
@@ -263,7 +281,7 @@ export default function Calendar() {
             </div>
             <div className="cal-grid-sub">
               {grid.hasData && isCurrentView && todayH.ok
-                ? hijriLabel(todayH.hijriYear, todayH.hijriMonth, todayH.hijriDay, monthNames)
+                ? hijriLabel(todayH.hijriYear, todayH.hijriMonth, todayH.hijriDay, monthNames, lang)
                 : ''}
             </div>
           </div>
@@ -357,7 +375,7 @@ export default function Calendar() {
               {(() => { const e = eventById(next.occurrence.id); return localizedEvent(e, lang, monthNames).label })()}
             </div>
             <div className="cal-nextstrip-date">
-              {hijriLabel(next.occurrence.hijriYear, next.occurrence.hijriMonth, next.occurrence.hijriDays[0], monthNames)}
+              {hijriLabel(next.occurrence.hijriYear, next.occurrence.hijriMonth, next.occurrence.hijriDays[0], monthNames, lang)}
               <span className="cal-nextstrip-sep">·</span>
               {formatDisplayDate(next.occurrence.gregorianStart)}
             </div>

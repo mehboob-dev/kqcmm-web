@@ -456,7 +456,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { eventLabel, eventDescription } from './generate-calendar-events.mjs'
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const calendarFile = join(__dirname, '..', 'src', 'config', 'content', 'calendar.json')
+const calendarFile = join(__dirname, '..', 'src', 'config', 'content', 'en', 'calendar.json')
 const sourceFile = join(__dirname, 'data', 'events_merged.json')
 const calendar = JSON.parse(readFileSync(calendarFile, 'utf8'))
 const source = JSON.parse(readFileSync(sourceFile, 'utf8'))

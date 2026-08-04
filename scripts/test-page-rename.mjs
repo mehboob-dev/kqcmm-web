@@ -123,41 +123,36 @@ console.log('--- applyRename: transactional with rollback ---')
   const navPath = path.join(tmp, 'navigation.json')
   const contentDir = path.join(tmp, 'content')
   fs.mkdirSync(contentDir)
-  fs.writeFileSync(path.join(contentDir, 'dua.json'), JSON.stringify({ en: { title: 'Duas' } }))
+  fs.mkdirSync(path.join(contentDir, 'en'))
+  fs.mkdirSync(path.join(contentDir, 'hinglish'))
+  fs.writeFileSync(path.join(contentDir, 'en', 'dua.json'), JSON.stringify({ en: { title: 'Duas' } }))
+  fs.writeFileSync(path.join(contentDir, 'hinglish', 'dua.json'), JSON.stringify({ hinglish: { title: 'Duas' } }))
 
-  // Point the module at the temp copies via options (buildRename uses opts for
-  // routes/nav; applyRename writes to the real module paths, so we monkeypatch
-  // by copying files in and restoring after).
-  const { CONTENT_DIR, NAV_FILE, ROUTES_FILE } = await import('./page-rename.mjs')
-  globalThis.realContentDir = CONTENT_DIR
-  globalThis.realNavFile = NAV_FILE
-  globalThis.realRoutesFile = ROUTES_FILE
-  const realContentDir = CONTENT_DIR
-  const realNavFile = NAV_FILE
-  const realRoutesFile = ROUTES_FILE
+  // Mock routes and navigation files
+  fs.writeFileSync(routesPath, JSON.stringify(loadRoutes()))
+  fs.writeFileSync(navPath, JSON.stringify({ bottomNav: [], sideDrawer: [] }))
 
-  // Backup real files, point module paths at temp via fs swap is not possible
-  // (consts), so we test applyRename's rollback by making the destination
-  // exist to force an error and verifying no source file was moved.
+  // Import/override paths
+  const { overridePaths, restorePaths } = await import('./page-rename.mjs')
+  overridePaths({ contentDir, navFile: navPath, routesFile: routesPath })
+
   try {
-    writeJSON(routesPath, loadRoutes())
-    writeJSON(navPath, { bottomNav: [], sideDrawer: [] })
-
     // Sanity: content file present
-    assert(fs.existsSync(path.join(realContentDir, 'dua.json')), 'dua.json exists (real content dir)')
+    assert(fs.existsSync(path.join(contentDir, 'en', 'dua.json')), 'dua.json exists (real content dir)')
 
     // Test rollback: craft a plan whose destination already exists by writing
     // the destination file, then applyRename must throw and leave source intact.
     const plan = buildRename('dua', 'supplications', { skipFsChecks: true })
     assert(plan.ok, 'build plan for rollback test')
-    // Force collision by creating the destination file in the real content dir
-    fs.writeFileSync(path.join(realContentDir, 'supplications.json'), '{}')
+    // Force collision by creating the destination file in the temp content dir
+    fs.writeFileSync(path.join(contentDir, 'en', 'supplications.json'), '{}')
+    fs.writeFileSync(path.join(contentDir, 'hinglish', 'supplications.json'), '{}')
     let threw = false
     try { applyRename(plan) } catch (e) { threw = true }
     assert(threw, 'applyRename throws on destination collision')
-    assert(fs.existsSync(path.join(realContentDir, 'dua.json')), 'source file untouched after failed rename')
-    fs.unlinkSync(path.join(realContentDir, 'supplications.json'))
+    assert(fs.existsSync(path.join(contentDir, 'en', 'dua.json')), 'source file untouched after failed rename')
   } finally {
+    restorePaths()
     fs.rmSync(tmp, { recursive: true, force: true })
   }
 }
@@ -209,48 +204,65 @@ console.log('--- custom create/duplicate/delete plans (no fs side effects) ---')
 
 console.log('--- applyCreate/applyDuplicate/applyDelete transactional (temp dir) ---')
 {
-  // These write to the real module paths; to avoid touching the repo we verify
-  // preflight validation rejects before any write for the failing cases, and
-  // exercise the happy path through build* + apply* in a way that rolls back.
-  // We only assert the pure preflight (no partial writes) here to keep the
-  // repo pristine; the live API was verified separately.
-  const routes = loadRoutes()
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'kqcmm-rename-'))
+  const routesPath = path.join(tmp, 'pageRoutes.json')
+  const navPath = path.join(tmp, 'navigation.json')
+  const contentDir = path.join(tmp, 'content')
+  fs.mkdirSync(contentDir)
+  fs.mkdirSync(path.join(contentDir, 'en'))
+  fs.mkdirSync(path.join(contentDir, 'hinglish'))
+  fs.writeFileSync(path.join(contentDir, 'en', 'dua.json'), JSON.stringify({ en: { title: 'Duas' } }))
+  fs.writeFileSync(path.join(contentDir, 'hinglish', 'dua.json'), JSON.stringify({ hinglish: { title: 'Duas' } }))
 
-  // applyCreateCustom: preflight a plan, then make the destination exist on
-  // disk so apply must throw and roll back — the pre-existing file must remain
-  // and the registry must not gain a new entry.
-  const collisionFile = 'apply-test-collision-' + process.pid
-  const collisionPath = path.join(globalThis.realContentDir, collisionFile + '.json')
-  fs.writeFileSync(collisionPath, '{"en":{"title":"pre-existing"}}')
-  const create = buildCreateCustom(collisionFile, { en: { title: 'T' } }, { routes })
-  assert(!create.ok && /already exists/i.test(create.error), 'create preflight rejects existing file')
-  let threw = false
-  const plan = { ok: true, result: { entry: { id: 'custom-applytest' }, routes: loadRoutes(), contentFile: collisionFile, content: { en: { title: 'T' } } } }
-  try { applyCreateCustom(plan) } catch (e) { threw = true }
-  assert(threw, 'applyCreateCustom throws when destination exists (no partial write)')
-  assert(JSON.parse(fs.readFileSync(collisionPath, 'utf8')).en.title === 'pre-existing', 'pre-existing file untouched')
-  assert(!loadRoutes().some(p => p.id === 'custom-applytest'), 'registry not modified on failed create')
-  fs.unlinkSync(collisionPath)
-  assert(fs.existsSync(path.join(globalThis.realContentDir, 'dua.json')), 'repo file untouched')
+  // Mock routes and navigation files
+  fs.writeFileSync(routesPath, JSON.stringify(loadRoutes()))
+  fs.writeFileSync(navPath, JSON.stringify({ bottomNav: [], sideDrawer: [] }))
 
-  // Happy path: buildCreateCustom must carry content through to the plan so a
-  // successful apply writes valid JSON (regression: content was dropped,
-  // writing literal "undefined").
-  const goodFile = 'apply-test-good-' + process.pid
-  const goodPath = path.join(globalThis.realContentDir, goodFile + '.json')
-  const goodPlan = buildCreateCustom(goodFile, { en: { title: 'Good' } }, { routes })
-  assert(goodPlan.ok, 'build create happy path ok')
-  assert(!!goodPlan.result.content && goodPlan.result.content.en.title === 'Good', 'create plan carries content')
-  const applied = applyCreateCustom(goodPlan)
-  assert(applied.contentFile === goodFile, 'apply create writes file')
-  const written = JSON.parse(fs.readFileSync(goodPath, 'utf8'))
-  eq(written.en.title, 'Good', 'created file contains valid template JSON (not "undefined")')
-  assert(loadRoutes().some(p => p.id === goodPlan.result.entry.id), 'registry gains custom entry')
-  // Cleanup: remove the created file + registry entry
-  fs.unlinkSync(goodPath)
-  const afterClean = loadRoutes().filter(p => p.id !== goodPlan.result.entry.id)
-  writeJSONAtomic(globalThis.realRoutesFile, afterClean)
-  assert(!loadRoutes().some(p => p.id === goodPlan.result.entry.id), 'registry cleaned after test')
+  // Import/override paths
+  const { overridePaths, restorePaths } = await import('./page-rename.mjs')
+  overridePaths({ contentDir, navFile: navPath, routesFile: routesPath })
+
+  try {
+    const routes = loadRoutes()
+
+    // applyCreateCustom: preflight a plan, then make the destination exist on
+    // disk so apply must throw and roll back — the pre-existing file must remain
+    // and the registry must not gain a new entry.
+    const collisionFile = 'apply-test-collision-' + process.pid
+    const collisionPath = path.join(contentDir, 'en', collisionFile + '.json')
+    const collisionPathHing = path.join(contentDir, 'hinglish', collisionFile + '.json')
+    fs.writeFileSync(collisionPath, '{"en":{"title":"pre-existing"}}')
+    fs.writeFileSync(collisionPathHing, '{"hinglish":{"title":"pre-existing"}}')
+    const create = buildCreateCustom(collisionFile, { en: { title: 'T' }, hinglish: { title: 'T' } }, { routes })
+    assert(!create.ok && /already exists/i.test(create.error), 'create preflight rejects existing file')
+    let threw = false
+    const plan = { ok: true, result: { entry: { id: 'custom-applytest' }, routes: loadRoutes(), contentFile: collisionFile, content: { en: { title: 'T' }, hinglish: { title: 'T' } } } }
+    try { applyCreateCustom(plan) } catch (e) { threw = true }
+    assert(threw, 'applyCreateCustom throws when destination exists (no partial write)')
+    assert(JSON.parse(fs.readFileSync(collisionPath, 'utf8')).en.title === 'pre-existing', 'pre-existing file untouched')
+    assert(!loadRoutes().some(p => p.id === 'custom-applytest'), 'registry not modified on failed create')
+    fs.unlinkSync(collisionPath)
+    fs.unlinkSync(collisionPathHing)
+    assert(fs.existsSync(path.join(contentDir, 'en', 'dua.json')), 'repo file untouched')
+
+    // Happy path: buildCreateCustom must carry content through to the plan so a
+    // successful apply writes valid JSON (regression: content was dropped,
+    // writing literal "undefined").
+    const goodFile = 'apply-test-good-' + process.pid
+    const goodPath = path.join(contentDir, 'en', goodFile + '.json')
+    const goodPathHing = path.join(contentDir, 'hinglish', goodFile + '.json')
+    const goodPlan = buildCreateCustom(goodFile, { en: { title: 'Good' }, hinglish: { title: 'Good' } }, { routes })
+    assert(goodPlan.ok, 'build create happy path ok')
+    assert(!!goodPlan.result.content && goodPlan.result.content.en.title === 'Good', 'create plan carries content')
+    const applied = applyCreateCustom(goodPlan)
+    assert(applied.contentFile === goodFile, 'apply create writes file')
+    const written = JSON.parse(fs.readFileSync(goodPath, 'utf8'))
+    eq(written.en.title, 'Good', 'created file contains valid template JSON (not "undefined")')
+    assert(loadRoutes().some(p => p.id === goodPlan.result.entry.id), 'registry gains custom entry')
+  } finally {
+    restorePaths()
+    fs.rmSync(tmp, { recursive: true, force: true })
+  }
 }
 
 console.log('--- existing-page name validation (regression: camelCase files) ---')
