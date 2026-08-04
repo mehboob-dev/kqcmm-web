@@ -12,6 +12,18 @@ Ideas and feature requests for future development of KQCMM.
 - Share icon on each dua/verse/card for one-tap WhatsApp sharing (Web Share API)
 - "Copy to clipboard" button for individual verses
 
+### 1b. Share a verse as an image card ⭐
+Render a single dua/verse/kalam as a **shareable image card** (styled text on a themed background) that users can save or share on WhatsApp. Spiritual verses are shared constantly in this community, and an image card travels better and reads better than a plain link.
+
+**Implementation notes (so this is buildable without re-deriving it):**
+- **Source of truth:** the card content comes from the already-localized page content — `usePageContent(lang, page)` returns the per-language payload; each card is a `sections`/`duas`/`verses` item (the same item `ContentView`/`GenericContentRenderer` render). No new content authoring.
+- **Rendering:** two viable paths —
+  1. **Canvas (no deps):** draw the verse text on a `<canvas>` sized ~1080×1350 (4:5, WhatsApp-friendly) with the current theme's colors (`--accent`, `--bg-card`, `--text` via `getComputedStyle`) and the current font. Wrap in a small async util (e.g. `src/utils/shareImage.js`) that returns a blob. Native, offline, no new dependency.
+  2. **html-to-image:** use a library like `html-to-image`/`dom-to-image` on a hidden styled `<div>` if a richer layout (Arabic script, decorative borders) is wanted — adds a dependency, so prefer Canvas unless the design demands it.
+- **Share:** `navigator.share({ files: [File] })` (Web Share Level 2) on mobile; fall back to `navigator.clipboard` copy of the image blob URL, or save via an `<a download>`.
+- **Entry point:** a small "share image" button on each card (reuse the `data-tour`/card render path so it appears on every content page, not just one).
+- **Analytics:** fire a `share_used` GA4 event with `share_method: 'image'` (extend `trackShare` in `src/utils/analytics.js`).
+
 ### 2. Long-press context menu on cards
 In list mode, long-press a card to show options: "Copy this verse", "Share via WhatsApp", "Bookmark". Power-user feature for mobile.
 
@@ -39,6 +51,36 @@ Remember scroll position on pages like Khatm (32 steps) so users don't lose thei
 
 ### 9. Bookmarks / favorites
 Let users bookmark specific verses or sections. Store in IndexedDB or localStorage.
+
+---
+
+## 🙏 Repeat-Recitation Features (core usage)
+
+Ideas shaped around the app's primary cadence — readers recite **Sijrah Nama daily**, **Fateha Khwani weekly**, and check the **calendar randomly** (e.g. for Urs dates). Items are lettered (A–E) so they don't disturb the 1–21 numbering above.
+
+### A. Weekly Fateha completion marker
+Fateha Khwani is a **weekly set practice**. Add a "Done this week" toggle/checkmark on the Fateha page, stored per-week in localStorage (`kqcmm_fateha_done_<ISO-week>`) and resetting each Monday. A subtle visible cue ("✓ This week's Fateha complete") honors the ritual without gamification.
+- **Storage:** key by ISO week so it self-resets; `localStorage` is fine (no IndexedDB needed).
+- **UI:** a small checkmark/state on the Fateha page header; no disruption to reading.
+- **Derived, not hardcoded:** week number computed from `new Date()` (ISO week), so it needs no config.
+
+### B. Resume reading position per page
+Daily Sijrah reading means returning to a long verse list mid-way. Remember the **last-read card index** per page in localStorage (`kqcmm_resume_<pageId>`) and offer a "Resume" jump on return — so daily readers don't re-scan from the start. This extends **#8 (scroll memory)** from *position* to *which card you were on*.
+- Store the current item index (from `ContentView`'s slide/list state), not just pixel scroll.
+- Show a small "Resume from card N" affordance on pages that have a saved position.
+
+### C. Continuous scroll view for Sijrah
+Sijrah is read daily; the current slide mode is one-card-at-a-time. Add a **continuous scroll** view (all verses in one long scroll, no paging) as an alternative view mode for verse-based pages — reading scripture daily feels more natural as a flowing text than as swiped cards.
+- Reuses the existing list-mode renderer; it's a presentation variant, no content change.
+
+### D. "This week's Fateha" temporal framing
+Give the weekly Fateha practice a temporal anchor: a small strip on the Fateha page showing **which week** you're on (week # since a stored start date, e.g. "Week 12 of the year"). Pairs with A.
+- Derived from the current date; no content authoring needed.
+
+### E. Open to last visit
+Returning daily readers should land where their habit is, not on Home every time. On app open, route to the **last-visited page** (stored in localStorage) if the visit is within the same session window; first-time users get Home. Small, high-subtlety — pairs with the onboarding tour's home-first default.
+
+> **Already documented elsewhere:** share-a-verse-as-image-card → **1b**; Hijri↔Gregorian converter → **14**.
 
 ---
 
