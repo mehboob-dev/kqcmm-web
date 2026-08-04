@@ -13,6 +13,10 @@ Maintain both changelogs together when work lands. Latest version at the top.
 > the public changelog was intentionally NOT bumped.
 
 ### Internal / docs
+- **Calendar perf refactors** (no user-visible change, recorded here):
+  - `src/pages/Calendar.jsx`: `eventByOrd` (day→occurrences index) and the month `grid` are now `useMemo`-derived. The grid memo maps each cell to a **fresh** object with its `events` — it no longer mutates the `buildMonthGrid` return (avoids corrupting cached state if the builder ever returns a shared grid). `available` sort comparator already returns `0` on ties.
+  - `src/utils/hijriCalendar.js` `enumerateOccurrences`: pre-indexes `monthStarts` by Hijri month (`startsByMonth`) so `hijri-fixed` events look up only their own month's slots instead of scanning all slots; `hijri-monthly` still walks every slot. Behavior identical to the old loop (the map holds the same `{ms, nextMs}` pairs the old scan iterated); the last-configured-month handling is unchanged.
+  - Docs updated (`docs/components.md` Calendar data/logic + `enumerateOccurrences` row).
 - **Content split per language folder.** Moved `src/config/content/*.json` (flat,
   all-languages-in-one-file) → `src/config/content/{en,hinglish}/*.json` (one folder
   per live language, one file per page). Shared top-level metadata (`quickJump`,

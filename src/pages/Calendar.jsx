@@ -126,6 +126,38 @@ export default function Calendar() {
       })
   }, [occurrences])
 
+  // Map event ids -> Gregorian day ordinal for marking grid cells
+  const dayOrdKey = ({ y, m, d }) => `${y}-${m}-${d}`
+  const eventByOrd = useMemo(() => {
+    const map = new Map()
+    if (!occurrences) return map
+    occurrences.filter(o => o.available && o.gregorianStart).forEach(o => {
+      const k = dayOrdKey(o.gregorianStart)
+      const existing = map.get(k)
+      if (existing) {
+        existing.push(o)
+      } else {
+        map.set(k, [o])
+      }
+    })
+    return map
+  }, [occurrences])
+
+  const grid = useMemo(() => {
+    if (!view || !data) return { hasData: false }
+    const g = viewMode === 'gregorian'
+        ? buildGregorianMonthGrid(data.monthStarts, view, today)
+        : buildMonthGrid(data.monthStarts, view, today)
+    if (g.hasData) {
+      const mappedCells = g.cells.map(cell => ({
+        ...cell,
+        events: eventByOrd.get(dayOrdKey(cell.gregorian)) || []
+      }))
+      return { ...g, cells: mappedCells }
+    }
+    return g
+  }, [view, viewMode, data, today, eventByOrd])
+
   if (loading || !data) {
     return (
       <div className="content-page">
@@ -150,25 +182,6 @@ export default function Calendar() {
 
   const todayMonthly = todayEvents.filter(isMonthly)
   const todayOther = todayEvents.filter(o => !isMonthly(o))
-
-  // Map event ids -> Gregorian day ordinal for marking grid cells
-  const dayOrdKey = ({ y, m, d }) => `${y}-${m}-${d}`
-  const eventByOrd = new Map()
-  occurrences.filter(o => o.available && o.gregorianStart).forEach(o => {
-    const k = dayOrdKey(o.gregorianStart)
-    eventByOrd.set(k, (eventByOrd.get(k) || []).concat(o))
-  })
-
-  const grid = view
-    ? (viewMode === 'gregorian'
-        ? buildGregorianMonthGrid(data.monthStarts, view, today)
-        : buildMonthGrid(data.monthStarts, view, today))
-    : { hasData: false }
-  if (grid.hasData) {
-    grid.cells.forEach(cell => {
-      cell.events = eventByOrd.get(dayOrdKey(cell.gregorian)) || []
-    })
-  }
 
   const currentMonth = viewMode === 'gregorian'
     ? gregorianMonthOf(today)

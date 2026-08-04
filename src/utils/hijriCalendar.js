@@ -338,16 +338,32 @@ export function enumerateOccurrences(cfg) {
   const events = cfg?.events || []
   const out = []
 
+  // Pre-index the month starts by Hijri month to optimize loop lookups
+  const startsByMonth = new Map()
+  for (let i = 0; i < monthStarts.length - 1; i++) {
+    const ms = monthStarts[i]
+    const nextMs = monthStarts[i + 1]
+    const list = startsByMonth.get(ms.hijriMonth) || []
+    list.push({ ms, nextMs })
+    startsByMonth.set(ms.hijriMonth, list)
+  }
+
   for (const ev of events) {
     if (ev.rule === 'hijri-fixed' || ev.rule === 'hijri-monthly') {
       const isMonthly = ev.rule === 'hijri-monthly'
-      // hijri-fixed maps against the slot for ITS month only (never a different
-      // month). hijri-monthly maps against EVERY month slot (recurs monthly),
-      // including the last configured month (days 1-29 need no boundary).
-      for (let i = 0; i < monthStarts.length - 1; i++) {
-        const ms = monthStarts[i]
-        if (!isMonthly && ms.hijriMonth !== ev.hijriMonth) continue
-        const nextMs = monthStarts[i + 1]
+      
+      let candidates = []
+      if (isMonthly) {
+        // hijri-monthly maps against EVERY month slot
+        for (let i = 0; i < monthStarts.length - 1; i++) {
+          candidates.push({ ms: monthStarts[i], nextMs: monthStarts[i + 1] })
+        }
+      } else {
+        // hijri-fixed maps against the slot for ITS month only
+        candidates = startsByMonth.get(ev.hijriMonth) || []
+      }
+
+      for (const { ms, nextMs } of candidates) {
         const r = mapFixedEventToMonth(ev, ms, nextMs)
         if (r.ok) {
           out.push({ id: ev.id, rule: ev.rule, hijriYear: r.hijriYear, hijriMonth: r.hijriMonth, hijriDays: r.hijriDays, gregorianStart: r.gregorianStart, gregorianEnd: r.gregorianEnd, available: true })

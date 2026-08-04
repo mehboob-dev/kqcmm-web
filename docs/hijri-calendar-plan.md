@@ -23,7 +23,7 @@ The Islamic calendar is lunar — months start based on actual moon sighting, wh
 
 **Data source:** None — the admin directly enters the Gregorian date each Hijri month begins, based on local moon sighting. No location, API, or pre-calculated table.
 
-**Schema** (`src/config/content/calendar.json`, `schemaVersion: 1`):
+**Schema** (`src/config/content/{lang}/calendar.json`, `schemaVersion: 1`; `en/` is the source of truth for `monthStarts` and carries the event `translations` map):
 - Top-level `monthStarts`: a **free-form** list of `{ hijriYear, hijriMonth, gregorianStart }` entries — admins add/remove any months they need (not a fixed window). `gregorianStart` may be `null` until the admin confirms it.
 - Top-level `events`: shared, language-independent rules. Each has a stable `id`, a `rule`, and optional language `translations`.
 - `en`/`hinglish` hold only the localized page title (no duplicated event arrays).
@@ -246,9 +246,9 @@ The v1 build followed a different, simpler shape than Option 5's steps:
 
 | Area | What shipped | Location |
 |---|---|---|
-| Data | `monthStarts` (free-form list, nullable) + shared `events` | `src/config/content/calendar.json` |
+| Data | `monthStarts` (free-form list, nullable) + `events` (with per-language `translations`) | `src/config/content/{lang}/calendar.json` (`en/` is source of truth) |
 | Logic | Pure conversion + event mapping + countdown | `src/utils/hijriCalendar.js` |
-| Tests | 123 unit tests (no framework) | `scripts/test-hijri-calendar.mjs` (`npm test`) |
+| Tests | 126 unit tests (no framework) | `scripts/test-hijri-calendar.mjs` (`npm test`) |
 | Public UI | Today card, next-event countdown, event list | `src/pages/Calendar.jsx` |
 | Admin | Dedicated 📅 Calendar tab, validated save | `scripts/admin/src/components/CalendarEditor.jsx` + `/api/calendar` |
 | Tooling | fetch/translate scripts skip calendar (admin-managed) | `scripts/fetch-content.mjs`, `scripts/translate-content.mjs` |

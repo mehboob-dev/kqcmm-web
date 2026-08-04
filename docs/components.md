@@ -352,11 +352,11 @@ Hijri Islamic calendar page — a full navigable calendar, not a static list.
 - **No "Not yet configured" section** — the chips list of unplaceable events was removed; unplaceable events are simply not shown.
 
 ### Data & logic
-- Reads the shared, top-level data from `src/config/content/calendar.json` (schema v1).
+- Reads the language-split calendar data from `src/config/content/{lang}/calendar.json` (schema v1) via `usePageContent`; `en/calendar.json` is the source of truth for `monthStarts` and carries a `translations` map on each event.
 - Uses `src/utils/hijriCalendar.js` for all conversion/mapping.
-- 3-letter Hijri month abbreviations come from `monthNamesShort` in `calendar.json`.
+- 3-letter Hijri month abbreviations come from `monthNamesShort` in the calendar file.
 - UI labels from `strings.calendar` in `src/config/strings/*.json`.
-- **Derived data is memoized** (`occurrences`, `todayEvents`, sorted `available`) with `useMemo`, and the sort comparator returns `0` for equal dates (tie-breaking by `id`). This keeps list identities/order stable across the 60s today-tick re-render — an unstable comparator reordered same-day events and snapped the scroll containers back to top mid-scroll.
+- **Derived data is memoized** (`occurrences`, `todayEvents`, sorted `available`, the `eventByOrd` day→occurrences index, and the `grid`) with `useMemo`. The grid memo maps each cell to a **fresh** object carrying its `events` (it never mutates the `buildMonthGrid` return), and the sort comparator returns `0` for equal dates (tie-breaking by `id`). This keeps list identities/order stable across the 60s today-tick re-render — an unstable comparator reordered same-day events and snapped the scroll containers back to top mid-scroll.
 
 ---
 
@@ -465,7 +465,7 @@ settings(301), below splash/PWA toasts(9999).
 | `todayLocal`, `dayOrdinal`, `ordinalToDate`, `daysBetween`, `addDays`, `compareDates` | DST-safe day arithmetic via UTC ordinals |
 | `validateCalendarConfig` | Validates month starts (ordering, 29–30 day lengths, duplicate slots) and event rules |
 | `gregorianToHijri`, `todayHijri` | Convert a civil date to Hijri; needs only the containing month's start (day capped at 30) |
-| `enumerateOccurrences` | All event occurrences across the covered window (available + unavailable records) |
+| `enumerateOccurrences` | All event occurrences across the covered window (available + unavailable records). Pre-indexes `monthStarts` by Hijri month (`startsByMonth`) so `hijri-fixed` events look up only their own month's slots instead of scanning all slots; `hijri-monthly` still walks every slot |
 | `localizedEvent`, `hijriLabel` | Label resolution (language override → default → id) and `"10 Muharram 1448"` formatting |
 | `nextOccurrence` | Earliest occurrence at/after a date + days-until |
 | `buildMonthGrid` | Weekday-aligned Hijri month grid for a target `{year, month}` (cells carry Hijri day, Gregorian date, today flag) |
@@ -481,7 +481,7 @@ settings(301), below splash/PWA toasts(9999).
 - **Fixed events map only against their own `hijriMonth` slot** — never a different month (prevents "27 Safar" for a Rajab-27 event).
 - The next month's boundary also validates 29/30-day month lengths and caps the Hijri grid at the proven length (no phantom "30 Muharram" spilling into Safar 1).
 
-Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 123 cases).
+Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 126 cases).
 
 ---
 
