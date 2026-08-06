@@ -524,9 +524,11 @@ const server = http.createServer((req, res) => {
 
   // ── BOOKS ROUTES ──
   // Books live in src/config/content/{lang}/books/. The en/ folder is the
-  // editable source of truth; hinglish shells are left empty (en-fallback).
+  // editable source of truth. Hinglish has NO per-book files — the loader
+  // falls back to en/ for a missing file. Empty {} shells are never written
+  // (Vite dedupes identical empty JSON into a shared chunk that breaks the
+  // glob loader's JSON import contract).
   const BOOKS_EN_DIR = path.join(CONTENT_DIR, 'en', 'books')
-  const BOOKS_HI_DIR = path.join(CONTENT_DIR, 'hinglish', 'books')
 
   // List all books (registry) — en index is source of truth.
   if (u.pathname === '/api/books' && method === 'GET') {
@@ -559,8 +561,7 @@ const server = http.createServer((req, res) => {
           if (!Array.isArray(ch.paragraphs)) return sendError('Each chapter needs a paragraphs array')
         }
         writeJSON(path.join(BOOKS_EN_DIR, slug + '.json'), d)
-        // Keep hinglish shell in sync (empty {}).
-        writeJSON(path.join(BOOKS_HI_DIR, slug + '.json'), {})
+        // No hinglish shell write — the loader en-fallback covers hinglish.
         // Refresh the registry chapterCount.
         const idx = readJSON(path.join(BOOKS_EN_DIR, '_index.json')) || { books: [] }
         const entry = (idx.books || []).find(b => b.slug === slug)

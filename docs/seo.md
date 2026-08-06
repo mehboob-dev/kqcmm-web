@@ -24,8 +24,14 @@ Build time (npm run build):
                                   └─────────────────────┘
 
 Runtime (user visits):
-Crawler or user → static HTML served → React hydrates client-side
+Crawler or user → static HTML served → React renders client-side (createRoot)
 ```
+
+> **No hydration.** `src/main.jsx` always uses `ReactDOM.createRoot`, never
+> `hydrateRoot`. Every page loads its content async via `usePageContent`, so the
+> client's first render is `Loading...` — hydrating that against the fully-loaded
+> prerendered HTML makes React 18 throw (#418/#423/#425). The prerendered markup
+> is kept for crawlers and simply replaced on boot. See `src/main.jsx`.
 
 ---
 
@@ -50,7 +56,8 @@ Crawler or user → static HTML served → React hydrates client-side
 
 The route list is **derived from `src/config/pageRoutes.json`** (canonical routes
 plus any legacy `aliases`), so a renamed page — and its old route — are
-prerendered automatically:
+prerendered automatically. Dynamic `/books/:slug` routes expand to **one page per
+live book slug** by reading `en/books/_index.json`:
 
 ```
 /kqcmm-web/       → dist/index.html
@@ -65,6 +72,9 @@ prerendered automatically:
 /kqcmm-web/roshni → dist/roshni/index.html
 /kqcmm-web/abbajaan       → dist/abbajaan/index.html
 /kqcmm-web/changelog      → dist/changelog/index.html
+/kqcmm-web/books  → dist/books/index.html
+/kqcmm-web/books/meraj-un-nabi → dist/books/meraj-un-nabi/index.html
+/kqcmm-web/books/...        → ... (one per live book slug, 9 today)
 ```
 
 Each alias (e.g. a renamed page's old route) is prerendered to its own

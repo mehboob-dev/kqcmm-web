@@ -50,10 +50,10 @@ Located at `D:\Work\KQCMM\Content\Books` — **12 works**, all English, 3 format
 |---|---|---|
 | Q1 | Layout | **Books index + per-book pages** |
 | Q2 | Registration | **Dedicated `BookReader` component** (not generic) |
-| Q3 | Book page | Header + chapter TOC + chapters as cards + themed cover |
+| Q3 | Book page | Header + chapters as cards + themed cover; chapter navigation via **QuickJump** (list/slide view modes) |
 | Q4 | Extras | Reading progress + share-a-book |
 | Q5 | Chapter model | **Auto-split now** (headings where clean, else numbered chunks); curated later via admin |
-| Q6 | Language | Both langs, **en-filled** (hinglish empty → en-fallback) |
+| Q6 | Language | Both langs, **en-filled** — hinglish has **no per-book file**, loader falls back to `en/` |
 | Q7 | Index | Simple cover cards (gradient + title + blurb) |
 | Q8 | `.doc` | Ship 9, add 3 later ("coming soon") |
 | Q9 | Admin curation | **Dedicated Books admin editor** |
@@ -77,9 +77,16 @@ src/config/content/
 │   └── ... (existing pages)
 └── hinglish/
     └── books/
-        ├── meraj-un-nabi.json     # empty shell → en-fallback
-        └── _index.json
+        └── _index.json            # slug + title + status only (see §3.2b)
 ```
+
+Hinglish books have **no per-book `{slug}.json` file** — the loader's en-fallback
+(§3.3) serves the English text when the active language is hinglish. Empty `{}`
+shells are **never written**: identical empty JSON objects get deduped by Vite
+into a shared chunk that breaks the `import.meta.glob` JSON import contract
+(React hydration errors #418/#423). The `import-books.mjs` importer and the
+`{slug}.json` `getContent` empty-shell fallback in `src/config/content/index.js`
+both exist to keep this safe.
 
 ### 3.2 `_index.json` — the book registry (source of truth for the index page)
 
@@ -91,17 +98,19 @@ src/config/content/
       "title": "Meraj un Nabi",
       "author": "Hajee Mahboob Kassim",
       "description": "The Holy Prophet's night journey to Heaven.",
-      "cover": "#9d2b4a",             // themed cover gradient base color
+      "cover": "#3f3aa8",             // themed cover gradient base color
       "status": "live",                // "live" | "coming-soon"
-      "pageCount": 12,                 // number of auto-split chapters (optional)
-      "comingSoon": false              // derived from status (kept explicit)
+      "chapterCount": 5                // chapters.length, computed at import/reindex
     },
-    { "slug": "maula-ali", "status": "coming-soon" }   // v2 book, no content file yet
+    { "slug": "maula-ali", "title": "Maula Ali", "status": "coming-soon" }  // v2 book, no content file yet
   ]
 }
 ```
 
 - **`_index.json` drives the `/books` index** — order, blurbs, covers, live vs coming-soon.
+- Live entries carry `chapterCount` (computed by `registryEntries()` in
+  `scripts/import-books.mjs` from the content file's `chapters.length`);
+  coming-soon entries omit it (no content file yet).
 - Adding a book = add a slug entry + a content file; the index updates automatically.
 
 ### 3.3 Per-book content file (`en/books/{slug}.json`)
@@ -137,11 +146,23 @@ src/config/content/
   (`title`, `author`, `chapters`, …) — **not** language keys. `usePageContent`
   already returns the whole file; the en-fallback gives hinglish the English text.
 
+### 3.3b The loader fallback (why hinglish needs no files)
+
+`getContent(lang, file)` in `src/config/content/index.js`:
+1. Tries `./{lang}/{file}.json`.
+2. If the file is **missing** OR resolves to an **empty object**, it falls back
+   to `./en/{file}.json`.
+
+So a hinglish user gets `en/books/{slug}.json` with zero extra files shipped.
+The `import.meta.glob('./**/*.json', { import: 'default' })` pattern in that file
+is what makes nested `books/` content code-split correctly.
+
 ### 3.4 Why `chapters` ≠ `sections`
 
 The app's generic renderer reads `sections`/`duas`/`items`/`verses`. Books use a
 dedicated `chapters` shape so:
-- `BookReader` renders a chapter TOC from `chapters`.
+- `BookReader` renders each chapter via `ContentView` (list/slide) with a
+  **QuickJump** bottom sheet for jumping between chapters.
 - The admin Books editor has a chapter-specific UI (reorder/rename/merge).
 - Books never collide with generic-page rendering.
 
@@ -160,11 +181,12 @@ scripts/import-books.mjs
    ├─ split-chapters() ─► { heading?, paragraphs[] }[]
    ├─ build-book()     ─► book JSON
    ▼
-src/config/content/en/books/{slug}.json
-src/config/content/en/books/_index.json
-src/config/content/hinglish/books/{slug}.json   (empty shell)
-src/config/content/hinglish/books/_index.json
+src/config/content/en/books/{slug}.json      (full book)
+src/config/content/en/books/_index.json       (registry, with chapterCount)
+src/config/content/hinglish/books/_index.json (slug + title + status only)
 ```
+
+No `hinglish/books/{slug}.json` files are emitted — see §3.3b for why.
 
 ### 4.2 Extraction
 
@@ -265,17 +287,14 @@ Registered in `src/config/pageRoutes.json`:
 
 ```
 ┌────────────────────────────────────────────────────┐
-│  ◀ Books                    ● ● ●  [reading]  ↗    │
+│  ◀ Books                              ↗ Share     │
 │  ┌──────────────────────────────────────────┐      │
 │  │  MERAJ UN NABI          (cover gradient) │      │
 │  │  Hajee Mahboob Kassim                    │      │
-│  │  The Holy Prophet's night journey…       │      │
 │  └──────────────────────────────────────────┘      │
-│  ── Chapters ────────────────────────────────      │
-│  ▸ About the Author        ▾ jump                │
-│  ▸ Section 1                                     │
-│  ▸ Section 2                                     │
-│  ───────────────────────────────────────────────── │
+│  The Holy Prophet's night journey…                 │
+│  ▮▮▮▮▮▮░░░░  Reading progress — 42%          │      │
+│                                                  │
 │  ┌──────────────────────────────────────────┐      │
 │  │  About the Author                        │      │
 │  │  Hajee Mahboob Kassim was born …         │  card │
@@ -283,29 +302,44 @@ Registered in `src/config/pageRoutes.json`:
 │  ┌──────────────────────────────────────────┐      │
 │  │  …                                        │  card │
 │  └──────────────────────────────────────────┘      │
-│  ▮▮▮▮▮▮░░░░  Reading progress — 42%          │      │
-│  [ ↗ Share this book ]  [ Prev ]  [ Next ]        │
+│                                                  │
+│  (list mode: all chapters stacked; slide mode:   │
+│   ⏮ ◀ 1/5 ▶ ⏭ fixed bar — see ContentView)      │
+│                     [📖 QuickJump FAB]            │
 └────────────────────────────────────────────────────┘
 ```
 
 Components/behaviour:
 - **Header**: back-to-books, book title, author, description.
-- **Themed cover**: same gradient treatment as the index card (shared util).
-- **Chapter TOC**: a collapsible list of `chapters[].heading` → tap to scroll to
-  that chapter's first card (uses the existing `quickJump`-style scroll pattern).
-- **Chapters as cards**: each paragraph becomes a card (like the Hmk page), so
-  slide/list + font-size all work per-card.
-- **Reading progress**: `bookProgress.js` stores `{ slug: lastParagraphIndex }` in
-  localStorage; the progress bar reflects it and "Resume" jumps back.
+- **Themed cover**: same gradient treatment as the index card (shared
+  `coverGradient(cover)` util exported from `BooksIndex.jsx`).
+- **Chapters via `ContentView`**: each chapter is a `<section>` of
+  paragraph-cards, rendered in list or slide mode exactly like the rest of the
+  app (respects the global view-mode setting; `showCounter={false}` hides the
+  counter bar — books are reading, not zikr counting).
+- **QuickJump chapter navigation**: a floating `📖` FAB (shared
+  `QuickJump` component) opens a bottom sheet listing `chapters[].heading`; tap
+  to jump. `indices={chapters.map((_, i) => i)}`,
+  `sourceItems={chapters}`, `labelKey="heading"`, `onJump` → ContentView's
+  `jumpTo`. This **replaces** the plan's TOC dropdown.
+- **Reading progress**: `bookProgress.js` stores `{ slug: lastChapterIndex }`
+  (chapter index, not paragraph) in localStorage under `kqcmm_book_progress`;
+  the progress bar reflects it and "Resume" jumps back on reload.
+- **Progress tracking**: `ContentView`'s `onIndexChange` reports the active
+  chapter — in slide mode the current slide, in list mode the chapter whose
+  section crosses the viewport band (IntersectionObserver with
+  `rootMargin: '-40% 0px -55% 0px'` over `[data-section-index]`).
 - **Share**: Web Share API with `title`/`text`/`url` (the existing `handleShare`
   pattern in `Layout.jsx`); optional image-card share (backlog 1b) later.
 
 ### 5.4 `src/utils/bookProgress.js`
 
-Pure helpers (unit-testable):
-- `readProgress(slug)` / `saveProgress(slug, index)` — localStorage
-  `kqcmm_book_progress` (one JSON object keyed by slug).
-- `progressPct(slug, totalChapters)` → 0–100.
+Pure helpers (unit-testable, `scripts/test-book-progress.mjs`):
+- `readProgress(slug)` / `saveProgress(slug, chapterIndex)` — localStorage
+  `kqcmm_book_progress` (one JSON object keyed by slug → last-read **chapter
+  index**, 0-based).
+- `progressPct(slug, totalChapters)` → 0–100, computed as
+  `min(100, round(((idx + 1) / totalChapters) * 100))`.
 - Storage-failure tolerant (same guard pattern as `onboarding.js`).
 
 ---
@@ -323,7 +357,6 @@ Admin → Books
 │  Author     ▸ Hajee Mahboob Kassim          │
 │  Cover      ▸ [color picker swatches]       │
 │  Description▸ The Holy Prophet's …          │
-│  Status     ▸ [live | coming-soon]          │
 │  ── Chapters ──────────────────────────────  │
 │  1. About the Author    [↑][↓][✎][🗑]      │
 │  2. Section 1           [↑][↓][✎][🗑]      │
@@ -334,15 +367,16 @@ Admin → Books
 ```
 
 - **API endpoints** (in `scripts/content-editor.mjs`):
-  - `GET /api/books` — list books (from `_index.json` + content files).
+  - `GET /api/books` — list books (registry from `en/books/_index.json`).
   - `GET /api/books/:slug` — one book's full content.
-  - `POST /api/books/:slug` — save (title/author/cover/description/chapters).
-  - `POST /api/books/:slug/reorder` — reorder chapters (or fold into save).
-  - Merge = edit adjacent chapter's paragraphs + delete the other.
+  - `POST /api/books/:slug` — save (title/author/cover/description/chapters);
+    also refreshes the registry's `chapterCount`. No hinglish file is written.
+  - Reorder/merge are client-side in `BooksEditor.jsx` (reorder via array moves,
+    merge = append one chapter's paragraphs to the other + delete).
 - Reuses the existing save/status toolbar pattern (`forwardRef` +
   `onStatusChange`) used by Calendar/Strings/Nav editors.
-- Server-side validation: chapters non-empty, headings ≤ 200 chars, paragraphs
-  bounded length (reuse the admin's existing bounds constants).
+- Server-side validation: `chapters` must be a non-empty array, headings
+  non-empty and ≤ 200 chars, each chapter needs a `paragraphs` array.
 
 ---
 
@@ -403,14 +437,15 @@ SEO: each book page sets `title`, `description`, OG tags via `SeoHead` —
 
 ## 10. Verification
 
-1. **Tests** — `npm test` all pass; add `scripts/test-book-progress.mjs` (progress
-   helpers) + `test-book-split.mjs` (auto-split heuristics).
-2. **Build** — `npm run build` clean; routes go 12 → 14 (plus one per live book);
-   prerender emits `/books` + each `/books/{slug}`.
+1. **Tests** — `npm test` all pass (322: 126+88+43+46+19), including
+   `scripts/test-book-progress.mjs` (19 progress-helper tests).
+2. **Build** — `npm run build` clean; prerender emits `/books` + one page per live
+   book slug (23 routes total: 14 registered + 0 aliases + 9 per-book expansions).
 3. **Manual** — `npm run dev`:
    - `/books` shows 9 live + 3 coming-soon cards; covers render.
-   - `/books/meraj-un-nabi` shows cover, TOC, chapters as cards; progress persists
-     and "Resume" works; share opens Web Share.
+   - `/books/meraj-un-nabi` shows cover, chapters as cards, view-mode switch
+     (list/slide), QuickJump chapter jump; progress persists and "Resume" works;
+     share opens Web Share.
    - Language switch to Hinglish still shows English books (en-fallback).
    - Admin → Books tab lists books, edits chapters (reorder/rename/merge/save).
 4. **Drift audit** — re-run doc greps; verify no stale route/count claims.

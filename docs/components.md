@@ -53,6 +53,9 @@ Handles rendering of content items in either **list** or **slide** mode.
 | `renderItem` | `(item, index) => JSX` | Render function for each item |
 | `mode` | 'list' \| 'slide' | Override view mode |
 | `pageKey` | string | Key for view.json config lookup |
+| `jumpTo` | number | Index to scroll/slide to (e.g. set by QuickJump selection or resume) |
+| `onIndexChange` | `(idx) => void` | Called with the active item index — in slide mode the current slide; in list mode the section crossing the viewport band (IntersectionObserver, `rootMargin: '-40% 0px -55% 0px'` over `[data-section-index]`). Used for book reading-progress tracking |
+| `showCounter` | bool (default `true`) | Show the +/−/↺ counter bar. Set `false` for content that isn't zikr-countable (e.g. books) |
 
 ### Slide Mode Navigation
 ```
@@ -392,9 +395,9 @@ Hajee Mahboob Kassim library.
 content from the slug: `usePageContent(lang, 'books/{slug}')`.
 
 - **Cover + header** — themed gradient cover block, book title, author, description.
-- **Chapter TOC** — collapsible list of `chapters[].heading`; tapping scrolls to that chapter (`scrollIntoView`).
-- **Chapters as cards** — each `paragraphs[]` entry renders as a `.card` (like Hmk), so reading + font-size work per card.
-- **Reading progress** — an `IntersectionObserver` tracks which chapter is in view and calls `saveProgress(slug, idx)` (see `bookProgress.js`); a progress bar shows `progressPct`. On load it **resumes** to the saved chapter (`didResume` ref guards the one-time jump).
+- **Chapters via `ContentView`** — each chapter is a `<section>` of `paragraphs[]` as `.card`s (like Hmk), rendered in **list or slide mode** per the global view-mode setting. `showCounter={false}` hides the counter bar (books aren't zikr-countable).
+- **QuickJump chapter navigation** — a floating `📖` FAB (shared `QuickJump` component) lists `chapters[].heading`; tapping jumps via `jumpTo` → `ContentView`. Replaces an earlier TOC-dropdown plan.
+- **Reading progress** — `ContentView`'s `onIndexChange` reports the active chapter (slide index, or the list-mode viewport band via IntersectionObserver with `rootMargin: '-40% 0px -55% 0px'`) and calls `saveProgress(slug, idx)` (see `bookProgress.js`); a progress bar shows `progressPct`. On load it **resumes** to the saved chapter (`didResume` ref guards the one-time jump).
 - **Share** — Web Share API (`navigator.share`) with title/text/url; clipboard copy-link fallback.
 
 ## bookProgress.js (pure reading-progress helpers)

@@ -135,7 +135,13 @@ folder) — no source import rewrites.
 /roshni         → Roshni / Chirag Raushan
 /abbajaan       → Abbajaan
 /changelog      → Version history
+/books          → Books library (cover-card grid)
+/books/:slug    → Book reader (dynamic: resolves content from the URL slug)
 ```
+
+The `/books/:slug` route is **dynamic** — `BookReader` reads the slug via
+`useParams()` and loads `books/{slug}` content; prerender expands one static page
+per live book slug from `en/books/_index.json`.
 
 Renaming a registered page (admin Pages tab → ✏️ Rename, or
 `node scripts/page-rename.mjs <pageId> <newSlug>`) moves the content file, updates

@@ -53,6 +53,9 @@ The original single-page editor. Simpler but still functional.
 | `/api/view` | POST | Save view config |
 | `/api/calendar` | GET | Get calendar config (schema v1) |
 | `/api/calendar` | POST | Save calendar config (validated; rejects malformed data atomically) |
+| `/api/books` | GET | List the book registry (`en/books/_index.json`) |
+| `/api/books/{slug}` | GET | Get one book's full content (`en/books/{slug}.json`) |
+| `/api/books/{slug}` | POST | Save a book (validates `chapters` array, headings ≤ 200 chars; refreshes registry `chapterCount`; writes no hinglish file) |
 | `/api/templates` | GET | List page templates |
 | `/api/content-lang` | PUT | Add a language to all content pages (clones from source or creates empty) |
 | `/api/content-lang` | DELETE | Remove a language from all content pages and strings |
@@ -77,6 +80,7 @@ scripts/admin/
 │       ├── LanguageEditor.jsx # Translation status + CRUD + compare
 │       ├── SettingsEditor.jsx # View config editor
 │       ├── CalendarEditor.jsx # Hijri calendar editor (month starts + shared events)
+│       ├── BooksEditor.jsx    # Books library editor (metadata + chapter reorder/merge/edit)
 │       └── ui/
 │           └── Modal.jsx      # Reusable modal dialog component
 └── dist/                 # Built output (auto-generated)
@@ -176,8 +180,12 @@ Imports the Hajee Mahboob Kassim books from `D:\Work\KQCMM\Content\Books` into
 - **Auto-split** (v1): docx uses real heading detection; pdfs chunk into ~800-word
   numbered sections (page-fragment noise like page numbers / running headers /
   TOC lines is filtered). Every chapter is `isAuto: true`.
-- **Emits**: `en/books/{slug}.json` (full book) + empty `hinglish/books/{slug}.json`
-  shell + `_index.json` registry in both languages. Idempotent.
+- **Emits**: `en/books/{slug}.json` (full book) + `_index.json` registry in both
+  languages. **No hinglish per-book files** are written — the loader falls back
+  to `en/` for a missing file (empty `{}` shells would trip a Vite dedup-chunk
+  bug that breaks the glob loader). Idempotent.
+- **Tests**: `scripts/test-book-progress.mjs` (19 tests, runs under `npm test`) —
+  covers `readProgress`/`saveProgress`/`progressPct` incl. storage-failure tolerance.
 - The 3 legacy `.doc` (OLE2) books are `status: "coming-soon"` in the registry
   until converted to docx/pdf.
 

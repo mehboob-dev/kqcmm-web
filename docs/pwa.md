@@ -61,9 +61,9 @@ VitePWA({
 ### What Gets Precached
 
 ```
-splash.jpg       manifest.json   logo.png
-index.html       drawer-bg.jpg   icons/*.png
-assets/*.js      assets/*.css    manifest.webmanifest
+splash.jpg       logo.png         drawer-bg.jpg
+index.html       icons/*.png      manifest.webmanifest
+assets/*.js      assets/*.css     sw.js
 ```
 
 
@@ -151,28 +151,34 @@ Rendered in `App.jsx` inside the context providers, before `<Routes>`:
 
 ## Manifest
 
-**File:** `public/manifest.json`
+**Owned by `vite-plugin-pwa`** — the manifest is defined in the `VitePWA({ manifest: {...} })`
+config in `vite.config.js` and emitted as **`manifest.webmanifest`** at build time.
+There is **no `public/manifest.json`** (removed — a manual `<link rel="manifest">`
+in `index.html` double-based the URL in dev to `/kqcmm-web/kqcmm-web/manifest.json`).
 
-```json
-{
-  "name": "KQCMM — Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya",
-  "short_name": "KQCMM",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#f5f5f5",
-  "theme_color": "#1a1a2e",
-  "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+```js
+// vite.config.js
+manifest: {
+  name: 'KQCMM — Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya',
+  short_name: 'KQCMM',
+  start_url: '/kqcmm-web/',
+  display: 'standalone',
+  background_color: '#f5f5f5',
+  theme_color: '#1a1a2e',
+  icons: [
+    { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+    { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' }
   ]
 }
 ```
+
+Dev mode uses `devOptions.enabled: true` with `webManifestUrl: '/kqcmm-web/manifest.webmanifest'`
+so the manifest link is correct under `base: '/kqcmm-web/'`.
 
 ### Icons
 
 | File | Size | Source |
 |---|---|---|
-| `public/icons/favicon.png` | 32×32 | Generated from logo |
 | `public/icons/icon-192.png` | 192×192 | Generated from logo |
 | `public/icons/icon-512.png` | 512×512 | Generated from logo |
 
@@ -188,4 +194,4 @@ Icons are regenerated from `public/logo.png` using `sharp` when needed.
 | Offline doesn't work | Not all assets cached | Run `npm run build` again (fresh precache) |
 | Old version still shows | SW hasn't updated | Close all tabs, reopen, or manually clear site data |
 | "Update available" keeps showing | Frequent deploys | Normal — each deploy triggers update notification |
-| PWA install not offered | Missing icons or wrong manifest | Check manifest.json icons array and sizes |
+| PWA install not offered | Missing icons or wrong manifest | Check the `manifest` config in `vite.config.js` icons array and sizes |

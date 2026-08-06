@@ -45,7 +45,7 @@ src/
 ├── pages/            ← One component per route
 ├── context/          ← Theme, Language, Font, View state
 └── styles.css        ← All styles in one file (themes, cards, layout)
-docs/                 ← Full documentation (12 files)
+docs/                 ← Full documentation (17 files)
 scripts/              ← CLI tools (editor, prerender, sync scripts)
 ```
 
@@ -80,7 +80,7 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | `/abbajaan` | Abbajaan |
 | `/changelog` | Version history |
 | `/books` | Books index — written works of Hajee Mahboob Kassim |
-| `/books/:slug` | Individual book reader (chapters, TOC, progress, share) |
+| `/books/:slug` | Individual book reader (chapters, list/slide view, quick chapter jump, progress, share) |
 
 Routes are **registry-driven** from `src/config/pageRoutes.json`. Pages created in the
 Admin Panel become public at their `/slug` automatically (rendered by a generic
@@ -109,7 +109,7 @@ content renderer).
 | **Hijri Calendar** | Admin-maintained month starts → navigable Hijri/Gregorian month grid, mapped events, countdown, app-wide today strip |
 | **Changelog** | Version history page |
 | **Onboarding Walkthrough** | First-run guided tour (choose language, spotlight key controls, guided taps on real buttons), replayable from Settings |
-| **Books Library** | Read the written works of Hajee Mahboob Kassim — cover-card index, per-book reader with chapter TOC, reading progress, and share |
+| **Books Library** | Read the written works of Hajee Mahboob Kassim — cover-card index, per-book reader with list/slide view + quick chapter jump, reading progress, and share |
 
 ---
 
@@ -157,7 +157,7 @@ npx gh-pages -d dist
 Each route is pre-rendered into a static HTML file at build time (`dist/{route}/index.html`) via Puppeteer. This handles direct URL access and gives social media crawlers proper meta tags. The `404.html` fallback covers any unmapped routes.
 
 ### Pre-rendering
-The build script runs `node scripts/prerender.mjs` after `vite build`, which uses Puppeteer to render all 12 registered routes (canonical + alias, including custom admin pages) and save their HTML with full SEO tags baked in. It also seeds the onboarding-completed flag so the first-run tour never leaks into the prerendered HTML.
+The build script runs `node scripts/prerender.mjs` after `vite build`, which uses Puppeteer to render all 14 registered routes (canonical + alias, including custom admin pages) **plus one page per live book slug** (`/books/{slug}` expanded from `en/books/_index.json`), saving their HTML with full SEO tags baked in. It also seeds the onboarding-completed flag so the first-run tour never leaks into the prerendered HTML.
 
 ---
 

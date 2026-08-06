@@ -70,8 +70,7 @@ kqcmm-web/
 ├── public/                             # Static assets (copied to dist/)
 │   ├── logo.png                        # Home page logo
 │   ├── splash.jpg                      # Splash screen image
-│   ├── drawer-bg.jpg                   # Side drawer background
-│   ├── manifest.json                   # PWA manifest
+│   └── drawer-bg.jpg                   # Side drawer background
 │
 ├── src/
 │   ├── main.jsx                        # React entry + BrowserRouter
@@ -104,7 +103,7 @@ kqcmm-web/
 │   │   ├── SalimPappa.jsx            # Salim Pappa page
 │   │   ├── About.jsx                 # About KQCMM
 │   │   ├── BooksIndex.jsx            # /books library index (cover-card grid)
-│   │   ├── BookReader.jsx            # /books/:slug reading (cover, TOC, chapters, progress)
+│   │   ├── BookReader.jsx            # /books/:slug reading (cover, view modes, QuickJump chapters, progress)
 │   │   ├── Calendar.jsx              # Hijri calendar page (month grid + events)
 │   │   ├── Roshni.jsx                # Chirag Raushan / Roshni
 │   │   ├── Abbajaan.jsx              # Abbajaan page
@@ -134,7 +133,7 @@ kqcmm-web/
 │   │   └── content/                  # Page content, split per language folder (en/, hinglish/; urdu planned)
 │   │       ├── index.js              # usePageContent(lang, file) — dynamic loader, code-split per language (getContent)
 │   │       ├── locale.js             # Pure locale resolver (requested→en→first)
-│   │       ├── en/                   # English content — one file per page (11 pages)
+│   │       ├── en/                   # English content — one file per page (11 flat files)
 │   │       │   ├── dua.json
 │   │       │   ├── khatm.json
 │   │       │   ├── calendar.json     # Hijri calendar (schema v1: monthStarts + events + translations map)
@@ -142,10 +141,10 @@ kqcmm-web/
 │   │       ├── en/books/             # Hajee Mahboob Kassim library (English source of truth)
 │   │       │   ├── _index.json       # Book registry (slug, title, cover, status, chapterCount)
 │   │       │   └── {slug}.json       # title/author/description/cover/chapters[{heading,isAuto,paragraphs}]
-│   │       ├── hinglish/             # Hinglish content — mirrors en/ (11 pages)
+│   │       ├── hinglish/             # Hinglish content — mirrors en/ (11 flat files)
 │   │       │   ├── dua.json
 │   │       │   └── ...
-│   │       └── hinglish/books/       # Empty {} shells → en-fallback via the loader
+│   │       └── hinglish/books/       # _index.json only — no per-book files (loader falls back to en/)
 │   │
 │   └── scripts/                       # CLI tools (see below)
 │
@@ -324,6 +323,9 @@ Same config file, `sideDrawer` array. Icons via FontAwesome (solid).
 
 Global default in `src/config/view.json` (currently `slide`). Global override in Settings.
 
+**Books also use `ContentView`** — chapters render in list or slide mode like
+every content page (with `showCounter={false}`, since books aren't zikr-countable).
+
 ### Counter Bar
 Global +/−/↺ counter displayed on content pages. In slide mode it sits in a fixed bar with the slide nav. In list mode it appears at the bottom.
 
@@ -352,7 +354,13 @@ moving the file (in every language folder) without touching source code.
 /roshni         → Roshni / Chirag Raushan (id: roshni)
 /abbajaan       → Abbajaan         (id: abbajaan)
 /changelog      → Version history  (id: changelog)
+/books          → Books library    (id: books)
+/books/:slug    → Book reader      (id: bookReader, dynamic — slug = content file)
 ```
+
+The `/books/:slug` route is **dynamic**: `BookReader` resolves its content from
+the URL slug (`usePageContent(lang, 'books/{slug}')`), and prerender expands one
+static page per live book slug from `en/books/_index.json`.
 
 **Renaming a page:** use the admin Pages tab → ✏️ Rename (only for renamable
 fixed/custom pages), or `node scripts/page-rename.mjs <pageId> <newSlug>`. This

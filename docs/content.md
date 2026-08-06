@@ -9,8 +9,10 @@ How content flows from source files to the user's screen, with examples for each
 Content is split **per language into its own folder**: `src/config/content/{lang}/{page}.json`
 (`en/`, `hinglish/` today; `urdu/` planned). Each file holds the page's shared
 top-level metadata (`quickJump`, `schemaVersion`) plus **only that language's**
-content. The loader (`src/config/content/index.js`) globs `./*/*.json` and falls
-back to `en/` when a language lacks a page, so a missing translation never 404s.
+content. The loader (`src/config/content/index.js`) globs `./**/*.json` (the
+`**` covers nested `books/` files) and falls back to `en/` when a language lacks
+a page — for a **missing** file or an **empty `{}` shell** — so a missing
+translation never 404s.
 
 File layout:
 ```
@@ -19,10 +21,12 @@ src/config/content/
 ├── locale.js           # pure resolveLocale (requested → en → first), unit-testable
 ├── en/
 │   ├── dua.json        # { quickJump, en: {...} }
-│   └── ...             # 11 pages total
+│   ├── ...             # 11 flat page files total
+│   └── books/          # Hajee Mahboob Kassim library (see Books section below)
 └── hinglish/
     ├── dua.json        # { quickJump, hinglish: {...} }
-    └── ...
+    ├── ...
+    └── books/          # only _index.json — no per-book files (en-fallback)
 ```
 
 Per-file structure (`src/config/content/en/dua.json`):
@@ -139,8 +143,12 @@ behave differently from generic pages.
 
 - **`chapters[].isAuto`** marks machine-generated (auto-split) chapters — the
   admin Books editor clears it as chapters are curated (renamed/merged).
-- **Hinglish shells** (`hinglish/books/{slug}.json`) are empty `{}`; the loader's
-  en-fallback serves the English text in the hinglish app.
+- **Hinglish books have no per-book file** — the loader's en-fallback serves the
+  English text in the hinglish app (see `getContent` in
+  `src/config/content/index.js`: a **missing** file falls back to `en/`, and an
+  **empty `{}` shell** is also treated as missing). Empty shells are never
+  written: identical empty JSON objects get deduped by Vite into a shared chunk
+  that breaks the `import.meta.glob` JSON import contract.
 - **Loader**: the glob in `src/config/content/index.js` is `./**/*.json` so these
   nested files are bundled/code-split (a single-level glob would silently drop them).
 - **Import**: `scripts/import-books.mjs` extracts `.docx`/`.pdf` and auto-splits;
