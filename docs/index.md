@@ -11,6 +11,9 @@ Welcome to the KQCMM web app documentation. Choose a topic below.
 - [Content System](content.md) — Content JSON structure, master-child cards, editing
 - [Styling Guide](styling.md) — CSS variables, themes, card system, fonts, RTL
 
+## Books (Hajee Mahboob Kassim)
+- [Books Integration](books.md) — design & implementation reference for the library feature (import pipeline, content model, BookReader, admin editor)
+
 ## Operations
 - [Deployment Guide](deployment.md) — Building, deploying, troubleshooting
 - [Forcing a Build](force-build.md) — step-by-step ways to trigger a deploy when a push is skipped

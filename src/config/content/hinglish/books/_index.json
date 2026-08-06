@@ -1,0 +1,64 @@
+{
+  "books": [
+    {
+      "slug": "what-is-hazrat-muhammad",
+      "title": "What is Hazrat Muhammad",
+      "status": "live"
+    },
+    {
+      "slug": "god-said-let-there-be-light",
+      "title": "God Said: Let There Be Light",
+      "status": "live"
+    },
+    {
+      "slug": "oh-light-guide-us-through-nuclear-holocaust",
+      "title": "Oh Light! Guide Us Through Nuclear Holocaust",
+      "status": "live"
+    },
+    {
+      "slug": "meraj-un-nabi",
+      "title": "Meraj un Nabi",
+      "status": "live"
+    },
+    {
+      "slug": "panjatan-pak-and-wasilah",
+      "title": "The Panjatan Pak and Wasilah in the Light of the Qur'an",
+      "status": "live"
+    },
+    {
+      "slug": "milad-un-nabi",
+      "title": "Milad un Nabi",
+      "status": "live"
+    },
+    {
+      "slug": "lailatul-qadar",
+      "title": "Lailatul Qadar",
+      "status": "live"
+    },
+    {
+      "slug": "panjatan-pak-wasilah-in-quran",
+      "title": "Panjatan Pak and Wasilah in the Quran",
+      "status": "live"
+    },
+    {
+      "slug": "original-teachings-of-jesus",
+      "title": "The Original Teachings of Jesus",
+      "status": "live"
+    },
+    {
+      "slug": "islam-milad-un-nabi",
+      "title": "Islam Milad un Nabi",
+      "status": "coming-soon"
+    },
+    {
+      "slug": "maula-ali",
+      "title": "Maula Ali",
+      "status": "coming-soon"
+    },
+    {
+      "slug": "talaq-talaq-talaq",
+      "title": "Talaq, Talaq, Talaq",
+      "status": "coming-soon"
+    }
+  ]
+}

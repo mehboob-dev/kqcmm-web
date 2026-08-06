@@ -6,6 +6,30 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## 5.13.0 — 2026-08-06
+
+### User-facing
+- **Books section** — the written works of **Hajee Mahboob Kassim** are now readable in the app: a **Books index** (`/books`) with themed cover cards, and a dedicated **book reader** (`/books/:slug`) with **view modes** (list / slide, same as the rest of the app), chapters-as-cards reading, **QuickJump** chapter navigation, **reading progress** (persisted, with resume), and **share** (Web Share / copy link). 9 books ship now; the 3 legacy `.doc` works show as "coming soon" until converted.
+
+### Internal / docs
+- **Content model** — books live in `src/config/content/{en,hinglish}/books/`: `_index.json` is the book registry (slug, title, author, cover, description, status live/coming-soon, chapterCount); each `{slug}.json` holds `title`/`author`/`description`/`cover`/`chapters[]` where each chapter is `{ heading, isAuto, paragraphs[] }`. Hinglish books have **no per-book file** — the loader falls back to `en/` when a file is missing.
+- **Import pipeline** — `scripts/import-books.mjs` + `scripts/extract-pdf.py`:
+  - `.docx` extracted via unzip → `word/document.xml` → `<w:t>` runs (native Node).
+  - `.pdf` extracted via pymupdf (shells out to `python`, UTF-8 stdout; `maxBuffer` 64MB for large books).
+  - **Auto-split** (v1): docx uses real heading detection (`isHeading`: short uppercase / known markers / colon / roman-numeral); pdfs chunk into ~800-word numbered sections (page-fragment noise filtered: page numbers, repeating headers/footers, TOC lines). Every chapter marked `isAuto: true` — the admin Books editor is the curation tool.
+  - Emits en books + `_index.json` only — **no hinglish shell files** (empty `{}` shells trip a Vite dedup-chunk bug that breaks the glob loader's JSON import); idempotent.
+- **Loader** — `src/config/content/index.js` glob widened `./*/*.json` → `./**/*.json` so nested `books/` files code-split correctly (without this the book JSONs were silently not bundled); `getContent` now falls back to `en/` for **empty** shells too, not just missing files.
+- **Frontend** — `BooksIndex.jsx` (cover-card grid, live + coming-soon), `BookReader.jsx` (cover, header, chapters via `ContentView` list/slide + `QuickJump` chapter jump, IntersectionObserver-driven progress save, share, resume), `src/utils/bookProgress.js` (pure localStorage helpers). `ContentView` gained `showCounter` and `onIndexChange` props.
+- **Routing** — `pageRoutes.json` adds `books` (`/books`) and `bookReader` (`/books/:slug`); `App.jsx` maps them; side drawer + Home quick-link added; `books` string in en/hinglish.
+- **Prerender** — `scripts/prerender.mjs` expands `/books/:slug` into one static page per live book slug (reads `books/_index.json`).
+- **Hydration fix** — `src/main.jsx` now always uses `createRoot`, never `hydrateRoot`. Every page loads its content async via `usePageContent`, so the client's first render is `Loading...` — mismatching the fully-rendered prerendered HTML and making React 18 hydration throw (#418/#423/#425). A clean `createRoot` render on top of the static HTML avoids the mismatch entirely; the prerendered markup is kept for SEO and simply replaced on boot.
+- **Manifest fix** — removed the manual `<link rel="manifest">` from `index.html` (dev was double-basing to `/kqcmm-web/kqcmm-web/manifest.json`) and the stale `public/manifest.json`. The PWA plugin now owns manifest injection via `devOptions.enabled` + `webManifestUrl: /kqcmm-web/manifest.webmanifest`; `start_url` corrected to `/kqcmm-web/`. Single manifest link verified in dev and build.
+- **Admin** — new **📚 Books** tab (`BooksEditor.jsx`): book list, editable title/author/cover/description, chapter reorder/merge/delete/rename, per-chapter paragraph editing, header Save + dirty status. API: `GET/POST /api/books`, `GET/POST /api/books/:slug` in `content-editor.mjs` with chapter validation.
+- Docs: new `docs/books.md` (full design reference), `docs/index.md` + `README.md` linked, `docs/components.md`/`docs/scripts.md`/`CLAUDE.md` updated (in progress).
+- Version `5.12.1` → `5.13.0` (new feature), public changelog bumped en + hinglish.
+
+---
+
 ## Dev (unreleased) — split-language content migration
 
 > **No public version bump** — this is a pure internal refactor with no user-visible

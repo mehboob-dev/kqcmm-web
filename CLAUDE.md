@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.12.1** — see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.13.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -103,6 +103,8 @@ kqcmm-web/
 │   │   ├── Khatm.jsx                 # Khatm-e-Khwajagan (32 steps)
 │   │   ├── SalimPappa.jsx            # Salim Pappa page
 │   │   ├── About.jsx                 # About KQCMM
+│   │   ├── BooksIndex.jsx            # /books library index (cover-card grid)
+│   │   ├── BookReader.jsx            # /books/:slug reading (cover, TOC, chapters, progress)
 │   │   ├── Calendar.jsx              # Hijri calendar page (month grid + events)
 │   │   ├── Roshni.jsx                # Chirag Raushan / Roshni
 │   │   ├── Abbajaan.jsx              # Abbajaan page
@@ -111,7 +113,8 @@ kqcmm-web/
 │   │
 │   ├── utils/
 │   │   ├── hijriCalendar.js         # Hijri date conversion + event mapping (pure, tested)
-│   │   └── onboarding.js            # Onboarding persistence + step-sequence helpers (pure, tested)
+│   │   ├── onboarding.js            # Onboarding persistence + step-sequence helpers (pure, tested)
+│   │   └── bookProgress.js          # Book reading-progress persistence (pure, tested)
 │   ├── context/
 │   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green/rose/indigo/teal/oled + swatches)
 │   │   ├── LanguageContext.jsx       # Language state (en/hinglish/urdu)
@@ -136,9 +139,13 @@ kqcmm-web/
 │   │       │   ├── khatm.json
 │   │       │   ├── calendar.json     # Hijri calendar (schema v1: monthStarts + events + translations map)
 │   │       │   └── ...               # hmk, sijrahNama, fatehaKhwani, salimPappa, about, roshni, abbajaan, changelog
-│   │       └── hinglish/             # Hinglish content — mirrors en/ (11 pages)
-│   │           ├── dua.json
-│   │           └── ...
+│   │       ├── en/books/             # Hajee Mahboob Kassim library (English source of truth)
+│   │       │   ├── _index.json       # Book registry (slug, title, cover, status, chapterCount)
+│   │       │   └── {slug}.json       # title/author/description/cover/chapters[{heading,isAuto,paragraphs}]
+│   │       ├── hinglish/             # Hinglish content — mirrors en/ (11 pages)
+│   │       │   ├── dua.json
+│   │       │   └── ...
+│   │       └── hinglish/books/       # Empty {} shells → en-fallback via the loader
 │   │
 │   └── scripts/                       # CLI tools (see below)
 │
@@ -153,6 +160,8 @@ kqcmm-web/
 │   ├── import-to-firebase.mjs        # Firebase Admin import template
 │   ├── json-to-js.mjs                # JSON→JS converter
 │   ├── generate-calendar-events.mjs  # Imports Blessed Days dataset into calendar.json (npm run calendar:gen)
+│   ├── import-books.mjs              # Imports Hajee Mahboob Kassim books (docx/pdf → books/*.json)
+│   ├── extract-pdf.py                # pymupdf paragraph extraction helper (used by import-books.mjs)
 │   ├── data/events_merged.json       # Recovered 2,350-record source (filesystem-only, never bundled)
 │   ├── test-hijri-calendar.mjs       # Hijri calendar unit tests
 │   ├── test-page-rename.mjs          # Page-rename unit tests

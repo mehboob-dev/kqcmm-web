@@ -1,7 +1,7 @@
 {
   "name": "kqcmm-web",
   "private": true,
-  "version": "5.12.1",
+  "version": "5.13.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,7 @@
     "edit": "cd scripts/admin && npm run build && cd ../.. && node scripts/content-editor.mjs",
     "fetch-content": "node scripts/fetch-content.mjs",
     "fetch-firebase": "node scripts/fetch-content.mjs",
-    "test": "node scripts/test-hijri-calendar.mjs && node scripts/test-page-rename.mjs && node scripts/test-generic-content.mjs && node scripts/test-onboarding.mjs",
+    "test": "node scripts/test-hijri-calendar.mjs && node scripts/test-page-rename.mjs && node scripts/test-generic-content.mjs && node scripts/test-onboarding.mjs && node scripts/test-book-progress.mjs",
     "calendar:gen": "node scripts/generate-calendar-events.mjs",
     "deploy": "npm run build && npx gh-pages -d dist"
   },

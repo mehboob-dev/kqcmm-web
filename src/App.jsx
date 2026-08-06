@@ -22,6 +22,8 @@ import Changelog from './pages/Changelog'
 import GenericContentPage from './pages/GenericContentPage'
 import NotFound from './pages/NotFound'
 import pageRoutes from './config/pageRoutes.json'
+import BooksIndex from './pages/BooksIndex'
+import BookReader from './pages/BookReader'
 
 // Map registry `component`/`renderer` names to the actual React components.
 // Custom pages (renderer: "generic") all resolve to the generic renderer; this
@@ -29,6 +31,7 @@ import pageRoutes from './config/pageRoutes.json'
 const components = {
   Home, Dua, Hmk, SijrahNama, FatehaKhwani, Khatm,
   SalimPappa, About, Calendar, Roshni, Abbajaan, Changelog,
+  BooksIndex, BookReader,
   GenericContentPage,
 }
 const componentFor = (page) =>

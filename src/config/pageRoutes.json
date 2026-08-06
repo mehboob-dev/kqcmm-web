@@ -106,5 +106,23 @@
     "titleKey": "changelog",
     "renamable": true,
     "aliases": []
+  },
+  {
+    "id": "books",
+    "component": "BooksIndex",
+    "contentFile": null,
+    "route": "/books",
+    "titleKey": "books",
+    "renamable": false,
+    "aliases": []
+  },
+  {
+    "id": "bookReader",
+    "component": "BookReader",
+    "contentFile": null,
+    "route": "/books/:slug",
+    "titleKey": null,
+    "renamable": false,
+    "aliases": []
   }
 ]

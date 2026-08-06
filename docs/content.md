@@ -97,6 +97,57 @@ Derivation lives in `src/utils/hijriCalendar.js` (see [Components](components.md
 
 ---
 
+## Books (Hajee Mahboob Kassim library)
+
+Books are a **dedicated content type** in `src/config/content/{lang}/books/` (see
+[`docs/books.md`](books.md) for the full design). They use a `chapters` shape —
+**not** `sections`/`duas`/`verses` — so the BookReader and admin Books editor can
+behave differently from generic pages.
+
+### `_index.json` — the book registry (source of truth for the index page)
+
+```jsonc
+{
+  "books": [
+    {
+      "slug": "meraj-un-nabi",
+      "title": "Meraj un Nabi",
+      "author": "Hajee Mahboob Kassim",
+      "description": "The Holy Prophet's night journey to Heaven.",
+      "cover": "#3f3aa8",          // themed cover gradient base
+      "status": "live",            // "live" | "coming-soon"
+      "chapterCount": 5            // recomputed on save
+    }
+  ]
+}
+```
+
+### Per-book content file (`en/books/{slug}.json`)
+
+```jsonc
+{
+  "title": "Meraj un Nabi",
+  "author": "Hajee Mahboob Kassim",
+  "description": "…",
+  "cover": "#3f3aa8",
+  "chapters": [
+    { "heading": "About the Author", "isAuto": true, "paragraphs": ["…", "…"] },
+    { "heading": "Section 1",        "isAuto": true, "paragraphs": ["…"] }
+  ]
+}
+```
+
+- **`chapters[].isAuto`** marks machine-generated (auto-split) chapters — the
+  admin Books editor clears it as chapters are curated (renamed/merged).
+- **Hinglish shells** (`hinglish/books/{slug}.json`) are empty `{}`; the loader's
+  en-fallback serves the English text in the hinglish app.
+- **Loader**: the glob in `src/config/content/index.js` is `./**/*.json` so these
+  nested files are bundled/code-split (a single-level glob would silently drop them).
+- **Import**: `scripts/import-books.mjs` extracts `.docx`/`.pdf` and auto-splits;
+  **admin** edits books via the 📚 Books tab (see `docs/scripts.md`).
+
+---
+
 ## Master-Child Card Format (FatehaKhwani only)
 
 Some sections in FatehaKhwani use a **master-child** structure where content is split into sub-cards. The `text` field uses a special separator format:

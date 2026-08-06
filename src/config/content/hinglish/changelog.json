@@ -3,6 +3,14 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.13.0",
+        "date": "2026-08-06",
+        "changes": [
+          "Naya Books section — Hajee Mahboob Kassim ki likhi hui kitaabein padhein (abhi 9 kitaabein, aur aane wali hain). Har kitaab mein chapters, quick chapter jump, list ya slide view, reading progress aur share ki suvidha hai.",
+          "Ek dedicated Books page — cover cards ke saath library browse karein."
+        ]
+      },
+      {
         "version": "5.12.1",
         "date": "2026-08-05",
         "changes": [

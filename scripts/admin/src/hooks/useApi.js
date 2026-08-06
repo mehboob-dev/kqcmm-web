@@ -48,6 +48,11 @@ export function useApi() {
     getCalendar: () => api('/calendar'),
     saveCalendar: (data) => api('/calendar', { method: 'POST', body: JSON.stringify(data) }),
 
+    // Books (Hajee Mahboob Kassim library)
+    listBooks: () => api('/books'),
+    getBook: (slug) => api('/books/' + slug),
+    saveBook: (slug, data) => api('/books/' + slug, { method: 'POST', body: JSON.stringify(data) }),
+
     // Search
     search: (q) => api('/search?q=' + encodeURIComponent(q)),
 

@@ -3,6 +3,14 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.13.0",
+        "date": "2026-08-06",
+        "changes": [
+          "New Books section — read the written works of Hajee Mahboob Kassim (9 books now, more coming). Each book has chapters, quick chapter jumping, list or slide view, reading progress, and easy sharing.",
+          "A dedicated Books page with cover cards to browse the library."
+        ]
+      },
+      {
         "version": "5.12.1",
         "date": "2026-08-05",
         "changes": [

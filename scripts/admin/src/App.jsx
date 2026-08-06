@@ -4,6 +4,7 @@ import ContentEditor from './components/ContentEditor.jsx'
 import NavEditor from './components/NavEditor.jsx'
 import StringsEditor from './components/StringsEditor.jsx'
 import SettingsEditor from './components/SettingsEditor.jsx'
+import BooksEditor from './components/BooksEditor.jsx'
 import LanguageEditor from './components/LanguageEditor.jsx'
 import CalendarEditor from './components/CalendarEditor.jsx'
 import Modal from './components/ui/Modal.jsx'
@@ -14,6 +15,7 @@ const TABS = [
   { key: 'strings',  label: '🏷️ Strings',  desc: 'UI labels' },
   { key: 'lang',     label: '🌍 Translate',desc: 'Translation status' },
   { key: 'calendar', label: '📅 Calendar', desc: 'Hijri calendar & events' },
+  { key: 'books',    label: '📚 Books',   desc: 'Hajee Mahboob Kassim library' },
   { key: 'settings', label: '⚙️ Settings', desc: 'View config' },
 ]
 
@@ -42,6 +44,7 @@ export default function App() {
   const navRef = useRef(null)
   const stringsRef = useRef(null)
   const calendarRef = useRef(null)
+  const booksRef = useRef(null)
   const settingsRef = useRef(null)
   // Header status for non-pages tabs — kept in React state so the toolbar
   // re-renders when an editor's dirty/saving changes (refs alone wouldn't).
@@ -51,6 +54,7 @@ export default function App() {
     if (tab === 'nav') return navRef
     if (tab === 'strings') return stringsRef
     if (tab === 'calendar') return calendarRef
+    if (tab === 'books') return booksRef
     if (tab === 'settings') return settingsRef
     return null
   }
@@ -286,6 +290,7 @@ export default function App() {
             {tab === 'strings' && 'Strings Editor'}
             {tab === 'lang' && 'Translation Manager'}
             {tab === 'calendar' && 'Hijri Calendar Editor'}
+            {tab === 'books' && 'Books Editor'}
             {tab === 'settings' && 'Settings'}
           </h1>
           {tab === 'pages' && activePage && (
@@ -336,6 +341,7 @@ export default function App() {
           {tab === 'strings' && <StringsEditor ref={stringsRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
           {tab === 'lang' && <LanguageEditor api={api} pages={pages} show={show} onJumpToPage={jumpToPage} />}
           {tab === 'calendar' && <CalendarEditor ref={calendarRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
+          {tab === 'books' && <BooksEditor ref={booksRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
           {tab === 'settings' && <SettingsEditor ref={settingsRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
         </div>
       </main>

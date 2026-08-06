@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { trackCounter, trackSlideView } from '../utils/analytics'
 import { useView } from '../context/ViewContext'
 
-export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }) {
+export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, onIndexChange, showCounter = true }) {
   const { slideMode, getPageMode } = useView()
   const actualMode = mode || getPageMode(pageKey)
   const isSlide = actualMode === 'slide'
@@ -13,18 +13,38 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
   const touchStart = useRef(null)   // { x, y }
   const touchMoved = useRef(false)  // did the finger actually drag?
 
+  // Report the active item index when it changes (used by e.g. book progress
+  // tracking). In slide mode this is the current slide; in list mode it's the
+  // section crossing the viewport band.
+  useEffect(() => {
+    if (isSlide) return
+    const els = listRef.current?.querySelectorAll('[data-section-index]')
+    if (!els || els.length === 0) return
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const i = Number(entry.target.getAttribute('data-section-index'))
+          if (Number.isInteger(i)) onIndexChange?.(i)
+        }
+      })
+    }, { rootMargin: '-40% 0px -55% 0px' })
+    els.forEach((el) => obs.observe(el))
+    return () => obs.disconnect()
+  }, [items, isSlide, onIndexChange])
+
   // Handle external jumpTo signal
   useEffect(() => {
     if (jumpTo === undefined || jumpTo === null) return
     if (isSlide) {
       setCurrentIdx(jumpTo)
+      onIndexChange?.(jumpTo)
     } else {
       const el = listRef.current?.querySelector(`[data-section-index="${jumpTo}"]`)
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
     }
-  }, [jumpTo, isSlide])
+  }, [jumpTo, isSlide, onIndexChange])
 
   // Swipe handlers for slide mode — improved sensitivity: requires a real
   // horizontal drag that exceeds vertical movement (to avoid accidental triggers
@@ -76,6 +96,7 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
     const target = Math.max(0, Math.min(idx, total - 1))
     if (target !== currentIdx) trackSlideView(pageKey, target)
     setCurrentIdx(target)
+    onIndexChange?.(target)
   }
   const hasPrev = currentIdx > 0
   const hasNext = currentIdx < total - 1
@@ -102,22 +123,23 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
         <div ref={listRef} style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 66 }}>
           {items.map((item, i) => <div key={i} data-section-index={i}>{renderItem(item, i)}</div>)}
         </div>
-        {/* Fixed counter bar */}
-        <div style={{
-          position: 'fixed', bottom: 'var(--bottom-nav-height, 56px)', left: 0, right: 0,
-          display: 'flex', justifyContent: 'center', zIndex: 2,
-          pointerEvents: 'none',
-        }}>
+        {showCounter && (
           <div style={{
-            width: '100%', maxWidth: 1200,
-            background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
-            padding: '10px 0', display: 'flex', justifyContent: 'center',
-            boxSizing: 'border-box',
-            pointerEvents: 'auto',
+            position: 'fixed', bottom: 'var(--bottom-nav-height, 56px)', left: 0, right: 0,
+            display: 'flex', justifyContent: 'center', zIndex: 2,
+            pointerEvents: 'none',
           }}>
-            {counterSection}
+            <div style={{
+              width: '100%', maxWidth: 1200,
+              background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
+              padding: '10px 0', display: 'flex', justifyContent: 'center',
+              boxSizing: 'border-box',
+              pointerEvents: 'auto',
+            }}>
+              {counterSection}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     )
   }
@@ -168,7 +190,7 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo }
           <button data-tour="slide-last" onClick={() => goTo(total - 1)} disabled={!hasNext} style={navBtn(!hasNext)} aria-label="Last">⏭</button>
         </div>
         {/* Counter */}
-        {counterSection}
+        {showCounter ? counterSection : null}
         </div>{/* inner */}
       </div>{/* outer */}
     </div>

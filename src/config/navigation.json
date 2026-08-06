@@ -93,6 +93,12 @@
       "key": "calendar"
     },
     {
+      "pageId": "books",
+      "to": "/books",
+      "icon": "faBook",
+      "key": "books"
+    },
+    {
       "pageId": "about",
       "to": "/about",
       "icon": "faCircleInfo",

@@ -14,6 +14,7 @@ Built with React 18 + Vite 5. Hosted on GitHub Pages.
 | **System architecture, data flow, routes** | [docs/architecture.md](docs/architecture.md) |
 | **Component reference** (all components explained) | [docs/components.md](docs/components.md) |
 | **Content system** (JSON structure, master-child cards, editing) | [docs/content.md](docs/content.md) |
+| **Books integration** (Hajee Mahboob Kassim library — design, pipeline, reader) | [docs/books.md](docs/books.md) |
 | **Styling guide** (CSS variables, themes, cards, fonts) | [docs/styling.md](docs/styling.md) |
 | **Deployment** (GitHub Pages, hosting, troubleshooting) | [docs/deployment.md](docs/deployment.md) |
 | **PWA & Offline** (service worker, caching, install) | [docs/pwa.md](docs/pwa.md) |

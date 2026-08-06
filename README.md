@@ -79,6 +79,8 @@ scripts/              ← CLI tools (editor, prerender, sync scripts)
 | `/roshni` | Roshni / Chirag Raushan |
 | `/abbajaan` | Abbajaan |
 | `/changelog` | Version history |
+| `/books` | Books index — written works of Hajee Mahboob Kassim |
+| `/books/:slug` | Individual book reader (chapters, TOC, progress, share) |
 
 Routes are **registry-driven** from `src/config/pageRoutes.json`. Pages created in the
 Admin Panel become public at their `/slug` automatically (rendered by a generic
@@ -107,6 +109,7 @@ content renderer).
 | **Hijri Calendar** | Admin-maintained month starts → navigable Hijri/Gregorian month grid, mapped events, countdown, app-wide today strip |
 | **Changelog** | Version history page |
 | **Onboarding Walkthrough** | First-run guided tour (choose language, spotlight key controls, guided taps on real buttons), replayable from Settings |
+| **Books Library** | Read the written works of Hajee Mahboob Kassim — cover-card index, per-book reader with chapter TOC, reading progress, and share |
 
 ---
 
@@ -165,6 +168,7 @@ Full documentation is in the `docs/` folder:
 | Document | What It Covers |
 |---|---|
 | [docs/architecture.md](docs/architecture.md) | System architecture, data flow, routes |
+| [docs/books.md](docs/books.md) | Books integration — Hajee Mahboob Kassim library (design, pipeline, reader) |
 | [docs/components.md](docs/components.md) | Every React component explained |
 | [docs/content.md](docs/content.md) | Content JSON, master-child cards, editing |
 | [docs/DEVCHANGELOG.md](docs/DEVCHANGELOG.md) | Full developer changelog (user-facing + internal) |

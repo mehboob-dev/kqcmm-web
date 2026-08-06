@@ -522,6 +522,58 @@ const server = http.createServer((req, res) => {
     return
   }
 
+  // ── BOOKS ROUTES ──
+  // Books live in src/config/content/{lang}/books/. The en/ folder is the
+  // editable source of truth; hinglish shells are left empty (en-fallback).
+  const BOOKS_EN_DIR = path.join(CONTENT_DIR, 'en', 'books')
+  const BOOKS_HI_DIR = path.join(CONTENT_DIR, 'hinglish', 'books')
+
+  // List all books (registry) — en index is source of truth.
+  if (u.pathname === '/api/books' && method === 'GET') {
+    const idx = readJSON(path.join(BOOKS_EN_DIR, '_index.json')) || { books: [] }
+    return sendJSON(idx)
+  }
+  // GET one book's content: /api/books/:slug
+  const booksMatch = u.pathname.match(/^\/api\/books\/([\w-]+)$/)
+  if (booksMatch && method === 'GET') {
+    const slug = booksMatch[1]
+    const fp = path.join(BOOKS_EN_DIR, slug + '.json')
+    if (!fs.existsSync(fp)) return sendError('Book not found', 404)
+    return sendJSON(readJSON(fp))
+  }
+  // POST save one book: /api/books/:slug
+  if (booksMatch && method === 'POST') {
+    let body = ''
+    req.on('data', c => body += c)
+    req.on('end', () => {
+      try {
+        const slug = booksMatch[1]
+        const d = JSON.parse(body)
+        if (!d || typeof d !== 'object') return sendError('Invalid book data')
+        if (!Array.isArray(d.chapters)) return sendError('Book must have a chapters array')
+        // Validate chapter shape (bounded length, non-empty headings).
+        const MAX_HEADING = 200
+        for (const ch of d.chapters) {
+          if (!ch || typeof ch.heading !== 'string' || !ch.heading.trim()) return sendError('Each chapter needs a non-empty heading')
+          if (ch.heading.length > MAX_HEADING) return sendError(`Chapter heading too long (>${MAX_HEADING})`)
+          if (!Array.isArray(ch.paragraphs)) return sendError('Each chapter needs a paragraphs array')
+        }
+        writeJSON(path.join(BOOKS_EN_DIR, slug + '.json'), d)
+        // Keep hinglish shell in sync (empty {}).
+        writeJSON(path.join(BOOKS_HI_DIR, slug + '.json'), {})
+        // Refresh the registry chapterCount.
+        const idx = readJSON(path.join(BOOKS_EN_DIR, '_index.json')) || { books: [] }
+        const entry = (idx.books || []).find(b => b.slug === slug)
+        if (entry) {
+          entry.chapterCount = d.chapters.length
+          writeJSON(path.join(BOOKS_EN_DIR, '_index.json'), idx)
+        }
+        sendJSON({ ok: true, chapterCount: d.chapters.length })
+      } catch (e) { sendError(e.message) }
+    })
+    return
+  }
+
   // ── NAV ROUTES ──
   if (u.pathname === '/api/nav' && method === 'GET') {
     const d = readJSON(NAV_FILE) || { bottomNav: [], sideDrawer: [] }

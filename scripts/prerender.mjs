@@ -11,10 +11,37 @@ const BASENAME = '/kqcmm-web'
 // Routes are derived from the page-route registry so a renamed page (and its
 // legacy alias) get prerendered static HTML without maintaining a separate list.
 const pageRoutes = JSON.parse(readFileSync(join(__dirname, '..', 'src/config/pageRoutes.json'), 'utf8'))
-const routes = pageRoutes.flatMap(page => [
-  BASENAME + page.route,
-  ...(page.aliases || []).map(alias => BASENAME + alias),
-])
+
+// Dynamic routes (e.g. /books/:slug) expand to one static page per live entry.
+// For books, read books/_index.json and prerender every "live" slug.
+function expandDynamicRoutes(baseRoutes) {
+  const out = []
+  for (const route of baseRoutes) {
+    if (route.includes(':slug') && route.includes('/books/')) {
+      const indexPath = join(__dirname, '..', 'src/config/content/en/books/_index.json')
+      try {
+        const idx = JSON.parse(readFileSync(indexPath, 'utf8'))
+        const live = (idx.books || []).filter((b) => b.status !== 'coming-soon')
+        for (const b of live) {
+          out.push(BASENAME + `/books/${b.slug}`)
+        }
+      } catch (e) {
+        console.warn(`  ⚠ could not expand books routes: ${e.message}`)
+      }
+    } else if (!route.includes(':')) {
+      out.push(BASENAME + route)
+    }
+    // Any other dynamic pattern (:param) is intentionally skipped.
+  }
+  return out
+}
+
+const routes = expandDynamicRoutes(
+  pageRoutes.flatMap(page => [
+    page.route,
+    ...(page.aliases || []).map(alias => alias),
+  ]),
+)
 
 // Static file server that handles the /kqcmm-web/ basename prefix
 function startServer(port) {

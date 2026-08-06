@@ -12,6 +12,7 @@ const quickLinks = [
   { to: () => routeForPage('roshni'), icon: '🕯️', labelKey: 'roshni' },
   { to: () => routeForPage('abbajaan'), icon: '👳', labelKey: 'abbajaan' },
   { to: () => routeForPage('calendar'), icon: '📅', labelKey: 'calendar' },
+  { to: () => routeForPage('books'), icon: '📚', labelKey: 'books' },
   { to: () => routeForPage('about'), icon: 'ℹ️', labelKey: 'about' },
 ]
 

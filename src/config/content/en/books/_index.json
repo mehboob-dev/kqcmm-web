@@ -1,0 +1,109 @@
+{
+  "books": [
+    {
+      "slug": "what-is-hazrat-muhammad",
+      "title": "What is Hazrat Muhammad",
+      "author": "Hajee Mahboob Kassim",
+      "description": "An introduction to the Prophethood of the Divine Creator, and how the signs of the Prophet Muhammad (peace be upon him) were foretold.",
+      "cover": "#2e7d32",
+      "status": "live",
+      "chapterCount": 2
+    },
+    {
+      "slug": "god-said-let-there-be-light",
+      "title": "God Said: Let There Be Light",
+      "author": "Hajee Mahboob Kassim",
+      "description": "The divine light of creation and its place in the Islamic worldview.",
+      "cover": "#b8860b",
+      "status": "live",
+      "chapterCount": 6
+    },
+    {
+      "slug": "oh-light-guide-us-through-nuclear-holocaust",
+      "title": "Oh Light! Guide Us Through Nuclear Holocaust",
+      "author": "Hajee Mahboob Kassim",
+      "description": "A spiritual appeal for guidance through the perils of the modern age.",
+      "cover": "#c2185b",
+      "status": "live",
+      "chapterCount": 8
+    },
+    {
+      "slug": "meraj-un-nabi",
+      "title": "Meraj un Nabi",
+      "author": "Hajee Mahboob Kassim",
+      "description": "The night journey of the Holy Prophet Muhammad (peace be upon him) to Heaven and his meeting with Allah.",
+      "cover": "#3f3aa8",
+      "status": "live",
+      "chapterCount": 5
+    },
+    {
+      "slug": "panjatan-pak-and-wasilah",
+      "title": "The Panjatan Pak and Wasilah in the Light of the Qur'an",
+      "author": "Hajee Mahboob Kassim",
+      "description": "The Holy Five (Ahl al-Kisa) and the concept of wasilah (intercession) as shown in the Qur'an.",
+      "cover": "#0f766e",
+      "status": "live",
+      "chapterCount": 2
+    },
+    {
+      "slug": "milad-un-nabi",
+      "title": "Milad un Nabi",
+      "author": "Hajee Mahboob Kassim",
+      "description": "The birth and celebration of the Holy Prophet Muhammad (peace be upon him).",
+      "cover": "#2e7d32",
+      "status": "live",
+      "chapterCount": 38
+    },
+    {
+      "slug": "lailatul-qadar",
+      "title": "Lailatul Qadar",
+      "author": "Hajee Mahboob Kassim",
+      "description": "The Night of Power — its virtues, signs, and blessings.",
+      "cover": "#4f3fd1",
+      "status": "live",
+      "chapterCount": 21
+    },
+    {
+      "slug": "panjatan-pak-wasilah-in-quran",
+      "title": "Panjatan Pak and Wasilah in the Quran",
+      "author": "Hajee Mahboob Kassim",
+      "description": "The Holy Five and wasilah in the Qur'an (companion volume).",
+      "cover": "#0f766e",
+      "status": "live",
+      "chapterCount": 3
+    },
+    {
+      "slug": "original-teachings-of-jesus",
+      "title": "The Original Teachings of Jesus",
+      "author": "Hajee Mahboob Kassim",
+      "description": "An Islamic exposition of the original teachings of Jesus, peace be upon him.",
+      "cover": "#9d2b4a",
+      "status": "live",
+      "chapterCount": 183
+    },
+    {
+      "slug": "islam-milad-un-nabi",
+      "title": "Islam Milad un Nabi",
+      "author": "Hajee Mahboob Kassim",
+      "description": "",
+      "cover": "#2e7d32",
+      "status": "coming-soon"
+    },
+    {
+      "slug": "maula-ali",
+      "title": "Maula Ali",
+      "author": "Hajee Mahboob Kassim",
+      "description": "",
+      "cover": "#4f3fd1",
+      "status": "coming-soon"
+    },
+    {
+      "slug": "talaq-talaq-talaq",
+      "title": "Talaq, Talaq, Talaq",
+      "author": "Hajee Mahboob Kassim",
+      "description": "",
+      "cover": "#b8860b",
+      "status": "coming-soon"
+    }
+  ]
+}

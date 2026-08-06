@@ -22,8 +22,12 @@ const app = (
   </React.StrictMode>
 )
 
-if (import.meta.env.PROD && rootEl && rootEl.hasChildNodes()) {
-  ReactDOM.hydrateRoot(rootEl, app)
-} else if (rootEl) {
+// Always use createRoot, never hydrate. The prerendered HTML in #root is
+// present for SEO (crawlers see the full content), but every page loads its
+// content async via usePageContent — the first client render is "Loading...",
+// which would mismatch the server HTML and make React 18 hydration throw
+// (errors #418/#423/#425). A clean createRoot render on top of the static HTML
+// avoids the mismatch entirely; the static markup is simply replaced.
+if (rootEl) {
   ReactDOM.createRoot(rootEl).render(app)
 }

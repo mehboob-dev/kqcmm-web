@@ -6,7 +6,9 @@ import { useState, useEffect } from 'react'
 // each language's JSON files into separate chunks, so clients only download
 // the active language's data for the current page.
 
-const contentModules = import.meta.glob('./*/*.json', { import: 'default' })
+// `./**/*.json` matches both the per-language page files (en/dua.json) and
+// nested content like books (en/books/meraj-un-nabi.json).
+const contentModules = import.meta.glob('./**/*.json', { import: 'default' })
 
 export function hasContent(lang, contentFile) {
   const path = `./${lang}/${contentFile}.json`
@@ -16,14 +18,20 @@ export function hasContent(lang, contentFile) {
 export async function getContent(lang, contentFile) {
   const path = `./${lang}/${contentFile}.json`
   const loadFn = contentModules[path]
-  if (!loadFn) {
-    // Fallback to English
-    const fallbackPath = `./en/${contentFile}.json`
-    const fallbackFn = contentModules[fallbackPath]
-    if (!fallbackFn) throw new Error(`Missing content file: ${contentFile}.json`)
-    return await fallbackFn()
+  if (loadFn) {
+    const data = await loadFn()
+    // Empty shell (e.g. hinglish books/ shells) → fall back to English
+    // rather than render a blank page. An empty object is a placeholder,
+    // not real content.
+    if (data && typeof data === 'object' && Object.keys(data).length > 0) {
+      return data
+    }
   }
-  return await loadFn()
+  // Fallback to English (missing file or empty shell)
+  const fallbackPath = `./en/${contentFile}.json`
+  const fallbackFn = contentModules[fallbackPath]
+  if (!fallbackFn) throw new Error(`Missing content file: ${contentFile}.json`)
+  return await fallbackFn()
 }
 
 // React Hook to fetch page content dynamically.

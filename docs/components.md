@@ -376,6 +376,37 @@ Thin bar rendered below the app header on **every page**, showing today's Hijri 
 
 ---
 
+## BooksIndex.jsx (library index)
+
+**File:** `src/pages/BooksIndex.jsx` — route `/books`. A cover-card grid of the
+Hajee Mahboob Kassim library.
+
+- Reads `books/_index.json` (the book registry) via `usePageContent(lang, 'books/_index')` — en-fallback means hinglish users see the same list.
+- **Live books** render as `<Link to="/books/{slug}">` cards: a themed cover block (`coverGradient(book.cover)` — a CSS gradient, no image asset), title, author, chapter count.
+- **Coming-soon books** (the 3 legacy `.doc` works) render as dimmed, non-link cards with a "🔒 Coming soon" label.
+- Exports `coverGradient(cover)` (shared with `BookReader`).
+
+## BookReader.jsx (per-book reading experience)
+
+**File:** `src/pages/BookReader.jsx` — route `/books/:slug`. Resolves its own
+content from the slug: `usePageContent(lang, 'books/{slug}')`.
+
+- **Cover + header** — themed gradient cover block, book title, author, description.
+- **Chapter TOC** — collapsible list of `chapters[].heading`; tapping scrolls to that chapter (`scrollIntoView`).
+- **Chapters as cards** — each `paragraphs[]` entry renders as a `.card` (like Hmk), so reading + font-size work per card.
+- **Reading progress** — an `IntersectionObserver` tracks which chapter is in view and calls `saveProgress(slug, idx)` (see `bookProgress.js`); a progress bar shows `progressPct`. On load it **resumes** to the saved chapter (`didResume` ref guards the one-time jump).
+- **Share** — Web Share API (`navigator.share`) with title/text/url; clipboard copy-link fallback.
+
+## bookProgress.js (pure reading-progress helpers)
+
+**File:** `src/utils/bookProgress.js` — pure, storage-failure-tolerant.
+
+- `readProgressMap` / `readProgress(slug)` / `saveProgress(slug, chapterIndex)` — localStorage under `kqcmm_book_progress` (one JSON object keyed by slug).
+- `progressPct(slug, totalChapters)` → 0–100 (`(lastIndex+1)/total`).
+- Same `storageAvailable` guard pattern as `onboarding.js` — private-mode/blocked storage never breaks reading.
+
+---
+
 ## OnboardingTour.jsx (first-run walkthrough)
 
 **File:** `src/components/OnboardingTour.jsx` — mounted from `Layout.jsx`. A guided,

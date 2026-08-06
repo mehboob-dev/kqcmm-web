@@ -9,11 +9,15 @@ export default defineConfig({
     VitePWA({
       registerType: 'prompt',
       includeAssets: [],
+      devOptions: {
+        enabled: true,
+        webManifestUrl: '/kqcmm-web/manifest.webmanifest',
+      },
       manifest: {
         name: 'KQCMM — Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya',
         short_name: 'KQCMM',
         description: 'Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya — Spiritual platform for followers of the Chishti Sufi order',
-        start_url: '.',
+        start_url: '/kqcmm-web/',
         display: 'standalone',
         background_color: '#f5f5f5',
         theme_color: '#1a1a2e',
