@@ -45,7 +45,7 @@ src/
 ├── pages/            ← One component per route
 ├── context/          ← Theme, Language, Font, View state
 └── styles.css        ← All styles in one file (themes, cards, layout)
-docs/                 ← Full documentation (17 files)
+docs/                 ← Full documentation (18 files)
 scripts/              ← CLI tools (editor, prerender, sync scripts)
 ```
 
@@ -168,6 +168,7 @@ Full documentation is in the `docs/` folder:
 | Document | What It Covers |
 |---|---|
 | [docs/architecture.md](docs/architecture.md) | System architecture, data flow, routes |
+| [docs/decisions.md](docs/decisions.md) | Architectural decisions — createRoot-not-hydrate, plugin-owned manifest, no empty JSON shells |
 | [docs/books.md](docs/books.md) | Books integration — Hajee Mahboob Kassim library (design, pipeline, reader) |
 | [docs/components.md](docs/components.md) | Every React component explained |
 | [docs/content.md](docs/content.md) | Content JSON, master-child cards, editing |

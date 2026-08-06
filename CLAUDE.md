@@ -539,6 +539,7 @@ Comprehensive docs are in the `docs/` folder:
 | Document | For |
 |---|---|
 | [docs/architecture.md](docs/architecture.md) | System architecture, data flow, route map |
+| [docs/decisions.md](docs/decisions.md) | Architectural decisions (ADR) — createRoot-not-hydrate, plugin-owned manifest, no empty JSON shells, per-language content, books shape |
 | [docs/components.md](docs/components.md) | Every React component explained |
 | [docs/content.md](docs/content.md) | Content JSON structure, master-child cards |
 | [docs/styling.md](docs/styling.md) | CSS variables, themes, card system, fonts |
@@ -556,7 +557,8 @@ Comprehensive docs are in the `docs/` folder:
 1. **SPA + GitHub Pages**: Uses `404.html` hack for client-side routing
 2. **No build-time CMS**: Content is local JSON, edited via standalone editor or direct file editing
 3. **Per-language folders**: Content is split into `src/config/content/{lang}/` folders; same page structure across languages, loaded dynamically per language (falls back to `en/`)
-4. **Context over Redux**: Simple app, React Context is sufficient
-5. **CSS variables over CSS-in-JS**: Single stylesheet, theme vars change everywhere
-6. **Fixed counter/slide nav**: Uses `position: fixed` with `bottom` matching the bottom nav height (set dynamically via CSS var `--bottom-nav-height`)
-7. **FontAwesome only**: No emoji rendering inconsistencies across devices
+4. **Always `createRoot`, never `hydrateRoot`** (`src/main.jsx`): pages load content async, so the first client render is `Loading...` — hydrating against the fully-loaded prerendered HTML makes React 18 throw (#418/#423/#425). Prerendered HTML is kept for SEO only and replaced on boot. See `docs/decisions.md` D1.
+5. **Context over Redux**: Simple app, React Context is sufficient
+6. **CSS variables over CSS-in-JS**: Single stylesheet, theme vars change everywhere
+7. **Fixed counter/slide nav**: Uses `position: fixed` with `bottom` matching the bottom nav height (set dynamically via CSS var `--bottom-nav-height`)
+8. **FontAwesome only**: No emoji rendering inconsistencies across devices
