@@ -27,6 +27,7 @@ Maintain both changelogs together when work lands. Latest version at the top.
 - **Admin** — new **📚 Books** tab (`BooksEditor.jsx`): book list, editable title/author/cover/description, chapter reorder/merge/delete/rename, per-chapter paragraph editing, header Save + dirty status. API: `GET/POST /api/books`, `GET/POST /api/books/:slug` in `content-editor.mjs` with chapter validation.
 - Docs: new `docs/books.md` (full design reference), `docs/index.md` + `README.md` linked, `docs/components.md`/`docs/scripts.md`/`CLAUDE.md` updated (in progress).
 - Version `5.12.1` → `5.13.0` (new feature), public changelog bumped en + hinglish.
+- **CI tooling** — `.github/workflows/deploy.yml` actions bumped to Node-20-native majors: `actions/checkout@v4 → v7`, `actions/setup-node@v4 → v7`, `actions/upload-pages-artifact@v3 → v5`, `actions/deploy-pages@v4 → v5`. The previous majors targeted Node.js 20 and were being force-run on Node 24, emitting deprecation warnings on every deploy; the new majors run natively on Node 24 and clear the warning. No user-visible change — **no public version bump** (stayed `5.13.0`).
 
 ---
 
