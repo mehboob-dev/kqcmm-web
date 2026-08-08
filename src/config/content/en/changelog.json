@@ -3,6 +3,13 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.15.0",
+        "date": "2026-08-08",
+        "changes": [
+          "The home page quick-link tiles are now customizable — add, remove, reorder, and change tile icons from the admin panel. Tile labels always follow the page names, so they stay translated automatically."
+        ]
+      },
+      {
         "version": "5.14.0",
         "date": "2026-08-08",
         "changes": [

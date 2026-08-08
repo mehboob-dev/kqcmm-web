@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useApi } from './hooks/useApi.js'
 import ContentEditor from './components/ContentEditor.jsx'
 import NavEditor from './components/NavEditor.jsx'
+import HomeEditor from './components/HomeEditor.jsx'
 import StringsEditor from './components/StringsEditor.jsx'
 import SettingsEditor from './components/SettingsEditor.jsx'
 import BooksEditor from './components/BooksEditor.jsx'
@@ -11,6 +12,7 @@ import Modal from './components/ui/Modal.jsx'
 
 const TABS = [
   { key: 'pages',    label: '📄 Pages',    desc: 'Edit page content' },
+  { key: 'home',     label: '🏠 Home',     desc: 'Home page tiles' },
   { key: 'nav',      label: '🧭 Nav',      desc: 'Bottom nav & drawer' },
   { key: 'strings',  label: '🏷️ Strings',  desc: 'UI labels' },
   { key: 'lang',     label: '🌍 Translate',desc: 'Translation status' },
@@ -41,6 +43,7 @@ export default function App() {
   const searchTimer = useRef(null)
   const pageRequest = useRef(0)
   const toastTimer = useRef(null)
+  const homeRef = useRef(null)
   const navRef = useRef(null)
   const stringsRef = useRef(null)
   const calendarRef = useRef(null)
@@ -51,6 +54,7 @@ export default function App() {
   const [editorStatus, setEditorStatus] = useState({ dirty: false, saving: false })
 
   const editorRefFor = (tab) => {
+    if (tab === 'home') return homeRef
     if (tab === 'nav') return navRef
     if (tab === 'strings') return stringsRef
     if (tab === 'calendar') return calendarRef
@@ -286,6 +290,7 @@ export default function App() {
             {tab === 'pages' && activePageMeta?.route && (
               <span className="toolbar-subtitle">/{activePageMeta.route.replace(/^\//, '')}</span>
             )}
+            {tab === 'home' && 'Home Tiles Editor'}
             {tab === 'nav' && 'Navigation Editor'}
             {tab === 'strings' && 'Strings Editor'}
             {tab === 'lang' && 'Translation Manager'}
@@ -337,6 +342,7 @@ export default function App() {
               <div className="empty-hint">Choose from the list on the left, or create a new page</div>
             </div>
           )}
+          {tab === 'home' && <HomeEditor ref={homeRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
           {tab === 'nav' && <NavEditor ref={navRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
           {tab === 'strings' && <StringsEditor ref={stringsRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
           {tab === 'lang' && <LanguageEditor api={api} pages={pages} show={show} onJumpToPage={jumpToPage} />}

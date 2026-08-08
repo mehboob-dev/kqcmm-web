@@ -21,11 +21,12 @@ A full React-based admin SPA built in `scripts/admin/`. Built automatically befo
 - **Page Rename** — rename a fixed or custom page's slug: renames the content JSON file **in every active language folder** (`src/config/content/{lang}/`), updates the public route in the page-route registry, and keeps the old route as a redirect alias. Home, the dedicated Calendar page, and protected fixed pages cannot be renamed. Rename is transactional with rollback (see `page-rename.mjs`).
 - **Custom pages** — created/duplicated pages get a stable `custom-…` registry id and are rendered publicly at `/slug` via the generic renderer. Deleting a custom page also removes its content files (all languages), registry entry, and navigation references.
 - **Navigation Editor** — reorder bottom nav and side drawer, pick icons from a visual selector, edit paths and keys inline
+- **Home Tiles Editor** — the quick-link grid on `/` is driven by `src/config/home.json` (new). The **🏠 Home** tab mirrors the Nav editor: reorderable tile rows with a page dropdown (from the route registry, so non-content-file pages like `books` are tile-able too) and a FontAwesome icon picker restricted to icons present in the app's `iconMap` (guarantees a real FA icon, never a `?`). **Tile labels are auto-derived** from each target page's localized name (`strings.drawer[titleKey]`), so no manual label field exists — tiles stay translated automatically. Save/dirty via the shared header badge + Save button (see Header Save).
 - **Strings Editor** — edit all UI labels (nav text, settings labels) for each language
 - **Language Manager** — translation status overview (what % filled per page per language), clickable percentages to jump to a page in a specific language, side-by-side comparison view, add/remove language across all content pages and strings. **How the % works:** `% = non-empty translatable fields ÷ total translatable fields`, per language, computed by `countFields` in `LanguageEditor.jsx`. Only these keys count as translatable content: `title`, `heading`, `text`, `body`, `intro`, `label`, `subtitle`. It measures **raw fill, not translation parity** — a field empty in both languages (or a language with a different field count) shows `< 100%`. The language list comes from `/api/strings` (real codes), not hardcoded keys.
 - **Settings Editor** — view mode defaults (list/slide per page)
 - **Calendar Editor** — dedicated 📅 tab for the Hijri calendar: manage **month starts** as a free-form, add/remove/sort table (Hijri year + month + Gregorian start per row, auto-sorts on save, duplicates rejected), manage shared events with rule-specific controls (fixed / monthly / Gregorian-relative), validate before saving via `/api/calendar` (schema-validated)
-- **Header Save** — Calendar, Strings, Nav, and Settings each show a live **● Unsaved / Saved** badge and a **💾 Save** button in the toolbar (matching the Pages tab); status updates as you type
+- **Header Save** — Calendar, Strings, Nav, Home, and Settings each show a live **● Unsaved / Saved** badge and a **💾 Save** button in the toolbar (matching the Pages tab); status updates as you type
 - **Global Search** — search across all pages and languages
 
 ### 2. Legacy Editor — `/`
@@ -45,6 +46,9 @@ The original single-page editor. Simpler but still functional.
 | `/api/search?q=` | GET | Search across all content |
 | `/api/nav` | GET | Get navigation config |
 | `/api/nav` | POST | Save navigation config |
+| `/api/routes` | GET | Get the page-route registry (`pageRoutes.json`) |
+| `/api/home` | GET | Get home tiles config (`src/config/home.json`) |
+| `/api/home` | POST | Save home tiles config |
 | `/api/strings` | GET | List string language codes |
 | `/api/strings/{lang}` | GET | Get strings for a language |
 | `/api/strings/{lang}` | POST | Save strings for a language |
@@ -75,6 +79,7 @@ scripts/admin/
 │   │   └── useApi.js     # API client
 │   └── components/
 │       ├── ContentEditor.jsx  # Content editor + live preview + shared Quick Jump editor
+│       ├── HomeEditor.jsx     # Home page tiles editor
 │       ├── NavEditor.jsx      # Navigation editor
 │       ├── StringsEditor.jsx  # UI strings editor
 │       ├── LanguageEditor.jsx # Translation status + CRUD + compare

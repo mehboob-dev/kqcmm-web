@@ -519,6 +519,25 @@ Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 126 cases).
 
 ---
 
+## Home.jsx
+
+**File:** `src/pages/Home.jsx` — the landing page's quick-link tile grid.
+
+The tiles are **not hardcoded** — they come from `src/config/home.json`
+(`{ "tiles": [{ "pageId": "...", "icon": "fa..." }, ...] }`), editable from the
+admin panel's **🏠 Home** tab. `Home.jsx` maps each config tile through the page
+registry:
+
+- **route** = `routeForNavItem({ pageId })` — resolves the registry id → canonical route
+- **labelKey** = `pageById(tile.pageId)?.titleKey` (falls back to the raw `pageId`)
+- **label** = `strings.drawer[labelKey] || labelKey` — per-language, so tiles stay
+  translated automatically; there is **no label field** in `home.json`
+
+Render JSX keeps `.quick-link` cards plus the onboarding hooks
+`data-tour="home-links"` and `data-tour="home-link-<labelKey>"` (see OnboardingTour).
+
+---
+
 ## Page Components
 
 All fixed pages follow the same pattern. Content is loaded via the **dynamic**

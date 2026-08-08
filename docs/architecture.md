@@ -123,7 +123,7 @@ renaming a page means editing the registry + moving the JSON file (in every lang
 folder) — no source import rewrites.
 
 ```
-/               → Home page (logo, tagline, 10 quick-link cards)
+/               → Home page (logo, tagline, quick-link tiles from `src/config/home.json`)
 /dua            → Duas / Supplications (7 duas in slide mode)
 /hmk            → Hajee Mahboob Kassim biography
 /sijrah-nama    → Sijrah Nama (verses, slide mode)

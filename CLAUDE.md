@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.14.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.15.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -122,6 +122,7 @@ kqcmm-web/
 │   │
 │   ├── config/
 │   │   ├── navigation.json           # Bottom nav + drawer order/icons (entries carry pageId)
+│   │   ├── home.json                 # Home quick-link tiles (pageId + FA icon per tile)
 │   │   ├── pageRoutes.json           # Page-route registry (stable id, route, contentFile, aliases)
 │   │   ├── pageRoutes.js             # Registry helpers (pageById, routeForPage)
 │   │   ├── splash.json               # Splash screen config
@@ -176,6 +177,7 @@ kqcmm-web/
 │           │   └── useApi.js
 │           └── components/
 │               ├── ContentEditor.jsx  # Type-aware fields + live preview + shared Quick Jump editor
+│               ├── HomeEditor.jsx     # Home tile reorder + page/icon pickers
 │               ├── NavEditor.jsx      # Nav reorder + icon picker
 │               ├── StringsEditor.jsx  # UI labels editor
 │               ├── LanguageEditor.jsx # Translation status + CRUD
@@ -316,6 +318,9 @@ Order and icons defined in `src/config/navigation.json`:
 ### Side Drawer
 Same config file, `sideDrawer` array. Icons via FontAwesome (solid).
 
+### Home Quick-Link Tiles (configurable)
+The tile grid on `/` comes from `src/config/home.json` (`{ "tiles": [{ "pageId": "...", "icon": "fa..." }] }`), editable from the admin **🏠 Home** tab. Each tile's route resolves via the page registry, and its **label is auto-derived** from the page's localized name (`strings.drawer[titleKey]`) — there is no label field, so tiles stay translated automatically. Icons must exist in `FontAwesome.jsx`'s `iconMap` or the tile renders `?`.
+
 ---
 
 ## 📖 View Modes
@@ -419,6 +424,7 @@ scripts/admin/
     ├── main.jsx, App.jsx, hooks/useApi.js
     └── components/
         ├── ContentEditor.jsx  # Type-aware fields + live preview
+        ├── HomeEditor.jsx     # Home tile reorder + page/icon pickers
         ├── NavEditor.jsx      # Nav reorder + icon picker
         ├── StringsEditor.jsx  # UI labels editor
         ├── LanguageEditor.jsx # Translation status + CRUD + compare

@@ -35,6 +35,11 @@ export function useApi() {
     getNav: () => api('/nav'),
     saveNav: (data) => api('/nav', { method: 'POST', body: JSON.stringify(data) }),
 
+    // Home tiles
+    getHome: () => api('/home'),
+    saveHome: (data) => api('/home', { method: 'POST', body: JSON.stringify(data) }),
+    getRoutes: () => api('/routes'),
+
     // Strings
     getStrings: (lang) => api('/strings/' + lang),
     saveStrings: (lang, data) => api('/strings/' + lang, { method: 'POST', body: JSON.stringify(data) }),

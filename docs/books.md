@@ -385,8 +385,9 @@ Admin → Books
 - **`pageRoutes.json`**: add `books` and `bookReader` entries (Section 5.1).
 - **`navigation.json`**: add a `books` entry to the **side drawer** (icon `faBook`,
   label key `books`). Not in bottom nav (5-item limit).
-- **Home page**: optionally add a "Books" quick-link card (the `homePageRoutes`
-  list in `Home.jsx` reads from a config — add `books` there).
+- **Home page**: optionally add a "Books" quick-link tile — tiles come from
+  `src/config/home.json` (`{ pageId, icon }`), editable via the admin **🏠 Home**
+  tab; add `{ "pageId": "books", "icon": "faBook" }` there.
 - **Strings**: add `books` label + `books.*` UI strings (title, author, chapters,
   share, coming soon, progress) to `en.json` and `hinglish.json`.
 - **SeoHead**: each book page gets title/description (title + author + blurb).

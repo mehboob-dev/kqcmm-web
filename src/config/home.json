@@ -1,0 +1,44 @@
+{
+  "tiles": [
+    {
+      "pageId": "dua",
+      "icon": "faHandsPraying"
+    },
+    {
+      "pageId": "hmk",
+      "icon": "faScroll"
+    },
+    {
+      "pageId": "sijrahNama",
+      "icon": "faBookOpen"
+    },
+    {
+      "pageId": "fatehaKhwani",
+      "icon": "faMosque"
+    },
+    {
+      "pageId": "khatm",
+      "icon": "faStarAndCrescent"
+    },
+    {
+      "pageId": "salimPappa",
+      "icon": "faUser"
+    },
+    {
+      "pageId": "roshni",
+      "icon": "faLightbulb"
+    },
+    {
+      "pageId": "abbajaan",
+      "icon": "faUserTie"
+    },
+    {
+      "pageId": "calendar",
+      "icon": "faCalendar"
+    },
+    {
+      "pageId": "about",
+      "icon": "faCircleInfo"
+    }
+  ]
+}

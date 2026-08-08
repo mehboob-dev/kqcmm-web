@@ -6,6 +6,20 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## 5.15.0 — 2026-08-08
+
+### User-facing
+- **Home page tiles are now editable** — the quick-link grid on `/` is no longer hardcoded. The admin panel's new **🏠 Home** tab lets you add, remove, reorder, and re-icon the tiles. Tile labels are **always auto-derived** from each target page's localized name (`strings.drawer[titleKey]`), so tiles stay translated automatically in every language with zero manual label editing.
+
+### Internal / docs
+- **`src/config/home.json` (new)** — the tiles config: `{ "tiles": [{ "pageId": "...", "icon": "fa..." }, ...] }`. Seeded with the 11 pre-existing quick links (`dua`, `hmk`, `sijrahNama`, `fatehaKhwani`, `khatm`, `salimPappa`, `roshni`, `abbajaan`, `calendar`, `books`, `about`). Statically imported by `Home.jsx` (same pattern as `navigation.json` → `SideDrawer`/`BottomNav`).
+- **`src/pages/Home.jsx`** — the hardcoded `quickLinks` array is replaced by a map over `homeConfig.tiles`; each tile resolves its route via `routeForNavItem({ pageId })` and its label key via `pageById(tile.pageId)?.titleKey` (falling back to the pageId). Render JSX unchanged — `.quick-link` cards, `data-tour="home-links"` and `data-tour="home-link-*"` hooks intact.
+- **`src/components/FontAwesome.jsx`** — `iconMap` grew with the tile icons: `faBookOpen`, `faStarAndCrescent`, `faUserTie`, `faHandHoldingHeart` (all free-solid).
+- **Admin** — new **🏠 Home** tab (`HomeEditor.jsx`) mirroring `NavEditor`: reorderable tile rows (page dropdown from the route registry, FA icon picker restricted to icons present in the app's `iconMap` so tiles never render `?`, unknown-page warning tag, live preview strip), header Save + dirty status via `onStatusChange` + `useImperativeHandle`. New API: `GET/POST /api/home` (reads/writes `src/config/home.json`) and `GET /api/routes` (exposes `pageRoutes.json` so the editor's page dropdown includes non-content-file pages like `books`). `useApi.js` gains `getHome`/`saveHome`/`getRoutes`.
+- Docs updated: `docs/scripts.md` (new `/api/home` + `/api/routes`), `docs/components.md` (HomeEditor + Home.jsx data source), `docs/architecture.md` route map note if present, `CLAUDE.md` tree, `README.md`, `MEMORY.md`. Version `5.14.0` → `5.15.0` (new feature), public changelog bumped en + hinglish.
+
+---
+
 ## 5.14.0 — 2026-08-08
 
 ### User-facing

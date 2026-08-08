@@ -1,22 +1,21 @@
 import SeoHead from '../components/SeoHead'
 import { Link, useOutletContext } from 'react-router-dom'
-import { routeForPage } from '../config/pageRoutes'
+import Icon from '../components/FontAwesome'
+import homeConfig from '../config/home.json'
+import { pageById, routeForNavItem } from '../config/pageRoutes'
 
-const quickLinks = [
-  { to: () => routeForPage('dua'), icon: '🤲', labelKey: 'duas' },
-  { to: () => routeForPage('hmk'), icon: '📜', labelKey: 'hmk' },
-  { to: () => routeForPage('sijrahNama'), icon: '📖', labelKey: 'sijrah' },
-  { to: () => routeForPage('fatehaKhwani'), icon: '🕌', labelKey: 'fatehaKhwani' },
-  { to: () => routeForPage('khatm'), icon: '✨', labelKey: 'khatm' },
-  { to: () => routeForPage('salimPappa'), icon: '👤', labelKey: 'salimPappa' },
-  { to: () => routeForPage('roshni'), icon: '🕯️', labelKey: 'roshni' },
-  { to: () => routeForPage('abbajaan'), icon: '👳', labelKey: 'abbajaan' },
-  { to: () => routeForPage('calendar'), icon: '📅', labelKey: 'calendar' },
-  { to: () => routeForPage('books'), icon: '📚', labelKey: 'books' },
-  { to: () => routeForPage('about'), icon: 'ℹ️', labelKey: 'about' },
-]
-
-const homePageRoutes = quickLinks.map(link => ({ ...link, to: link.to() }))
+// Home page tiles are driven by src/config/home.json — editable from the admin
+// panel (🏠 Home tab). Each tile references a registry pageId + a FontAwesome
+// icon name; the label is derived per language from the page's titleKey in
+// strings.drawer (so labels stay translated automatically).
+const homePageRoutes = (homeConfig.tiles || []).map(tile => {
+  const page = pageById(tile.pageId)
+  return {
+    to: routeForNavItem({ pageId: tile.pageId }),
+    icon: tile.icon,
+    labelKey: page?.titleKey || tile.pageId,
+  }
+})
 
 export default function Home() {
   const { strings } = useOutletContext()
@@ -39,7 +38,7 @@ export default function Home() {
               className="quick-link"
               data-tour={`home-link-${link.labelKey}`}
             >
-              <span className="ql-icon">{link.icon}</span>
+              <span className="ql-icon"><Icon name={link.icon} /></span>
               <span className="ql-label">{label}</span>
             </Link>
           )

@@ -35,6 +35,8 @@ const ROOT = path.resolve(__dirname, '..')
 const CONTENT_DIR = path.resolve(ROOT, 'src/config/content')
 const STRINGS_DIR = path.resolve(ROOT, 'src/config/strings')
 const NAV_FILE = path.resolve(ROOT, 'src/config/navigation.json')
+const HOME_FILE = path.resolve(ROOT, 'src/config/home.json')
+const ROUTES_FILE = path.resolve(ROOT, 'src/config/pageRoutes.json')
 const VIEW_FILE = path.resolve(ROOT, 'src/config/view.json')
 const LANG_CTX_FILE = path.resolve(ROOT, 'src/context/LanguageContext.jsx')
 const ADMIN_DIST = path.resolve(__dirname, 'admin/dist')
@@ -586,6 +588,28 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
       try {
         writeJSON(NAV_FILE, JSON.parse(body))
+        sendJSON({ ok: true })
+      } catch (e) { sendError(e.message) }
+    })
+    return
+  }
+
+  // ── ROUTE REGISTRY ──
+  if (u.pathname === '/api/routes' && method === 'GET') {
+    return sendJSON(readJSON(ROUTES_FILE) || [])
+  }
+
+  // ── HOME ROUTES ──
+  if (u.pathname === '/api/home' && method === 'GET') {
+    const d = readJSON(HOME_FILE) || { tiles: [] }
+    return sendJSON(d)
+  }
+  if (u.pathname === '/api/home' && method === 'POST') {
+    let body = ''
+    req.on('data', c => body += c)
+    req.on('end', () => {
+      try {
+        writeJSON(HOME_FILE, JSON.parse(body))
         sendJSON({ ok: true })
       } catch (e) { sendError(e.message) }
     })

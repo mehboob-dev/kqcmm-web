@@ -28,7 +28,7 @@ Open `http://localhost:5173` in your browser. You should see the splash screen, 
 ### 4. Explore the Running App
 | Page | URL | What to look for |
 |---|---|---|
-| Home | `/` | Logo, tagline, 10 quick-link cards |
+| Home | `/` | Logo, tagline, quick-link tiles (from `src/config/home.json`, editable via the admin **🏠 Home** tab) |
 | Khatm | `/khatm` | 32-step prayer, slide mode, counter |
 | Dua | `/dua` | 7 duas, try slide mode |
 | Settings | ⚙ gear icon | Change language (English/Hinglish; Urdu planned), pick a theme swatch (12 themes) |
