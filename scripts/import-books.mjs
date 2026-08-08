@@ -184,7 +184,7 @@ function splitChapters(paras, detectHeadings = true) {
   }
   const ensure = () => {
     if (!cur) {
-      cur = { heading: pendingHeading || `Section ${chapters.length + 1}`, isAuto: true, paragraphs: [] }
+      cur = { heading: pendingHeading || `Section ${chapters.length + 1}`, paragraphs: [] }
       pendingHeading = null
     }
   }
@@ -204,7 +204,7 @@ function splitChapters(paras, detectHeadings = true) {
     // Auto-chunk: if the current chapter is an auto section (no real heading)
     // and exceeds the threshold, close it and start the next numbered section.
     const w = wordCount(p)
-    if (cur.isAuto && /^Section \d+$/.test(cur.heading) && sectionWord + w > CHUNK_WORDS && cur.paragraphs.length) {
+    if (/^Section \d+$/.test(cur.heading) && sectionWord + w > CHUNK_WORDS && cur.paragraphs.length) {
       flush()
       pendingHeading = null
       ensure()
@@ -216,7 +216,7 @@ function splitChapters(paras, detectHeadings = true) {
   flush()
   // A trailing heading with no body still becomes a (heading-only) chapter.
   if (pendingHeading) {
-    chapters.push({ heading: pendingHeading, isAuto: true, paragraphs: [] })
+    chapters.push({ heading: pendingHeading, paragraphs: [] })
   }
   return chapters
 }
@@ -225,11 +225,13 @@ function splitChapters(paras, detectHeadings = true) {
 
 function buildBook(book, paras, { detectHeadings = true } = {}) {
   return {
-    title: book.title,
-    author: 'Hajee Mahboob Kassim',
-    description: book.description || '',
-    cover: book.cover || '#4a6cf7',
-    chapters: splitChapters(paras, detectHeadings),
+    en: {
+      title: book.title,
+      author: 'Hajee Mahboob Kassim',
+      description: book.description || '',
+      cover: book.cover || '#4a6cf7',
+      chapters: splitChapters(paras, detectHeadings),
+    }
   }
 }
 
@@ -246,7 +248,8 @@ function registryEntries(books) {
     if (b.status !== 'coming-soon') {
       const fp = path.join(EN_BOOKS_DIR, b.slug + '.json')
       const data = readJSON(fp)
-      entry.chapterCount = (data && data.chapters) ? data.chapters.length : 0
+      const content = data ? (data.en || data) : null
+      entry.chapterCount = (content && content.chapters) ? content.chapters.length : 0
     }
     return entry
   })
@@ -271,15 +274,16 @@ function importAll({ dryRun = false } = {}) {
     const detectHeadings = path.extname(book.file).toLowerCase() === '.docx'
     const bookJson = buildBook(book, paras, { detectHeadings })
     const enPath = path.join(EN_BOOKS_DIR, book.slug + '.json')
+    const chaptersLength = bookJson.en ? bookJson.en.chapters.length : bookJson.chapters.length
     if (dryRun) {
-      console.log(`  [dry] ${book.file} -> ${book.slug}.json (${bookJson.chapters.length} chapters, ${paras.length} paras)`)
+      console.log(`  [dry] ${book.file} -> ${book.slug}.json (${chaptersLength} chapters, ${paras.length} paras)`)
     } else {
       writeJSON(enPath, bookJson)
       // NO hinglish shell file. Hinglish books rely on the loader's fallback to
       // en/ (missing file -> en). Empty `{}` shells must NOT be written: Vite
       // dedupes identical empty JSON into a shared chunk that breaks hydration
       // (React #418/#423) when the glob loader tries to consume it as data.
-      console.log(`  ✓ ${book.slug}.json (${bookJson.chapters.length} chapters)`)
+      console.log(`  ✓ ${book.slug}.json (${chaptersLength} chapters)`)
     }
     done.push(book.slug)
   }

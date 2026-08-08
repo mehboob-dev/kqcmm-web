@@ -123,8 +123,7 @@ both exist to keep this safe.
   "cover": "#9d2b4a",
   "chapters": [
     {
-      "heading": "About the Author",          // auto-detected heading, or "Section 1"
-      "isAuto": true,                          // true = auto-split, admin can change
+      "heading": "About the Author",
       "paragraphs": [
         "Hajee Mahboob Kassim ...",
         "From childhood he always had ..."
@@ -132,7 +131,6 @@ both exist to keep this safe.
     },
     {
       "heading": "The Ascension",
-      "isAuto": true,
       "paragraphs": [ "...", "..." ]
     }
   ]
@@ -140,8 +138,6 @@ both exist to keep this safe.
 ```
 
 - **`chapters[].paragraphs`** = an array of text blocks, rendered as cards.
-- **`isAuto`** marks auto-split chapters so the admin Books editor can present them
-  for curation (rename / merge / delete → set `isAuto: false`).
 - The **`en`/`hinglish` split**: the book file's keys are the book's own fields
   (`title`, `author`, `chapters`, …) — **not** language keys. `usePageContent`
   already returns the whole file; the en-fallback gives hinglish the English text.
@@ -210,7 +206,6 @@ Given an array of extracted paragraphs `P[]`, produce `chapters[]`:
 3. **Chunk long prose** — when a stretch of non-heading paragraphs exceeds
    `~800 words`, cut into numbered sections (`Section 1`, `Section 2`, …) at the
    nearest paragraph boundary.
-4. Every produced chapter gets `isAuto: true`.
 
 ```
 P[] ──► [heading] [prose × N] [prose × M>threshold] [heading] ...
@@ -220,8 +215,7 @@ P[] ──► [heading] [prose × N] [prose × M>threshold] [heading] ...
 ```
 
 > The split is a **starting point for curation**, not the final structure. The
-> admin Books editor (Part 3) is the tool to merge/rename/reorder into real
-> chapters. `isAuto` makes it easy to tell which are still machine-made.
+> admin Books editor is the tool to merge/rename/reorder into real chapters.
 
 ### 4.4 Slug mapping
 

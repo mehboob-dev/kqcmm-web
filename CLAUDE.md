@@ -139,9 +139,7 @@ kqcmm-web/
 │   │       │   ├── khatm.json
 │   │       │   ├── calendar.json     # Hijri calendar (schema v1: monthStarts + events + translations map)
 │   │       │   └── ...               # hmk, sijrahNama, fatehaKhwani, salimPappa, about, roshni, abbajaan, changelog
-│   │       ├── en/books/             # Hajee Mahboob Kassim library (English source of truth)
-│   │       │   ├── _index.json       # Book registry (slug, title, cover, status, chapterCount)
-│   │       │   └── {slug}.json       # title/author/description/cover/chapters[{heading,isAuto,paragraphs}]
+│   │       │   └── {slug}.json       # title/author/description/cover/chapters[{heading,paragraphs}]
 │   │       ├── hinglish/             # Hinglish content — mirrors en/ (11 flat files)
 │   │       │   ├── dua.json
 │   │       │   └── ...

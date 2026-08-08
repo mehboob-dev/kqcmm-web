@@ -213,6 +213,83 @@ function writePageSplit(name, mergedData) {
   })
 }
 
+function readBookMerged(slug) {
+  const activeLangs = activeLanguages()
+  const enPath = path.join(CONTENT_DIR, 'en', 'books', slug + '.json')
+  if (!fs.existsSync(enPath)) return null
+  const enData = readJSON(enPath)
+  if (!enData) return null
+
+  const merged = {}
+  if (enData.en) {
+    merged.en = enData.en
+  } else {
+    merged.en = enData
+  }
+
+  activeLangs.forEach(lang => {
+    if (lang.code === 'en') return
+    const lp = path.join(CONTENT_DIR, lang.code, 'books', slug + '.json')
+    if (fs.existsSync(lp)) {
+      const lData = readJSON(lp)
+      if (lData) {
+        if (lData[lang.code]) {
+          merged[lang.code] = lData[lang.code]
+        } else {
+          merged[lang.code] = lData
+        }
+      }
+    }
+    // Dynamically ensure every active language has an entry so language tabs render in the editor
+    if (!merged[lang.code]) {
+      merged[lang.code] = {
+        title: '',
+        author: merged.en?.author || 'Hajee Mahboob Kassim',
+        description: '',
+        cover: merged.en?.cover || '#4a6cf7',
+        chapters: (merged.en?.chapters || []).map(ch => ({
+          heading: '',
+          paragraphs: (ch.paragraphs || []).map(() => '')
+        }))
+      }
+    }
+  })
+
+  return merged
+}
+
+function writeBookSplit(slug, mergedData) {
+  const activeLangs = activeLanguages()
+  activeLangs.forEach(lang => {
+    const lp = path.join(CONTENT_DIR, lang.code, 'books', slug + '.json')
+    const dir = path.dirname(lp)
+
+    const langContent = mergedData[lang.code]
+    if (lang.code === 'en') {
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+      writeJSON(lp, { en: langContent || {} })
+      return
+    }
+
+    // For non-English languages:
+    // Only write a physical file if there is actual non-empty content
+    const hasContent = langContent && (
+      (langContent.title && langContent.title.trim() !== '') ||
+      (Array.isArray(langContent.chapters) && langContent.chapters.some(ch =>
+        (ch.heading && ch.heading.trim() !== '') ||
+        (Array.isArray(ch.paragraphs) && ch.paragraphs.some(p => p && p.trim() !== ''))
+      ))
+    )
+
+    if (hasContent) {
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+      writeJSON(lp, { [lang.code]: langContent })
+    } else if (fs.existsSync(lp)) {
+      try { fs.unlinkSync(lp) } catch {}
+    }
+  })
+}
+
 // Active languages come from LanguageContext.jsx (single source of truth).
 // Returns [{ code, label, dir }] so callers can build future-proof, label-aware
 // content without hardcoding language codes.
@@ -541,9 +618,9 @@ const server = http.createServer((req, res) => {
   const booksMatch = u.pathname.match(/^\/api\/books\/([\w-]+)$/)
   if (booksMatch && method === 'GET') {
     const slug = booksMatch[1]
-    const fp = path.join(BOOKS_EN_DIR, slug + '.json')
-    if (!fs.existsSync(fp)) return sendError('Book not found', 404)
-    return sendJSON(readJSON(fp))
+    const d = readBookMerged(slug)
+    if (!d) return sendError('Book not found', 404)
+    return sendJSON(d)
   }
   // POST save one book: /api/books/:slug
   if (booksMatch && method === 'POST') {
@@ -552,26 +629,23 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
       try {
         const slug = booksMatch[1]
-        const d = JSON.parse(body)
-        if (!d || typeof d !== 'object') return sendError('Invalid book data')
-        if (!Array.isArray(d.chapters)) return sendError('Book must have a chapters array')
-        // Validate chapter shape (bounded length, non-empty headings).
-        const MAX_HEADING = 200
-        for (const ch of d.chapters) {
-          if (!ch || typeof ch.heading !== 'string' || !ch.heading.trim()) return sendError('Each chapter needs a non-empty heading')
-          if (ch.heading.length > MAX_HEADING) return sendError(`Chapter heading too long (>${MAX_HEADING})`)
-          if (!Array.isArray(ch.paragraphs)) return sendError('Each chapter needs a paragraphs array')
-        }
-        writeJSON(path.join(BOOKS_EN_DIR, slug + '.json'), d)
-        // No hinglish shell write — the loader en-fallback covers hinglish.
-        // Refresh the registry chapterCount.
+        const mergedData = JSON.parse(body)
+        if (!mergedData || typeof mergedData !== 'object') return sendError('Invalid book data')
+
+        // Save book content split by language folders
+        writeBookSplit(slug, mergedData)
+
+        // Refresh the registry chapterCount (using en as source of truth for chapters count)
+        const enData = mergedData.en || Object.values(mergedData)[0]
+        const chapterCount = enData && Array.isArray(enData.chapters) ? enData.chapters.length : 0
+
         const idx = readJSON(path.join(BOOKS_EN_DIR, '_index.json')) || { books: [] }
         const entry = (idx.books || []).find(b => b.slug === slug)
         if (entry) {
-          entry.chapterCount = d.chapters.length
+          entry.chapterCount = chapterCount
           writeJSON(path.join(BOOKS_EN_DIR, '_index.json'), idx)
         }
-        sendJSON({ ok: true, chapterCount: d.chapters.length })
+        sendJSON({ ok: true, chapterCount })
       } catch (e) { sendError(e.message) }
     })
     return

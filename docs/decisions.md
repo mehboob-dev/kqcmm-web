@@ -97,7 +97,7 @@ language), and a missing translation never 404s.
 **Status:** current · **Source:** `src/config/content/{en,hinglish}/books/`,
 `src/pages/BookReader.jsx`, `src/pages/BooksIndex.jsx` · **Related:** `docs/books.md`
 
-Books use a `chapters[{ heading, isAuto, paragraphs[] }]` shape — **not** the
+Books use a `chapters[{ heading, paragraphs[] }]` shape — **not** the
 generic `sections`/`duas`/`items`/`verses` — so `BookReader` (chapters via
 `ContentView` list/slide + QuickJump navigation, reading progress) and the admin
 **📚 Books** editor behave differently from generic pages.

@@ -16,10 +16,13 @@ export default function BookReader() {
 
   const [jumpToIdx, setJumpToIdx] = useState()
 
+  // Extract the nested localized content (fallback to English)
+  const content = data?.[lang] || data?.en || {}
+
   // Chapters as "items" for ContentView (list + slide modes). Each chapter is a
   // titled section of card paragraphs. Jumping (QuickJump/TOC) is handled via
   // jumpToIdx, which ContentView scrolls/slides to.
-  const chapters = data?.chapters || []
+  const chapters = content.chapters || []
   const renderChapter = (ch) => (
     <section style={{ marginBottom: 14 }}>
       <h3 style={{ fontSize: '1.05em', color: 'var(--text-heading)', marginBottom: 8 }}>
@@ -51,8 +54,8 @@ export default function BookReader() {
   const progressPctNow = progressPct(slug, chapters.length)
 
   const handleShare = async () => {
-    const title = `${data?.title || 'Book'} — Hajee Mahboob Kassim`
-    const text = `${data?.title}: ${data?.description || ''}`
+    const title = `${content.title || 'Book'} — Hajee Mahboob Kassim`
+    const text = `${content.title || ''}: ${content.description || ''}`
     const url = window.location.href
     if (navigator.share) {
       try { await navigator.share({ title, text, url }) } catch { /* user cancelled */ }
@@ -74,9 +77,9 @@ export default function BookReader() {
   return (
     <div className="content-page">
       <SeoHead
-        title={data.title}
+        title={content.title}
         path={`/books/${slug}`}
-        description={data.description || `${data.title} by Hajee Mahboob Kassim`}
+        description={content.description || `${content.title || ''} by Hajee Mahboob Kassim`}
       />
 
       {/* Top bar */}
@@ -96,7 +99,7 @@ export default function BookReader() {
       <div
         className="book-cover"
         style={{
-          background: coverGradient(data.cover),
+          background: coverGradient(content.cover),
           color: '#fff',
           borderRadius: 12,
           padding: 24,
@@ -104,11 +107,11 @@ export default function BookReader() {
           textShadow: '0 1px 3px rgba(0,0,0,0.35)',
         }}
       >
-        <h2 style={{ margin: 0, fontSize: '1.5em', fontWeight: 800 }}>{data.title}</h2>
-        <div style={{ marginTop: 6, fontSize: '0.9em', opacity: 0.9 }}>{data.author}</div>
+        <h2 style={{ margin: 0, fontSize: '1.5em', fontWeight: 800 }}>{content.title}</h2>
+        <div style={{ marginTop: 6, fontSize: '0.9em', opacity: 0.9 }}>{content.author}</div>
       </div>
-      {data.description && (
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.92em', marginBottom: 12 }}>{data.description}</p>
+      {content.description && (
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.92em', marginBottom: 12 }}>{content.description}</p>
       )}
 
       {/* Reading progress */}

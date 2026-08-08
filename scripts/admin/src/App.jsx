@@ -5,7 +5,6 @@ import NavEditor from './components/NavEditor.jsx'
 import HomeEditor from './components/HomeEditor.jsx'
 import StringsEditor from './components/StringsEditor.jsx'
 import SettingsEditor from './components/SettingsEditor.jsx'
-import BooksEditor from './components/BooksEditor.jsx'
 import LanguageEditor from './components/LanguageEditor.jsx'
 import CalendarEditor from './components/CalendarEditor.jsx'
 import Modal from './components/ui/Modal.jsx'
@@ -27,6 +26,10 @@ export default function App() {
   const [pages, setPages] = useState([])
   const [activePage, setActivePage] = useState(null)
   const [pageData, setPageData] = useState(null)
+  const [books, setBooks] = useState([])
+  const [activeBook, setActiveBook] = useState(null)
+  const [bookData, setBookData] = useState(null)
+  const [bookSearchQ, setBookSearchQ] = useState('')
   const [searchQ, setSearchQ] = useState('')
   const [searchResults, setSearchResults] = useState(null)
   const [toast, setToast] = useState('')
@@ -42,12 +45,12 @@ export default function App() {
   const dialogTrigger = useRef(null)
   const searchTimer = useRef(null)
   const pageRequest = useRef(0)
+  const bookRequest = useRef(0)
   const toastTimer = useRef(null)
   const homeRef = useRef(null)
   const navRef = useRef(null)
   const stringsRef = useRef(null)
   const calendarRef = useRef(null)
-  const booksRef = useRef(null)
   const settingsRef = useRef(null)
   // Header status for non-pages tabs — kept in React state so the toolbar
   // re-renders when an editor's dirty/saving changes (refs alone wouldn't).
@@ -58,7 +61,6 @@ export default function App() {
     if (tab === 'nav') return navRef
     if (tab === 'strings') return stringsRef
     if (tab === 'calendar') return calendarRef
-    if (tab === 'books') return booksRef
     if (tab === 'settings') return settingsRef
     return null
   }
@@ -156,6 +158,7 @@ export default function App() {
 
   useEffect(() => {
     api.listPages().then(p => setPages(p)).catch(e => show('Error loading pages: ' + e.message, 'error'))
+    api.listBooks().then(res => setBooks(res.books || [])).catch(e => show('Error loading books: ' + e.message, 'error'))
   }, [])
 
   const openPage = async (name) => {
@@ -179,6 +182,32 @@ export default function App() {
       await api.savePage(activePage, pageData)
       setDirty(false)
       show('Saved!')
+    } catch (e) { show('Error: ' + e.message, 'error') }
+  }
+
+  const openBook = async (slug) => {
+    if (!confirmNavigation(() => {})) return
+    const requestId = ++bookRequest.current
+    setActiveBook(slug)
+    setBookData(null)
+    setMobileOpen(false)
+    try {
+      const d = await api.getBook(slug)
+      if (requestId !== bookRequest.current) return
+      setBookData(d)
+      setDirty(false)
+    } catch (e) { if (requestId === bookRequest.current) show('Error: ' + e.message, 'error') }
+  }
+
+  const saveBook = async () => {
+    if (!activeBook || !bookData) return
+    try {
+      const res = await api.saveBook(activeBook, bookData)
+      setDirty(false)
+      if (res && res.chapterCount !== undefined) {
+        setBooks(prev => prev.map(b => b.slug === activeBook ? { ...b, chapterCount: res.chapterCount } : b))
+      }
+      show('Book saved!')
     } catch (e) { show('Error: ' + e.message, 'error') }
   }
 
@@ -222,8 +251,15 @@ export default function App() {
     ? pages.filter(p => searchResults.some(r => r.name === p.name))
     : pages.filter(p => p.name.toLowerCase().includes(searchQ.toLowerCase()))
 
+  const filteredBooks = books.filter(b =>
+    (b.title || b.slug).toLowerCase().includes(bookSearchQ.toLowerCase()) ||
+    (b.description || '').toLowerCase().includes(bookSearchQ.toLowerCase())
+  )
+
   const activePageMeta = activePage ? pages.find(p => p.name === activePage) : null
   const canRenameActive = !!activePageMeta?.canRename
+
+  const activeBookMeta = activeBook ? books.find(b => b.slug === activeBook) : null
 
   return (
     <div className="app-layout">
@@ -242,7 +278,7 @@ export default function App() {
           {TABS.map(t => (
             <button key={t.key}
               className={'sidebar-tab' + (tab === t.key ? ' active' : '')}
-              onClick={() => { setEditorStatus({ dirty: false, saving: false }); setTab(t.key) }}
+              onClick={() => confirmNavigation(() => { setEditorStatus({ dirty: false, saving: false }); setTab(t.key) })}
               title={t.desc}>
               {t.label}
             </button>
@@ -279,6 +315,35 @@ export default function App() {
             </button>
           </div>
         )}
+
+        {tab === 'books' && (
+          <div className="sidebar-pages">
+            <div className="sidebar-search">
+              <span className="search-icon">🔍</span>
+              <input
+                placeholder="Search books..."
+                value={bookSearchQ}
+                onChange={e => setBookSearchQ(e.target.value)}
+                className="search-input"
+              />
+            </div>
+            <div className="page-list">
+              {filteredBooks.map(b => (
+                <button key={b.slug}
+                  className={'page-item' + (activeBook === b.slug ? ' active' : '')}
+                  onClick={() => openBook(b.slug)}>
+                  <span className="page-icon">📚</span>
+                  <span className="page-item-name">{b.title || b.slug}</span>
+                  {b.chapterCount !== undefined && <span className="page-item-tag">{b.chapterCount} ch</span>}
+                  {b.status === 'coming-soon' && <span className="page-item-tag" title="Coming soon">soon</span>}
+                </button>
+              ))}
+              {filteredBooks.length === 0 && (
+                <div className="page-empty">No books found</div>
+              )}
+            </div>
+          </div>
+        )}
       </aside>
 
       {/* Main */}
@@ -290,12 +355,15 @@ export default function App() {
             {tab === 'pages' && activePageMeta?.route && (
               <span className="toolbar-subtitle">/{activePageMeta.route.replace(/^\//, '')}</span>
             )}
+            {tab === 'books' && (activeBookMeta?.title || activeBook || 'Select a book')}
+            {tab === 'books' && activeBook && (
+              <span className="toolbar-subtitle">/books/{activeBook}</span>
+            )}
             {tab === 'home' && 'Home Tiles Editor'}
             {tab === 'nav' && 'Navigation Editor'}
             {tab === 'strings' && 'Strings Editor'}
             {tab === 'lang' && 'Translation Manager'}
             {tab === 'calendar' && 'Hijri Calendar Editor'}
-            {tab === 'books' && 'Books Editor'}
             {tab === 'settings' && 'Settings'}
           </h1>
           {tab === 'pages' && activePage && (
@@ -319,7 +387,17 @@ export default function App() {
               </button>
             </div>
           )}
-          {tab !== 'pages' && editorState && editorRefFor(tab) && (
+          {tab === 'books' && activeBook && (
+            <div className="toolbar-actions">
+              <span className={'status-badge ' + (dirty ? 'unsaved' : 'saved')}>
+                {dirty ? '● Unsaved' : 'Saved'}
+              </span>
+              <button className="btn btn-primary" onClick={saveBook} disabled={!dirty}>
+                💾 Save
+              </button>
+            </div>
+          )}
+          {tab !== 'pages' && tab !== 'books' && editorState && editorRefFor(tab) && (
             <div className="toolbar-actions">
               <span className={'status-badge ' + (editorState.dirty ? 'unsaved' : 'saved')}>
                 {editorState.dirty ? '● Unsaved' : 'Saved'}
@@ -342,12 +420,21 @@ export default function App() {
               <div className="empty-hint">Choose from the list on the left, or create a new page</div>
             </div>
           )}
+          {tab === 'books' && activeBook && bookData && (
+            <ContentEditor data={bookData} onChange={d => { setBookData(d); setDirty(true) }} pageName={activeBook} />
+          )}
+          {tab === 'books' && !activeBook && (
+            <div className="empty-state">
+              <div className="empty-icon">📚</div>
+              <div className="empty-text">Select a book from the sidebar to start editing</div>
+              <div className="empty-hint">Choose a book from the Hajee Mahboob Kassim library</div>
+            </div>
+          )}
           {tab === 'home' && <HomeEditor ref={homeRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
           {tab === 'nav' && <NavEditor ref={navRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
           {tab === 'strings' && <StringsEditor ref={stringsRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
           {tab === 'lang' && <LanguageEditor api={api} pages={pages} show={show} onJumpToPage={jumpToPage} />}
           {tab === 'calendar' && <CalendarEditor ref={calendarRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
-          {tab === 'books' && <BooksEditor ref={booksRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
           {tab === 'settings' && <SettingsEditor ref={settingsRef} api={api} show={show} onStatusChange={handleEditorStatusChange} />}
         </div>
       </main>

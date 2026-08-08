@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback, forwardRef, useImperativeHandle } from 'react'
+import AutoTextarea from './ui/AutoTextarea.jsx'
 
 const KNOWN_LANGS = ['en', 'hinglish', 'urdu']
 
@@ -91,7 +92,7 @@ function renderStrings(obj, prefix, onChange) {
       <div className="field-group">
         <label className="field-label">{label}</label>
         {isLong
-          ? <textarea className="field-textarea" value={obj || ''} onChange={e => onChange(prefix, e.target.value)} style={{ minHeight: 60 }} />
+          ? <AutoTextarea value={obj || ''} onChange={e => onChange(prefix, e.target.value)} />
           : <input type="text" className="field-input" value={obj === null ? '' : obj} onChange={e => onChange(prefix, e.target.value)} />
         }
       </div>

@@ -184,7 +184,7 @@ Imports the Hajee Mahboob Kassim books from `D:\Work\KQCMM\Content\Books` into
   with UTF-8 stdout (`maxBuffer` 64MB for the 483-page book).
 - **Auto-split** (v1): docx uses real heading detection; pdfs chunk into ~800-word
   numbered sections (page-fragment noise like page numbers / running headers /
-  TOC lines is filtered). Every chapter is `isAuto: true`.
+  TOC lines is filtered).
 - **Emits**: `en/books/{slug}.json` (full book) + `_index.json` registry in both
   languages. **No hinglish per-book files** are written — the loader falls back
   to `en/` for a missing file (empty `{}` shells would trip a Vite dedup-chunk

@@ -135,14 +135,11 @@ behave differently from generic pages.
   "description": "…",
   "cover": "#3f3aa8",
   "chapters": [
-    { "heading": "About the Author", "isAuto": true, "paragraphs": ["…", "…"] },
-    { "heading": "Section 1",        "isAuto": true, "paragraphs": ["…"] }
+    { "heading": "About the Author", "paragraphs": ["…", "…"] },
+    { "heading": "Section 1",        "paragraphs": ["…"] }
   ]
 }
 ```
-
-- **`chapters[].isAuto`** marks machine-generated (auto-split) chapters — the
-  admin Books editor clears it as chapters are curated (renamed/merged).
 - **Hinglish books have no per-book file** — the loader's en-fallback serves the
   English text in the hinglish app (see `getContent` in
   `src/config/content/index.js`: a **missing** file falls back to `en/`, and an
