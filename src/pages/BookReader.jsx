@@ -22,19 +22,44 @@ export default function BookReader() {
   // Chapters as "items" for ContentView (list + slide modes). Each chapter is a
   // titled section of card paragraphs. Jumping (QuickJump/TOC) is handled via
   // jumpToIdx, which ContentView scrolls/slides to.
-  const chapters = content.chapters || []
-  const renderChapter = (ch) => (
-    <section style={{ marginBottom: 14 }}>
-      <h3 style={{ fontSize: '1.05em', color: 'var(--text-heading)', marginBottom: 8 }}>
-        {ch.heading}
-      </h3>
-      {ch.paragraphs.map((p, j) => (
-        <div key={j} className="card">
-          <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{p}</div>
-        </div>
-      ))}
-    </section>
-  )
+  const renderChapter = (ch, i) => {
+    const isLast = i === chapters.length - 1
+    return (
+      <section style={{ marginBottom: 14 }}>
+        <h3 style={{ fontSize: '1.05em', color: 'var(--text-heading)', marginBottom: 8 }}>
+          {ch.heading}
+        </h3>
+        {ch.paragraphs.map((p, j) => (
+          <div key={j} className="card">
+            <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{p}</div>
+          </div>
+        ))}
+        {isLast && (
+          <div style={{ textAlign: 'center', marginTop: 28, marginBottom: 20 }}>
+            <Link
+              to={routeForPage('books')}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                color: 'var(--accent)',
+                background: 'var(--bg-card)',
+                border: '1px solid var(--border)',
+                borderRadius: 8,
+                padding: '10px 20px',
+                fontSize: '0.92em',
+                fontWeight: 600,
+                textDecoration: 'none',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+              }}
+            >
+              ← Back to Books
+            </Link>
+          </div>
+        )}
+      </section>
+    )
+  }
 
   // Track reading progress as the reader scrolls/slides. ContentView reports the
   // active chapter via onIndexChange (slide index or list viewport band).
@@ -144,13 +169,6 @@ export default function BookReader() {
         labelKey="heading"
         onJump={setJumpToIdx}
       />
-
-      {/* Bottom: back to books */}
-      <div style={{ textAlign: 'center', marginTop: 20, paddingBottom: 20 }}>
-        <Link to={routeForPage('books')} style={{ color: 'var(--text-muted)', fontSize: '0.9em', textDecoration: 'none' }}>
-          ← Back to Books
-        </Link>
-      </div>
     </div>
   )
 }
