@@ -3,6 +3,13 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.14.0",
+        "date": "2026-08-08",
+        "changes": [
+          "Char naye warm-gradient themes — Gold, Silver, Beige aur Amber — Settings mein add hue. Header par ab uske mutabiq halki si gradient chamak bhi hai."
+        ]
+      },
+      {
         "version": "5.13.0",
         "date": "2026-08-06",
         "changes": [

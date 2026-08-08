@@ -3,6 +3,13 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.14.0",
+        "date": "2026-08-08",
+        "changes": [
+          "Four new warm-gradient themes — Gold, Silver, Beige, and Amber — added to Settings. The header takes on a subtle gradient sheen to match."
+        ]
+      },
+      {
         "version": "5.13.0",
         "date": "2026-08-06",
         "changes": [

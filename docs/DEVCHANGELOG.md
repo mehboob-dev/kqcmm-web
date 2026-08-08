@@ -6,6 +6,18 @@ Maintain both changelogs together when work lands. Latest version at the top.
 
 ---
 
+## 5.14.0 — 2026-08-08
+
+### User-facing
+- **Four new warm-gradient themes** — **Gold** (warm gold header with a gradient sheen, deep-gold accent, cream page), **Silver** (steel-blue header, muted slate accent, light-grey page), **Beige** (taupe header, brown accent, warm sand page), and **Amber** (bright amber header with a gradient sheen, deep-amber accent, warm cream page) added to Settings. The theme picker now offers **12 themes** total (Light, Dark, Sepia, Green, Rose, Indigo, Teal, Gold, Silver, Beige, Amber, OLED; default remains Green).
+
+### Internal / docs
+- **`src/styles.css`**: four new `[data-theme]` blocks (gold, silver, beige, amber) defining the full 17-variable set each, including a new `--header-grad` (a `linear-gradient(...)`) used by the warm-gradient themes. `.app-header` background changed from `var(--bg-header)` to `var(--header-grad, var(--bg-header))` — the warm-gradient themes get the gradient sheen, every other theme falls back to its flat header color. The `--text-muted` variable (already present in the other themes) is now also defined on the four new blocks, keeping the theme comparison table in `docs/styling.md` uniform.
+- **`src/context/ThemeContext.jsx`**: `themes` array grew 8 → 12; each new entry carries a `swatch: { bg, accent }` (taken from the theme's CSS variables) so the Settings picker shows matching circles. **Amber's** swatch accent is `#d97706` (matching `--accent`), and its header text is **dark** (`--header-text: #3d2f14`) — the only warm-gradient theme with dark header text, because its bright `#f59e0b` header needs it for contrast.
+- Docs updated (`README.md`, `CLAUDE.md` theme table + tree, `MEMORY.md`, `docs/styling.md` theme count + comparison table + `--header-grad` behavior, `docs/components.md` ThemeContext table, `docs/new-developer-guide.md`); version `5.13.0` → `5.14.0` (new feature), public changelog bumped en + hinglish.
+
+---
+
 ## 5.13.0 — 2026-08-06
 
 ### User-facing

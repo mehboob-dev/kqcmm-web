@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.13.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.14.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -115,7 +115,7 @@ kqcmm-web/
 │   │   ├── onboarding.js            # Onboarding persistence + step-sequence helpers (pure, tested)
 │   │   └── bookProgress.js          # Book reading-progress persistence (pure, tested)
 │   ├── context/
-│   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green/rose/indigo/teal/oled + swatches)
+│   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green/rose/indigo/teal/gold/silver/beige/amber/oled + swatches)
 │   │   ├── LanguageContext.jsx       # Language state (en/hinglish/urdu)
 │   │   ├── FontContext.jsx           # Font family + size state
 │   │   └── ViewContext.jsx           # View mode (list/slide) state (+ setViewMode)
@@ -279,6 +279,10 @@ Language switch triggers re-render of all text via context. RTL direction sets `
 | `rose` | Deep rose `#9d2b4a` | Pink `#c2185b` |
 | `indigo` | Indigo `#3f3aa8` | Violet `#4f3fd1` |
 | `teal` | Deep teal `#115e59` | Teal `#0f766e` |
+| `gold` | Gold `#a67c00` (gradient) | Dark gold `#9a7000` |
+| `silver` | Steel blue `#5d6a7e` (gradient) | Slate `#4e6277` |
+| `beige` | Taupe `#a17a4a` (gradient) | Brown `#7a5b33` |
+| `amber` | Bright amber `#f59e0b` (gradient) | Amber `#d97706` |
 | `oled` | Pure black `#000000` | Emerald `#10b981` |
 
 Default: `green`. Theme set via `data-theme` attribute on `<html>`. Settings

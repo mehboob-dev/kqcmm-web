@@ -125,6 +125,82 @@
   --ar-text: #0f2e2a;
   --header-text: #e0f5f0;
 }
+[data-theme="gold"] {
+  --bg: #faf3dc;
+  --bg-card: #fffdf5;
+  --bg-header: #a67c00;
+  --header-grad: linear-gradient(135deg, #b8860b 0%, #a67c00 45%, #8a6a16 100%);
+  --bg-nav: #fffdf5;
+  --bg-drawer: #fffdf5;
+  --bg-card-alt: #f3e8c3;
+  --border: #e3d49a;
+  --text: #3f3510;
+  --text-muted: #8a7538;
+  --text-heading: #332808;
+  --accent: #9a7000;
+  --accent-bg: rgba(154,112,0,0.14);
+  --shadow: rgba(124,91,14,0.14);
+  --ar-bg: #faf3dc;
+  --ar-text: #3f3510;
+  --header-text: #fff7e6;
+}
+[data-theme="silver"] {
+  --bg: #eef0f4;
+  --bg-card: #ffffff;
+  --bg-header: #5d6a7e;
+  --header-grad: linear-gradient(135deg, #6b7a90 0%, #5d6a7e 45%, #4a5568 100%);
+  --bg-nav: #ffffff;
+  --bg-drawer: #ffffff;
+  --bg-card-alt: #e4e8ee;
+  --border: #d4d9e1;
+  --text: #23272e;
+  --text-muted: #5f6b7a;
+  --text-heading: #14181f;
+  --accent: #4e6277;
+  --accent-bg: rgba(78,98,119,0.14);
+  --shadow: rgba(36,46,60,0.12);
+  --ar-bg: #f1f3f7;
+  --ar-text: #23272e;
+  --header-text: #f2f5fa;
+}
+[data-theme="beige"] {
+  --bg: #f4eddd;
+  --bg-card: #fffbf3;
+  --bg-header: #a17a4a;
+  --header-grad: linear-gradient(135deg, #c9a571 0%, #a17a4a 50%, #7a5b33 100%);
+  --bg-nav: #fffbf3;
+  --bg-drawer: #fffbf3;
+  --bg-card-alt: #ece1c8;
+  --border: #d9c9a8;
+  --text: #3c3325;
+  --text-muted: #7a6a4c;
+  --text-heading: #292116;
+  --accent: #7a5b33;
+  --accent-bg: rgba(122,91,51,0.14);
+  --shadow: rgba(80,58,30,0.14);
+  --ar-bg: #f3ecdb;
+  --ar-text: #3c3325;
+  --header-text: #faf3e4;
+}
+[data-theme="amber"] {
+  --bg: #fdf3e3;
+  --bg-card: #fffaf0;
+  --bg-header: #f59e0b;
+  --header-grad: linear-gradient(135deg, #fbbf24 0%, #f59e0b 45%, #e08600 100%);
+  --bg-nav: #fffaf0;
+  --bg-drawer: #fffaf0;
+  --bg-card-alt: #f7e7cf;
+  --border: #e8d5ae;
+  --text: #3d2f14;
+  --text-muted: #8a6d3f;
+  --text-heading: #2b2009;
+  --accent: #d97706;
+  --accent-bg: rgba(217,119,6,0.14);
+  --shadow: rgba(120,72,20,0.14);
+  --ar-bg: #faf0de;
+  --ar-text: #3d2f14;
+  --header-text: #3d2f14;
+}
 [data-theme="oled"] {
   --bg: #000000;
   --bg-card: #0a0a0a;
@@ -189,7 +265,7 @@ img { max-width: 100%; display: block; }
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background: var(--bg-header);
+  background: var(--header-grad, var(--bg-header));
   border-bottom: 1px solid var(--border);
   z-index: 100;
   flex-shrink: 0;

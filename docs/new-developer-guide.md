@@ -31,7 +31,7 @@ Open `http://localhost:5173` in your browser. You should see the splash screen, 
 | Home | `/` | Logo, tagline, 10 quick-link cards |
 | Khatm | `/khatm` | 32-step prayer, slide mode, counter |
 | Dua | `/dua` | 7 duas, try slide mode |
-| Settings | ⚙ gear icon | Change language (English/Hinglish; Urdu planned), pick a theme swatch (8 themes) |
+| Settings | ⚙ gear icon | Change language (English/Hinglish; Urdu planned), pick a theme swatch (12 themes) |
 
 ### 5. Try the Content Editor
 ```bash
@@ -68,7 +68,7 @@ kqcmm-web/
 │   │   └── NotFound.jsx          ← 404 page
 │   │
 │   ├── context/                  ← React Context providers
-│   │   ├── ThemeContext.jsx       ← 8 themes (Light/Dark/Sepia/Green/Rose/Indigo/Teal/OLED)
+│   │   ├── ThemeContext.jsx       ← 12 themes (Light/Dark/Sepia/Green/Rose/Indigo/Teal/Gold/Silver/Beige/Amber/OLED)
 │   │   ├── LanguageContext.jsx    ← English/Hinglish (Urdu planned)
 │   │   ├── FontContext.jsx       ← Font family + size
 │   │   └── ViewContext.jsx       ← List/Slide mode

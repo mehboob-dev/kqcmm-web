@@ -6,7 +6,7 @@ Complete reference for CSS, theming, responsive design, and card system.
 
 ## Theme System
 
-Eight themes are defined via CSS custom properties on `[data-theme]` (Light, Dark, Sepia, Green, Rose, Indigo, Teal, OLED):
+Twelve themes are defined via CSS custom properties on `[data-theme]` (Light, Dark, Sepia, Green, Rose, Indigo, Teal, Gold, Silver, Beige, Amber, OLED):
 
 ```css
 :root, [data-theme="light"] {
@@ -31,13 +31,25 @@ Eight themes are defined via CSS custom properties on `[data-theme]` (Light, Dar
 
 ### Theme Comparison
 
-| Property | Light | Dark | Sepia | Green | Rose | Indigo | Teal | OLED |
-|---|---|---|---|---|---|---|---|---|
-| `--bg` | `#f5f5f5` | `#0f0f1a` | `#faf0e6` | `#e8f5e9` | `#fdf0f2` | `#eef1fb` | `#e6f5f2` | `#000000` |
-| `--bg-header` | `#fdfdfd` | `#1a1a2e` | `#5c3a1e` | `#1b5e20` | `#9d2b4a` | `#3f3aa8` | `#115e59` | `#000000` |
-| `--accent` | `#4a6cf7` | `#7c5cfc` | `#b8860b` | `#2e7d32` | `#c2185b` | `#4f3fd1` | `#0f766e` | `#10b981` |
-| `--text` | `#222` | `#e0e0e0` | `#3e2c1a` | `#1b3a1b` | `#3a1622` | `#22223f` | `#0f2e2a` | `#e8e8e8` |
-| `--header-text` | `#333` | `#e0e0e0` | `#f0e8d8` | `#e0e0e0` | `#fdf0f2` | `#ececfb` | `#e0f5f0` | `#e8e8e8` |
+| Property | Light | Dark | Sepia | Green | Rose | Indigo | Teal | Gold | Silver | Beige | Amber | OLED |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `--bg` | `#f5f5f5` | `#0f0f1a` | `#faf0e6` | `#e8f5e9` | `#fdf0f2` | `#eef1fb` | `#e6f5f2` | `#faf3dc` | `#eef0f4` | `#f4eddd` | `#fdf3e3` | `#000000` |
+| `--bg-header` | `#fdfdfd` | `#1a1a2e` | `#5c3a1e` | `#1b5e20` | `#9d2b4a` | `#3f3aa8` | `#115e59` | `#a67c00` | `#5d6a7e` | `#a17a4a` | `#f59e0b` | `#000000` |
+| `--accent` | `#4a6cf7` | `#7c5cfc` | `#b8860b` | `#2e7d32` | `#c2185b` | `#4f3fd1` | `#0f766e` | `#9a7000` | `#4e6277` | `#7a5b33` | `#d97706` | `#10b981` |
+| `--text` | `#222` | `#e0e0e0` | `#3e2c1a` | `#1b3a1b` | `#3a1622` | `#22223f` | `#0f2e2a` | `#3f3510` | `#23272e` | `#3c3325` | `#3d2f14` | `#e8e8e8` |
+| `--text-muted` | `#888` | `#888` | `#8b7355` | `#558b2f` | `#9a5c6e` | `#6b6fa0` | `#3d7a6f` | `#8a7538` | `#5f6b7a` | `#7a6a4c` | `#8a6d3f` | `#7a7a7a` |
+| `--header-text` | `#333` | `#e0e0e0` | `#f0e8d8` | `#e0e0e0` | `#fdf0f2` | `#ececfb` | `#e0f5f0` | `#fff7e6` | `#f2f5fa` | `#faf3e4` | `#3d2f14` | `#e8e8e8` |
+
+The **warm gradient** themes (Gold, Silver, Beige, Amber) also set `--header-grad`,
+a `linear-gradient(...)` used as the header background to give the app bar a
+subtle sheen. `.app-header` falls back to `var(--bg-header)` when
+`--header-grad` is not defined, so all other themes stay flat.
+
+**Contrast gotcha:** among the warm-gradient themes, **Amber is the odd one out** —
+its header is *bright* (`#f59e0b`), so it uses a **dark** `--header-text`
+(`#3d2f14`) for readability. Gold/Silver/Beige all have darker headers and use
+light header text (`#fff7e6`-family). If you restyle any warm-gradient theme,
+check the header text contrast: bright header → dark text, dark header → light text.
 
 ### Theme Swatches (Settings picker)
 The Settings popup shows each theme as a colored circle instead of a text button.

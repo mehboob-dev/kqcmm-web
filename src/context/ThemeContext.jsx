@@ -13,6 +13,10 @@ const themes = [
   { id: 'rose', label: 'Rose', swatch: { bg: '#fdf0f2', accent: '#c2185b' } },
   { id: 'indigo', label: 'Indigo', swatch: { bg: '#eef1fb', accent: '#4f3fd1' } },
   { id: 'teal', label: 'Teal', swatch: { bg: '#e6f5f2', accent: '#0f766e' } },
+  { id: 'gold', label: 'Gold', swatch: { bg: '#faf3dc', accent: '#9a7000' } },
+  { id: 'silver', label: 'Silver', swatch: { bg: '#eef0f4', accent: '#5d6a7e' } },
+  { id: 'beige', label: 'Beige', swatch: { bg: '#f4eddd', accent: '#a17a4a' } },
+  { id: 'amber', label: 'Amber', swatch: { bg: '#fdf3e3', accent: '#d97706' } },
   { id: 'oled', label: 'OLED', swatch: { bg: '#000000', accent: '#10b981' } },
 ]
 
