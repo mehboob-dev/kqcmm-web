@@ -134,16 +134,16 @@ kqcmm-web/
 │   │   └── content/                  # Page content, split per language folder (en/, hinglish/; urdu planned)
 │   │       ├── index.js              # usePageContent(lang, file) — dynamic loader, code-split per language (getContent)
 │   │       ├── locale.js             # Pure locale resolver (requested→en→first)
-│   │       ├── en/                   # English content — one file per page (11 flat files)
+│   │       ├── en/                   # English content — 11 flat page files + books/ subfolder (_index.json + per-book JSONs)
 │   │       │   ├── dua.json
 │   │       │   ├── khatm.json
 │   │       │   ├── calendar.json     # Hijri calendar (schema v1: monthStarts + events + translations map)
 │   │       │   └── ...               # hmk, sijrahNama, fatehaKhwani, salimPappa, about, roshni, abbajaan, changelog
-│   │       │   └── {slug}.json       # title/author/description/cover/chapters[{heading,paragraphs}]
-│   │       ├── hinglish/             # Hinglish content — mirrors en/ (11 flat files)
+│   │       │   └── books/            # {slug}.json — title/author/description/cover/chapters[{heading,paragraphs}]
+│   │       ├── hinglish/             # Hinglish content — 11 flat page files + books/_index.json only (en-fallback for book content)
 │   │       │   ├── dua.json
 │   │       │   └── ...
-│   │       └── hinglish/books/       # _index.json only — no per-book files (loader falls back to en/)
+│   │       │   └── books/            # _index.json only — no per-book files (loader falls back to en/)
 │   │
 │   └── scripts/                       # CLI tools (see below)
 │

@@ -262,7 +262,7 @@ Labels for navigation, buttons, and UI elements are in `src/config/strings/`:
   "drawer": {
     "home": "Home",
     "duas": "Duas",
-    "hmk": "Hmk / Kalam",
+    "hmk": "Hajee Mahboob Kassim",
     "sijrahNama": "Sijrah Nama",
     "fatehaKhwani": "Fateha Khwani",
     "khatm": "Khatm-e-Khwajagan",
@@ -270,7 +270,9 @@ Labels for navigation, buttons, and UI elements are in `src/config/strings/`:
     "about": "About",
     "calendar": "Calendar",
     "roshni": "Roshni",
-    "abbajaan": "Abbajaan"
+    "abbajaan": "Abbajaan",
+    "books": "Books",
+    "changelog": "Changelog"
   },
   "settings": {
     "title": "Settings",

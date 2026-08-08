@@ -30,9 +30,12 @@ Located at `D:\Work\KQCMM\Content\Books` — **12 works**, all English, 3 format
 | 11 | `Talaq Talaq Talaq- In the light of Quran & Hadiths.doc` | doc (OLE2) | — | 🔒 v2 |
 | 12 | `What-is-Hazrat-Muhammad.docx` | docx | ~2.7k | ✅ |
 
-> **v1 ships 9 books** (docx + pdf — cleanly extractable). The **3 `.doc` (OLE2
+> **v1 ships 9 book JSON files** (docx + pdf — cleanly extractable). The **3 `.doc` (OLE2
 > binary)** books are held back to v2 until converted to docx/pdf, per the interview
-> decision. They appear on the index as **"coming soon"** cards.
+> decision. All 12 books are registered in `_index.json`, but their live/visible state
+> is controlled by the `"status"` field (e.g. `"status": "live"` vs `"status": "coming-soon"`).
+> Currently, 2 books are marked `"live"`, and the rest (including the 3 `.doc` books)
+> are marked `"coming-soon"`.
 
 ### Format extraction summary (verified)
 
@@ -72,7 +75,7 @@ src/config/content/
 │   ├── books/
 │   │   ├── meraj-un-nabi.json
 │   │   ├── milad-un-nabi.json
-│   │   ├── ... (9 live books)
+│   │   ├── ... (9 book JSON files)
 │   │   └── _index.json            # book registry: order, slugs, blurb, cover, status
 │   └── ... (existing pages)
 └── hinglish/

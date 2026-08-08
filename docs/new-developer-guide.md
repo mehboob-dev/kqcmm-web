@@ -113,12 +113,18 @@ kqcmm-web/
 
 **OR** use the editor: `npm run edit` → click page → edit text → Save
 
-### Add a New Page
-1. Create `src/pages/MyNewPage.jsx` (copy from an existing page)
-2. Create `src/config/content/myNewPage.json` (copy existing content)
-3. Add route in `src/App.jsx`
-4. Add to `src/config/navigation.json` if you want it in the menu
-5. Add string keys in `src/config/strings/*.json` for the label
+### Add a New Page (Custom Pages)
+
+The easiest way is using the Admin Panel:
+1. Run `npm run edit` and go to the **📄 Pages** tab.
+2. Click **Create Page** or **Duplicate Page**, pick a template (plain, duas, fateha), enter a slug, and click Save.
+3. This automatically creates the content files in `src/config/content/{lang}/{slug}.json`, registers the route in `src/config/pageRoutes.json`, and updates translations status.
+
+To do it manually:
+1. Create `src/config/content/en/{slug}.json` and `src/config/content/hinglish/{slug}.json` with the page content.
+2. Add the page entry to `src/config/pageRoutes.json` with `{"id": "...", "component": null, "contentFile": "{slug}", "route": "/{slug}", "titleKey": "...", "renamable": true, "custom": true, "renderer": "generic", "aliases": []}`.
+3. Add the page to `src/config/navigation.json` if you want it in the menu or drawer.
+4. Add string keys in `src/config/strings/*.json` for the label.
 
 ### Change Navigation Order
 Edit `src/config/navigation.json`:
@@ -159,8 +165,8 @@ This pulls new transliteration/translation from the XML files.
 6. Inside main area, Outlet renders Khatm.jsx
 7. Khatm.jsx:
    a. Gets current language from LanguageContext
-   b. Imports data from src/config/content/khatm.json
-   c. Selects data[lang] (e.g., data.hinglish)
+   b. Calls usePageContent(lang, 'khatm') which dynamically loads the split language file from src/config/content/{lang}/khatm.json
+   c. Retrieves the language-specific content object (falls back to English if missing)
    d. Renders page title + intro
    e. Renders ContentView with the sections array
 8. ContentView:

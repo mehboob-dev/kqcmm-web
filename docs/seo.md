@@ -73,8 +73,8 @@ live book slug** by reading `en/books/_index.json`:
 /kqcmm-web/abbajaan       → dist/abbajaan/index.html
 /kqcmm-web/changelog      → dist/changelog/index.html
 /kqcmm-web/books  → dist/books/index.html
-/kqcmm-web/books/meraj-un-nabi → dist/books/meraj-un-nabi/index.html
-/kqcmm-web/books/...        → ... (one per live book slug, 9 today)
+/kqcmm-web/books/what-is-hazrat-muhammad → dist/books/what-is-hazrat-muhammad/index.html
+/kqcmm-web/books/...        → ... (one per live book slug, 2 live today out of 12 registered books)
 ```
 
 Each alias (e.g. a renamed page's old route) is prerendered to its own

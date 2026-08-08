@@ -42,6 +42,12 @@ dist/
 ├── roshni/index.html               # Prerendered Roshni page
 ├── abbajaan/index.html             # Prerendered Abbajaan page
 ├── changelog/index.html            # Prerendered Changelog page
+├── books/
+│   ├── index.html                  # Prerendered books library index page
+│   ├── what-is-hazrat-muhammad/
+│   │   └── index.html              # Prerendered live book page
+│   └── god-said-let-there-be-light/
+│       └── index.html              # Prerendered live book page
 ├── assets/
 │   ├── index-xxxxxxxx.js           # Bundled JS (content-hashed)
 │   └── index-xxxxxxxx.css          # Bundled CSS (content-hashed)

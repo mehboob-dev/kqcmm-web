@@ -35,7 +35,7 @@ VitePWA({
     name: 'KQCMM — Khanqahe Qadriyah ...',
     short_name: 'KQCMM',
     description: '...',
-    start_url: '.',
+    start_url: '/kqcmm-web/',
     display: 'standalone',
     background_color: '#f5f5f5',
     theme_color: '#1a1a2e',
