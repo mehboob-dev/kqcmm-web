@@ -3,6 +3,13 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.16.0",
+        "date": "2026-08-08",
+        "changes": [
+          "Unified Books & Pages Editor in the admin panel with full multi-language translation support, collapsible chapter management, cover color swatches, chapter merging, and auto-expanding textareas that fit your full content."
+        ]
+      },
+      {
         "version": "5.15.0",
         "date": "2026-08-08",
         "changes": [

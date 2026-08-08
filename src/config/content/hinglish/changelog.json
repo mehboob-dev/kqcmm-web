@@ -3,6 +3,13 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.16.0",
+        "date": "2026-08-08",
+        "changes": [
+          "Admin panel mein Books aur Pages editor ab ek sath jode gaye hain — full multi-language translation support, collapsible chapters, cover color swatches, chapter merge, aur auto-resizing textareas jo bina scrollbar ke pura content dikhate hain."
+        ]
+      },
+      {
         "version": "5.15.0",
         "date": "2026-08-08",
         "changes": [

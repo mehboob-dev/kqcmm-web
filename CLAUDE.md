@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.15.0** — see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.16.0** - see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 

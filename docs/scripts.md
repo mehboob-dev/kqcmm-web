@@ -78,15 +78,15 @@ scripts/admin/
 │   ├── hooks/
 │   │   └── useApi.js     # API client
 │   └── components/
-│       ├── ContentEditor.jsx  # Content editor + live preview + shared Quick Jump editor
+│       ├── ContentEditor.jsx  # Content editor for Pages & Books + live preview + Quick Jump editor
 │       ├── HomeEditor.jsx     # Home page tiles editor
 │       ├── NavEditor.jsx      # Navigation editor
 │       ├── StringsEditor.jsx  # UI strings editor
 │       ├── LanguageEditor.jsx # Translation status + CRUD + compare
 │       ├── SettingsEditor.jsx # View config editor
 │       ├── CalendarEditor.jsx # Hijri calendar editor (month starts + shared events)
-│       ├── BooksEditor.jsx    # Books library editor (metadata + chapter reorder/merge/edit)
 │       └── ui/
+│           ├── AutoTextarea.jsx # Auto-resizing textarea to fit full content height
 │           └── Modal.jsx      # Reusable modal dialog component
 └── dist/                 # Built output (auto-generated)
 ```

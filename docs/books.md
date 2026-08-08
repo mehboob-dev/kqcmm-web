@@ -340,37 +340,35 @@ Pure helpers (unit-testable, `scripts/test-book-progress.mjs`):
 
 ## 6. Admin Books editor
 
-A new admin tab (**📚 Books**) in `scripts/admin/src/App.jsx` + a new
-`scripts/admin/src/components/BooksEditor.jsx`.
+Books editing is directly integrated into the shared `ContentEditor.jsx` under the **📚 Books** tab in `scripts/admin/src/App.jsx`.
 
 ```
-Admin → Books
-┌──────────────────────────────────────────────┐
-│  [book dropdown ▼]  Meraj un Nabi           │
-│  Title      ▸ Meraj un Nabi                 │
-│  Author     ▸ Hajee Mahboob Kassim          │
-│  Cover      ▸ [color picker swatches]       │
-│  Description▸ The Holy Prophet's …          │
-│  ── Chapters ──────────────────────────────  │
-│  1. About the Author    [↑][↓][✎][🗑]      │
-│  2. Section 1           [↑][↓][✎][🗑]      │
-│  3. Section 2           [↑][↓][✎][🗑]      │
-│     [ + Add chapter ]                      │
-│  [ Save ]  [unsaved…]                       │
-└──────────────────────────────────────────────┘
+Admin → 📚 Books (Sidebar list with search & dirty tracking)
+┌──────────────────────────────────────────────────────────┐
+│  Language Tabs: [ en ] [ hinglish ]        [ Preview ]   │
+│  Title       ▸ Meraj un Nabi                             │
+│  Author      ▸ Hajee Mahboob Kassim                      │
+│  Cover       ▸ [color palette swatches]                  │
+│  Description ▸ The Holy Prophet's …                      │
+│  ▾ Chapters (5 items)                                    │
+│    #1  [↑] [↓] [🗑]                                      │
+│        Heading    ▸ About the Author                     │
+│        Paragraphs ▸ [ auto-expanding textareas… ]        │
+│    #2  [⊕ Merge] [↑] [↓] [🗑]                            │
+│        Heading    ▸ Section 1                            │
+│        Paragraphs ▸ [ auto-expanding textareas… ]        │
+│  [ Save ]  [saved / unsaved]                             │
+└──────────────────────────────────────────────────────────┘
 ```
 
+- **Unified Editor**: `App.jsx` routes book selection directly to `ContentEditor.jsx`, ensuring future editor improvements automatically benefit both Pages and Books.
+- **Dynamic Multi-Language Tabs**: `readBookMerged` in `scripts/content-editor.mjs` dynamically queries `activeLanguages()` (English, Hinglish, etc.) and provides language tabs with pre-populated chapter templates.
+- **Auto-expanding Textareas**: Powered by `AutoTextarea.jsx`, fields expand and contract smoothly with content to show complete paragraphs without internal scrollbars.
 - **API endpoints** (in `scripts/content-editor.mjs`):
   - `GET /api/books` — list books (registry from `en/books/_index.json`).
-  - `GET /api/books/:slug` — one book's full content.
-  - `POST /api/books/:slug` — save (title/author/cover/description/chapters);
-    also refreshes the registry's `chapterCount`. No hinglish file is written.
-  - Reorder/merge are client-side in `BooksEditor.jsx` (reorder via array moves,
-    merge = append one chapter's paragraphs to the other + delete).
-- Reuses the existing save/status toolbar pattern (`forwardRef` +
-  `onStatusChange`) used by Calendar/Strings/Nav editors.
-- Server-side validation: `chapters` must be a non-empty array, headings
-  non-empty and ≤ 200 chars, each chapter needs a `paragraphs` array.
+  - `GET /api/books/:slug` — one book's multi-language merged content.
+  - `POST /api/books/:slug` — saves content split per language folder (`writeBookSplit`); refreshes the registry's `chapterCount`. Non-English books are only written to disk if they contain actual content.
+  - Chapter reorder, merge (`⊕`), and delete are managed directly in `ContentEditor.jsx`.
 
 ---
 

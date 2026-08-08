@@ -4,6 +4,20 @@
 
 Maintain both changelogs together when work lands. Latest version at the top.
 
+## 5.16.0 — 2026-08-08
+
+### User-facing
+- **Books Editor unified with Pages Editor** in the Admin panel — books are now curated directly via the shared `ContentEditor` with dynamic language tabs (`English`, `Hinglish`, etc.), collapsible chapter management, chapter merging (`⊕`), cover color swatches, and live styled book previews.
+- **Auto-expanding textareas** — text fields in the admin panel automatically expand and shrink with content, showing full paragraphs and multi-line text without internal scrollbars.
+
+### Internal / docs
+- **`scripts/admin/src/components/ContentEditor.jsx`** — unified editor handling both Pages and Books. Added support for collapsible chapter groups, cover color palette picker, boolean checkboxes, and chapter merge controls.
+- **`scripts/admin/src/components/ui/AutoTextarea.jsx` (new)** — reusable auto-resizing textarea component driven by `useLayoutEffect` and `scrollHeight`.
+- **`scripts/admin/src/components/BooksEditor.jsx`** — removed (replaced by `ContentEditor.jsx` integration in `App.jsx`).
+- **`scripts/content-editor.mjs`** — `readBookMerged` dynamically serves translation templates for all active languages; `writeBookSplit` saves non-empty translations to disk without rigid chapter heading constraints.
+- **Schema cleanup** — removed obsolete `isAuto` flag from books schema, import scripts, and admin logic.
+- **Version bump** — `5.15.0` → `5.16.0`, docs and changelogs synchronized.
+
 ---
 
 ## 5.15.0 — 2026-08-08

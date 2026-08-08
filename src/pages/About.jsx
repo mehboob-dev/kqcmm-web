@@ -57,7 +57,7 @@ export default function About() {
       )}
       <div className="card">
         <div className="card-title">Version</div>
-        <div className="card-text">5.15.0</div>
+        <div className="card-text">5.16.0</div>
       </div>
     </div>
   )
