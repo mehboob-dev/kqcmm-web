@@ -22,6 +22,7 @@ export default function BookReader() {
   // Chapters as "items" for ContentView (list + slide modes). Each chapter is a
   // titled section of card paragraphs. Jumping (QuickJump/TOC) is handled via
   // jumpToIdx, which ContentView scrolls/slides to.
+  const chapters = content.chapters || []
   const renderChapter = (ch, i) => {
     const isLast = i === chapters.length - 1
     return (
