@@ -23,10 +23,10 @@ const fontFamilies = [
 
 const fontSizes = [
   { id: 'xs', label: 'X-Small', size: '12px' },
-  { id: 'small', label: 'Small', size: '14px' },
-  { id: 'medium', label: 'Medium', size: '16px' },
-  { id: 'large', label: 'Large', size: '18px' },
-  { id: 'xlarge', label: 'X-Large', size: '21px' },
+  { id: 'small', label: 'Small', size: '16px' },
+  { id: 'medium', label: 'Medium', size: '18px' },
+  { id: 'large', label: 'Large', size: '20px' },
+  { id: 'xlarge', label: 'X-Large', size: '22px' },
   { id: 'xxl', label: 'XX-Large', size: '24px' },
 ]
 
