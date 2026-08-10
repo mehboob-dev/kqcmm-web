@@ -56,7 +56,7 @@ Let users bookmark specific verses or sections. Store in IndexedDB or localStora
 
 ## 🙏 Repeat-Recitation Features (core usage)
 
-Ideas shaped around the app's primary cadence — readers recite **Sijrah Nama daily**, **Fateha Khwani weekly**, and check the **calendar randomly** (e.g. for Urs dates). Items are lettered (A–E) so they don't disturb the 1–21 numbering above.
+Ideas shaped around the app's primary cadence — readers recite **Sijrah Nama daily**, **Fateha Khwani weekly**, and check the **calendar randomly** (e.g. for Urs dates). Items are lettered (A–E) so they don't disturb the 1–23 numbering above.
 
 ### A. Weekly Fateha completion marker
 Fateha Khwani is a **weekly set practice**. Add a "Done this week" toggle/checkmark on the Fateha page, stored per-week in localStorage (`kqcmm_fateha_done_<ISO-week>`) and resetting each Monday. A subtle visible cue ("✓ This week's Fateha complete") honors the ritual without gamification.
@@ -109,31 +109,37 @@ Copy an event's date or download an `.ics` file to save it into the phone's nati
 ### 16. Printable monthly view
 A clean, printable layout of a Hijri/Gregorian month (and its events) for sharing/printing in the community.
 
+### 17. Search calendar events (app + admin)
+Find any calendar event by name, date, or Hijri month — from the **public app** and from the **admin panel**. With 2,350+ Blessed Days events in the calendar, scrolling to locate one is impractical.
+
+- **App:** a search box on the Calendar page that filters events across all Hijri months (not just the visible month) by label, description, or month name, and jumps to the match. Data already loads from `calendar.json` — no new content authoring.
+- **Admin:** a filter box over the Calendar editor's shared event rows (mirroring the admin panel's existing global-search pattern) so an Urs or special date is found instantly among the imported events.
+
 ---
 
 ## 🛠 Admin (content editor)
 
-### 17. Calendar live preview
+### 19. Calendar live preview
 The admin Calendar editor saves data but doesn't show the public page — a live preview would reduce trial-and-error.
 
-### 18. Duplicate / clone an event
+### 20. Duplicate / clone an event
 Quickly copy an existing event as a template for a similar one.
 
 ---
 
 ## 🎵 Audio & Media
 
-### 19. Audio recitations
+### 21. Audio recitations
 Play MP3 recitations alongside duas/khatm verses. Auto-scroll to highlight current verse.
 
-### 20. Video integration
+### 22. Video integration
 Embed spiritual talks or kalam videos (YouTube / local).
 
 ---
 
 ## ⚙️ Technical
 
-### 21. Accessibility audit
+### 23. Accessibility audit
 - Screen reader labels
 - Keyboard navigation
 - Focus management for modals/drawers

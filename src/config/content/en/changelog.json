@@ -3,17 +3,19 @@
     "title": "Changelog",
     "versions": [
       {
-        "version": "5.16.0",
-        "date": "2026-08-08",
+        "version": "5.16.1",
+        "date": "2026-08-10",
         "changes": [
-          "Unified Books & Pages Editor in the admin panel with full multi-language translation support, collapsible chapter management, cover color swatches, chapter merging, and auto-expanding textareas that fit your full content."
+          "Home page tile icons now follow your theme's accent color — in Teal, Indigo, Gold and other accent themes the tile icons pick up the same tint as the bottom navigation.",
+          "Reading sizes adjusted for easier reading — Small/Medium/Large/X-Large are slightly larger (16–22px), while X-Small and XX-Large stay as they were.",
+          "Two home tiles got clearer icons: the Duas tile now shows a mosque and the Khatm tile a star."
         ]
       },
       {
         "version": "5.15.0",
         "date": "2026-08-08",
         "changes": [
-          "The home page quick-link tiles are now customizable — add, remove, reorder, and change tile icons from the admin panel. Tile labels always follow the page names, so they stay translated automatically."
+          "The home page quick-link tiles are now customizable — tiles can be added, removed, reordered, and given new icons. Tile labels always follow the page names, so they stay translated automatically."
         ]
       },
       {
@@ -103,15 +105,7 @@
         "date": "2026-08-01",
         "changes": [
           "Hijri Calendar: today's Islamic date, upcoming event countdown, and events mapped automatically",
-          "Monthly recurring events — repeat on the same Hijri date every month",
-          "Admin panel: dedicated Calendar editor to set each Hijri month's start date and manage shared events"
-        ]
-      },
-      {
-        "version": "5.5.0",
-        "date": "2026-07-29",
-        "changes": [
-          "Improved admin panel: manage languages, translation status, navigation, and page content more easily"
+          "Monthly recurring events — repeat on the same Hijri date every month"
         ]
       },
       {
@@ -176,7 +170,6 @@
         "version": "2.0.0",
         "date": "2026-07-20",
         "changes": [
-          "Content Editor web UI (npm run edit) — edit content without touching files",
           "Master-child card layout for Fateha Khwani",
           "Icons throughout the app"
         ]

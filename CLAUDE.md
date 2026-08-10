@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.16.0** - see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.16.1** - see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -116,7 +116,7 @@ kqcmm-web/
 │   │   └── bookProgress.js          # Book reading-progress persistence (pure, tested)
 │   ├── context/
 │   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green/rose/indigo/teal/gold/silver/beige/amber/oled + swatches)
-│   │   ├── LanguageContext.jsx       # Language state (en/hinglish/urdu)
+│   │   ├── LanguageContext.jsx       # Language state (en/hinglish; urdu planned)
 │   │   ├── FontContext.jsx           # Font family + size state
 │   │   └── ViewContext.jsx           # View mode (list/slide) state (+ setViewMode)
 │   │
@@ -295,7 +295,7 @@ shows each theme as a color swatch circle (page background + accent dot) — see
 
 17 font families including: System, Serif, Sans, Monospace, Bookman, Garamond, Palatino, Georgia, Tahoma, Trebuchet, Verdana, Times New Roman, Courier New, Lucida Console, Urdu Nastaliq, Urdu Naskh, Mehr Nastaliq.
 
-6 sizes: X-Small (12px), Small (14px), Medium (16px), Large (18px), X-Large (21px), XX-Large (24px).
+6 sizes: X-Small (12px), Small (16px), Medium (18px), Large (20px), X-Large (22px), XX-Large (24px).
 
 Font size is applied via inline `fontSize` on `<main>` element. Content children use `em` units.
 

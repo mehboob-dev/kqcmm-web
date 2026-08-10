@@ -66,6 +66,18 @@ values in sync with the CSS variables when editing a palette.
 2. Define all CSS custom properties
 3. Add to `themes` array in `src/context/ThemeContext.jsx` (with a `swatch: { bg, accent }` pair)
 
+### Theme-aware icons
+Icons that should follow the theme's accent color are given an explicit
+`color: var(--accent)` — never left to inherit body text, or they render
+near-black in light themes. Current accent-tinted icons:
+
+- `.quick-link .ql-icon` — Home page tile icons (Home.jsx)
+- `.nav-item.active` — the active bottom-nav tab (BottomNav.jsx)
+
+Muted nav/drawer icons inherit `var(--text-muted)` from their container.
+When styling a new icon element, pick `var(--accent)` (accent-tinted) or
+`var(--text-muted)` (muted) explicitly rather than letting it inherit `--text`.
+
 ---
 
 ## Card System
@@ -187,10 +199,10 @@ const fontFamilies = [
 | ID | Label | Size |
 |---|---|---|
 | xs | X-Small | 12px |
-| small | Small | 14px |
-| medium | Medium | 16px |
-| large | Large | 18px |
-| xlarge | X-Large | 21px |
+| small | Small | 16px |
+| medium | Medium | 18px |
+| large | Large | 20px |
+| xlarge | X-Large | 22px |
 | xxl | XX-Large | 24px |
 
 ### Size Cascade

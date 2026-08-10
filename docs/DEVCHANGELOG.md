@@ -4,6 +4,21 @@
 
 Maintain both changelogs together when work lands. Latest version at the top.
 
+## 5.16.1 — 2026-08-10
+
+### User-facing
+- **Home tile icons now follow the theme accent** — `src/styles.css` `.quick-link .ql-icon` gains `color: var(--accent)`. Previously the tile icons inherited `--text` (near-black in light themes), so the theme visibly tinted the bottom nav but not the home tiles. Now every accent theme (Teal, Indigo, Gold, Amber, OLED, …) tints the tiles consistently with the active bottom-nav tab.
+- **Reading font sizes bumped** — `src/context/FontContext.jsx` `fontSizes`: Small 14→16px, Medium 16→18px, Large 18→20px, X-Large 21→22px (X-Small 12px, XX-Large 24px unchanged).
+- **Two home tiles re-iconed** — `src/config/home.json`: Duas tile `faHandsPraying`→`faMosque`, Khatm tile `faStarAndCrescent`→`faStar`.
+
+### Internal / docs
+- **`src/styles.css`** — `.quick-link .ql-icon { font-size: 28px; color: var(--accent); }`; document the accent-tinted icon rule in `docs/styling.md` (*Theme-aware icons*).
+- **Docs sync** — font-size tables corrected in `docs/styling.md` and `CLAUDE.md` (were still listing 14/16/18/21px).
+- **Public changelog cleaned of dev-side content** — removed purely admin/internal entries from `src/config/content/{en,hinglish}/changelog.json`: the 5.16.0 "Unified Books & Pages Editor" entry and the 5.5.0 "Improved admin panel" entry (their user-facing content already lives in the corresponding dev entries; the removed versions no longer render on `/changelog`). Reworded 5.15.0 to drop the admin-panel mechanism, and stripped the admin-tooling bullets from 5.6.0 (Calendar editor) and 2.0.0 (Content Editor web UI). All of it remains in full in `docs/DEVCHANGELOG.md`.
+- **Version bump** — `5.16.0` → `5.16.1`, changelogs (en/hinglish public + dev) synchronized.
+
+---
+
 ## 5.16.0 — 2026-08-08
 
 ### User-facing

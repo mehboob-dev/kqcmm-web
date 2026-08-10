@@ -3,17 +3,19 @@
     "title": "Changelog",
     "versions": [
       {
-        "version": "5.16.0",
-        "date": "2026-08-08",
+        "version": "5.16.1",
+        "date": "2026-08-10",
         "changes": [
-          "Admin panel mein Books aur Pages editor ab ek sath jode gaye hain — full multi-language translation support, collapsible chapters, cover color swatches, chapter merge, aur auto-resizing textareas jo bina scrollbar ke pura content dikhate hain."
+          "Home page ke tile icons ab aapke theme ke accent color ko follow karte hain — Teal, Indigo, Gold aur doosre accent themes mein tile icons bottom navigation ki tarah hi same tint lete hain.",
+          "Reading sizes ko aasan padhne ke liye adjust kiya gaya — Small/Medium/Large/X-Large thode bade ho gaye hain (16–22px), jabki X-Small aur XX-Large jaisi ki taisi hain.",
+          "Do home tiles ko behtar icons mile: Duas tile ab mosque dikhata hai aur Khatm tile ek star."
         ]
       },
       {
         "version": "5.15.0",
         "date": "2026-08-08",
         "changes": [
-          "Home page ke quick-link tiles ab customize ho sakte hain — admin panel se tiles add, remove, reorder karein aur unke icons badlein. Tile labels hamesha page ke naam ke mutabiq hote hain, isliye wo apne aap translated rehte hain."
+          "Home page ke quick-link tiles ab customize ho sakte hain — tiles add, remove, reorder karein aur unhe naye icons dein. Tile labels hamesha page ke naam ke mutabiq hote hain, isliye wo apne aap translated rehte hain."
         ]
       },
       {
@@ -103,15 +105,7 @@
         "date": "2026-08-01",
         "changes": [
           "Hijri Calendar: aaj ki Islami tareekh, upcoming event countdown, aur events khud-ba-khud map hote hain",
-          "Monthly recurring events — har mahine usi Hijri date par repeat hote hain",
-          "Admin panel: dedicated Calendar editor — har Hijri month ki start date set karein aur shared events manage karein"
-        ]
-      },
-      {
-        "version": "5.5.0",
-        "date": "2026-07-29",
-        "changes": [
-          "Admin panel behtar hua: languages, translation status, navigation, aur page content aasani se manage karein"
+          "Monthly recurring events — har mahine usi Hijri date par repeat hote hain"
         ]
       },
       {
@@ -176,7 +170,6 @@
         "version": "2.0.0",
         "date": "2026-07-20",
         "changes": [
-          "Content Editor web UI (npm run edit) — files ko chhue bagair content edit karein",
           "Fateha Khwani ke liye master-child card layout",
           "App mein icons"
         ]
