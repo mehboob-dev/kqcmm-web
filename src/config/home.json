@@ -2,7 +2,7 @@
   "tiles": [
     {
       "pageId": "dua",
-      "icon": "faHandsPraying"
+      "icon": "faMosque"
     },
     {
       "pageId": "hmk",
@@ -18,7 +18,7 @@
     },
     {
       "pageId": "khatm",
-      "icon": "faStarAndCrescent"
+      "icon": "faStar"
     },
     {
       "pageId": "salimPappa",
