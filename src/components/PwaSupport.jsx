@@ -1,10 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import { trackInstall } from '../utils/analytics'
 
-export default function PwaSupport() {
+// Rendered once at the top of the app (above the splash gate in App.jsx) so
+// the service-worker registration — and therefore the update check — starts
+// as soon as the site opens. `ready` is false while the splash shows; the
+// toasts are gated on it so they never cover the splash art. A real update
+// still auto-reloads and its "updated" toast shows once the app is ready.
+export default function PwaSupport({ ready = false }) {
   const [offline, setOffline] = useState(!navigator.onLine)
   const [updated, setUpdated] = useState(false)
+  const updatedOnce = useRef(false)
 
   const {
     needRefresh: [needRefresh],
@@ -17,13 +23,17 @@ export default function PwaSupport() {
     },
   })
 
-  // Show "✅ Updated" toast briefly after auto-refresh
+  // Show "✅ Updated" toast briefly after an auto-update reload — and only
+  // after a real update, never on a plain mount. `needRefresh` starts false,
+  // so without the flag the effect fired on every app open.
   useEffect(() => {
-    if (!needRefresh) {
+    if (updatedOnce.current) return
+    if (ready && !needRefresh) {
+      updatedOnce.current = true
       setUpdated(true)
       setTimeout(() => setUpdated(false), 500)
     }
-  }, [needRefresh])
+  }, [needRefresh, ready])
 
   useEffect(() => {
     const handleOnline = () => setOffline(false)
@@ -56,6 +66,8 @@ export default function PwaSupport() {
     maxWidth: 'calc(100% - 40px)',
     animation: 'fadeSlideIn 0.3s ease',
   }
+
+  if (!ready) return null
 
   return (
     <>

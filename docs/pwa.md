@@ -76,7 +76,7 @@ assets/*.js      assets/*.css     sw.js
 Renders toast notifications for offline/update events.
 
 ```jsx
-<PwaSupport />
+<PwaSupport ready={splashDone} />
 ```
 
 #### Toasts
@@ -88,19 +88,28 @@ Renders toast notifications for offline/update events.
 
 #### Integration
 
-Rendered in `App.jsx` inside the context providers, before `<Routes>`:
+Mounted **above** the splash gate in `App.jsx`, so the service-worker
+registration (and the update check) starts as soon as the site opens — during
+the splash — instead of only after it resolves at home. It accepts `ready`
+(`splashDone`): while `false` (splash visible) the toasts render nothing, so
+they never cover the splash art; registration still runs regardless.
 
 ```jsx
-<ThemeProvider>
-  <LanguageProvider>
-    <FontProvider>
-      <ViewProvider>
-        <PwaSupport />
-        <Routes>...</Routes>
-      </ViewProvider>
-    </FontProvider>
-  </LanguageProvider>
-</ThemeProvider>
+// In App.jsx — top level, outside the splash gate
+<>
+  <PwaSupport ready={splashDone} />
+  {!splashDone ? <SplashScreen ... /> : (
+    <ThemeProvider>
+      <LanguageProvider>
+        <FontProvider>
+          <ViewProvider>
+            <Routes>...</Routes>
+          </ViewProvider>
+        </FontProvider>
+      </LanguageProvider>
+    </ThemeProvider>
+  )}
+</>
 ```
 
 ---

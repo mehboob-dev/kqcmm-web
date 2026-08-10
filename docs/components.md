@@ -184,15 +184,27 @@ Manages offline/update notifications for the PWA experience.
 | 📡 You're offline | Browser goes offline | Fixed red banner at top, hides on reconnect |
 
 ### Integration
+`PwaSupport` is mounted **above** the splash gate in `App.jsx` — it renders from the
+very first paint (so the service-worker registration / update check starts during
+the splash, not only at home), but returns `null` while `ready` is false so its
+toasts never cover the splash art.
+
 ```jsx
-// In App.jsx — renders inside context providers, before Routes
-<ThemeProvider>
-  <LanguageProvider>
-    <PwaSupport />
-    <Routes>...</Routes>
-  </LanguageProvider>
-</ThemeProvider>
+// In App.jsx — top level, outside the splash gate; toasts gated on `ready`
+<>
+  <PwaSupport ready={splashDone} />
+  {!splashDone ? <SplashScreen ... /> : (
+    <ThemeProvider>
+      <LanguageProvider>
+        <Routes>...</Routes>
+      </LanguageProvider>
+    </ThemeProvider>
+  )}
+</>
 ```
+
+Props: `ready` (bool) — set to `splashDone`; while `false` the offline banner and
+"updated" toast are hidden (registration still runs).
 
 ### How It Works
 - Uses `useRegisterSW()` from `virtual:pwa-register/react` (vite-plugin-pwa's React integration) with `onNeedRefresh` calling `updateServiceWorker(true)` immediately
