@@ -86,6 +86,49 @@ counts by theme or language), then save a report.
 
 ---
 
+## G. Custom Exploration Reports (Users, Locations & Actions)
+
+The **Explore** workspace in GA4 is the most flexible tool to analyze locations and custom interactions dynamically:
+
+1. Click on **Explore** (compass icon, left-hand menu) → Click **Blank** to start a new exploration.
+2. **Add Dimensions (Variables column):**
+   - Click **`+`** next to **Dimensions**.
+   - Search and import geographic dimensions: **City**, **Country**, and **Region**.
+   - Search and import custom dimensions: **Language**, **Theme**, **View Mode**, and **Counter Action**.
+3. **Add Metrics (Variables column):**
+   - Click **`+`** next to **Metrics**.
+   - Search and import metrics: **Active users**, **Event count**, and **Event count per active user**.
+4. **Build the Table (Settings column):**
+   - **Rows:** Drag and drop **City** or **Country** (to see geographical traffic) or your custom dimensions (to see preferences/actions) into the **ROWS** box.
+   - **Values:** Drag and drop **Active users** and **Event count** into the **VALUES** box.
+
+---
+
+## H. Troubleshooting "(not set)" & Missing Data
+
+When viewing custom dimensions or location data, you will often see **`(not set)`** or notice missing countries/cities (like Canada or Dhaka). Here is why and how to handle it:
+
+### 1. Custom Dimensions do not backfill past data
+* **Why:** GA4 only maps custom dimensions *after* they are registered in the console. Historical data will always show as `(not set)`.
+* **Fix:** Wait 24–48 hours for new traffic to flow in.
+
+### 2. Typo in Event Parameter name
+* **Why:** If the Event Parameter configured in the GA4 Console does not match the lowercase keys emitted by the React code in `src/utils/analytics.js`, it will stay `(not set)`.
+* **Fix:** In **Admin → Custom definitions**, edit your dimension and verify the parameter matches:
+  - Theme: **`theme`**
+  - Language: **`language`**
+  - View Mode: **`view_mode`**
+  - Counter Action: **`counter_action`**
+
+### 3. Data Thresholding (Low Traffic Privacy)
+* **Why:** In geographic reports, if you have low traffic (e.g., <50 active users) and only a few visitors from a specific city (like Dhaka or Toronto), Google's privacy rules automatically hide those rows to protect user identities. They are either omitted from the list or grouped under `(not set)`.
+* **Fix:** View the report at the **Country** or **Region** level instead of **City**, which aggregates the data and bypasses the thresholding limit. Alternatively, verify live traffic in the **Realtime** report (which does not apply thresholding).
+
+### 4. Privacy & Network Routing
+* **Why:** Users using VPNs, Apple iCloud Private Relay, or privacy-oriented browsers (like Brave with Shields Up) block or mask network metadata and IP addresses, forcing GA4 to record them as `(not set)`.
+
+---
+
 ## F. Enhanced measurement events (built-in, recommend turning on)
 
 GA4's **Enhanced measurement** turns on common events with no code. It's
@@ -117,3 +160,5 @@ is a SPA, the built-in **Page views** and the `page_view` you already send from
 | D. More events | various components | **Yes** ✅ done |
 | E. Dimensions + dashboard | Admin → Custom definitions + Explore | No |
 | F. Enhanced measurement | Admin → Data streams → tag settings | No |
+| G. Explore reports | Explore → Blank → drag Dimensions & Metrics | No |
+| H. Debug "(not set)" | Admin → Custom definitions / Geography level | No |
