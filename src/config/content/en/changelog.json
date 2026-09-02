@@ -3,6 +3,13 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.17.0",
+        "date": "2026-09-02",
+        "changes": [
+          "Added new Dua: 'Khwaja, The Refuge of the Destitute' ('Ghareebon Ke Sahare, Khwaja') in English and Hinglish."
+        ]
+      },
+      {
         "version": "5.16.1",
         "date": "2026-08-10",
         "changes": [

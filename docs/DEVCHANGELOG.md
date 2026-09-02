@@ -4,6 +4,16 @@
 
 Maintain both changelogs together when work lands. Latest version at the top.
 
+## 5.17.0 — 2026-09-02
+
+### User-facing
+- **Added new Dua** — *Khwaja, The Refuge of the Destitute* (*Ghareebon Ke Sahare, Khwaja*) added to `src/config/content/en/dua.json` and `src/config/content/hinglish/dua.json`.
+
+### Internal / docs
+- **Version bump** — `5.16.1` → `5.17.0`, public and developer changelogs synchronized.
+
+---
+
 ## 5.16.1 — 2026-08-10
 
 ### User-facing
