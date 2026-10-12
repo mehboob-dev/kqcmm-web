@@ -191,6 +191,16 @@ export default function Calendar() {
     return g
   }, [view, viewMode, data, today, eventByOrd])
 
+  const eventMap = useMemo(() => {
+    const map = new Map()
+    if (!data?.events) return map
+    for (const e of data.events) {
+      if (e?.id) map.set(e.id, e)
+    }
+    return map
+  }, [data])
+  const eventById = (id) => eventMap.get(id)
+
   if (loading || !data) {
     return (
       <div className="content-page">
@@ -228,16 +238,6 @@ export default function Calendar() {
   const otherUpcoming = eventList.filter(o => !isMonthly(o))
   const monthlyPast = pastEvents.filter(isMonthly)
   const otherPast = pastEvents.filter(o => !isMonthly(o))
-
-  const eventMap = useMemo(() => {
-    const map = new Map()
-    if (!data?.events) return map
-    for (const e of data.events) {
-      if (e?.id) map.set(e.id, e)
-    }
-    return map
-  }, [data])
-  const eventById = (id) => eventMap.get(id)
 
   // Configured min/max Hijri months (only slots with a set gregorianStart)
   const configured = (data.monthStarts || []).filter(ms => ms.gregorianStart)
