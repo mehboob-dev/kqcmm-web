@@ -84,7 +84,6 @@ kqcmm-web/
 │   │   ├── ContentView.jsx            # List/slide view + counter
 │   │   ├── QuickJump.jsx             # Floating quick-jump bottom sheet (shared, language-independent)
 │   │   ├── HijriStrip.jsx            # App-wide thin strip below header (today Hijri + Gregorian + event-today)
-│   │   ├── Calendar.jsx              # Hijri calendar (navigable month grid, Hijri/Gregorian toggle)
 │   │   ├── SplashScreen.jsx           # Splash with countdown
 │   │   ├── SettingsPopup.jsx          # Settings modal (+ Replay walkthrough button)
 │   │   ├── OnboardingTour.jsx        # First-run walkthrough (guided-tap overlay, data-tour hooks)
