@@ -70,6 +70,11 @@
       "hijriYear": 1448,
       "hijriMonth": 4,
       "gregorianStart": "2026-09-14"
+    },
+    {
+      "hijriYear": 1448,
+      "hijriMonth": 5,
+      "gregorianStart": "2026-10-13"
     }
   ],
   "monthNames": [
@@ -23740,6 +23745,16 @@
       ],
       "label": "Hadrat Abu Umar Baghdadi (Alayhir Rahmah)",
       "description": "PASSING OF · Wisal: 187 AH"
+    },
+    {
+      "id": "event-1791841184463",
+      "rule": "hijri-fixed",
+      "hijriMonth": 4,
+      "hijriDays": [
+        21
+      ],
+      "label": "Hazrat Haji Abdul Rehman Shah Baba",
+      "description": "Ghusul Shareef"
     }
   ],
   "en": {
