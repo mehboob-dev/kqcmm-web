@@ -247,6 +247,16 @@
       "description": ""
     },
     {
+      "id": "event-1791841184463",
+      "rule": "hijri-fixed",
+      "hijriMonth": 4,
+      "hijriDays": [
+        21
+      ],
+      "label": "Hazrat Haji Abdul Rehman Shah Baba",
+      "description": "Ghusul Shareef"
+    },
+    {
       "id": "thesunniway-2",
       "rule": "hijri-fixed",
       "hijriMonth": 1,
@@ -23745,16 +23755,6 @@
       ],
       "label": "Hadrat Abu Umar Baghdadi (Alayhir Rahmah)",
       "description": "PASSING OF · Wisal: 187 AH"
-    },
-    {
-      "id": "event-1791841184463",
-      "rule": "hijri-fixed",
-      "hijriMonth": 4,
-      "hijriDays": [
-        21
-      ],
-      "label": "Hazrat Haji Abdul Rehman Shah Baba",
-      "description": "Ghusul Shareef"
     }
   ],
   "hinglish": {

@@ -471,7 +471,7 @@ const legacyIds = allEvents.filter(e => !e.id.startsWith('thesunniway-'))
 
 eq(source.length, 2350, 'source has 2350 records')
 eq(genIds.length, 2350, 'exactly 2350 generated thesunniway-* events')
-eq(legacyIds.length, 14, 'the 14 existing KQCMM events are preserved')
+eq(legacyIds.length, 15, 'the 15 existing KQCMM events are preserved')
 eq(new Set(genIds.map(e => e.id)).size, 2350, 'generated event ids are unique')
 
 // One-to-one mapping to source ids (thesunniway-<source id>).

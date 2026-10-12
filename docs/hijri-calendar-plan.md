@@ -257,7 +257,7 @@ The v1 build followed a different, simpler shape than Option 5's steps:
 
 ## Blessed Days Dataset (recovered, v5.10.0)
 
-The Islamic calendar now ships with **2,364 events**: the original 14 admin-managed events plus **2,350 individual `hijri-fixed` events** imported from the Blessed Days (thesunniway) dataset.
+The Islamic calendar now ships with **2,365 events**: the original 15 admin-managed events plus **2,350 individual `hijri-fixed` events** imported from the Blessed Days (thesunniway) dataset.
 
 **Source of truth** — `scripts/data/events_merged.json` (2,350 records, ~1.9 MB). Each record has `id`, `englishName`/`urduName`, `day` (1–30), `month` (1–12), `wisalDate`, `eventType`/`eventEnglishName` (`PASSING OF` ×2,343, `BIRTHDAY OF` ×5, `BIG NIGHT` ×2), and `englishSuffix` honorifics.
 
