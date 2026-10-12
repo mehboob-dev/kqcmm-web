@@ -41,6 +41,39 @@ function formatDayMonth({ y, m, d }) {
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
 
+// A vertical column (Monthly / Other) that scrolls its list within a fixed
+// height — keeps the page compact no matter how many events exist.
+// Capped at 50 initially for past events to avoid mounting thousands of DOM elements.
+function EventColumn({ title, count, items, past, renderEventCard, moreLabel }) {
+  const [limit, setLimit] = useState(50)
+  const isCapped = past && items.length > limit
+  const visibleItems = isCapped ? items.slice(0, limit) : items
+
+  return (
+    <div className="cal-col">
+      <div className="cal-col-head">{title} <span className="cal-sec-count">{count}</span></div>
+      {items.length ? (
+        <div className="cal-ev-scroll">
+          <div className="cal-ev-list">
+            {visibleItems.map(occ => renderEventCard(occ, past))}
+          </div>
+          {isCapped && (
+            <button
+              type="button"
+              className="cal-more-btn"
+              onClick={() => setLimit(prev => prev + 50)}
+            >
+              {moreLabel || 'Show more (+50)'}
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="cal-col-empty">—</div>
+      )}
+    </div>
+  )
+}
+
 export default function Calendar() {
   const { lang } = useLanguage()
   const { data, loading } = usePageContent(lang, 'calendar')
@@ -264,25 +297,6 @@ export default function Calendar() {
     )
   }
 
-  // A vertical column (Monthly / Other) that scrolls its list within a fixed
-  // height — keeps the page compact no matter how many events exist.
-  const EventColumn = ({ title, count, items, past }) => {
-    return (
-      <div className="cal-col">
-        <div className="cal-col-head">{title} <span className="cal-sec-count">{count}</span></div>
-        {items.length ? (
-          <div className="cal-ev-scroll">
-            <div className="cal-ev-list">
-              {items.map(occ => renderEventCard(occ, past))}
-            </div>
-          </div>
-        ) : (
-          <div className="cal-col-empty">—</div>
-        )}
-      </div>
-    )
-  }
-
   return (
     <div className="content-page">
       <SeoHead title="Islamic Calendar" path={routeForPage('calendar')} description="Upcoming Islamic events, important dates, and spiritual observances from the Chishti tradition." />
@@ -384,8 +398,8 @@ export default function Calendar() {
             <span className="cal-sec-count">{todayEvents.length}</span>
           </div>
           <div className="cal-col-grid">
-            <EventColumn title={cal.monthlyEvents || 'Monthly'} count={todayMonthly.length} items={todayMonthly} past={false} />
-            <EventColumn title={cal.otherEvents || 'Other Events'} count={todayOther.length} items={todayOther} past={false} />
+            <EventColumn title={cal.monthlyEvents || 'Monthly'} count={todayMonthly.length} items={todayMonthly} past={false} renderEventCard={renderEventCard} />
+            <EventColumn title={cal.otherEvents || 'Other Events'} count={todayOther.length} items={todayOther} past={false} renderEventCard={renderEventCard} />
           </div>
         </div>
       ) : next ? (
@@ -429,8 +443,8 @@ export default function Calendar() {
                 <span className="cal-sec-count">{eventList.length}</span>
               </div>
               <div className="cal-col-grid">
-                <EventColumn title={cal.monthlyEvents || 'Monthly'} count={monthlyUpcoming.length} items={monthlyUpcoming} past={false} />
-                <EventColumn title={cal.otherEvents || 'Other Events'} count={otherUpcoming.length} items={otherUpcoming} past={false} />
+                <EventColumn title={cal.monthlyEvents || 'Monthly'} count={monthlyUpcoming.length} items={monthlyUpcoming} past={false} renderEventCard={renderEventCard} />
+                <EventColumn title={cal.otherEvents || 'Other Events'} count={otherUpcoming.length} items={otherUpcoming} past={false} renderEventCard={renderEventCard} />
               </div>
             </div>
           )}
@@ -443,8 +457,8 @@ export default function Calendar() {
                 <span className="cal-sec-count">{pastEvents.length}</span>
               </div>
               <div className="cal-col-grid">
-                <EventColumn title={cal.monthlyEvents || 'Monthly'} count={monthlyPast.length} items={monthlyPast} past />
-                <EventColumn title={cal.otherEvents || 'Other Events'} count={otherPast.length} items={otherPast} past />
+                <EventColumn title={cal.monthlyEvents || 'Monthly'} count={monthlyPast.length} items={monthlyPast} past renderEventCard={renderEventCard} moreLabel={cal.showMore} />
+                <EventColumn title={cal.otherEvents || 'Other Events'} count={otherPast.length} items={otherPast} past renderEventCard={renderEventCard} moreLabel={cal.showMore} />
               </div>
             </div>
           )}

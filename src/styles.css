@@ -1018,6 +1018,25 @@ strong { font-weight: 700; }
   }
 }
 
+.cal-more-btn {
+  display: block;
+  width: 100%;
+  padding: 0.6em 0.8em;
+  margin-top: 0.4em;
+  font-size: 0.8em;
+  font-weight: 600;
+  text-align: center;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px dashed var(--accent);
+  border-radius: 0.6em;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.cal-more-btn:hover {
+  opacity: 0.85;
+}
+
 .cal-ev-list {
   display: flex;
   flex-direction: column;

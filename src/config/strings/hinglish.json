@@ -48,7 +48,8 @@
     "unavailable": "Abhi set nahi hai",
     "unavailableHint": "Admin ne is tareekh ke liye moon sighting abhi confirm nahi ki hai.",
     "noUpcoming": "Koi upcoming event nahi hai",
-    "todayEvents": "Aaj Ke Events"
+    "todayEvents": "Aaj Ke Events",
+    "showMore": "Aur dikhayein (+50)"
   },
   "notFound": {
     "title": "404",
