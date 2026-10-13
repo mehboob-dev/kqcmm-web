@@ -123,31 +123,27 @@ export default function BookReader() {
 
       {/* Cover + header */}
       <div
-        className="book-cover"
+        className="reader-hero-cover"
         style={{
           background: coverGradient(content.cover),
-          color: '#fff',
-          borderRadius: 12,
-          padding: 24,
-          marginBottom: 8,
-          textShadow: '0 1px 3px rgba(0,0,0,0.35)',
         }}
       >
-        <h2 style={{ margin: 0, fontSize: '1.5em', fontWeight: 800 }}>{content.title}</h2>
-        <div style={{ marginTop: 6, fontSize: '0.9em', opacity: 0.9 }}>{content.author}</div>
+        <h1 style={{ margin: 0, fontSize: '1.6em', fontWeight: 800, textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>{content.title}</h1>
+        <div style={{ marginTop: 6, fontSize: '0.95em', opacity: 0.95, textShadow: '0 1px 3px rgba(0,0,0,0.35)' }}>{content.author}</div>
       </div>
       {content.description && (
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.92em', marginBottom: 12 }}>{content.description}</p>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.92em', marginBottom: 16, lineHeight: 1.6 }}>{content.description}</p>
       )}
 
       {/* Reading progress */}
       {progressPctNow > 0 && (
-        <div style={{ marginBottom: 12 }}>
-          <div style={{ height: 6, background: 'var(--bg-card-alt)', borderRadius: 3, overflow: 'hidden' }}>
-            <div style={{ width: `${progressPctNow}%`, height: '100%', background: 'var(--accent)' }} />
+        <div className="reader-progress-wrap">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.82em', fontWeight: 600 }}>
+            <span style={{ color: 'var(--text-heading)' }}>Reading Progress</span>
+            <span style={{ color: 'var(--accent)' }}>{progressPctNow}%</span>
           </div>
-          <div style={{ fontSize: '0.78em', color: 'var(--text-muted)', marginTop: 4 }}>
-            Reading progress — {progressPctNow}%
+          <div className="reader-progress-track">
+            <div className="reader-progress-bar" style={{ width: `${progressPctNow}%` }} />
           </div>
         </div>
       )}

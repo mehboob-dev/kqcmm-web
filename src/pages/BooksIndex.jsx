@@ -36,68 +36,55 @@ export default function BooksIndex() {
         path={routeForPage('books')}
         description="Written works of Hajee Mahboob Kassim — books on the Holy Prophet, the Ahl-e-Bait, and Islamic spiritual teachings."
       />
-      <h2 className="page-title">Books</h2>
-      <p className="page-desc" style={{ color: 'var(--text-muted)', marginBottom: 16 }}>
-        Written works of Hajee Mahboob Kassim
-      </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 14 }}>
+      <div className="books-hero">
+        <div className="books-hero-badge">Library & Publications</div>
+        <h1 className="books-hero-title">Books</h1>
+        <p className="books-hero-desc">
+          Written works of Hajee Mahboob Kassim on the Holy Prophet (SAW), the Ahl-e-Bait, and Islamic spiritual teachings.
+        </p>
+      </div>
+
+      <div className="books-grid">
         {live.map((book) => (
           <Link
             key={book.slug}
             to={`/books/${book.slug}`}
-            className="book-card"
+            className="book-card-item"
             style={{ textDecoration: 'none', color: 'inherit' }}
           >
             <div
-              className="book-cover"
+              className="book-cover-wrap"
               style={{
                 background: coverGradient(book.cover),
-                color: '#fff',
-                aspectRatio: '3 / 4',
-                borderRadius: 10,
-                display: 'flex',
-                alignItems: 'flex-end',
-                padding: 12,
-                fontWeight: 700,
-                fontSize: '1em',
-                textShadow: '0 1px 3px rgba(0,0,0,0.35)',
               }}
             >
-              {book.title}
+              <div className="book-cover-accent-line" />
+              <div className="book-cover-title">{book.title}</div>
             </div>
-            <div className="book-meta" style={{ marginTop: 6, fontSize: '0.82em' }}>
-              <div style={{ color: 'var(--text)' }}>{book.author}</div>
+            <div className="book-card-body">
+              <div className="book-author-text">{book.author}</div>
               {book.chapterCount > 0 && (
-                <div style={{ color: 'var(--text-muted)' }}>{book.chapterCount} chapters</div>
+                <div className="book-chapter-text">{book.chapterCount} chapters</div>
               )}
             </div>
           </Link>
         ))}
 
         {soon.map((book) => (
-          <div key={book.slug} className="book-card" style={{ opacity: 0.55 }}>
+          <div key={book.slug} className="book-card-item" style={{ opacity: 0.65 }}>
             <div
-              className="book-cover"
+              className="book-cover-wrap"
               style={{
                 background: coverGradient(book.cover),
-                color: '#fff',
-                aspectRatio: '3 / 4',
-                borderRadius: 10,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 700,
-                fontSize: '1em',
-                textAlign: 'center',
-                padding: 12,
               }}
             >
-              {book.title}
-              <div style={{ fontSize: '0.72em', fontWeight: 400, marginTop: 6 }}>🔒 Coming soon</div>
+              <div className="book-badge-soon">🔒 Coming soon</div>
+              <div className="book-cover-accent-line" />
+              <div className="book-cover-title">{book.title}</div>
             </div>
-            <div className="book-meta" style={{ marginTop: 6, fontSize: '0.82em', color: 'var(--text-muted)' }}>
-              {book.author}
+            <div className="book-card-body">
+              <div className="book-author-text">{book.author}</div>
             </div>
           </div>
         ))}
