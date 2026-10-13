@@ -49,7 +49,14 @@
     "unavailableHint": "Admin ne is tareekh ke liye moon sighting abhi confirm nahi ki hai.",
     "noUpcoming": "Koi upcoming event nahi hai",
     "todayEvents": "Aaj Ke Events",
-    "showMore": "Aur dikhayein (+50)"
+    "showMore": "Aur dikhayein (+50)",
+    "searchPlaceholder": "2,360+ events, buzurgan-e-deen talash karein...",
+    "filterAll": "Sabhi",
+    "filterMajor": "Tyohar",
+    "filterUrs": "Buzurg / Urs",
+    "filterMonthly": "Mahine Ke",
+    "noMatch": "Aapki search ke mutabiq koi event nahi mila",
+    "clearSearch": "Search clear karein"
   },
   "notFound": {
     "title": "404",

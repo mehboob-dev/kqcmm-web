@@ -102,8 +102,12 @@ async function prerender() {
   const server = await startServer(8090)
   console.log(`Server running on http://localhost:8090`)
 
+  const edgePath = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
+  const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || (existsSync(edgePath) ? edgePath : undefined)
+
   const browser = await launch({
     headless: true,
+    executablePath,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   })
 
@@ -117,11 +121,11 @@ async function prerender() {
       // Capture console logs for debugging
       page.on('console', msg => {
         if (msg.type() === 'error') {
-          console.log(`    [console.error] ${msg.text()}`)
+          console.log(`    [console.error] ${msg.text()}`, msg.location ? msg.location() : '')
         }
       })
       page.on('pageerror', err => {
-        console.log(`    [pageerror] ${err.message}`)
+        console.log(`    [pageerror] ${err.stack || err.message}`)
       })
 
       // Skip splash screen + first-run onboarding during prerender so the

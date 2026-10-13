@@ -49,7 +49,14 @@
     "unavailableHint": "The admin has not yet confirmed the moon sighting for this date.",
     "noUpcoming": "No upcoming events scheduled",
     "todayEvents": "Today's Events",
-    "showMore": "Show more (+50)"
+    "showMore": "Show more (+50)",
+    "searchPlaceholder": "Search 2,360+ events, saints, occasions...",
+    "filterAll": "All",
+    "filterMajor": "Festivals",
+    "filterUrs": "Blessed Saints / Urs",
+    "filterMonthly": "Monthly",
+    "noMatch": "No events match your search",
+    "clearSearch": "Clear search"
   },
   "notFound": {
     "title": "404",

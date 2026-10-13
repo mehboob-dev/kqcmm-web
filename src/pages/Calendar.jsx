@@ -78,6 +78,9 @@ export default function Calendar() {
   const { lang } = useLanguage()
   const { data, loading } = usePageContent(lang, 'calendar')
   const [strings, setStrings] = useState(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [activeFilter, setActiveFilter] = useState('all') // 'all' | 'major' | 'urs' | 'monthly'
+  const [selectedDay, setSelectedDay] = useState(null) // null or cell object from grid
   const [today, setToday] = useState(() => todayLocal())
   // view mode: 'hijri' (Hijri month grid) or 'gregorian' (Gregorian month grid)
   // Persisted like app settings so the choice survives reloads.
@@ -201,6 +204,26 @@ export default function Calendar() {
   }, [data])
   const eventById = (id) => eventMap.get(id)
 
+  const monthNames = data?.monthNames || []
+
+  // Filtered available occurrences based on search query and category filter
+  const filteredAvailable = useMemo(() => {
+    if (!available) return []
+    const q = searchQuery.trim().toLowerCase()
+    return available.filter(occ => {
+      // Category filter
+      if (activeFilter === 'monthly' && occ.rule !== 'hijri-monthly') return false
+      if (activeFilter === 'major' && (occ.rule === 'hijri-monthly' || !occ.id?.startsWith('event-'))) return false
+      if (activeFilter === 'urs' && !occ.id?.startsWith('blessed-')) return false
+      // Search query
+      if (!q) return true
+      const ev = eventById(occ.id)
+      const loc = localizedEvent(ev, lang, monthNames)
+      return (loc.label && loc.label.toLowerCase().includes(q)) ||
+             (loc.description && loc.description.toLowerCase().includes(q))
+    })
+  }, [available, searchQuery, activeFilter, lang, monthNames, eventMap])
+
   if (loading || !data) {
     return (
       <div className="content-page">
@@ -215,7 +238,6 @@ export default function Calendar() {
   const title = content.title
 
   const todayH = todayHijri(data.monthStarts)
-  const monthNames = data.monthNames || []
   const monthNamesShort = data.monthNamesShort || []
 
   const next = nextOccurrence(occurrences, today)
@@ -231,7 +253,10 @@ export default function Calendar() {
     : hijriMonthOf(data.monthStarts, today)
   const isCurrentView = view && currentMonth && view.year === currentMonth.year && view.month === currentMonth.month
 
-  const { eventList, pastEvents } = splitUpcomingPast(available, today)
+  // Filtered available occurrences based on search query and category filter
+  const isSearchingOrFiltering = Boolean(searchQuery.trim() || activeFilter !== 'all')
+
+  const { eventList, pastEvents } = splitUpcomingPast(filteredAvailable, today)
 
   // Split events by type: monthly (recurring every month) vs. other (one-off).
   const monthlyUpcoming = eventList.filter(isMonthly)
@@ -342,35 +367,46 @@ export default function Calendar() {
             </div>
             <div className="cal-grid-days">
               {Array.from({ length: grid.firstWeekday }).map((_, i) => <div key={'b' + i} className="cal-grid-day cal-grid-blank" />)}
-              {grid.cells.map(cell => (
-                <div
-                  key={viewMode === 'gregorian' ? cell.day : cell.hijriDay}
-                  className={'cal-grid-day' + (cell.isToday ? ' is-today' : '') + (cell.events.length ? ' has-event' : '') + (viewMode === 'gregorian' && cell.hijriDay === null ? ' no-hijri' : '')}
-                  title={cell.events.length ? `${cell.events.length} event${cell.events.length > 1 ? 's' : ''}` : ''}
-                >
-                  {viewMode === 'gregorian' ? (
-                    <>
-                      <span className="cal-grid-daynum">{cell.day}</span>
-                      <span className="cal-grid-greg">{cell.hijriDay != null ? `${cell.hijriDay} ${monthNamesShort[cell.hijriMonth - 1] || ''}` : ''}</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="cal-grid-daynum">{cell.hijriDay}</span>
-                      <span className="cal-grid-greg">{formatDayMonth(cell.gregorian)}</span>
-                    </>
-                  )}
-                  {cell.events.length > 0 && (
-                    <span className="cal-grid-dots">
-                      {Array.from({ length: Math.min(cell.events.length, GRID_MAX_DOTS) }).map((_, i) =>
-                        <span key={i} className="cal-grid-dot" />
-                      )}
-                      {cell.events.length > GRID_MAX_DOTS && (
-                        <span className="cal-grid-more">+{cell.events.length - GRID_MAX_DOTS}</span>
-                      )}
-                    </span>
-                  )}
-                </div>
-              ))}
+              {grid.cells.map(cell => {
+                const isSelected = selectedDay && (
+                  viewMode === 'gregorian'
+                    ? selectedDay.day === cell.day
+                    : selectedDay.hijriDay === cell.hijriDay
+                )
+                return (
+                  <div
+                    key={viewMode === 'gregorian' ? cell.day : cell.hijriDay}
+                    className={'cal-grid-day' + (cell.isToday ? ' is-today' : '') + (cell.events.length ? ' has-event' : '') + (viewMode === 'gregorian' && cell.hijriDay === null ? ' no-hijri' : '') + (isSelected ? ' is-selected' : '')}
+                    onClick={() => setSelectedDay(isSelected ? null : cell)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedDay(isSelected ? null : cell) } }}
+                    title={cell.events.length ? `${cell.events.length} event${cell.events.length > 1 ? 's' : ''}` : ''}
+                  >
+                    {viewMode === 'gregorian' ? (
+                      <>
+                        <span className="cal-grid-daynum">{cell.day}</span>
+                        <span className="cal-grid-greg">{cell.hijriDay != null ? `${cell.hijriDay} ${monthNamesShort[cell.hijriMonth - 1] || ''}` : ''}</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="cal-grid-daynum">{cell.hijriDay}</span>
+                        <span className="cal-grid-greg">{formatDayMonth(cell.gregorian)}</span>
+                      </>
+                    )}
+                    {cell.events.length > 0 && (
+                      <span className="cal-grid-dots">
+                        {Array.from({ length: Math.min(cell.events.length, GRID_MAX_DOTS) }).map((_, i) =>
+                          <span key={i} className="cal-grid-dot" />
+                        )}
+                        {cell.events.length > GRID_MAX_DOTS && (
+                          <span className="cal-grid-more">+{cell.events.length - GRID_MAX_DOTS}</span>
+                        )}
+                      </span>
+                    )}
+                  </div>
+                )
+              })}
             </div>
             <div className="cal-grid-legend">
               <span className="cal-legend-item"><span className="cal-legend-dot cal-legend-dot-today" /> {cal.todayLabel || 'Today'}</span>
@@ -388,79 +424,199 @@ export default function Calendar() {
         )}
       </div>
 
-      {/* TODAY'S EVENTS — all events mapped to today, split into
-          Monthly | Other columns. When none are scheduled today, show the
-          next upcoming event as a countdown strip instead. */}
-      {todayEvents.length > 0 ? (
-        <div className="cal-row">
-          <div className="cal-sec-head">
-            <h3 className="cal-sec-title">{cal.todayEvents || "Today's Events"}</h3>
-            <span className="cal-sec-count">{todayEvents.length}</span>
-          </div>
-          <div className="cal-col-grid">
-            <EventColumn title={cal.monthlyEvents || 'Monthly'} count={todayMonthly.length} items={todayMonthly} past={false} renderEventCard={renderEventCard} />
-            <EventColumn title={cal.otherEvents || 'Other Events'} count={todayOther.length} items={todayOther} past={false} renderEventCard={renderEventCard} />
-          </div>
-        </div>
-      ) : next ? (
-        <div className="cal-nextstrip">
-          <div className="cal-nextstrip-body">
-            <div className="cal-nextstrip-label">{cal.nextEvent || 'Next Event'}</div>
-            <div className="cal-nextstrip-title">
-              {(() => { const e = eventById(next.occurrence.id); return localizedEvent(e, lang, monthNames).label })()}
+      {/* DAY INSPECTOR SHEET — shown when a day cell is clicked */}
+      {selectedDay && (
+        <div className="cal-day-inspector">
+          <div className="cal-day-inspector-head">
+            <div>
+              <div className="cal-day-inspector-sub">
+                {viewMode === 'gregorian'
+                  ? (selectedDay.hijriDay != null ? hijriLabel(selectedDay.hijriYear, selectedDay.hijriMonth, selectedDay.hijriDay, monthNames, lang) : '')
+                  : formatDisplayDate(selectedDay.gregorian)}
+              </div>
+              <div className="cal-day-inspector-title">
+                {viewMode === 'gregorian'
+                  ? formatDisplayDate(selectedDay.gregorian)
+                  : `${selectedDay.hijriDay} ${monthNames[selectedDay.hijriMonth - 1] || ''} ${selectedDay.hijriYear}`}
+              </div>
             </div>
-            <div className="cal-nextstrip-date">
-              {hijriLabel(next.occurrence.hijriYear, next.occurrence.hijriMonth, next.occurrence.hijriDays[0], monthNames, lang)}
-              <span className="cal-nextstrip-sep">·</span>
-              {formatDisplayDate(next.occurrence.gregorianStart)}
-            </div>
+            <button
+              className="cal-day-inspector-close"
+              onClick={() => setSelectedDay(null)}
+              aria-label="Close day view"
+            >✕</button>
           </div>
-          <div className="cal-nextstrip-count">
-            {next.daysUntil === 0
-              ? <span className="cal-nextstrip-num cal-nextstrip-now">{cal.todayLabel || 'Today'}</span>
-              : (<>
-                <span className="cal-nextstrip-num">{next.daysUntil}</span>
-                <span className="cal-nextstrip-unit">{cal.inDays ? (cal.inDays.split('{n}')[1] || '').trim() : 'days'}</span>
-              </>)}
+          <div className="cal-day-inspector-body">
+            {selectedDay.events && selectedDay.events.length > 0 ? (
+              <div className="cal-ev-list">
+                {selectedDay.events.map(occ => renderEventCard(occ, false))}
+              </div>
+            ) : (
+              <div className="cal-day-inspector-empty">
+                {cal.noUpcoming || 'No events on this day'}
+              </div>
+            )}
           </div>
-        </div>
-      ) : (
-        <div className="cal-nextstrip cal-nextstrip-empty">
-          <div className="cal-nextstrip-label">{cal.nextEvent || 'Next Event'}</div>
-          <div className="cal-unavailable">{cal.noUpcoming || 'No upcoming events scheduled'}</div>
         </div>
       )}
 
-      {/* UPCOMING + PAST — both always visible; each shows Monthly | Other
-          as two side-by-side vertical columns */}
-      {(eventList.length > 0 || pastEvents.length > 0) && (
+      {/* SEARCH & CATEGORY FILTER BAR */}
+      <div className="cal-filter-bar">
+        <div className="cal-search-box">
+          <span className="cal-search-icon" aria-hidden="true">🔍</span>
+          <input
+            type="search"
+            className="cal-search-input"
+            placeholder={cal.searchPlaceholder || 'Search 2,360+ events, saints, occasions...'}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label="Search events"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              className="cal-search-clear"
+              onClick={() => setSearchQuery('')}
+              aria-label={cal.clearSearch || 'Clear search'}
+            >✕</button>
+          )}
+        </div>
+        <div className="cal-filter-chips">
+          {[
+            { key: 'all', label: cal.filterAll || 'All' },
+            { key: 'major', label: cal.filterMajor || 'Festivals' },
+            { key: 'urs', label: cal.filterUrs || 'Blessed Saints / Urs' },
+            { key: 'monthly', label: cal.filterMonthly || 'Monthly' },
+          ].map(f => (
+            <button
+              key={f.key}
+              type="button"
+              className={'cal-filter-chip' + (activeFilter === f.key ? ' active' : '')}
+              onClick={() => setActiveFilter(f.key)}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* WHEN FILTERING / SEARCHING: SHOW ACTIVE RESULTS */}
+      {isSearchingOrFiltering ? (
+        <div className="cal-row">
+          <div className="cal-sec-head">
+            <h3 className="cal-sec-title">
+              {searchQuery ? `Search: "${searchQuery}"` : (cal.filterAll || 'Filtered Events')}
+            </h3>
+            <span className="cal-sec-count">{filteredAvailable.length}</span>
+          </div>
+          {filteredAvailable.length > 0 ? (
+            <div className="cal-col-grid">
+              <EventColumn
+                title={cal.eventList || 'Upcoming Events'}
+                count={eventList.length}
+                items={eventList}
+                past={false}
+                renderEventCard={renderEventCard}
+              />
+              <EventColumn
+                title={cal.pastEvents || 'Past Events'}
+                count={pastEvents.length}
+                items={pastEvents}
+                past
+                renderEventCard={renderEventCard}
+                moreLabel={cal.showMore}
+              />
+            </div>
+          ) : (
+            <div className="cal-no-results">
+              <p>{cal.noMatch || 'No events match your search'}</p>
+              <button
+                type="button"
+                className="cal-clear-filters-btn"
+                onClick={() => { setSearchQuery(''); setActiveFilter('all') }}
+              >
+                {cal.clearSearch || 'Clear search'}
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
         <>
-          {/* Upcoming */}
-          {eventList.length > 0 && (
+          {/* TODAY'S EVENTS — all events mapped to today, split into
+              Monthly | Other columns. When none are scheduled today, show the
+              next upcoming event as a countdown strip instead. */}
+          {todayEvents.length > 0 ? (
             <div className="cal-row">
               <div className="cal-sec-head">
-                <h3 className="cal-sec-title">{cal.eventList || 'Upcoming Events'}</h3>
-                <span className="cal-sec-count">{eventList.length}</span>
+                <h3 className="cal-sec-title">{cal.todayEvents || "Today's Events"}</h3>
+                <span className="cal-sec-count">{todayEvents.length}</span>
               </div>
               <div className="cal-col-grid">
-                <EventColumn title={cal.monthlyEvents || 'Monthly'} count={monthlyUpcoming.length} items={monthlyUpcoming} past={false} renderEventCard={renderEventCard} />
-                <EventColumn title={cal.otherEvents || 'Other Events'} count={otherUpcoming.length} items={otherUpcoming} past={false} renderEventCard={renderEventCard} />
+                <EventColumn title={cal.monthlyEvents || 'Monthly'} count={todayMonthly.length} items={todayMonthly} past={false} renderEventCard={renderEventCard} />
+                <EventColumn title={cal.otherEvents || 'Other Events'} count={todayOther.length} items={todayOther} past={false} renderEventCard={renderEventCard} />
               </div>
+            </div>
+          ) : next ? (
+            <div className="cal-nextstrip">
+              <div className="cal-nextstrip-body">
+                <div className="cal-nextstrip-label">{cal.nextEvent || 'Next Event'}</div>
+                <div className="cal-nextstrip-title">
+                  {(() => { const e = eventById(next.occurrence.id); return localizedEvent(e, lang, monthNames).label })()}
+                </div>
+                <div className="cal-nextstrip-date">
+                  {hijriLabel(next.occurrence.hijriYear, next.occurrence.hijriMonth, next.occurrence.hijriDays[0], monthNames, lang)}
+                  <span className="cal-nextstrip-sep">·</span>
+                  {formatDisplayDate(next.occurrence.gregorianStart)}
+                </div>
+              </div>
+              <div className="cal-nextstrip-count">
+                {next.daysUntil === 0
+                  ? <span className="cal-nextstrip-num cal-nextstrip-now">{cal.todayLabel || 'Today'}</span>
+                  : (<>
+                    <span className="cal-nextstrip-num">{next.daysUntil}</span>
+                    <span className="cal-nextstrip-unit">{cal.inDays ? (cal.inDays.split('{n}')[1] || '').trim() : 'days'}</span>
+                  </>)}
+              </div>
+            </div>
+          ) : (
+            <div className="cal-nextstrip cal-nextstrip-empty">
+              <div className="cal-nextstrip-label">{cal.nextEvent || 'Next Event'}</div>
+              <div className="cal-unavailable">{cal.noUpcoming || 'No upcoming events scheduled'}</div>
             </div>
           )}
 
-          {/* Past */}
-          {pastEvents.length > 0 && (
-            <div className="cal-row">
-              <div className="cal-sec-head">
-                <h3 className="cal-sec-title">{cal.pastEvents || 'Past Events'}</h3>
-                <span className="cal-sec-count">{pastEvents.length}</span>
-              </div>
-              <div className="cal-col-grid">
-                <EventColumn title={cal.monthlyEvents || 'Monthly'} count={monthlyPast.length} items={monthlyPast} past renderEventCard={renderEventCard} moreLabel={cal.showMore} />
-                <EventColumn title={cal.otherEvents || 'Other Events'} count={otherPast.length} items={otherPast} past renderEventCard={renderEventCard} moreLabel={cal.showMore} />
-              </div>
-            </div>
+          {/* UPCOMING + PAST — both always visible; each shows Monthly | Other
+              as two side-by-side vertical columns */}
+          {(eventList.length > 0 || pastEvents.length > 0) && (
+            <>
+              {/* Upcoming */}
+              {eventList.length > 0 && (
+                <div className="cal-row">
+                  <div className="cal-sec-head">
+                    <h3 className="cal-sec-title">{cal.eventList || 'Upcoming Events'}</h3>
+                    <span className="cal-sec-count">{eventList.length}</span>
+                  </div>
+                  <div className="cal-col-grid">
+                    <EventColumn title={cal.monthlyEvents || 'Monthly'} count={monthlyUpcoming.length} items={monthlyUpcoming} past={false} renderEventCard={renderEventCard} />
+                    <EventColumn title={cal.otherEvents || 'Other Events'} count={otherUpcoming.length} items={otherUpcoming} past={false} renderEventCard={renderEventCard} />
+                  </div>
+                </div>
+              )}
+
+              {/* Past */}
+              {pastEvents.length > 0 && (
+                <div className="cal-row">
+                  <div className="cal-sec-head">
+                    <h3 className="cal-sec-title">{cal.pastEvents || 'Past Events'}</h3>
+                    <span className="cal-sec-count">{pastEvents.length}</span>
+                  </div>
+                  <div className="cal-col-grid">
+                    <EventColumn title={cal.monthlyEvents || 'Monthly'} count={monthlyPast.length} items={monthlyPast} past renderEventCard={renderEventCard} moreLabel={cal.showMore} />
+                    <EventColumn title={cal.otherEvents || 'Other Events'} count={otherPast.length} items={otherPast} past renderEventCard={renderEventCard} moreLabel={cal.showMore} />
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </>
       )}

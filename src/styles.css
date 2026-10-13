@@ -935,6 +935,16 @@ strong { font-weight: 700; }
   color: var(--text);
   min-height: 3em;
   padding: 0.25em 0 0.5em;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+}
+.cal-grid-day:hover {
+  filter: brightness(0.97);
+}
+.cal-grid-day.is-selected {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  box-shadow: 0 0 0 3px var(--accent-bg);
 }
 .cal-grid-blank {
   background: transparent;
@@ -1287,6 +1297,162 @@ strong { font-weight: 700; }
   border: 1px solid var(--border);
   border-radius: 1.3em;
   padding: 0.2em 0.6em;
+}
+
+/* Day Inspector Sheet */
+.cal-day-inspector {
+  background: var(--bg-card);
+  border: 1px solid var(--accent);
+  border-radius: 0.9em;
+  padding: 1em;
+  margin-bottom: 1.4em;
+  box-shadow: 0 4px 16px var(--shadow);
+  animation: fadeSlideIn 0.2s ease;
+}
+.cal-day-inspector-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1em;
+  padding-bottom: 0.8em;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.8em;
+}
+.cal-day-inspector-sub {
+  font-size: 0.72em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.cal-day-inspector-title {
+  font-size: 1.15em;
+  font-weight: 800;
+  color: var(--text-heading);
+  margin-top: 0.15em;
+}
+.cal-day-inspector-close {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.cal-day-inspector-close:hover {
+  color: var(--text);
+  background: var(--border);
+}
+.cal-day-inspector-empty {
+  color: var(--text-muted);
+  font-size: 0.85em;
+  text-align: center;
+  padding: 1em 0;
+}
+
+/* Calendar Search & Filter Bar */
+.cal-filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  margin-bottom: 1.4em;
+}
+.cal-search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 0.8em;
+  padding: 0.55em 0.85em;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.cal-search-box:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+.cal-search-icon {
+  font-size: 0.95em;
+  opacity: 0.7;
+}
+.cal-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.9em;
+  outline: none;
+  font-family: inherit;
+}
+.cal-search-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+.cal-search-clear {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.85em;
+  cursor: pointer;
+  padding: 0 0.2em;
+}
+.cal-search-clear:hover {
+  color: var(--text);
+}
+.cal-filter-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.2em;
+}
+.cal-filter-chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.4em 0.85em;
+  border-radius: 1.2em;
+  font-size: 0.8em;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.cal-filter-chip:hover {
+  border-color: var(--accent);
+}
+.cal-filter-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.cal-no-results {
+  text-align: center;
+  padding: 2em 1em;
+  color: var(--text-muted);
+}
+.cal-clear-filters-btn {
+  margin-top: 0.8em;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.45em 1em;
+  border-radius: 1em;
+  font-size: 0.85em;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cal-clear-filters-btn:hover {
+  background: var(--accent);
+  color: #fff;
 }
 
 /* ===== NOT FOUND ===== */
