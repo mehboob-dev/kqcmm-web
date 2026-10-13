@@ -3,6 +3,17 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.18.0",
+        "date": "2026-10-13",
+        "changes": [
+          "Poore app ka UI revamp: Calendar, Biographies, Books, Home, aur Settings pages ko modernize kiya gaya.",
+          "Interactive Calendar day inspector panel, category filters aur 2,360+ events ke liye instant search.",
+          "Biographical pages (HMK, Salim Pappa, Abbajaan) ke liye naya modern hero header aur numbered timeline layout.",
+          "Books library grid cards ko behtar spine accent aur reading progress bar ke sath modernize kiya gaya.",
+          "Home page quick-links grid aur Settings popup modal ko clean look aur animations ke sath refresh kiya gaya."
+        ]
+      },
+      {
         "version": "5.17.0",
         "date": "2026-09-02",
         "changes": [

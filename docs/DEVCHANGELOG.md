@@ -4,6 +4,22 @@
 
 Maintain both changelogs together when work lands. Latest version at the top.
 
+## 5.18.0 — 2026-10-13
+
+### User-facing
+- **App-wide UI Revamp across key pages** — Modernized the visual hierarchy, typography, cards, and interactive flows while strictly maintaining the app's existing 11+ semantic theme tokens without external CSS frameworks.
+- **Calendar Page Modernization** — Added multi-attribute search across 2,360+ Islamic occasions, category filter chips (All, Festivals, Blessed Saints / Urs, Monthly), and an interactive day inspector detail panel upon clicking any calendar grid cell.
+- **Biographies & History Modernization** — Updated `Hmk.jsx`, `SalimPappa.jsx`, and `Abbajaan.jsx` with prominent hero banners, category badges, numbered chronology timelines, and styled quote cards.
+- **Books Library & Reader Modernization** — Revamped `/books` index grid with realistic aspect-ratio covers, spine accents, and metadata badges. Added styled cover headers and reading progress cards to `/books/:slug`.
+- **Home & Settings Polish** — Upgraded home quick links with elevated hover states and accent borders, and updated SettingsPopup into a structured modal dialog with clean option groupings.
+
+### Internal / docs
+- **Edge Prerender Resolution on Windows** — Configured fallback resolution for Microsoft Edge (`C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe`) in `scripts/prerender.mjs` for seamless static SEO prerendering on Windows development machines.
+- **React Hook Order Regularization** — Ensured all hook calls in `Calendar.jsx` run unconditionally on every render, preventing hook count discrepancies across data loading states.
+- **Version bump** — `5.17.0` → `5.18.0`, synchronized package.json, About.jsx, dev changelog, and public changelogs in English and Hinglish.
+
+---
+
 ## 5.17.0 — 2026-09-02
 
 ### User-facing

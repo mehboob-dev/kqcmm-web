@@ -3,6 +3,17 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.18.0",
+        "date": "2026-10-13",
+        "changes": [
+          "Complete UI Revamp across key pages: Calendar, Biographies, Books, Home, and Settings.",
+          "Interactive Calendar day inspector sheet with event filtering and instant search across 2,360+ occasions.",
+          "Modern hero headers and structured chronology timeline layout for biographical histories (HMK, Salim Pappa, Abbajaan).",
+          "Elevated Books library grid cards with cover spine accents and clean reading progress bar.",
+          "Polished Home quick-links grid with tactile feedback and refreshed Settings popup modal."
+        ]
+      },
+      {
         "version": "5.17.0",
         "date": "2026-09-02",
         "changes": [
