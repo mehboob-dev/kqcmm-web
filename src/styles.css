@@ -1357,6 +1357,108 @@ strong { font-weight: 700; }
   padding: 1em 0;
 }
 
+/* ===== BIOGRAPHY / HISTORY PAGES ===== */
+.bio-hero {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 20px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px var(--shadow);
+  text-align: center;
+}
+.bio-hero-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  margin-bottom: 12px;
+  border: 1px solid var(--accent);
+}
+.bio-hero-title {
+  font-size: 1.55em;
+  font-weight: 800;
+  color: var(--text-heading);
+  margin: 0 0 10px;
+  line-height: 1.25;
+}
+.bio-hero-intro {
+  font-size: 1.05em;
+  line-height: 1.7;
+  color: var(--text);
+  max-width: 680px;
+  margin: 0 auto;
+  font-style: italic;
+  opacity: 0.95;
+}
+.bio-quote-card {
+  position: relative;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin: 20px 0;
+  font-size: 1.05em;
+  line-height: 1.75;
+  color: var(--text-heading);
+  font-style: italic;
+  text-align: center;
+}
+.bio-quote-mark {
+  font-size: 2.2em;
+  line-height: 1;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 6px;
+  opacity: 0.8;
+}
+.bio-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+.bio-timeline-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.bio-timeline-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px var(--shadow);
+  margin-top: 4px;
+}
+.bio-timeline-content {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.bio-timeline-content:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
 /* Calendar Search & Filter Bar */
 .cal-filter-bar {
   display: flex;
