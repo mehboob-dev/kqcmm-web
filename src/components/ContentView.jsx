@@ -83,9 +83,27 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
     touchMoved.current = false
   }
 
-  const resetCount = () => { setCount(0); trackCounter('reset', 0) }
-  const incCount = () => { setCount(c => c + 1); trackCounter('inc', count + 1) }
-  const decCount = () => { setCount(c => Math.max(0, c - 1)); trackCounter('dec', Math.max(0, count - 1)) }
+  const resetCount = () => {
+    setCount(0)
+    trackCounter('reset', 0)
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      try { navigator.vibrate(25) } catch (e) { /* ignore */ }
+    }
+  }
+  const incCount = () => {
+    setCount(c => c + 1)
+    trackCounter('inc', count + 1)
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      try { navigator.vibrate(15) } catch (e) { /* ignore */ }
+    }
+  }
+  const decCount = () => {
+    setCount(c => Math.max(0, c - 1))
+    trackCounter('dec', Math.max(0, count - 1))
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      try { navigator.vibrate(15) } catch (e) { /* ignore */ }
+    }
+  }
 
   if (!items || items.length === 0) {
     return <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No content yet.</p>
@@ -201,8 +219,10 @@ function circleBtn(bg, size) {
   return {
     background: bg, border: 'none', color: '#fff',
     width: size, height: size, borderRadius: '50%', cursor: 'pointer',
-    fontSize: 16, fontWeight: 700,
+    fontSize: 18, fontWeight: 700,
     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+    boxShadow: '0 2px 8px var(--shadow)',
+    transition: 'transform 0.15s ease, filter 0.15s ease',
   }
 }
 
@@ -210,8 +230,9 @@ function navBtn(disabled) {
   return {
     background: disabled ? 'var(--bg-card-alt)' : 'var(--accent)',
     border: 'none', color: disabled ? 'var(--text-muted)' : '#fff',
-    width: 32, height: 32, borderRadius: 6, cursor: disabled ? 'default' : 'pointer',
-    fontSize: 13, opacity: disabled ? 0.4 : 1,
+    width: 34, height: 34, borderRadius: 8, cursor: disabled ? 'default' : 'pointer',
+    fontSize: 13, opacity: disabled ? 0.35 : 1,
     display: 'flex', alignItems: 'center', justifyContent: 'center',
+    transition: 'transform 0.15s ease',
   }
 }

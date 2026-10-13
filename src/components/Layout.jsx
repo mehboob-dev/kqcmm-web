@@ -172,11 +172,23 @@ export default function Layout() {
           ☰
         </button>
         <span className="app-title">{title}</span>
-        <button className="hamburger-btn" data-tour="header-share" onClick={handleShare} aria-label={share.title || 'Share'} style={{ fontSize: 26 }}>
+        <div
+          className="header-lang-toggle"
+          onClick={() => changeLang(lang === 'en' ? 'hinglish' : 'en')}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); changeLang(lang === 'en' ? 'hinglish' : 'en') } }}
+          title={lang === 'en' ? 'Switch to Hinglish' : 'Switch to English'}
+          aria-label="Toggle language"
+        >
+          <span className={`header-lang-pill${lang === 'en' ? ' active' : ''}`}>EN</span>
+          <span className={`header-lang-pill${lang === 'hinglish' ? ' active' : ''}`}>HI</span>
+        </div>
+        <button className="hamburger-btn" data-tour="header-share" onClick={handleShare} aria-label={share.title || 'Share'} style={{ fontSize: 18 }}>
           {copied ? <Icon name="faCheck" /> : <Icon name="faShareNodes" />}
         </button>
-        <button className="hamburger-btn" data-tour="header-settings" onClick={() => setSettingsOpen(true)} aria-label="Settings" style={{ fontSize: 18 }}>
-          <span style={{ fontSize: 40 }}>⚙</span>
+        <button className="hamburger-btn" data-tour="header-settings" onClick={() => setSettingsOpen(true)} aria-label="Settings" style={{ fontSize: 16 }}>
+          <span>⚙</span>
         </button>
       </header>
 
