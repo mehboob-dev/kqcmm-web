@@ -111,94 +111,75 @@ export default function SettingsPopup({ strings, onClose, onReplayTour }) {
         }}
       />
       {/* popup */}
-      <div
-        style={{
-          position: 'fixed', zIndex: 301,
-          top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-          width: 'calc(100% - 32px)', maxWidth: 400, maxHeight: '80vh',
-          background: 'var(--bg-card)',
-          border: '1px solid var(--border)',
-          borderRadius: 16,
-          overflow: 'hidden',
-          boxShadow: '0 8px 40px var(--shadow)',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <div className="settings-modal-card">
         {/* fixed header row */}
-        <div style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          padding: '20px 24px 0 24px',
-          flexShrink: 0,
-        }}>
-          <h3 style={{ color: 'var(--text-heading)', fontSize: 18, fontWeight: 700, margin: 0 }}>{strings.settings.title}</h3>
-          <button onClick={onClose} style={{
-            background: 'var(--bg-card-alt)', border: 'none', color: 'var(--text)',
-            width: 32, height: 32, borderRadius: '50%', cursor: 'pointer',
-            fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>✕</button>
+        <div className="settings-modal-header">
+          <h3 className="settings-modal-title">{strings.settings.title}</h3>
+          <button className="settings-modal-close" onClick={onClose} aria-label="Close settings">✕</button>
         </div>
 
         {/* scrollable body */}
-        <div style={{ padding: '12px 24px 24px', overflowY: 'auto' }}>
+        <div style={{ padding: '16px 20px 24px', overflowY: 'auto' }}>
 
         {/* Replay walkthrough */}
         {onReplayTour && (
           <button
             onClick={onReplayTour}
             style={{
-              width: '100%', marginBottom: 12, padding: '10px 14px', borderRadius: 8,
-              cursor: 'pointer', fontSize: '0.9em', fontFamily: 'inherit',
-              background: 'transparent', color: 'var(--text)',
-              border: '1px solid var(--border)',
+              width: '100%', marginBottom: 14, padding: '10px 14px', borderRadius: 10,
+              cursor: 'pointer', fontSize: '0.9em', fontFamily: 'inherit', fontWeight: 600,
+              background: 'var(--accent-bg)', color: 'var(--accent)',
+              border: '1px solid var(--accent)', transition: 'all 0.15s ease',
             }}
           >{strings.onboarding?.replay || 'Replay walkthrough'}</button>
         )}
 
         {/* Language */}
-        <div className="card" style={{ padding: 14, marginBottom: 12 }}>
-          <div className="card-title" style={{ marginBottom: 8, color: 'var(--accent)', fontSize: 13 }}>{strings.settings.language}</div>
+        <div className="settings-section-card">
+          <div className="settings-section-label">{strings.settings.language}</div>
           <OptionRow label="" options={languages} value={lang} onChange={changeLang} />
         </div>
 
         {/* Theme */}
-        <div className="card" style={{ padding: 14, marginBottom: 12 }}>
-          <div className="card-title" style={{ marginBottom: 8, color: 'var(--accent)', fontSize: 13 }}>{strings.settings.theme}</div>
+        <div className="settings-section-card">
+          <div className="settings-section-label">{strings.settings.theme}</div>
           <OptionRow label="" options={themes} value={theme} onChange={changeTheme} />
         </div>
 
         {/* Font Family */}
-        <div className="card" style={{ padding: 14, marginBottom: 12 }}>
-          <div className="card-title" style={{ marginBottom: 8, color: 'var(--accent)', fontSize: 13 }}>{strings.settings.fontFamily}</div>
+        <div className="settings-section-card">
+          <div className="settings-section-label">{strings.settings.fontFamily}</div>
           <OptionRow label="" options={fontFamilies} value={fontFamily} onChange={changeFontFamily} />
         </div>
 
         {/* Font Size */}
-        <div className="card" style={{ padding: 14, marginBottom: 12 }}>
-          <div className="card-title" style={{ marginBottom: 8, color: 'var(--accent)', fontSize: 13 }}>{strings.settings.fontSize}</div>
+        <div className="settings-section-card">
+          <div className="settings-section-label">{strings.settings.fontSize}</div>
           <OptionRow label="" options={fontSizes} value={fontSize} onChange={changeFontSize} />
         </div>
 
         {/* View Mode */}
-        <div className="card" style={{ padding: 14, marginBottom: 0 }}>
-          <div className="card-title" style={{ marginBottom: 8, color: 'var(--accent)', fontSize: 13 }}>View Mode</div>
+        <div className="settings-section-card" style={{ marginBottom: 0 }}>
+          <div className="settings-section-label">View Mode</div>
           <div style={{ display: 'flex', gap: 8 }}>
             <button
               onClick={() => { if (slideMode) toggleSlideMode() }}
               style={{
-                flex: 1, padding: '8px 14px', borderRadius: 8, cursor: 'pointer', fontSize: '0.9em',
+                flex: 1, padding: '10px 14px', borderRadius: 8, cursor: 'pointer', fontSize: '0.9em', fontWeight: 600,
                 border: !slideMode ? '2px solid var(--accent)' : '1px solid var(--border)',
                 background: !slideMode ? 'var(--accent-bg)' : 'transparent',
-                color: 'var(--text)',
+                color: !slideMode ? 'var(--accent)' : 'var(--text)',
+                transition: 'all 0.15s ease',
               }}
             >📋 List</button>
             <button
               onClick={() => { if (!slideMode) toggleSlideMode() }}
               style={{
-                flex: 1, padding: '8px 14px', borderRadius: 8, cursor: 'pointer', fontSize: '0.9em',
+                flex: 1, padding: '10px 14px', borderRadius: 8, cursor: 'pointer', fontSize: '0.9em', fontWeight: 600,
                 border: slideMode ? '2px solid var(--accent)' : '1px solid var(--border)',
                 background: slideMode ? 'var(--accent-bg)' : 'transparent',
-                color: 'var(--text)',
+                color: slideMode ? 'var(--accent)' : 'var(--text)',
+                transition: 'all 0.15s ease',
               }}
             >📖 Slide</button>
           </div>
