@@ -25,14 +25,19 @@ export default function Layout() {
   const { lang, changeLang } = useLanguage()
   const { currentFont, currentSize } = useFont()
   const mainRef = useRef(null)
+  const shellRef = useRef(null)
+  const chromeRef = useRef(null)
 
   useEffect(() => {
     loadStrings(lang).then(setStrings)
   }, [lang])
 
-  // Scroll to top on page navigation
+  // Scroll to top on page navigation; restore the top chrome and reset the
+  // reading-progress line for the new page.
   useEffect(() => {
     if (mainRef.current) mainRef.current.scrollTop = 0
+    chromeRef.current?.classList.remove('hidden')
+    shellRef.current?.style.setProperty('--read-progress', '0')
   }, [location.pathname])
 
   // Track SPA route changes as GA4 page views. The basename (/kqcmm-web/) is
@@ -65,6 +70,56 @@ export default function Layout() {
       if (timer1) clearTimeout(timer1)
       if (timer2) clearTimeout(timer2)
     }
+  }, [])
+
+  // Publish the fixed top-chrome height so .main-content can reserve space.
+  useEffect(() => {
+    const chrome = chromeRef.current
+    const shell = shellRef.current
+    if (!chrome || !shell) return undefined
+    const publish = () => shell.style.setProperty('--chrome-h', `${chrome.offsetHeight}px`)
+    publish()
+    if (typeof ResizeObserver === 'undefined') return undefined
+    const ro = new ResizeObserver(publish)
+    ro.observe(chrome)
+    return () => ro.disconnect()
+  }, [strings])
+
+  // Immersive chrome: rAF-throttled scroll listener on the content area —
+  // updates the reading-progress line and hides the top chrome while the user
+  // reads downward, bringing it back on any upward scroll (or near the top).
+  useEffect(() => {
+    const el = mainRef.current
+    const shell = shellRef.current
+    const chrome = chromeRef.current
+    if (!el || !shell || !chrome) return undefined
+    let lastY = el.scrollTop
+    let hidden = false
+    let ticking = false
+    const update = () => {
+      ticking = false
+      const y = el.scrollTop
+      const max = el.scrollHeight - el.clientHeight
+      const pct = max > 8 ? Math.min(1, Math.max(0, y / max)) : 0
+      shell.style.setProperty('--read-progress', pct.toFixed(4))
+      if (y > lastY + 2 && y > 140 && !hidden) {
+        hidden = true
+        chrome.classList.add('hidden')
+      } else if ((y < lastY - 2 || y < 140) && hidden) {
+        hidden = false
+        chrome.classList.remove('hidden')
+      }
+      lastY = y
+    }
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true
+        requestAnimationFrame(update)
+      }
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    update()
+    return () => el.removeEventListener('scroll', onScroll)
   }, [])
 
   const [customTitle, setCustomTitle] = useState('')
@@ -162,10 +217,16 @@ export default function Layout() {
   return (
     <div
       className="app-shell"
+      ref={shellRef}
       style={{
         fontFamily: currentFont.family,
       }}
     >
+      {/* READING PROGRESS — thin gradient line, width driven by --read-progress */}
+      <div className="read-progress" aria-hidden="true" />
+
+      {/* TOP CHROME — fixed; hides while reading downward */}
+      <div className="top-chrome" ref={chromeRef}>
       {/* HEADER */}
       <header className="app-header">
         <button className="hamburger-btn" data-tour="header-menu" onClick={() => setMenuOpen(true)} aria-label="Menu" style={{ fontSize: 17 }}>
@@ -194,6 +255,7 @@ export default function Layout() {
 
       {/* HIJRI STRIP — app-wide, below the header */}
       <HijriStrip lang={lang} />
+      </div>
 
       {/* MAIN CONTENT — base font size lives here */}
       <main className="main-content" ref={mainRef} dir={document.documentElement.dir} style={{ fontSize: currentSize.size }}>
