@@ -391,6 +391,26 @@ Aurora). Used by `Home.jsx` (`.dash-moon` block inside the date hero) and
   between stored month starts; 30 fallback for the final entry. This is how the
   moon phase is derived from the stored `calendar.json` data ("as per the data").
 
+### Spatial utilities (7.1.0)
+- **`src/utils/spotlight.js`** — `initSpotlight()`: one passive document
+  `pointermove` listener + rAF sets `--spot-x/--spot-y` on the hovered
+  spotlight target (cards, quick links, moon card, book cards). No-op on
+  `(hover: none)` and `prefers-reduced-motion`. Called once from `Layout`.
+- **`src/utils/reveal.js`** — `initReveals(getRoot)`: marks below-fold
+  matches `.rv` and reveals them (`.rv-in`) via IntersectionObserver; a
+  MutationObserver (60ms debounce) rescans for async-rendered content;
+  skips `.slide-stage` (directional entry owns those), short elements, and
+  above-fold nodes (View Transition captures must stay visible). Called
+  once from `Layout` with `() => mainRef.current`.
+
+### Swipe gestures (ContentView, 7.1.0)
+In slide mode the stage follows the finger: `touchmove` translates
+`.slide-stage` inline (×0.35 rubber band at the ends, opacity dip), and on
+release the gesture commits when dragged >72px or flicked >0.55px/ms —
+the card slides out (130ms) and `goTo()` mounts the next one
+directionally; otherwise it springs back. Taps and vertical scrolls never
+translate (armed only past 12px horizontal / 1.5× vertical).
+
 ### Toast utility — `src/utils/toast.js`
 `showToast(message)` appends/reuses a single `<div id="app-toast" class="app-toast" role="status">`
 on `<body>`, replays the hairline drop-in (reflow trick) and auto-dismisses

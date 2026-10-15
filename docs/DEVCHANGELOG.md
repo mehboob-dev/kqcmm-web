@@ -4,6 +4,28 @@
 
 Maintain both changelogs together when work lands. Latest version at the top.
 
+## 7.1.0 — 2026-10-16
+
+### User-facing
+- **Finger-following slide swipes** — the current slide translates with the drag (rubber-banded at first/last), then commits on distance (>72px) or flick velocity (>0.55px/ms) and springs back otherwise. Two-phase settle: the dragged card slides out, the next enters directionally.
+- **Cursor spotlight** — desktop pointers paint a soft accent light on cards/tiles (`--spot-x/--spot-y` radial). Touch-only and reduced-motion devices skip it entirely.
+- **Scroll reveals** — below-fold cards/sections rise into view (`.rv` → `.rv-in`); above-fold stays untouched (View Transition snapshots must not capture hidden content); slide-stage cards excluded (they have directional entry already).
+- **Splash scene** — aurora orbs (shared `auroraDrift`) + twinkling star field behind a mihrab-arched splash photo (was full-bleed `object-fit: fill`), glass logo ring, glass countdown pill with a conic progress ring (`--splash-pct`).
+- **Expanding dock** — inactive tabs icon-only; active tab `flex-grow: 2.4` into the gradient pill with animated label (`max-width`/`margin`); install tab keeps its label.
+- **Counter tap ring** — keyed `.cnt-pulse` ring (cntRing) fired on every count change.
+
+### Internal / docs
+- **`src/utils/spotlight.js` (new)** — single document `pointermove` listener (passive) + rAF; sets `--spot-x/--spot-y` only on the matched target (`:is(.card, .quick-link, .dash-continue, .dash-dua, .moon-card, .book-card-item)`).
+- **`src/utils/reveal.js` (new)** — IntersectionObserver + MutationObserver (async content) scanner rooted at `.main-content`; WeakSet-guarded; 60ms debounce; skips `.slide-stage`, short elements, reduced-motion.
+- **`src/components/ContentView.jsx`** — swipe handlers rewritten (drag ref, `stageEl()` inline-style driving, settle timer with unmount cleanup); `wrapRef` on the slide scroller; `onTouchCancel`.
+- **`src/styles.css`** — SPATIAL SHELL section (spotlight `::after` on the six target types, `.rv/.rv-in`, `.cnt-pulse`); splash block replaced (scene classes); dock block reworked (row layout, `.nav-label`, flex-grow transition).
+- **`src/components/BottomNav.jsx`** — labels wrapped in `.nav-label` spans; install tab gets `.is-install`.
+- **`src/components/SplashScreen.jsx`** — scene markup (aurora, stars, logo ring, arch, conic countdown).
+- **Version bump** — 7.0.0 → 7.1.0 in package.json, About.jsx, public changelogs (en + hinglish) and this file.
+- Verified: full build (15 routes + 404), 353 tests.
+
+---
+
 ## 7.0.0 — 2026-10-16
 
 ### User-facing

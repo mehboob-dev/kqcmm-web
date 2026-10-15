@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v7.0.0** ("Aurora" — living gradient canvas, glass chrome, moon phases) - see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v7.1.0** ("Aurora" — living canvas, glass chrome, moon phases, spatial touch) - see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -79,14 +79,14 @@ kqcmm-web/
 │   │
 │   ├── components/
 │   │   ├── Layout.jsx                  # App shell (fixed top chrome + content + dock; reading progress; chrome hide-on-scroll)
-│   │   ├── BottomNav.jsx              # Floating glass dock (5 tabs)
+│   │   ├── BottomNav.jsx              # Floating glass dock (5 tabs; active tab blooms with its label)
 │   │   ├── SideDrawer.jsx             # Full-screen magazine menu overlay
 │   │   ├── ContentView.jsx            # List/slide view + counter + focus (zen) mode
 │   │   ├── ContentSkeleton.jsx        # Shimmer loading placeholders (used by all pages)
 │   │   ├── MoonPhaseIcon.jsx          # SVG moon renderer (any phase from fraction)
 │   │   ├── QuickJump.jsx             # Floating quick-jump bottom sheet (shared, language-independent)
 │   │   ├── HijriStrip.jsx            # App-wide thin strip below header (today Hijri + Gregorian + event-today)
-│   │   ├── SplashScreen.jsx           # Splash with countdown
+│   │   ├── SplashScreen.jsx           # Splash scene (aurora + stars + arch + countdown ring)
 │   │   ├── SettingsPopup.jsx          # Settings modal (+ Replay walkthrough button)
 │   │   ├── OnboardingTour.jsx        # First-run walkthrough (guided-tap overlay, data-tour hooks)
 │   │   ├── FontAwesome.jsx           # Icon component (centralized)
@@ -117,7 +117,9 @@ kqcmm-web/
 │   │   ├── onboarding.js            # Onboarding persistence + step-sequence helpers (pure, tested)
 │   │   ├── bookProgress.js          # Book reading-progress persistence (pure, tested)
 │   │   ├── haptics.js               # hapticTap() tactile feedback (navigator.vibrate, safe no-op)
-│   │   └── toast.js                 # showToast() vanilla DOM toast pill (no context needed)
+│   │   ├── toast.js                 # showToast() vanilla DOM toast pill (no context needed)
+│   │   ├── spotlight.js             # initSpotlight() cursor-following card light (hover devices)
+│   │   └── reveal.js                # initReveals() below-fold scroll reveals (IO + MutationObserver)
 │   ├── context/
 │   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green/rose/indigo/teal/gold/silver/beige/amber/oled + swatches)
 │   │   ├── LanguageContext.jsx       # Language state (en/hinglish; urdu planned)
@@ -546,7 +548,8 @@ The editor server at `scripts/content-editor.mjs` serves both the Admin Panel an
 - **Floating dock** — `.bottom-nav` is a fixed glass dock (z-index 60) publishing `--bottom-nav-height`; `.reading-bar` floats above it (z-index 55, same 24px radius)
 - **Top chrome** — header + Hijri strip in fixed `.top-chrome` publishing `--chrome-h`; hides on downward scroll; `.read-progress` line driven by `--read-progress` (both set by Layout with rAF, no re-renders)
 - **Focus mode** — `.zen-btn` in the reading bar toggles `body.zen` (hides chrome, dock, FAB; reading bar drops into the dock slot); exits on route change
-- **Motion** — navigations use react-router `viewTransition` (native View Transitions; `html:active-view-transition` guard suppresses mount animations during capture); `ContentView` slide changes animate directionally (`.slide-stage.from-right/left`); loading states use `ContentSkeleton` (`.skel` shimmer, arch hero); user feedback uses `showToast()` (`.app-toast`, z 9998)
+- **Motion** — navigations use react-router `viewTransition` (native View Transitions; `html:active-view-transition` guard suppresses mount animations during capture); `ContentView` slide changes animate directionally (`.slide-stage.from-right/left`) and follow the finger while dragging (rubber-band edges, flick commit, spring-back — inline styles, never state); loading states use `ContentSkeleton` (`.skel` shimmer, arch hero); user feedback uses `showToast()` (`.app-toast`, z 9998)
+- **Spatial layer (7.1.0)** — `initSpotlight()` (cursor light via `--spot-x/--spot-y` on `.card/.quick-link/.dash-*/.moon-card/.book-card-item::after`) + `initReveals()` (below-fold `.rv` → `.rv-in` on scroll; above-fold left visible for VT snapshots; skip `.slide-stage`) both mounted once in `Layout`; splash is a scene (aurora + stars + arch + conic countdown); dock tabs are icon-only until active (`flex-grow` bloom + `.nav-label`)
 - **Sheets** — settings/quick-jump/walkthrough use glass sheets with grab handles; z-index map: reading bar 55 · dock 60 · chrome 100 · reading progress 102 · quick-jump 150/160 · menu 200/201 · settings 301 · tour 1000–1002 · splash 9999
 - **Haptics** — `hapticTap()` from `src/utils/haptics.js` in tap handlers only (never effects)
 - **Focus** — `:focus-visible` accent outline stays; no bare `outline: none`

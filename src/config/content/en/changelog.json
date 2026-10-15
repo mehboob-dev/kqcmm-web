@@ -3,6 +3,17 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "7.1.0",
+        "date": "2026-10-16",
+        "changes": [
+          "Slide mode now follows your finger — drag a slide and it moves with you, with a gentle resistance at the ends; flick to turn the page, and it springs back if you change your mind.",
+          "A soft light follows your cursor across cards and tiles on desktop, and sections quietly rise into view as you scroll.",
+          "The splash screen is now a scene: aurora lights and twinkling stars behind an arched frame, with a ring that counts the seconds.",
+          "The bottom dock is cleaner — icon-only tabs until you land on one: the active tab grows into a colored pill and reveals its name.",
+          "Every counter tap sends a gentle ring out from the number."
+        ]
+      },
+      {
         "version": "7.0.0",
         "date": "2026-10-16",
         "changes": [

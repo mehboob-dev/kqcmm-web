@@ -384,6 +384,27 @@ a **floating glass capsule** sitting above the dock (`bottom: calc(var(--bottom-
   `.moon-card*` (Calendar card: `.moon-card-title` accent eyebrow,
   `.moon-card-phase`, `.moon-card-meta`).
 
+### Spatial shell (7.1.0) — the surface responds
+- **Pointer spotlight** — `src/utils/spotlight.js` tracks the pointer once
+  (document-level, passive + rAF) and writes `--spot-x/--spot-y` on the hovered
+  target. Six elements opt in via the shared `::after` layer in the SPATIAL
+  SHELL section: `.card`, `.quick-link`, `.dash-continue`, `.dash-dua`,
+  `.moon-card`, `.book-card-item` (260px accent radial at 13%, fades in on
+  hover; `(hover: none)` devices never render it).
+- **Scroll reveals** — `src/utils/reveal.js`; below-fold matches get `.rv`
+  (hidden at `translateY(18px) scale(.985)`) and rise to `.rv-in` when they
+  intersect. Above-fold elements are deliberately untouched so View Transition
+  snapshots never capture hidden content.
+- **Counter tap ring** — keyed `.cnt-pulse` inside `.cnt-value` (inset -5,
+  `cntRing` 0.55s) fires on every count change.
+- **Expanding dock** — `.nav-item` is a row; `.nav-label` collapses
+  (`max-width: 0`) until `.nav-item.active` (`flex-grow: 2.4`, label
+  `max-width: 130px` + 8px margin). `.is-install` keeps its label visible.
+- **Splash scene** — `.splash` uses the theme background; `.splash-aurora`
+  (same orb recipe, 30s drift), `.splash-stars` (starTwinkle), `.splash-arch`
+  (150px-radius mihrab frame, splashUp entry), `.splash-logo` glass ring,
+  `.splash-count-num` conic ring driven by `--splash-pct`.
+
 ### Utility component classes
 | Area | Classes |
 |---|---|
