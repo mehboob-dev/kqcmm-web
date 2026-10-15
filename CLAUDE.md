@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.18.0** - see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v5.19.0** - see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -112,7 +112,8 @@ kqcmm-web/
 │   ├── utils/
 │   │   ├── hijriCalendar.js         # Hijri date conversion + event mapping (pure, tested)
 │   │   ├── onboarding.js            # Onboarding persistence + step-sequence helpers (pure, tested)
-│   │   └── bookProgress.js          # Book reading-progress persistence (pure, tested)
+│   │   ├── bookProgress.js          # Book reading-progress persistence (pure, tested)
+│   │   └── haptics.js               # hapticTap() tactile feedback (navigator.vibrate, safe no-op)
 │   ├── context/
 │   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green/rose/indigo/teal/gold/silver/beige/amber/oled + swatches)
 │   │   ├── LanguageContext.jsx       # Language state (en/hinglish; urdu planned)
@@ -529,11 +530,15 @@ The editor server at `scripts/content-editor.mjs` serves both the Admin Panel an
 
 ## 📐 Styling Conventions
 
-- **CSS variables** for theming in `styles.css`
-- **`.card`** — plain card (regular + master)
+- **CSS variables** for theming in `styles.css` + global tokens: `--radius-sm/md/lg`, `--ease-spring`, `--focus-ring`
+- **`.card`** — plain card (regular + master), layered shadow + hover lift (hover-capable devices only)
 - **`.card-accent`** — indented card with accent left border (child)
-- **`.card-title`** — muted, `0.85em`, with bottom divider
+- **`.card-title`** — heading-colored with accent marker bar + bottom divider
+- **`.card-head` / `.card-num`** — numbered cards (chip number + title row) on content pages
+- **`.page-hero`** — centered hero header (badge/title/intro) used across content pages
 - **`.card-text`** — default text with `line-height: 1.7`
+- **Haptics** — `hapticTap()` from `src/utils/haptics.js` in tap handlers only (never effects)
+- **Focus** — `:focus-visible` accent outline stays; no bare `outline: none`
 - Breakpoints: `768px` (tablet), `1400px` (desktop max 1200px)
 - Font size cascade: `<main>` sets base via inline style, children use `em`
 

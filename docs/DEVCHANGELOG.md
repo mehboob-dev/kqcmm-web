@@ -4,6 +4,27 @@
 
 Maintain both changelogs together when work lands. Latest version at the top.
 
+## 5.19.0 — 2026-10-15
+
+### User-facing
+- **Full UI revamp completed** — the remaining pages and shared shell components (Duas, Khatm-e-Khwajagan, Fateha Khwani, Roshni, Sijrah Nama, About, 404, Home hero, header, bottom nav, drawer, quick jump, Hijri strip, reading bar) now share one modern design language: hero headers and numbered cards on content pages, icon chips in navigation, tactile press feedback everywhere.
+- **Changelog timeline** — `/changelog` renders versions as a vertical timeline (accent dots, version chips, "Latest" badge, dates, custom list markers).
+- **Haptic feedback** — `hapticTap()` vibration on tab, drawer, slide/counter, quick-jump, settings option and view-mode taps (supported devices only; safe no-op elsewhere).
+- **Walkthrough progress bar** — the onboarding tour panel shows a track/bar beneath "Step X of Y", width `((stepIdx+1)/steps.length)×100%`.
+- **Settings & splash polish** — icon-based List/Slide buttons with FA `faList`/`faBookOpen`, class-based replay button, option-tap haptics; splash gets a slow `splashZoom` settle, bottom shade gradient, and blurred countdown pill; About version card links to `/changelog`; refreshed 404 (gradient code, pill button).
+
+### Internal / docs
+- **Design tokens (`src/styles.css` `:root`)** — `--radius-sm/md/lg` (10/14/20px), `--ease-spring` (`cubic-bezier(0.16, 1, 0.3, 1)`), `--focus-ring`; global `:focus-visible` accent outline, accent `::selection`, transparent tap-highlight, and a blanket `prefers-reduced-motion` override appended at the end of the stylesheet.
+- **Card system upgrade** — `.card` layered shadows + hover lift (gated by `@media (hover: hover)`); `.card-title` heading-colored with accent marker bar (suppressed in `.card-head`/`.borderless`); new `.card-head`/`.card-num` numbered-card primitives; `.page-hero*` hero primitives; `.page-title` gradient underline.
+- **`src/utils/haptics.js` (new)** — `hapticTap(ms = 10)` wraps `navigator.vibrate` with a safe no-op; called from gesture handlers only (never on mount).
+- **`ContentView.jsx`** — slide-nav/counter bar converted from inline styles to classes (`.reading-bar`, `.slide-group`, `.slide-btn`, `.slide-pos`, `.counter-group`, `.cnt-btn`, `.cnt-value`, `.cnt-reset`).
+- **`FontAwesome.jsx`** — iconMap adds `faDownload`, `faMoon`, `faChevronRight`, `faArrowRight`, `faList`.
+- **`SettingsPopup.jsx` / `SplashScreen.jsx` / `NotFound.jsx` / `Changelog.jsx` / `About.jsx` / `OnboardingTour.jsx`** — class-based markup, FA icons replacing emoji, haptics, tour progress bar.
+- **Docs sync** — `docs/styling.md` (design tokens, accessibility/motion, haptics table, card + page primitives, utility classes, splash), `docs/components.md` (ContentView styling hooks, BottomNav, SettingsPopup, SplashScreen, tour progress bar), `CLAUDE.md` (version, `haptics.js` in tree, styling conventions).
+- **Version bump** — `5.18.0` → `5.19.0`, synchronized package.json, About.jsx, dev changelog, and public changelogs in English and Hinglish.
+
+---
+
 ## 5.18.0 — 2026-10-13
 
 ### User-facing

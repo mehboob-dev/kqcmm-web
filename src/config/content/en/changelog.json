@@ -3,6 +3,17 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.19.0",
+        "date": "2026-10-15",
+        "changes": [
+          "Complete UI refresh across the remaining pages: Duas, Khatm-e-Khwajagan, Fateha Khwani, Roshni, Sijrah Nama, and About now use modern hero headers and neatly numbered cards.",
+          "Changelog page redesigned as a timeline with version chips and a 'Latest' badge.",
+          "Subtle vibration feedback (on supported devices) for tab, slide, counter, and settings taps.",
+          "The walkthrough (tour) now shows a progress bar, and the Settings popup has cleaner icon buttons for List/Slide view.",
+          "Refreshed 404 page and a gently zooming splash screen; the About page now links straight to the changelog."
+        ]
+      },
+      {
         "version": "5.18.0",
         "date": "2026-10-13",
         "changes": [

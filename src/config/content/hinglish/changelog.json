@@ -3,6 +3,17 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "5.19.0",
+        "date": "2026-10-15",
+        "changes": [
+          "Baqi pages ka UI bhi refresh ho gaya: Duas, Khatm-e-Khwajagan, Fateha Khwani, Roshni, Sijrah Nama aur About ab modern hero headers aur number wale cards ke sath.",
+          "Changelog page ab timeline style mein hai — version chips aur 'Latest' badge ke sath.",
+          "Supported devices par taps ke sath halka vibration feedback — tabs, slides, counter aur settings ke liye.",
+          "Walkthrough (tour) mein ab progress bar hai, aur Settings popup mein List/Slide view ke liye behtar icon buttons.",
+          "404 page refresh aur splash screen par halka zoom effect; About page ab seedha changelog ka link deta hai."
+        ]
+      },
+      {
         "version": "5.18.0",
         "date": "2026-10-13",
         "changes": [

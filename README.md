@@ -2,7 +2,7 @@
 
 **Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya**
 
-A spiritual web platform for followers of the Chishti Sufi order. Displays devotional content — duas, khatm, fateha, kalam, sijrah nama, calendar events (2,364 incl. the recovered Blessed Days dataset) — in **English** and **Hinglish** (Urdu planned) with 12 themes, 17 fonts, 6 font sizes, slide/list view modes, and an admin-editable home tile grid.
+A spiritual web platform for followers of the Chishti Sufi order. Displays devotional content — duas, khatm, fateha, kalam, sijrah nama, calendar events (2,365 incl. the recovered Blessed Days dataset) — in **English** and **Hinglish** (Urdu planned) with 12 themes, 17 fonts, 6 font sizes, slide/list view modes, and an admin-editable home tile grid.
 
 🌐 **Live:** https://mehboob-dev.github.io/kqcmm-web/
 

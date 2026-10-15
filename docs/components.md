@@ -103,6 +103,12 @@ Slide mode renders a **single** fixed bar (slide nav on the left, counter on the
 right), not two separate bars — see the combined bar in `ContentView.jsx`
 (`/* One fixed bar: nav left, counter right */`).
 
+### Styling hooks (class-based since 5.19.0)
+The bar is styled via CSS classes in `src/styles.css` (previously inline styles):
+`.reading-bar`, `.reading-bar.is-split`, `.slide-group`, `.slide-btn`,
+`.slide-pos`, `.counter-group`, `.cnt-btn`, `.cnt-value`, `.cnt-reset`.
+Nav/counter buttons fire `hapticTap(10)` on press.
+
 ---
 
 ## BottomNav.jsx
@@ -111,11 +117,13 @@ right), not two separate bars — see the combined bar in `ContentView.jsx`
 
 - Reads items from `src/config/navigation.json`
 - Uses FontAwesome icons
-- Highlights active tab with accent color + top indicator bar
+- Highlights the active tab with an accent icon chip + top indicator bar and
+  `aria-current="page"` for screen readers
+- Tabs fire `hapticTap(10)` on press
 - Reports its height to CSS var `--bottom-nav-height` for counter bar positioning
 
 ### Install App Button (6th slot)
-When the browser fires `beforeinstallprompt`, a 6th tab with 📲 icon appears automatically.
+When the browser fires `beforeinstallprompt`, a 6th tab with an FA `faDownload` icon appears automatically.
 - Uses native browser install prompt
 - Tracks install state via `display-mode: standalone` media query
 - Hidden once app is installed or if browser doesn't support it
@@ -156,6 +164,12 @@ Language section. It calls `onReplayTour` (rendered only when that prop is
 provided, i.e. from Layout), which closes the popup and bumps Layout's
 `replayToken` to start a fresh full tour run.
 
+Since 5.19.0 the popup is class-based: the replay button uses
+`.settings-replay-btn`; the View Mode row uses `.view-mode-row` /
+`.view-mode-btn` (`.active` = accent border + tint) with FA `faList` /
+`faBookOpen` icons. All option taps (theme swatches, text pills, view-mode)
+fire `hapticTap(8)`.
+
 ---
 
 ## SplashScreen.jsx
@@ -163,8 +177,9 @@ provided, i.e. from Layout), which closes the popup and bumps Layout's
 Full-screen splash with countdown and tap-to-skip.
 
 - Duration: configured in `src/config/splash.json`
-- Shows countdown (3...2...1...)
-- Image fills screen with object-fit
+- Shows countdown (3...2...1...) in a blurred `.splash-count` pill
+- Image fills the screen via `.splash-img` with a slow `splashZoom`
+  4.5s settle (1.06 → 1); `.splash-shade` adds a bottom gradient for legibility
 - Tap anywhere to skip immediately
 - Fade-out transition on completion
 - Skips automatically on repeat visits (sessionStorage)
@@ -490,6 +505,12 @@ brings off-screen targets into view.
 All `.tour-*` classes live in `src/styles.css` (backdrop, spotlight, panel,
 buttons, lang chooser). `z-index: 1000–1002` — above header(100)/drawer(201)/
 settings(301), below splash/PWA toasts(9999).
+
+Since 5.19.0 the panel shows a progress bar under the "Step X of Y" label:
+`.tour-progress-track` (rail) with `.tour-progress-bar` whose width is
+`((stepIdx + 1) / steps.length) * 100%` (inline style, animated via
+`--ease-spring`). Panel/buttons use `--radius-lg`/`--radius-sm` and press
+feedback; the tour's own reduced-motion rules are unaffected.
 
 ### Analytics
 `src/utils/analytics.js` adds `onboarding_start{source: automatic|replay}`,

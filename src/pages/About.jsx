@@ -63,7 +63,7 @@ export default function About() {
       <div className="card version-card">
         <div>
           <div className="version-label">Version</div>
-          <div className="version-number">5.18.0</div>
+          <div className="version-number">5.19.0</div>
         </div>
         <Link to={routeForPage('changelog')} className="version-link">
           Changelog <Icon name="faArrowRight" />
