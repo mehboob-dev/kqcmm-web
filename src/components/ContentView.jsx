@@ -14,8 +14,9 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
   const [dir, setDir] = useState(1)   // slide direction: 1 = forward, -1 = back
   const listRef = useRef(null)
   const slideRef = useRef(null)
-  const touchStart = useRef(null)   // { x, y }
-  const touchMoved = useRef(false)  // did the finger actually drag?
+  const wrapRef = useRef(null)
+  const drag = useRef(null)          // live touch gesture { x, y, active, startedAt }
+  const settleTimer = useRef(null)   // pending navigation / spring-back timer
 
   // Focus ("zen") reading mode: hides the top chrome, bottom dock and quick-jump
   // FAB via a body class so the page becomes pure content. Exits on unmount
@@ -58,42 +59,89 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
     }
   }, [jumpTo, isSlide, onIndexChange])
 
-  // Swipe handlers for slide mode — improved sensitivity: requires a real
-  // horizontal drag that exceeds vertical movement (to avoid accidental triggers
-  // while scrolling) and raises the threshold so taps never navigate.
+  // Swipe gestures for slide mode (7.1.0) — the slide now FOLLOWS the finger
+  // as it drags (with rubber-band resistance at the ends), then either springs
+  // back or completes the navigation based on distance or flick velocity.
+  const stageEl = () => wrapRef.current?.querySelector('.slide-stage')
+
+  const cancelSettle = () => {
+    if (settleTimer.current) {
+      clearTimeout(settleTimer.current)
+      settleTimer.current = null
+    }
+  }
+
   const handleTouchStart = (e) => {
+    cancelSettle()
     const t = e.touches[0]
-    touchStart.current = { x: t.clientX, y: t.clientY }
-    touchMoved.current = false
+    drag.current = { x: t.clientX, y: t.clientY, active: false, startedAt: Date.now() }
   }
 
   const handleTouchMove = (e) => {
-    if (!touchStart.current) return
+    const d = drag.current
+    if (!d) return
     const t = e.touches[0]
-    const dx = Math.abs(t.clientX - touchStart.current.x)
-    const dy = Math.abs(t.clientY - touchStart.current.y)
-    // Only mark as "moved" when horizontal drag clearly exceeds vertical scroll
-    if (dx > 10 && dx > dy * 1.5) {
-      touchMoved.current = true
+    const dx = t.clientX - d.x
+    const dy = t.clientY - d.y
+    if (!d.active) {
+      // Arm the drag only once horizontal movement clearly beats vertical
+      // scrolling — taps and list scrolling never translate the slide.
+      if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        d.active = true
+        const stage = stageEl()
+        if (stage) {
+          stage.style.animation = 'none'
+          stage.style.willChange = 'transform'
+        }
+      } else {
+        return
+      }
+    }
+    const atEdge = (dx < 0 && !hasNext) || (dx > 0 && !hasPrev)
+    const shift = atEdge ? dx * 0.35 : dx
+    const stage = stageEl()
+    if (stage) {
+      stage.style.transition = 'none'
+      stage.style.transform = `translateX(${shift}px)`
+      stage.style.opacity = String(Math.max(0.35, 1 - Math.abs(shift) / 900))
     }
   }
 
   const handleTouchEnd = (e) => {
-    if (!touchStart.current) return
-    if (!touchMoved.current) {
-      // Tap / vertical scroll — don't navigate
-      touchStart.current = null
-      return
+    const d = drag.current
+    drag.current = null
+    if (!d || !d.active) return   // tap or vertical scroll — never navigate
+    const dx = e.changedTouches[0].clientX - d.x
+    const dt = Math.max(1, Date.now() - d.startedAt)
+    const velocity = Math.abs(dx) / dt          // px per ms
+    const forward = dx < 0
+    const canNav = forward ? hasNext : hasPrev
+    const commit = (Math.abs(dx) > 72 || velocity > 0.55) && canNav
+    const stage = stageEl()
+    if (commit) {
+      const target = forward ? currentIdx + 1 : currentIdx - 1
+      if (stage) {
+        stage.style.transition = 'transform 0.16s ease-in, opacity 0.16s ease-in'
+        stage.style.transform = `translateX(${forward ? -26 : 26}%)`
+        stage.style.opacity = '0'
+      }
+      settleTimer.current = setTimeout(() => {
+        settleTimer.current = null
+        goTo(target)
+      }, 130)
+    } else if (stage) {
+      stage.style.transition = 'transform 0.45s var(--ease-spring), opacity 0.3s ease'
+      stage.style.transform = ''
+      stage.style.opacity = ''
+      settleTimer.current = setTimeout(() => {
+        settleTimer.current = null
+        const s = stageEl()
+        if (s) s.style.willChange = ''
+      }, 480)
     }
-    const diff = e.changedTouches[0].clientX - touchStart.current.x
-    const threshold = 80
-    if (Math.abs(diff) > threshold) {
-      if (diff < 0 && hasNext) goTo(currentIdx + 1)
-      else if (diff > 0 && hasPrev) goTo(currentIdx - 1)
-    }
-    touchStart.current = null
-    touchMoved.current = false
   }
+
+  useEffect(() => () => cancelSettle(), [])
 
   const resetCount = () => {
     setCount(0)
@@ -140,6 +188,7 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
       <button data-tour="counter-dec" onClick={decCount} className="cnt-btn" aria-label="Decrease count">−</button>
       <span data-tour="counter-value" className="cnt-value">
         <span key={count} className="cnt-digit">{count}</span>
+        {count > 0 && <span key={'p' + count} className="cnt-pulse" aria-hidden="true" />}
       </span>
       <button data-tour="counter-inc" onClick={incCount} className="cnt-btn" aria-label="Increase count">+</button>
       <button data-tour="counter-reset" onClick={resetCount} className="cnt-btn cnt-reset" aria-label="Reset count">↺</button>
@@ -190,9 +239,10 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
     >
       {/* padding for fixed bar */}
-      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 66 }}>
+      <div ref={wrapRef} style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 66 }}>
         <div
           key={currentIdx}
           className={`slide-stage ${dir > 0 ? 'from-right' : 'from-left'}`}

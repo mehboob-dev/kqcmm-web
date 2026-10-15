@@ -77,7 +77,7 @@ export default function BottomNav({ strings }) {
             data-tour={item.pageId === 'home' ? 'bottom-home' : `bottom-nav-${item.pageId}`}
         >
           <Icon name={item.icon} className="nav-icon" />
-          {item.label}
+          <span className="nav-label">{item.label}</span>
         </button>
         )
       })}
@@ -85,11 +85,11 @@ export default function BottomNav({ strings }) {
       {installPrompt && !isInstalled && (
         <button
           onClick={handleInstall}
-          className="nav-item"
+          className="nav-item is-install"
           aria-label="Install App"
         >
           <span className="nav-icon"><Icon name="faDownload" /></span>
-          <span>Install</span>
+          <span className="nav-label">Install</span>
         </button>
       )}
     </nav>

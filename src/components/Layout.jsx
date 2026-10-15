@@ -15,6 +15,8 @@ import Icon from './FontAwesome'
 import OnboardingTour from './OnboardingTour'
 import ContentSkeleton from './ContentSkeleton'
 import { showToast } from '../utils/toast'
+import { initSpotlight } from '../utils/spotlight'
+import { initReveals } from '../utils/reveal'
 
 export default function Layout() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -122,6 +124,18 @@ export default function Layout() {
     el.addEventListener('scroll', onScroll, { passive: true })
     update()
     return () => el.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Spatial shell (7.1.0): cursor spotlight on cards + below-fold scroll
+  // reveals. Both attach document/main-level listeners once; routing just
+  // swaps DOM and the reveal MutationObserver picks the new nodes up.
+  useEffect(() => {
+    const stopSpotlight = initSpotlight()
+    const stopReveals = initReveals(() => mainRef.current)
+    return () => {
+      stopSpotlight()
+      stopReveals()
+    }
   }, [])
 
   const [customTitle, setCustomTitle] = useState('')

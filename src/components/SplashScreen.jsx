@@ -34,6 +34,7 @@ export default function SplashScreen({ onDone }) {
   }
 
   const base = import.meta.env.BASE_URL || './'
+  const pct = config.duration > 0 ? count / config.duration : 1
 
   return (
     <div
@@ -44,15 +45,29 @@ export default function SplashScreen({ onDone }) {
         transition: `opacity ${config.fadeTransition}ms ease`,
       }}
     >
-      <img
-        src={base + config.image.replace(/^\//, '')}
-        alt="KQCMM"
-        className="splash-img"
-      />
-      <div className="splash-shade" />
-      <div className="splash-count">
+      {/* Living backdrop — same aurora language as the app body */}
+      <div className="splash-aurora" aria-hidden="true" />
+      <div className="splash-stars" aria-hidden="true" />
+
+      <div className="splash-scene">
+        <img src={base + 'logo.png'} alt="" aria-hidden="true" className="splash-logo" />
+        <div className="splash-arch">
+          <img
+            src={base + config.image.replace(/^\//, '')}
+            alt="KQCMM"
+            className="splash-img"
+          />
+          <div className="splash-shade" />
+        </div>
+      </div>
+
+      <div className="splash-count" style={{ '--splash-pct': pct }}>
         <span className="splash-count-text">{config.message}</span>
-        {count > 0 && <span className="splash-count-num">{count}</span>}
+        {count > 0 && (
+          <span className="splash-count-num">
+            <span className="splash-count-n">{count}</span>
+          </span>
+        )}
       </div>
     </div>
   )
