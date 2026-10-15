@@ -1,4 +1,5 @@
 import SeoHead from '../components/SeoHead'
+import ContentSkeleton from '../components/ContentSkeleton'
 import { useState, useEffect, useMemo } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { trackCalendarNav, trackCalendarToggle } from '../utils/analytics'
@@ -225,13 +226,7 @@ export default function Calendar() {
   }, [available, searchQuery, activeFilter, lang, monthNames, eventMap])
 
   if (loading || !data) {
-    return (
-      <div className="content-page">
-        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
-          Loading...
-        </p>
-      </div>
-    )
+    return <ContentSkeleton rows={5} />
   }
 
   const content = data[lang] || data.en

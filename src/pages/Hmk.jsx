@@ -1,4 +1,5 @@
 import SeoHead from '../components/SeoHead'
+import ContentSkeleton from '../components/ContentSkeleton'
 import { useLanguage } from '../context/LanguageContext'
 import { usePageContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
@@ -8,13 +9,7 @@ export default function Hmk() {
   const { data, loading } = usePageContent(lang, 'hmk')
 
   if (loading || !data) {
-    return (
-      <div className="content-page">
-        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
-          Loading...
-        </p>
-      </div>
-    )
+    return <ContentSkeleton />
   }
 
   const content = data[lang] || data.en || {}

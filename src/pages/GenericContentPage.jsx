@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 import SeoHead from '../components/SeoHead'
+import ContentSkeleton from '../components/ContentSkeleton'
 import GenericContentRenderer from '../components/GenericContentRenderer'
 import { useLanguage } from '../context/LanguageContext'
 import { usePageContent, resolveLocale } from '../config/content'
@@ -27,13 +28,7 @@ export default function GenericContentPage() {
   const { data, loading } = usePageContent(lang, contentFile)
 
   if (loading) {
-    return (
-      <div className="content-page">
-        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
-          Loading...
-        </p>
-      </div>
-    )
+    return <ContentSkeleton />
   }
 
   const content = data ? resolveLocale(data, lang) : null

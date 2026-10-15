@@ -1,4 +1,5 @@
 import SeoHead from '../components/SeoHead'
+import ContentSkeleton from '../components/ContentSkeleton'
 import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import ContentView from '../components/ContentView'
@@ -12,13 +13,7 @@ export default function Dua() {
   const [jumpToIdx, setJumpToIdx] = useState()
 
   if (loading || !data) {
-    return (
-      <div className="content-page">
-        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
-          Loading...
-        </p>
-      </div>
-    )
+    return <ContentSkeleton />
   }
 
   const content = data[lang] || data.en || {}

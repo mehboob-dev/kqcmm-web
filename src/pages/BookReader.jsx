@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import SeoHead from '../components/SeoHead'
+import ContentSkeleton from '../components/ContentSkeleton'
 import ContentView from '../components/ContentView'
+import { showToast } from '../utils/toast'
 import QuickJump from '../components/QuickJump'
 import { useLanguage } from '../context/LanguageContext'
 import { usePageContent } from '../config/content'
@@ -94,18 +96,12 @@ export default function BookReader() {
     if (navigator.share) {
       try { await navigator.share({ title, text, url }) } catch { /* user cancelled */ }
     } else if (navigator.clipboard) {
-      try { await navigator.clipboard.writeText(url); alert('Link copied') } catch { /* ignore */ }
+      try { await navigator.clipboard.writeText(url); showToast('Link copied!') } catch { /* ignore */ }
     }
   }
 
   if (loading || !data) {
-    return (
-      <div className="content-page">
-        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
-          Loading...
-        </p>
-      </div>
-    )
+    return <ContentSkeleton rows={4} />
   }
 
   return (

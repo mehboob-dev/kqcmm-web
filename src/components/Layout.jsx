@@ -13,6 +13,8 @@ import SettingsPopup from './SettingsPopup'
 import HijriStrip from './HijriStrip'
 import Icon from './FontAwesome'
 import OnboardingTour from './OnboardingTour'
+import ContentSkeleton from './ContentSkeleton'
+import { showToast } from '../utils/toast'
 
 export default function Layout() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -205,13 +207,15 @@ export default function Layout() {
       await navigator.clipboard.writeText(url)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
+      showToast(share.copied || 'Link copied!')
       return
     } catch (e) { /* clipboard unavailable — try legacy */ }
     // Fallback 2: legacy textarea copy (plain HTTP / older mobile browsers)
     const ok = copyLegacy(url)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
-    if (!ok) alert(share.message || url)
+    if (!ok) showToast(share.message || url)
+    else showToast(share.copied || 'Link copied!')
   }
 
   return (
@@ -259,7 +263,7 @@ export default function Layout() {
 
       {/* MAIN CONTENT — base font size lives here */}
       <main className="main-content" ref={mainRef} dir={document.documentElement.dir} style={{ fontSize: currentSize.size }}>
-        {strings ? <Outlet context={{ strings }} /> : <div className="content-page"><p>Loading...</p></div>}
+        {strings ? <Outlet context={{ strings }} /> : <ContentSkeleton />}
       </main>
 
       {/* BOTTOM NAV */}

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import SeoHead from '../components/SeoHead'
+import ContentSkeleton from '../components/ContentSkeleton'
 import { useLanguage } from '../context/LanguageContext'
 import { usePageContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
@@ -16,13 +17,7 @@ export default function BooksIndex() {
   const { data, loading } = usePageContent(lang, 'books/_index')
 
   if (loading || !data) {
-    return (
-      <div className="content-page">
-        <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>
-          Loading...
-        </p>
-      </div>
-    )
+    return <ContentSkeleton rows={4} />
   }
 
   const books = data.books || []
