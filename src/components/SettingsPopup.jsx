@@ -105,23 +105,17 @@ export default function SettingsPopup({ strings, onClose, onReplayTour }) {
   return (
     <>
       {/* backdrop */}
-      <div
-        onClick={onClose}
-        style={{
-          position: 'fixed', inset: 0, zIndex: 300,
-          background: 'rgba(0,0,0,0.5)',
-        }}
-      />
+      <div className="settings-backdrop" onClick={onClose} />
       {/* popup */}
       <div className="settings-modal-card">
         {/* fixed header row */}
         <div className="settings-modal-header">
           <h3 className="settings-modal-title">{strings.settings.title}</h3>
-          <button className="settings-modal-close" onClick={onClose} aria-label="Close settings">✕</button>
+          <button className="settings-modal-close" onClick={onClose} aria-label="Close settings"><Icon name="faXmark" /></button>
         </div>
 
         {/* scrollable body */}
-        <div style={{ padding: '16px 20px 24px', overflowY: 'auto' }}>
+        <div className="settings-modal-body">
 
         {/* Replay walkthrough */}
         {onReplayTour && (
