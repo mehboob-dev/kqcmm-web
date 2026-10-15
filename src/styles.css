@@ -614,53 +614,89 @@ strong { font-weight: 700; }
 /* ===== HOME ===== */
 .home-container {
   text-align: center;
-  padding: 16px 8px 32px;
+  padding: 6px 2px 32px;
   max-width: 640px;
   margin: 0 auto;
 }
+.home-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 28px 16px 24px;
+  margin-bottom: 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 1px 2px var(--shadow), 0 24px 60px -42px var(--shadow);
+  animation: fadeSlideIn 0.4s var(--ease-spring);
+}
+.home-hero::before {
+  content: '';
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130%;
+  height: 150px;
+  background: radial-gradient(50% 100% at 50% 0%, var(--accent-bg), transparent 72%);
+  pointer-events: none;
+}
 .home-logo {
-  width: 110px;
-  height: 110px;
+  position: relative;
+  width: 112px;
+  height: 112px;
   border-radius: 50%;
   object-fit: cover;
   margin: 0 auto 16px;
-  border: 3px solid var(--accent);
-  box-shadow: 0 4px 20px var(--shadow);
-  transition: transform 0.3s ease;
+  border: 4px solid var(--bg-card);
+  outline: 3px solid var(--accent);
+  box-shadow: 0 16px 36px -20px var(--shadow);
+  transition: transform 0.3s var(--ease-spring);
 }
 .home-logo:hover {
   transform: scale(1.04);
 }
 .home-title {
-  font-size: 32px;
+  position: relative;
+  font-size: clamp(30px, 9vw, 38px);
   font-weight: 800;
   color: var(--text-heading);
-  letter-spacing: 0.8px;
+  letter-spacing: 1px;
+  line-height: 1.15;
 }
 .home-subtitle {
-  font-size: 14.5px;
-  font-weight: 600;
+  position: relative;
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
   color: var(--accent);
-  margin-top: 4px;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent);
+  padding: 5px 14px;
+  border-radius: 999px;
+  margin-top: 10px;
   line-height: 1.5;
+  max-width: 94%;
 }
 .home-desc {
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--text);
-  line-height: 1.6;
-  margin: 18px auto 0;
+  line-height: 1.75;
+  margin: 0 auto;
   max-width: 480px;
   background: var(--bg-card);
-  padding: 14px 18px;
-  border-radius: 14px;
+  padding: 15px 18px;
+  border-radius: 16px;
   border: 1px solid var(--border);
-  box-shadow: 0 4px 16px var(--shadow);
+  border-left: 3px solid var(--accent);
+  box-shadow: 0 1px 2px var(--shadow), 0 14px 34px -28px var(--shadow);
+  text-align: left;
 }
 .home-quick-links {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
-  margin-top: 24px;
+  margin-top: 20px;
 }
 @media (min-width: 640px) {
   .home-quick-links {
