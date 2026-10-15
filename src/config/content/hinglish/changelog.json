@@ -3,6 +3,17 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "8.0.0",
+        "date": "2026-10-16",
+        "changes": [
+          "Top bar khatam — menu, share aur settings ab glass circles banke seedha page ke upar tairte hain, beech mein aaj ki Hijri date aur events ka compact chip. Har page apna title khud dikhata hai.",
+          "Home ab ek pura cover scene kholta hai: KQCMM wordmark aur tagline aaj ki Hijri date card aur chaand ke upar ubharte hain, gehri gradient par.",
+          "Menu ab rangeen tiles ka mosaic hai — har section ko apna gradient icon tile aur number milta hai.",
+          "Content pages ab magazine ki tarah padhne mein lagte hain: boxes ki jagah patli lines aur bold headers se alag kiye numbered sections.",
+          "Language switch ab Settings mein hai — upar ki floating row saaf rehti hai."
+        ]
+      },
+      {
         "version": "7.1.0",
         "date": "2026-10-16",
         "changes": [

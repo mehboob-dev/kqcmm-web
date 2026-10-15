@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v7.1.0** ("Aurora" — living canvas, glass chrome, moon phases, spatial touch) - see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v8.0.0** ("Skyline" — no chrome bar, floating orbs, Home cover, bento menu, editorial content) - see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -546,10 +546,11 @@ The editor server at `scripts/content-editor.mjs` serves both the Admin Panel an
 - **`.page-hero`** — centered hero header with gradient eyebrow + title underline
 - **`.card-text`** — default text with `line-height: 1.7`
 - **Floating dock** — `.bottom-nav` is a fixed glass dock (z-index 60) publishing `--bottom-nav-height`; `.reading-bar` floats above it (z-index 55, same 24px radius)
-- **Top chrome** — header + Hijri strip in fixed `.top-chrome` publishing `--chrome-h`; hides on downward scroll; `.read-progress` line driven by `--read-progress` (both set by Layout with rAF, no re-renders)
+- **Top chrome (8.0.0: no bar)** — `.top-chrome` is an invisible overlay publishing `--chrome-h`: floating 46px glass orbs (menu left; share/settings right) + the Hijri strip as a centered compact glass chip; no page title in chrome (pages own their heroes) and language switching lives in Settings; hides on downward scroll; `.read-progress` line driven by `--read-progress` (both set by Layout with rAF, no re-renders)
 - **Focus mode** — `.zen-btn` in the reading bar toggles `body.zen` (hides chrome, dock, FAB; reading bar drops into the dock slot); exits on route change
 - **Motion** — navigations use react-router `viewTransition` (native View Transitions; `html:active-view-transition` guard suppresses mount animations during capture); `ContentView` slide changes animate directionally (`.slide-stage.from-right/left`) and follow the finger while dragging (rubber-band edges, flick commit, spring-back — inline styles, never state); loading states use `ContentSkeleton` (`.skel` shimmer, arch hero); user feedback uses `showToast()` (`.app-toast`, z 9998)
-- **Spatial layer (7.1.0)** — `initSpotlight()` (cursor light via `--spot-x/--spot-y` on `.card/.quick-link/.dash-*/.moon-card/.book-card-item::after`) + `initReveals()` (below-fold `.rv` → `.rv-in` on scroll; above-fold left visible for VT snapshots; skip `.slide-stage`) both mounted once in `Layout`; splash is a scene (aurora + stars + arch + conic countdown); dock tabs are icon-only until active (`flex-grow` bloom + `.nav-label`)
+- **Spatial layer (7.1.0)** — `initSpotlight()` (cursor light via `--spot-x/--spot-y` on `.card:not(.poem-card)/.quick-link/.dash-*/.moon-card/.book-card-item::after`) + `initReveals()` (below-fold `.rv` → `.rv-in` on scroll; above-fold left visible for VT snapshots; skip `.slide-stage`) both mounted once in `Layout`; splash is a scene (full image + aurora/stars + conic countdown ring); dock tabs are icon-only until active (`flex-grow` bloom + `.nav-label`)
+- **Editorial flow (8.0.0)** — list-mode cards are flattened into numbered hairline sections (`.cv-list` counter + ghost numerals guarded by `:has(.card-num)`); `.card-accent` children keep boxes; `.page-hero` is a left masthead; slide mode keeps boxed cards
 - **Sheets** — settings/quick-jump/walkthrough use glass sheets with grab handles; z-index map: reading bar 55 · dock 60 · chrome 100 · reading progress 102 · quick-jump 150/160 · menu 200/201 · settings 301 · tour 1000–1002 · splash 9999
 - **Haptics** — `hapticTap()` from `src/utils/haptics.js` in tap handlers only (never effects)
 - **Focus** — `:focus-visible` accent outline stays; no bare `outline: none`

@@ -4,6 +4,25 @@
 
 Maintain both changelogs together when work lands. Latest version at the top.
 
+## 8.0.0 — 2026-10-16
+
+### User-facing
+- **Header bar demolished** — no more title strip. Floating glass orbs (menu, share, settings) hover directly over the page with a compact centered Hijri chip between them; pages own their titles; language switching moved to Settings. Reading progress line and hide-on-scroll retained.
+- **Home cover scene** — the brand row + boxed date card are replaced by one tall full-column cover: logo, wordmark, tagline, glass date card (today Hijri + events + moon), animated scroll cue, deep accent gradient with the grain pattern.
+- **Bento menu** — the flat numbered list is now a 2-column mosaic of gradient tiles (rotating icon-chip hues, corner numbers, active ring).
+- **Editorial content flow** — list-mode cards render as numbered hairline sections (giant ghost numerals, chip markers); page heroes are left-aligned mastheads instead of arch cards; `.card-accent` children keep their boxes (structure intact).
+
+### Internal / docs
+- **`Layout.jsx`** — header reduced to orbs + HijriStrip; title/app-title and header lang toggle removed (Settings already exposes language); `changeLang` import retained for the tour.
+- **`Home.jsx`** — cover markup (`.home-cover`, `.cover-brand`, `.cover-date`, `.cover-cue`); reuses `.dash-date-*`/`.dash-moon` internals with cover overrides.
+- **`ContentView.jsx`** — list wrapper gains `.cv-list` (counter scope for section numerals).
+- **`styles.css`** — SKYLINE (8.0.0) section: chrome orbs/chip styles, `main-content` padding-top removed + `.content-page` padding respects `--chrome-h`, home cover, bento menu grid, editorial flow (`:has(.card-num)` guard keeps existing numbered cards clean), masthead heroes; `.poem-card` excluded from the 7.1.0 spotlight layer (its `::after` is the poem ornament).
+- **`FontAwesome.jsx`** — added `faChevronDown` (cover cue).
+- **Version bump** — 7.1.0 → 8.0.0 in package.json, About.jsx, public changelogs (en + hinglish) and this file.
+- Verified: full build (15 routes + 404), 353 tests.
+
+---
+
 ## 7.1.0 — 2026-10-16
 
 ### User-facing

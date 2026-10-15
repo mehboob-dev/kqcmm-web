@@ -3,6 +3,17 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "8.0.0",
+        "date": "2026-10-16",
+        "changes": [
+          "The top bar is gone — menu, share and settings now float as glass circles directly over the page, with today's Hijri date and events in a compact chip between them. Every page carries its own title.",
+          "Home opens with a full cover scene: the KQCMM wordmark and your tagline rise above today's Hijri date card and the moon, set on a deep gradient.",
+          "The menu is now a mosaic of colourful tiles — every section gets its own gradient icon tile with its number.",
+          "Content pages read like a magazine: numbered sections separated by fine lines and bold headers, instead of a stack of identical boxes.",
+          "Language switching now lives in Settings, keeping the floating top row uncluttered."
+        ]
+      },
+      {
         "version": "7.1.0",
         "date": "2026-10-16",
         "changes": [

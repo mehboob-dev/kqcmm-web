@@ -391,6 +391,20 @@ Aurora). Used by `Home.jsx` (`.dash-moon` block inside the date hero) and
   between stored month starts; 30 fallback for the final entry. This is how the
   moon phase is derived from the stored `calendar.json` data ("as per the data").
 
+### Skyline shell (8.0.0)
+- **Layout** — the header bar is gone: `.top-chrome` is an invisible overlay
+  (`pointer-events: none`) holding the menu orb, the centered Hijri chip and
+  the share/settings orbs; `--chrome-h` measures the orb row and pages reserve
+  their own top space (`.content-page` uses it, `.home-container` opts out).
+  The header language toggle was removed — Settings already offers language
+  switching (`changeLang` is still passed to the tour).
+- **Home cover** — `.home-cover` scene (brand, wordmark, tagline, glass date
+  card with moon, scroll cue); `.cover-cue` uses newly added `faChevronDown`.
+- **SideDrawer** — `.menu-nav` is a 2-column bento grid of gradient tiles;
+  the numbered list styling is gone (tiles keep the staggered `menuItemIn`).
+- **ContentView** — the list wrapper carries `.cv-list` for the editorial
+  counter (see docs/styling.md → Skyline).
+
 ### Spatial utilities (7.1.0)
 - **`src/utils/spotlight.js`** — `initSpotlight()`: one passive document
   `pointermove` listener + rAF sets `--spot-x/--spot-y` on the hovered

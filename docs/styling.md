@@ -405,6 +405,30 @@ a **floating glass capsule** sitting above the dock (`bottom: calc(var(--bottom-
   the full-bleed, uncropped image (`object-fit: fill`); `.splash-count-num`
   is a conic ring driven by `--splash-pct`.
 
+### Skyline (8.0.0) — bar removed, editorial shell
+- **Chrome** — `.top-chrome` renders **no bar**: `background: none`,
+  `pointer-events: none` (children re-enable), containing `.hamburger-btn`
+  46px glass orbs and the Hijri strip restyled as a centered compact glass chip
+  (`flex: 1`, 42px, radius 999). `.main-content` no longer reserves chrome
+  space (`padding-top: 0`); `.content-page` adds
+  `calc(var(--chrome-h) + 14px)` itself, `.home-container` opts out.
+- **Home cover** — `.home-cover` (min-height `min(80vh, 640px)`, radius
+  `0 0 38px 38px`, deep accent gradient + `.pattern-layer`, negative inline
+  margins for edge-to-edge at all breakpoints); `.cover-brand` (`.cover-logo`
+  78px, `.cover-name`, `.cover-tag`), `.cover-date` (glass card with
+  `.dash-date-*` internals recolored white, moon at right), `.cover-cue`
+  (coverCue bounce).
+- **Bento menu** — `.menu-nav` is a 2-col grid; `.menu-link` becomes a
+  min-height 112px tile (icon chip via `order: -1`, corner `.menu-link-num`,
+  rotating gradient chips every 3n/3n+2, active ring).
+- **Editorial flow** — `.cv-list .card:not(.card-accent)` and
+  `.content-page > .card:not(.card-accent):not(.version-card)`: transparent,
+  borderless, hairline top, flat hover; `.cv-list` runs a `cvsect` counter and
+  stamps a ghost numeral via `::before` unless the card already has
+  `.card-num` (`:has()` guard); `.card-title::before` swaps its bar for a
+  14px chip. `.page-hero` is a left masthead (no box, hairline bottom, larger
+  display title).
+
 ### Utility component classes
 | Area | Classes |
 |---|---|
