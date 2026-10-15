@@ -10,7 +10,7 @@ Maintain both changelogs together when work lands. Latest version at the top.
 - **Finger-following slide swipes** — the current slide translates with the drag (rubber-banded at first/last), then commits on distance (>72px) or flick velocity (>0.55px/ms) and springs back otherwise. Two-phase settle: the dragged card slides out, the next enters directionally.
 - **Cursor spotlight** — desktop pointers paint a soft accent light on cards/tiles (`--spot-x/--spot-y` radial). Touch-only and reduced-motion devices skip it entirely.
 - **Scroll reveals** — below-fold cards/sections rise into view (`.rv` → `.rv-in`); above-fold stays untouched (View Transition snapshots must not capture hidden content); slide-stage cards excluded (they have directional entry already).
-- **Splash scene** — aurora orbs (shared `auroraDrift`) + twinkling star field behind a mihrab-arched splash photo (was full-bleed `object-fit: fill`), glass logo ring, glass countdown pill with a conic progress ring (`--splash-pct`).
+- **Splash scene** — splash image stays full-bleed and uncropped (`object-fit: fill`, as before); aurora orbs (shared `auroraDrift`) + twinkling star field sit behind it as a loading backdrop; countdown is a glass pill with a conic progress ring (`--splash-pct`).
 - **Expanding dock** — inactive tabs icon-only; active tab `flex-grow: 2.4` into the gradient pill with animated label (`max-width`/`margin`); install tab keeps its label.
 - **Counter tap ring** — keyed `.cnt-pulse` ring (cntRing) fired on every count change.
 

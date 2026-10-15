@@ -401,9 +401,9 @@ a **floating glass capsule** sitting above the dock (`bottom: calc(var(--bottom-
   (`max-width: 0`) until `.nav-item.active` (`flex-grow: 2.4`, label
   `max-width: 130px` + 8px margin). `.is-install` keeps its label visible.
 - **Splash scene** — `.splash` uses the theme background; `.splash-aurora`
-  (same orb recipe, 30s drift), `.splash-stars` (starTwinkle), `.splash-arch`
-  (150px-radius mihrab frame, splashUp entry), `.splash-logo` glass ring,
-  `.splash-count-num` conic ring driven by `--splash-pct`.
+  (same orb recipe, 30s drift) and `.splash-stars` (starTwinkle) glow behind
+  the full-bleed, uncropped image (`object-fit: fill`); `.splash-count-num`
+  is a conic ring driven by `--splash-pct`.
 
 ### Utility component classes
 | Area | Classes |

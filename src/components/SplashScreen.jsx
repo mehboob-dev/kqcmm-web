@@ -45,21 +45,17 @@ export default function SplashScreen({ onDone }) {
         transition: `opacity ${config.fadeTransition}ms ease`,
       }}
     >
-      {/* Living backdrop — same aurora language as the app body */}
+      {/* Living backdrop — shows through while the full image loads */}
       <div className="splash-aurora" aria-hidden="true" />
       <div className="splash-stars" aria-hidden="true" />
 
-      <div className="splash-scene">
-        <img src={base + 'logo.png'} alt="" aria-hidden="true" className="splash-logo" />
-        <div className="splash-arch">
-          <img
-            src={base + config.image.replace(/^\//, '')}
-            alt="KQCMM"
-            className="splash-img"
-          />
-          <div className="splash-shade" />
-        </div>
-      </div>
+      {/* Full-bleed splash image — never cropped */}
+      <img
+        src={base + config.image.replace(/^\//, '')}
+        alt="KQCMM"
+        className="splash-img"
+      />
+      <div className="splash-shade" />
 
       <div className="splash-count" style={{ '--splash-pct': pct }}>
         <span className="splash-count-text">{config.message}</span>

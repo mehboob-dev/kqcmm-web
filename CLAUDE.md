@@ -86,7 +86,7 @@ kqcmm-web/
 │   │   ├── MoonPhaseIcon.jsx          # SVG moon renderer (any phase from fraction)
 │   │   ├── QuickJump.jsx             # Floating quick-jump bottom sheet (shared, language-independent)
 │   │   ├── HijriStrip.jsx            # App-wide thin strip below header (today Hijri + Gregorian + event-today)
-│   │   ├── SplashScreen.jsx           # Splash scene (aurora + stars + arch + countdown ring)
+│   │   ├── SplashScreen.jsx           # Splash (full uncropped image + aurora/stars + countdown ring)
 │   │   ├── SettingsPopup.jsx          # Settings modal (+ Replay walkthrough button)
 │   │   ├── OnboardingTour.jsx        # First-run walkthrough (guided-tap overlay, data-tour hooks)
 │   │   ├── FontAwesome.jsx           # Icon component (centralized)
