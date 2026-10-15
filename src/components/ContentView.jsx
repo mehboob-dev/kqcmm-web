@@ -213,7 +213,7 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
   if (!isSlide) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
-        <div ref={listRef} style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 66 }}>
+        <div ref={listRef} className="cv-list" style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 66 }}>
           {items.map((item, i) => <div key={i} data-section-index={i}>{renderItem(item, i)}</div>)}
         </div>
         <div className="reading-bar">

@@ -243,26 +243,14 @@ export default function Layout() {
       {/* READING PROGRESS — thin gradient line, width driven by --read-progress */}
       <div className="read-progress" aria-hidden="true" />
 
-      {/* TOP CHROME — fixed; hides while reading downward */}
+      {/* TOP CHROME — 8.0.0: no bar. Floating glass orbs and a centered
+          Hijri chip hover directly over the page; pages own their titles. */}
       <div className="top-chrome" ref={chromeRef}>
-      {/* HEADER */}
       <header className="app-header">
         <button className="hamburger-btn" data-tour="header-menu" onClick={() => setMenuOpen(true)} aria-label="Menu" style={{ fontSize: 17 }}>
           <Icon name="faBars" />
         </button>
-        <span className="app-title">{title}</span>
-        <div
-          className="header-lang-toggle"
-          onClick={() => changeLang(lang === 'en' ? 'hinglish' : 'en')}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); changeLang(lang === 'en' ? 'hinglish' : 'en') } }}
-          title={lang === 'en' ? 'Switch to Hinglish' : 'Switch to English'}
-          aria-label="Toggle language"
-        >
-          <span className={`header-lang-pill${lang === 'en' ? ' active' : ''}`}>EN</span>
-          <span className={`header-lang-pill${lang === 'hinglish' ? ' active' : ''}`}>HI</span>
-        </div>
+        <HijriStrip lang={lang} />
         <button className="hamburger-btn" data-tour="header-share" onClick={handleShare} aria-label={share.title || 'Share'} style={{ fontSize: 18 }}>
           {copied ? <Icon name="faCheck" /> : <Icon name="faShareNodes" />}
         </button>
@@ -270,9 +258,6 @@ export default function Layout() {
           <Icon name="faGear" />
         </button>
       </header>
-
-      {/* HIJRI STRIP — app-wide, below the header */}
-      <HijriStrip lang={lang} />
       </div>
 
       {/* MAIN CONTENT — base font size lives here */}

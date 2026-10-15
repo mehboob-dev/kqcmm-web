@@ -109,41 +109,44 @@ export default function Home() {
       <SeoHead title="Home" path="" description="Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya — Spiritual platform for followers of the Chishti Sufi order. Duas, khatm, fateha, kalam, sijrah nama and more." />
       <div className="home-container content-page">
 
-        {/* Brand row */}
-        <div className="dash-brand">
-          <img className="dash-brand-logo" src={import.meta.env.BASE_URL + 'logo.png'} alt="KQCMM" />
-          <div>
-            <p className="dash-brand-name">KQCMM</p>
-            <p className="dash-brand-tag">{strings.tagline}</p>
-          </div>
-        </div>
-
-        {/* Today — Hijri date hero with today's events */}
-        <button
-          className="dash-date"
-          onClick={() => navigate(routeForPage('calendar'), { viewTransition: true })}
-          aria-label="Open Islamic calendar"
-        >
+        {/* COVER (8.0.0) — full-column immersive cover: brand + today's Hijri
+            date + moon live inside one tall gradient scene, not boxed cards. */}
+        <div className="home-cover">
           <span className="pattern-layer" aria-hidden="true" />
-          <span className="dash-date-greg">{gregLabel}</span>
-          <span className="dash-date-hijri">
-            {dateInfo?.hijri?.ok
-              ? hijriLabel(dateInfo.hijri.hijriYear, dateInfo.hijri.hijriMonth, dateInfo.hijri.hijriDay, dateInfo.monthNames, lang)
-              : '—'}
-          </span>
-          {dateInfo?.labels?.length > 0 && (
-            <span className="dash-date-events">
-              <Icon name="faStarAndCrescent" />
-              <span className="dash-date-events-text">{dateInfo.labels.slice(0, 2).join(' · ')}</span>
+
+          <div className="cover-brand">
+            <img className="cover-logo" src={import.meta.env.BASE_URL + 'logo.png'} alt="KQCMM" />
+            <p className="cover-name">KQCMM</p>
+            <p className="cover-tag">{strings.tagline}</p>
+          </div>
+
+          <button
+            className="cover-date"
+            onClick={() => navigate(routeForPage('calendar'), { viewTransition: true })}
+            aria-label="Open Islamic calendar"
+          >
+            <span className="dash-date-greg">{gregLabel}</span>
+            <span className="dash-date-hijri">
+              {dateInfo?.hijri?.ok
+                ? hijriLabel(dateInfo.hijri.hijriYear, dateInfo.hijri.hijriMonth, dateInfo.hijri.hijriDay, dateInfo.monthNames, lang)
+                : '—'}
             </span>
-          )}
-          {dateInfo?.moon && (
-            <span className="dash-moon" aria-hidden="true">
-              <MoonPhaseIcon fraction={dateInfo.moon.fraction} size={54} />
-              <span className="dash-moon-label">{strings.moon?.[dateInfo.moon.key]}</span>
-            </span>
-          )}
-        </button>
+            {dateInfo?.labels?.length > 0 && (
+              <span className="dash-date-events">
+                <Icon name="faStarAndCrescent" />
+                <span className="dash-date-events-text">{dateInfo.labels.slice(0, 2).join(' · ')}</span>
+              </span>
+            )}
+            {dateInfo?.moon && (
+              <span className="dash-moon" aria-hidden="true">
+                <MoonPhaseIcon fraction={dateInfo.moon.fraction} size={54} />
+                <span className="dash-moon-label">{strings.moon?.[dateInfo.moon.key]}</span>
+              </span>
+            )}
+          </button>
+
+          <span className="cover-cue" aria-hidden="true"><Icon name="faChevronDown" /></span>
+        </div>
 
         {/* Continue reading */}
         {lastBook && (
