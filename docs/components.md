@@ -88,6 +88,14 @@ In slide mode, swipe left/right directly on the card area to go to the next/prev
 - Works alongside the ◀▶ button navigation
 - Implemented via `onTouchStart` / `onTouchMove` / `onTouchEnd` handlers
 - Accidental touches (taps, scrolls) do not trigger navigation
+- Swipes route through `goTo()` so the slide **direction** state stays correct
+
+### Slide & counter motion — 6.2.0
+A `dir` state (1 = forward, −1 = back) is set by `goTo()`. Each index renders a
+keyed `.slide-stage` wrapper that replays `slideInRight` (`.from-right`) or
+`slideInLeft` (`.from-left`), so the incoming slide enters from the side you're
+moving toward. The counter value is a keyed `.cnt-digit` span that replays the
+`cntPop` roll on every +/− change.
 
 ### Component Architecture
 ```jsx
@@ -334,6 +342,32 @@ import Icon from './FontAwesome'
 ## QuickJump.jsx
 
 Floating-book FAB that opens a bottom-sheet list of jump targets for long content pages (Duas, Roshni, Fateha Khwani, Khatm).
+
+## ContentSkeleton.jsx (Loading Placeholders)
+
+**File:** `src/components/ContentSkeleton.jsx` — since 6.2.0.
+
+Shimmer placeholders shown while page content loads (replaces the old
+`<p>Loading...</p>` block in all 14 content pages, `GenericContentPage`, and the
+Layout strings fallback).
+
+### Props
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `rows` | number | `3` | Number of card placeholders below the hero |
+| `hero` | bool | `true` | Render the `.skel-hero` arch placeholder (mirrors the mihrab hero shape) |
+
+Renders `.skeleton-page` with `aria-busy` + `aria-label="Loading"`. Card
+placeholders stagger their shimmer via `animationDelay` on the `skelSweep`
+keyframe. `About`/`Changelog` use `hero={false}` (info pages, no arch hero).
+
+### Toast utility — `src/utils/toast.js`
+`showToast(message)` appends/reuses a single `<div id="app-toast" class="app-toast" role="status">`
+on `<body>`, replays the hairline drop-in (reflow trick) and auto-dismisses
+after 2s. Vanilla DOM on purpose — callable from any handler without context
+plumbing. Used by `Layout` share (clipboard/legacy copy success, replaces
+`alert`) and `BookReader` share. The pill uses `--accent-grad-deep` (white-text
+safe), z-index 9998 (above tour, below splash).
 
 **File:** `src/components/QuickJump.jsx`
 

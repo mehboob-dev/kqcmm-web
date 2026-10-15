@@ -4,6 +4,28 @@
 
 Maintain both changelogs together when work lands. Latest version at the top.
 
+## 6.2.0 — 2026-10-16
+
+### User-facing
+- **Page transitions** — native View Transitions on every navigation: old page sinks away, new page springs up (tabs, menu, home cards, book covers, back links, 404 CTA, Hijri strip).
+- **Directional slide mode** — the next slide enters from the side you're moving toward (forward = from right, back = from left); swipes animate the same way.
+- **Rolling counter** — the zikr counter number rolls into place on every +/− change.
+- **Skeleton loaders** — every page's plain "Loading..." text replaced with shimmering placeholder cards (mihrab-arched hero placeholder) that preview the layout while content loads.
+- **Copy toast** — sharing now shows a soft gradient confirmation pill at the top instead of a browser alert.
+- **Aurora hero** — the dashboard "today" card has a slow rotating conic light behind the arch.
+- **Modern details** — thin scrollbars, `100dvh` viewport (mobile URL-bar safe), `text-wrap: balance/pretty` line breaking.
+
+### Internal / docs
+- **`ContentView.jsx`** — `dir` state; keyed `.slide-stage` (`.from-right`/`.from-left`); swipes routed through `goTo()` so direction tracking stays correct; keyed `.cnt-digit` roll; inline mount animation removed from the slide container.
+- **`ContentSkeleton.jsx` (new)** — `{ rows, hero }` shimmer placeholders; consumed by all 14 content pages + `Layout` fallback (`About`/`Changelog` use `hero={false}`).
+- **`src/utils/toast.js` (new)** — `showToast(message)` vanilla DOM pill (`#app-toast`, reflow-replay enter, 2s auto-dismiss, `role="status"`); used by Layout + BookReader share (both `alert()` calls removed).
+- **View transitions** — `viewTransition` prop: BottomNav tabs, SideDrawer menu links, Home (date hero, continue, dua, quick links), HijriStrip, BooksIndex covers, BookReader back links, About version link, NotFound CTA. `::view-transition-old/new(root)` keyframes (vtOld/vtNew); `html:active-view-transition` guard suppresses mount/stagger animations during snapshot capture; reduced-motion overrides for the pseudo-elements.
+- **`styles.css`** — skeleton (`.skel*`, `skelSweep`), toast (`.app-toast`), aurora (`dash-date::after` conic + `auroraSpin`), scrollbars, `100dvh`, text-wrap, motion system section.
+- **Docs sync** — `docs/styling.md` (skeleton/toast/aurora/modern details in shell sections), `docs/components.md` (ContentSkeleton, toast util, ContentView motion), `CLAUDE.md` (version, tree, motion conventions).
+- **Version bump** — `6.1.0` → `6.2.0`, synchronized package.json, About.jsx, dev changelog, and public changelogs in English and Hinglish.
+
+---
+
 ## 6.1.0 — 2026-10-15
 
 ### User-facing

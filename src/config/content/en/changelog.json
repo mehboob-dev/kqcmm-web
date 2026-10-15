@@ -3,6 +3,19 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "6.2.0",
+        "date": "2026-10-16",
+        "changes": [
+          "Smooth page transitions — pages glide in whenever you switch tabs or open a new section, in every theme.",
+          "Slide mode moves with you: the next slide enters from the side you're heading toward — forward or back.",
+          "The zikr counter now rolls each number into place as you tap + or −.",
+          "Gentle shimmer placeholders replace the plain 'Loading...' text, so pages preview their layout while content arrives.",
+          "Copying a share link shows a soft confirmation pill at the top instead of a browser popup.",
+          "The 'today' card on Home glows with a slow drifting light.",
+          "Finer touches: slim scrollbars, a better fit on mobile browsers, and more balanced line breaks in headings and paragraphs."
+        ]
+      },
+      {
         "version": "6.1.0",
         "date": "2026-10-15",
         "changes": [

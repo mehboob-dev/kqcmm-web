@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v6.1.0** ("Noor" redesign) - see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v6.2.0** ("Noor" redesign) - see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -82,6 +82,7 @@ kqcmm-web/
 │   │   ├── BottomNav.jsx              # Floating glass dock (5 tabs)
 │   │   ├── SideDrawer.jsx             # Full-screen magazine menu overlay
 │   │   ├── ContentView.jsx            # List/slide view + counter + focus (zen) mode
+│   │   ├── ContentSkeleton.jsx        # Shimmer loading placeholders (used by all pages)
 │   │   ├── QuickJump.jsx             # Floating quick-jump bottom sheet (shared, language-independent)
 │   │   ├── HijriStrip.jsx            # App-wide thin strip below header (today Hijri + Gregorian + event-today)
 │   │   ├── SplashScreen.jsx           # Splash with countdown
@@ -113,7 +114,8 @@ kqcmm-web/
 │   │   ├── hijriCalendar.js         # Hijri date conversion + event mapping (pure, tested)
 │   │   ├── onboarding.js            # Onboarding persistence + step-sequence helpers (pure, tested)
 │   │   ├── bookProgress.js          # Book reading-progress persistence (pure, tested)
-│   │   └── haptics.js               # hapticTap() tactile feedback (navigator.vibrate, safe no-op)
+│   │   ├── haptics.js               # hapticTap() tactile feedback (navigator.vibrate, safe no-op)
+│   │   └── toast.js                 # showToast() vanilla DOM toast pill (no context needed)
 │   ├── context/
 │   │   ├── ThemeContext.jsx          # Theme state (light/dark/sepia/green/rose/indigo/teal/gold/silver/beige/amber/oled + swatches)
 │   │   ├── LanguageContext.jsx       # Language state (en/hinglish; urdu planned)
@@ -539,6 +541,7 @@ The editor server at `scripts/content-editor.mjs` serves both the Admin Panel an
 - **Floating dock** — `.bottom-nav` is a fixed glass dock (z-index 60) publishing `--bottom-nav-height`; `.reading-bar` floats above it (z-index 55, same 24px radius)
 - **Top chrome** — header + Hijri strip in fixed `.top-chrome` publishing `--chrome-h`; hides on downward scroll; `.read-progress` line driven by `--read-progress` (both set by Layout with rAF, no re-renders)
 - **Focus mode** — `.zen-btn` in the reading bar toggles `body.zen` (hides chrome, dock, FAB; reading bar drops into the dock slot); exits on route change
+- **Motion** — navigations use react-router `viewTransition` (native View Transitions; `html:active-view-transition` guard suppresses mount animations during capture); `ContentView` slide changes animate directionally (`.slide-stage.from-right/left`); loading states use `ContentSkeleton` (`.skel` shimmer, arch hero); user feedback uses `showToast()` (`.app-toast`, z 9998)
 - **Sheets** — settings/quick-jump/walkthrough use glass sheets with grab handles; z-index map: reading bar 55 · dock 60 · chrome 100 · reading progress 102 · quick-jump 150/160 · menu 200/201 · settings 301 · tour 1000–1002 · splash 9999
 - **Haptics** — `hapticTap()` from `src/utils/haptics.js` in tap handlers only (never effects)
 - **Focus** — `:focus-visible` accent outline stays; no bare `outline: none`

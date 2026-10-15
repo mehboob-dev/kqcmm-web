@@ -3,6 +3,19 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "6.2.0",
+        "date": "2026-10-16",
+        "changes": [
+          "Smooth page transitions — tab ya section kholte hi page glide karta hua aata hai, har theme mein.",
+          "Slide mode aap ke saath chalta hai: agla slide usi taraf se enter hota hai jis taraf aap ja rahe ho — aage ya peeche.",
+          "Zikr counter ab har + / − tap par number roll karta hai.",
+          "'Loading...' ki jagah halke shimmering placeholders — content aate hi layout saamne taiyar dikhta hai.",
+          "Share link copy karne par browser popup ki jagah upar ek naram confirmation pill dikhti hai.",
+          "Home ke 'aaj' card mein dheere ghoomti halki roshni.",
+          "Barik details: patle scrollbars, mobile browser mein behtar fit, aur headings/paragraphs mein balanced line breaks."
+        ]
+      },
+      {
         "version": "6.1.0",
         "date": "2026-10-15",
         "changes": [

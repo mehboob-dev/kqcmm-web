@@ -320,7 +320,7 @@ a **floating glass capsule** sitting above the dock (`bottom: calc(var(--bottom-
 - **Splash** — `.splash-count` is a glass pill with `splashPulse`;
   `.splash-count-num` is a circular badge with tabular digits.
 
-### Noor shell motion (6.1.0)
+### Noor shell motion (6.1.0–6.2.0)
 - **Top chrome** — header + Hijri strip live in `.top-chrome` (`position: fixed`,
   centered, z-index 100; `translate(-50%, -103%)` when `.hidden`). Its height is
   published as `--chrome-h`; `.main-content` reserves
@@ -338,6 +338,26 @@ a **floating glass capsule** sitting above the dock (`bottom: calc(var(--bottom-
 - **Shared ornaments** — `.ornament` (+ `.ornament-diamond`) draw the
   diamond-ended hairline dividers; `.pattern-layer` is the reusable masked
   star-tile texture (menu panel, dashboard hero).
+- **View transitions (6.2.0)** — every navigation passes react-router's
+  `viewTransition` flag; `::view-transition-old(root)` sinks (`vtOld`) while
+  `::view-transition-new(root)` springs up (`vtNew`). The
+  `html:active-view-transition` guard force-finishes mount/stagger animations
+  during snapshot capture (prevents capturing cards at opacity 0); reduced
+  motion disables the pseudo-element animations.
+- **Slide-stage (6.2.0)** — `ContentView` remounts a keyed `.slide-stage` per
+  index: `.from-right` (`slideInRight`) for forward moves, `.from-left`
+  (`slideInLeft`) for back. `.cnt-digit` (keyed span) plays `cntPop` on every
+  counter change.
+- **Skeleton loading (6.2.0)** — `.skel` blocks (`skelSweep` shimmer);
+  `.skel-hero` mirrors the mihrab arch so placeholders preview the real hero.
+- **Toast (6.2.0)** — `.app-toast` gradient pill (top-center, z-index 9998,
+  `role="status"`); `.show` class toggles the spring drop-in; driven by
+  `showToast()` from `src/utils/toast.js`.
+- **Aurora (6.2.0)** — `.dash-date::after` is a blurred conic light rotating
+  via `auroraSpin` (clipped by the hero's `overflow: hidden`).
+- **Modern details (6.2.0)** — thin scrollbars in `.main-content`, `100dvh`
+  html height via `@supports`, `text-wrap: balance/pretty` on headings and
+  body copy.
 
 ### Utility component classes
 | Area | Classes |
@@ -350,6 +370,8 @@ a **floating glass capsule** sitting above the dock (`bottom: calc(var(--bottom-
 | Quick Jump sheet | `.qj-fab` (gradient rounded square), `.qj-backdrop`, `.qj-sheet` (glass, radius 28px), `.qj-handle`, `.qj-head`, `.qj-list`, `.qj-item` (rounded hover rows), `.qj-item-num` (gradient chip on hover) |
 | Full-screen menu (`SideDrawer.jsx`) | `.menu-overlay`, `.menu-panel` (+ pattern-layer), `.menu-panel-inner`, `.menu-top`, `.menu-brand*`, `.menu-close`, `.menu-nav`, `.menu-link*` (numbered editorial rows), `.menu-foot` |
 | Settings sheet | `.settings-backdrop`, `.settings-modal-card` (bottom sheet / centered ≥640px), `.settings-modal-body`, `.settings-section-card`, `.settings-section-label` (gradient eyebrow), `.settings-replay-btn` (gradient-deep), `.view-mode-row`, `.view-mode-btn` (`.active` = elevated segment) |
+| Skeleton loaders (`ContentSkeleton.jsx`) | `.skeleton-page`, `.skel` (shimmer), `.skel-hero` (arch shape), `.skel-card` |
+| Toast (`utils/toast.js`) | `.app-toast` (+ `.show`) |
 | Highlight / poem cards (Roshni) | `.highlight-card`, `.poem-card` |
 
 ---
