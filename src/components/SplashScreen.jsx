@@ -51,8 +51,8 @@ export default function SplashScreen({ onDone }) {
       />
       <div className="splash-shade" />
       <div className="splash-count">
-        {config.message} {count > 0 ? count : ''}
-        {count > 0 ? [...Array(count)].map((_, i) => '.').join('') : ''}
+        <span className="splash-count-text">{config.message}</span>
+        {count > 0 && <span className="splash-count-num">{count}</span>}
       </div>
     </div>
   )
