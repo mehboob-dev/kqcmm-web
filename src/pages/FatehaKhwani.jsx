@@ -26,8 +26,11 @@ export default function FatehaKhwani() {
   return (
     <div className="content-page">
       <SeoHead title="Fateha Khwani" path={routeForPage('fatehaKhwani')} description="Traditional gathering for Qur'an recitation and du'a — dedicate the reward (thawab) of recitation to your loved ones." />
-      <h2 className="page-title">{content.title}</h2>
-      {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
+      <div className="page-hero">
+        <div className="page-hero-badge">Qur'an Recitation</div>
+        <h2 className="page-hero-title">{content.title}</h2>
+        {content.intro && <div className="page-hero-intro">{content.intro}</div>}
+      </div>
       <ContentView
         items={content.sections}
         pageKey="fatehaKhwani"
@@ -40,8 +43,11 @@ export default function FatehaKhwani() {
             })
             return (
               <div>
-                <div className="card">
-                  <div className="card-title">{s.title}</div>
+                <div className="card fateha-master">
+                  <div className="card-head">
+                    <span className="card-num">{i + 1}</span>
+                    <div className="card-title">{s.title}</div>
+                  </div>
                 </div>
                 {subCards.map((sub, si) => (
                   <div key={si} className="card card-accent">
@@ -54,7 +60,10 @@ export default function FatehaKhwani() {
           }
           return (
             <div className="card">
-              <div className="card-title">{s.title}</div>
+              <div className="card-head">
+                <span className="card-num">{i + 1}</span>
+                <div className="card-title">{s.title}</div>
+              </div>
               <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{s.text || s.arabic}</div>
             </div>
           )

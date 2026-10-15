@@ -26,14 +26,20 @@ export default function Dua() {
   return (
     <div className="content-page">
       <SeoHead title="Duas" path={routeForPage('dua')} description="Collection of sacred supplications and duas from the Chishti tradition — 5 powerful prayers for blessings, health, knowledge, and spiritual growth." />
-      <h2 className="page-title">{content.title}</h2>
+      <div className="page-hero">
+        <div className="page-hero-badge">Sacred Supplications</div>
+        <h2 className="page-hero-title">{content.title}</h2>
+      </div>
       <ContentView
         items={content.duas}
         pageKey="dua"
         jumpTo={jumpToIdx}
         renderItem={(dua, i) => (
           <div className="card">
-            <div className="card-title">{dua.heading}</div>
+            <div className="card-head">
+              <span className="card-num">{i + 1}</span>
+              <div className="card-title">{dua.heading}</div>
+            </div>
             {dua.arabic && <div className="arabic">{dua.arabic}</div>}
             <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{dua.text || dua.translation}</div>
           </div>

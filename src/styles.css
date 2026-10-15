@@ -1017,6 +1017,12 @@ strong { font-weight: 700; }
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
+.fateha-master {
+  border-top: 3px solid var(--accent);
+}
+.fateha-master .card-head {
+  margin-bottom: 0;
+}
 
 /* ===== CALENDAR ===== */
 /* Contrast rule: anything with an accent background gets WHITE text

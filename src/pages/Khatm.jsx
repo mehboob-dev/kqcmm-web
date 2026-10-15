@@ -26,15 +26,21 @@ export default function Khatm() {
   return (
     <div className="content-page">
       <SeoHead title="Khatm-e-Khwajagan" path={routeForPage('khatm')} description="30-step spiritual dhikr with Quranic recitations, salawat, and dhikr in remembrance of the Chishti masters (Khwajagan)." />
-      <h2 className="page-title">{content.title}</h2>
-      {content.intro && <div className="page-section"><p style={{ whiteSpace: 'pre-line' }}>{content.intro}</p></div>}
+      <div className="page-hero">
+        <div className="page-hero-badge">Spiritual Dhikr</div>
+        <h2 className="page-hero-title">{content.title}</h2>
+        {content.intro && <div className="page-hero-intro" style={{ whiteSpace: 'pre-line' }}>{content.intro}</div>}
+      </div>
       <ContentView
         items={content.sections}
         pageKey="khatm"
         jumpTo={jumpToIdx}
         renderItem={(s, i) => (
           <div className="card">
-            <div className="card-title">{s.title}</div>
+            <div className="card-head">
+              <span className="card-num">{i + 1}</span>
+              <div className="card-title">{s.title}</div>
+            </div>
             {s.text && <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{s.text}</div>}
           </div>
         )}
