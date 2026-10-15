@@ -4,6 +4,30 @@
 
 Maintain both changelogs together when work lands. Latest version at the top.
 
+## 7.0.0 — 2026-10-16
+
+### User-facing
+- **Aurora body** — the entire app now sits on a living gradient canvas: four blurred radial orbs (built from each theme's accent trio) drift slowly behind every screen, with a soft film-grain overlay. Replaces the flat solid-background shell.
+- **Floating glass copilot bar** — the header + Hijri strip are now one inset, rounded, blurred glass pill hovering over the content (was: full-width colored bar with a solid accent strip). Buttons, language pills and the strip were recolored for glass; strip shows accent-on-muted text with a hairline divider.
+- **Moon phases** — a real feature derived from the stored Hijri calendar data: an animated SVG moon shows today's phase on the home date hero and a "Tonight's Moon" card on the Calendar page (phase name + illumination %). Pure computation from `monthStarts` (each Hijri month begins at the new crescent).
+- **Energetic color + type** — explore tiles rotate three vivid gradient chips; bigger radii (12/18/26), heavier display headings, uppercase tracked eyebrows, letter-spacing tune-ups.
+- **Book cover morph** — opening a book from the library animates the cover into the reader hero (named view transition per slug).
+
+### Internal / docs
+- **`src/styles.css`** — new "AURORA (7.0.0)" section at the end: `--accent-3` for all 12 themes, `.app-shell` canvas (`::before` orbs + `auroraDrift`, `::after` SVG-turbulence grain, `isolation: isolate`), `.main-content` transparent (aurora shows through), glass pill chrome + hijri strip restyle, `body.zen`-compatible hidden transform, moon classes (`.moon-dark/.moon-lit/.moon-ring`, `.dash-moon*`, `.moon-card*`), type upgrades, tile gradients. Token scale bumped (`--radius-sm/md/lg` 12/18/26).
+- **`src/utils/moonPhase.js` (new)** — `moonPhaseInfo(hijriDay, monthLength) → { key, fraction, illumination }`; 8 phase keys; boundaries: new <0.04/≥0.98, quarters at 0.22–0.28 / 0.72–0.78, full 0.45–0.55; clamps day/len with 30-day fallback. Pure.
+- **`src/utils/hijriCalendar.js`** — new `hijriMonthLength(monthStarts, hijriYear, hijriMonth)`: 29/30 from the distance between stored month starts; 30 fallback for the last entry.
+- **`scripts/test-moon-phase.mjs` (new)** — 31 assertions (phase mapping 29/30-day months, illumination monotonicity, clamping, month-length lookup); wired into `npm test` (353 total).
+- **`src/components/MoonPhaseIcon.jsx` (new)** — SVG phase renderer: outer limb semicircle + elliptical terminator with `rx = R·|cos(2π·fraction)|`, sweep flags by waxing/waning; no assets.
+- **`Home.jsx`** — date-hero memo computes `moon` via `hijriMonthLength` + `moonPhaseInfo`; `.dash-moon` block (icon + phase label) inside the hero; hero gets symmetric 96px side padding.
+- **`Calendar.jsx`** — "Tonight's Moon" `.moon-card` under the page title (icon + phase + illumination %).
+- **`BooksIndex.jsx` / `BookReader.jsx`** — `viewTransitionName: book-cover-<slug>` on covers for the morph.
+- **Strings** — `moon.*` (title, illuminated, 8 phases) added to en + hinglish.
+- **Docs sync** — `docs/styling.md` (Aurora section, moon classes, utility table), `docs/components.md` (MoonPhaseIcon, moon utils, cover morph), `CLAUDE.md` (version, tree, conventions).
+- **Version bump** — `6.2.0` → `7.0.0` (major: new visual system), synchronized package.json, About.jsx, dev changelog, and public changelogs in English and Hinglish.
+
+---
+
 ## 6.2.0 — 2026-10-16
 
 ### User-facing

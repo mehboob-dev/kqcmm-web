@@ -359,6 +359,31 @@ a **floating glass capsule** sitting above the dock (`bottom: calc(var(--bottom-
   html height via `@supports`, `text-wrap: balance/pretty` on headings and
   body copy.
 
+### Aurora (7.0.0) — the living canvas & glass chrome
+- **Canvas** — `.app-shell` is `isolation: isolate`; `::before` paints four
+  blurred radial orbs (`--accent`, `--accent-2`, `--accent-3` at varying
+  strengths, `filter: blur(64px)`, opacity 0.4) drifting via `auroraDrift`
+  (44s alternate); `::after` layers film grain (inline SVG `feTurbulence`
+  data-URI, opacity 0.05). `.main-content` is **transparent** so every page
+  scrolls directly over the canvas.
+- **Third hue** — every theme sets `--accent-3` (e.g. light orchid `#f0abfc`,
+  dark cyan `#22d3ee`, green marigold `#fbbf24`) for the warm/cool balance of
+  the orbs and the third explore-tile gradient.
+- **Glass copilot bar** — `.top-chrome` is an inset pill (`top: 10px`,
+  `width: calc(100% - 20px)`, radius 24, glass bg + blur + border + `--shadow-lg`);
+  `.app-header` is transparent inside it and `.hijri-strip` is a hairline row
+  (accent text on muted, `background: none`). Hidden state:
+  `translate(-50%, calc(-100% - 24px))`; `.main-content` reserves
+  `--chrome-h + 26px` (+32px ≥768px).
+- **Type** — display headings 800 weight with `-0.02em…-0.03em` tracking;
+  `.page-hero-badge` uppercase with `0.14em` tracking; radii 12/18/26.
+- **Energetic tiles** — `.home-quick-links .quick-link:nth-child(3n+2/3n)` chips
+  rotate three `color-mix` gradient variants; hover adds an accent glow shadow.
+- **Moon phase** — `.moon-dark` (faint disc), `.moon-lit` (moonlight gold +
+  glow), `.moon-ring` (outline); `.dash-moon*` (hero block, absolute right) and
+  `.moon-card*` (Calendar card: `.moon-card-title` accent eyebrow,
+  `.moon-card-phase`, `.moon-card-meta`).
+
 ### Utility component classes
 | Area | Classes |
 |---|---|
@@ -372,6 +397,7 @@ a **floating glass capsule** sitting above the dock (`bottom: calc(var(--bottom-
 | Settings sheet | `.settings-backdrop`, `.settings-modal-card` (bottom sheet / centered ≥640px), `.settings-modal-body`, `.settings-section-card`, `.settings-section-label` (gradient eyebrow), `.settings-replay-btn` (gradient-deep), `.view-mode-row`, `.view-mode-btn` (`.active` = elevated segment) |
 | Skeleton loaders (`ContentSkeleton.jsx`) | `.skeleton-page`, `.skel` (shimmer), `.skel-hero` (arch shape), `.skel-card` |
 | Toast (`utils/toast.js`) | `.app-toast` (+ `.show`) |
+| Moon phase (`MoonPhaseIcon.jsx`) | `.moon-dark`, `.moon-lit`, `.moon-ring`; hero `.dash-moon` + `.dash-moon-label`; Calendar `.moon-card`, `.moon-card-title/phase/meta` |
 | Highlight / poem cards (Roshni) | `.highlight-card`, `.poem-card` |
 
 ---

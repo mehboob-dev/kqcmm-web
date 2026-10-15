@@ -361,6 +361,36 @@ Renders `.skeleton-page` with `aria-busy` + `aria-label="Loading"`. Card
 placeholders stagger their shimmer via `animationDelay` on the `skelSweep`
 keyframe. `About`/`Changelog` use `hero={false}` (info pages, no arch hero).
 
+## MoonPhaseIcon.jsx (Moon Phase Renderer)
+
+**File:** `src/components/MoonPhaseIcon.jsx` — since 7.0.0.
+
+Renders any lunar phase as an SVG from a `fraction` (0 = new, 0.5 = full,
+~1 = next new — from `moonPhaseInfo`). The lit region is a single path: an
+outer semicircle on the lit limb plus an elliptical terminator arc whose width
+is `R·|cos(2π·fraction)|`; sweep flags flip for waxing/waning. No images.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `fraction` | number | `0` | Lunation position; clamped to [0, 1] |
+| `size` | number | `64` | Pixel size (square) |
+| `className` | string | `''` | Extra classes |
+
+Styled by `.moon-dark` / `.moon-lit` / `.moon-ring` (see `docs/styling.md` →
+Aurora). Used by `Home.jsx` (`.dash-moon` block inside the date hero) and
+`Calendar.jsx` (`.moon-card` "Tonight's Moon" with illumination %).
+
+### Moon phase utilities
+- **`src/utils/moonPhase.js`** — `moonPhaseInfo(hijriDay, monthLength)` returns
+  `{ key, fraction, illumination }` with `key ∈ MOON_PHASES` (new, waxingCrescent,
+  firstQuarter, waxingGibbous, full, waningGibbous, lastQuarter, waningCrescent).
+  Pure; day/monthLength clamped, 30-day fallback. Tested by
+  `scripts/test-moon-phase.mjs` (31 assertions, part of `npm test`).
+- **`hijriMonthLength(monthStarts, hijriYear, hijriMonth)`** (in
+  `src/utils/hijriCalendar.js`) — 29/30-day month length from the distance
+  between stored month starts; 30 fallback for the final entry. This is how the
+  moon phase is derived from the stored `calendar.json` data ("as per the data").
+
 ### Toast utility — `src/utils/toast.js`
 `showToast(message)` appends/reuses a single `<div id="app-toast" class="app-toast" role="status">`
 on `<body>`, replays the hairline drop-in (reflow trick) and auto-dismisses

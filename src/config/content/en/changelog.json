@@ -3,6 +3,18 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "7.0.0",
+        "date": "2026-10-16",
+        "changes": [
+          "A completely new body — the app now lives on a living gradient canvas: soft aurora lights drift slowly behind every screen, in every theme.",
+          "The header is now a floating glass bar that hovers over the content instead of a solid colored strip; the Hijri strip nests inside it as a quiet hairline row.",
+          "Tonight's moon — computed from the Hijri calendar data — shows as an animated moon with its real phase on the home date card and on the Calendar page, including how much of it is illuminated.",
+          "Explore tiles glow with vivid rotating colors, deeper shadows and a soft film grain give every theme a modern gallery feel.",
+          "Opening a book now animates its cover from the library grid straight into the reader.",
+          "Refreshed typography: bolder display headings, cleaner uppercase section labels, and roomier rounded surfaces throughout."
+        ]
+      },
+      {
         "version": "6.2.0",
         "date": "2026-10-16",
         "changes": [

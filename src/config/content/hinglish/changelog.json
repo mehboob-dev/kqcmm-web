@@ -3,6 +3,18 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "7.0.0",
+        "date": "2026-10-16",
+        "changes": [
+          "Bilkul naya body — app ab ek zinda gradient canvas par rehti hai: har theme mein, har screen ke peeche halki aurora roshni dheere-dheere ghoomti hai.",
+          "Header ab ek floating glass bar hai jo content ke upar tairta hai — pehle jaisi solid rangeen patti nahi; Hijri strip uske andar patli hairline row ban gayi hai.",
+          "Aaj raat ka chaand — Hijri calendar data se — home ke date card aur Calendar page par animated chaand ke roop mein dikhta hai, asli phase aur kitna roshan hai uske sath.",
+          "Explore tiles vivid rotating colors se chamakte hain; gehri shadows aur halka film grain har theme ko modern gallery feel deta hai.",
+          "Kitab kholte hi uska cover library grid se seedha reader mein animate hota hai.",
+          "Naya typography: moti display headings, saaf uppercase section labels, aur har jagah zyada gol-gol khuli surfaces."
+        ]
+      },
+      {
         "version": "6.2.0",
         "date": "2026-10-16",
         "changes": [

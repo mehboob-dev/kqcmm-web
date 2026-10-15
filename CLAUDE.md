@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v6.2.0** ("Noor" redesign) - see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v7.0.0** ("Aurora" — living gradient canvas, glass chrome, moon phases) - see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -83,6 +83,7 @@ kqcmm-web/
 │   │   ├── SideDrawer.jsx             # Full-screen magazine menu overlay
 │   │   ├── ContentView.jsx            # List/slide view + counter + focus (zen) mode
 │   │   ├── ContentSkeleton.jsx        # Shimmer loading placeholders (used by all pages)
+│   │   ├── MoonPhaseIcon.jsx          # SVG moon renderer (any phase from fraction)
 │   │   ├── QuickJump.jsx             # Floating quick-jump bottom sheet (shared, language-independent)
 │   │   ├── HijriStrip.jsx            # App-wide thin strip below header (today Hijri + Gregorian + event-today)
 │   │   ├── SplashScreen.jsx           # Splash with countdown
@@ -111,7 +112,8 @@ kqcmm-web/
 │   │   └── NotFound.jsx              # 404 page
 │   │
 │   ├── utils/
-│   │   ├── hijriCalendar.js         # Hijri date conversion + event mapping (pure, tested)
+│   │   ├── hijriCalendar.js         # Hijri date conversion + event mapping + hijriMonthLength (pure, tested)
+│   │   ├── moonPhase.js             # moonPhaseInfo(hijriDay, monthLength) → phase/illumination (pure, tested)
 │   │   ├── onboarding.js            # Onboarding persistence + step-sequence helpers (pure, tested)
 │   │   ├── bookProgress.js          # Book reading-progress persistence (pure, tested)
 │   │   ├── haptics.js               # hapticTap() tactile feedback (navigator.vibrate, safe no-op)
@@ -166,6 +168,7 @@ kqcmm-web/
 │   ├── test-hijri-calendar.mjs       # Hijri calendar unit tests
 │   ├── test-page-rename.mjs          # Page-rename unit tests
 │   ├── test-onboarding.mjs           # Onboarding walkthrough unit tests
+│   ├── test-moon-phase.mjs           # Moon phase + hijriMonthLength unit tests
 │   └── admin/                        # React-based admin panel (npm run edit)
 │       ├── package.json
 │       ├── vite.config.js
@@ -532,8 +535,10 @@ The editor server at `scripts/content-editor.mjs` serves both the Admin Panel an
 
 ## 📐 Styling Conventions
 
-- **CSS variables** for theming in `styles.css` + global tokens: `--radius-sm/md/lg`, `--ease-spring`, `--focus-ring`
+- **CSS variables** for theming in `styles.css` + global tokens: `--radius-sm/md/lg` (12/18/26), `--ease-spring`, `--focus-ring`
 - **"Noor" gradient layer (6.0.0)** — every theme sets `--accent-2`; `:root` derives `--accent-grad`, `--accent-grad-deep` (white-text-safe), `--glass-bg`, `--glass-border`, `--hairline`, `--shadow-md/lg`, `--glass-blur` via `color-mix()`. Gradient text uses `--accent-grad`; white text on gradients must use `--accent-grad-deep`
+- **"Aurora" canvas (7.0.0)** — every theme also sets `--accent-3`; `.app-shell` (isolation: isolate) paints drifting blurred orbs (`::before`, `auroraDrift`) + film grain (`::after`) behind everything; `.main-content` is transparent. The chrome is a floating glass pill (`.top-chrome`, inset 10px, radius 24, glass bg + blur) containing the transparent header + hairline Hijri strip
+- **Moon phase (7.0.0)** — `moonPhaseInfo()` + `hijriMonthLength()` derive the phase from stored `calendar.json` monthStarts; `MoonPhaseIcon` renders it; shown in the Home date hero (`.dash-moon`) and the Calendar `.moon-card`
 - **`.card`** — borderless depth card (hairline ring + layered shadow); `.card-accent` — child card with gradient rail; `.card-title` — gradient marker; `.card-num` — gradient-deep circle
 - **`.card-head` / `.card-num`** — numbered cards (chip number + title row) on content pages
 - **`.page-hero`** — centered hero header with gradient eyebrow + title underline
