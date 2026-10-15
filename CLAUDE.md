@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v5.19.0** - see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v6.0.0** ("Noor" redesign) - see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -531,15 +531,16 @@ The editor server at `scripts/content-editor.mjs` serves both the Admin Panel an
 ## 📐 Styling Conventions
 
 - **CSS variables** for theming in `styles.css` + global tokens: `--radius-sm/md/lg`, `--ease-spring`, `--focus-ring`
-- **`.card`** — plain card (regular + master), layered shadow + hover lift (hover-capable devices only)
-- **`.card-accent`** — indented card with accent left border (child)
-- **`.card-title`** — heading-colored with accent marker bar + bottom divider
+- **"Noor" gradient layer (6.0.0)** — every theme sets `--accent-2`; `:root` derives `--accent-grad`, `--accent-grad-deep` (white-text-safe), `--glass-bg`, `--glass-border`, `--hairline`, `--shadow-md/lg`, `--glass-blur` via `color-mix()`. Gradient text uses `--accent-grad`; white text on gradients must use `--accent-grad-deep`
+- **`.card`** — borderless depth card (hairline ring + layered shadow); `.card-accent` — child card with gradient rail; `.card-title` — gradient marker; `.card-num` — gradient-deep circle
 - **`.card-head` / `.card-num`** — numbered cards (chip number + title row) on content pages
-- **`.page-hero`** — centered hero header (badge/title/intro) used across content pages
+- **`.page-hero`** — centered hero header with gradient eyebrow + title underline
 - **`.card-text`** — default text with `line-height: 1.7`
+- **Floating dock** — `.bottom-nav` is a fixed glass dock (z-index 60) publishing `--bottom-nav-height`; `.reading-bar` floats above it (z-index 55)
+- **Sheets** — settings/quick-jump/walkthrough use glass sheets with grab handles; z-index map: reading bar 55 · dock 60 · header 100 · drawer 201 · settings 301 · tour 1000–1002 · splash 9999
 - **Haptics** — `hapticTap()` from `src/utils/haptics.js` in tap handlers only (never effects)
 - **Focus** — `:focus-visible` accent outline stays; no bare `outline: none`
-- Breakpoints: `768px` (tablet), `1400px` (desktop max 1200px)
+- Breakpoints: `640px` (sheet centering), `768px` (tablet), `1400px` (desktop max 1200px)
 - Font size cascade: `<main>` sets base via inline style, children use `em`
 
 ---

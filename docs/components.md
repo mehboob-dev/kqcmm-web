@@ -103,24 +103,31 @@ Slide mode renders a **single** fixed bar (slide nav on the left, counter on the
 right), not two separate bars — see the combined bar in `ContentView.jsx`
 (`/* One fixed bar: nav left, counter right */`).
 
-### Styling hooks (class-based since 5.19.0)
+### Styling hooks (class-based since 5.19.0, glass dock in 6.0.0)
 The bar is styled via CSS classes in `src/styles.css` (previously inline styles):
-`.reading-bar`, `.reading-bar.is-split`, `.slide-group`, `.slide-btn`,
-`.slide-pos`, `.counter-group`, `.cnt-btn`, `.cnt-value`, `.cnt-reset`.
-Nav/counter buttons fire `hapticTap(10)` on press.
+`.reading-bar`, `.reading-bar.is-split`, `.reading-bar-inner` (glass capsule),
+`.slide-group`, `.slide-btn`, `.slide-pos`, `.counter-group`, `.cnt-btn`
+(gradient-deep), `.cnt-value`, `.cnt-reset`. Since 6.0.0 the bar is a **floating
+glass capsule** above the dock (`bottom: calc(var(--bottom-nav-height, 88px) + 8px)`,
+z-index 55) with `clamp()` sizing. Nav/counter buttons fire `hapticTap(10)` on press.
 
 ---
 
 ## BottomNav.jsx
 
-5-tab navigation bar at the bottom of the screen.
+5-tab navigation dock at the bottom of the screen. Since 6.0.0 it is a
+**floating glass dock** (fixed, inset 12px, max-width 1176px, radius 24px,
+`backdrop-filter: var(--glass-blur)`, z-index 60) — no longer a plain flex row
+in the shell.
 
 - Reads items from `src/config/navigation.json`
 - Uses FontAwesome icons
-- Highlights the active tab with an accent icon chip + top indicator bar and
-  `aria-current="page"` for screen readers
+- Highlights the active tab with a gradient pill (`.nav-link.active`) and a
+  `navPop` entrance animation, plus `aria-current="page"` for screen readers
 - Tabs fire `hapticTap(10)` on press
-- Reports its height to CSS var `--bottom-nav-height` for counter bar positioning
+- Publishes `--bottom-nav-height` — the distance from the viewport bottom to
+  the dock top — via a ResizeObserver; `.main-content` and `.reading-bar`
+  consume it for padding/offset
 
 ### Install App Button (6th slot)
 When the browser fires `beforeinstallprompt`, a 6th tab with an FA `faDownload` icon appears automatically.
@@ -147,7 +154,12 @@ Slide-in navigation drawer with header image.
 
 ## SettingsPopup.jsx
 
-Modal popup for user preferences.
+Settings sheet for user preferences. Since 6.0.0 it renders as a **bottom
+sheet** on mobile (fixed bottom, top radius 28px, `sheetUp` entrance, grab
+handle, blurred `.settings-backdrop`) and as a **centered sheet** at
+`min-width: 640px`. The scrollable body is `.settings-modal-body`; sections
+are flat `.settings-section-card`s separated by hairlines with gradient
+`.settings-section-label` eyebrows.
 
 ### Controls
 | Section | Options | Persistence |
@@ -166,9 +178,11 @@ provided, i.e. from Layout), which closes the popup and bumps Layout's
 
 Since 5.19.0 the popup is class-based: the replay button uses
 `.settings-replay-btn`; the View Mode row uses `.view-mode-row` /
-`.view-mode-btn` (`.active` = accent border + tint) with FA `faList` /
+`.view-mode-btn` (`.active` = elevated segment) with FA `faList` /
 `faBookOpen` icons. All option taps (theme swatches, text pills, view-mode)
-fire `hapticTap(8)`.
+fire `hapticTap(8)`. In 6.0.0 the replay button became a gradient-deep
+full-width action and the close button switched from an emoji glyph to FA
+`faXmark`.
 
 ---
 
@@ -177,7 +191,10 @@ fire `hapticTap(8)`.
 Full-screen splash with countdown and tap-to-skip.
 
 - Duration: configured in `src/config/splash.json`
-- Shows countdown (3...2...1...) in a blurred `.splash-count` pill
+- Since 6.0.0 the countdown renders in a pulsing glass pill (`.splash-count`,
+  `splashPulse` keyframes) as message text (`.splash-count-text`) + a circular
+  number badge (`.splash-count-num`, tabular digits, soft glow) — the old
+  `3...2...1...` dot trail was removed
 - Image fills the screen via `.splash-img` with a slow `splashZoom`
   4.5s settle (1.06 → 1); `.splash-shade` adds a bottom gradient for legibility
 - Tap anywhere to skip immediately

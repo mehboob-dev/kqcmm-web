@@ -4,6 +4,27 @@
 
 Maintain both changelogs together when work lands. Latest version at the top.
 
+## 6.0.0 — 2026-10-15
+
+### User-facing
+- **"Noor" full redesign** — the app received a completely new visual identity across all 12 themes: per-theme gradient accents (`--accent-2`), glassmorphism surfaces, luminous depth tiles, pill-shaped gradient eyebrows, and refined wordmark typography. This is a breaking visual change over the 5.x look.
+- **Floating glass dock** — the bottom navigation is now a floating glass dock (fixed, inset 12px, radius 24px, backdrop blur) with a gradient pill for the active tab and a `navPop` animation; the header gains a 2px gradient seam.
+- **Home rework** — new star-and-crescent watermark, gradient logo ring, "Explore" section label, gradient wordmark title (with dark/OLED bright override), and depth-tile quick links with gradient icon chips.
+- **Content pages & reading dock** — cards are borderless with layered shadows, gradient accent rails, gradient title markers and numeral badges; the counter/slide bar floats in a glass capsule above the dock with `clamp()` sizing for small phones.
+- **Sheets** — Settings is a bottom sheet on mobile / centered panel on desktop (grab handle, blurred backdrop, hairline sections, segmented List/Slide control); Quick Jump is a glass sheet with rounded hover rows and gradient number chips; the walkthrough panel gets gradient progress and primary buttons.
+- **Standalone pages** — splash countdown is now a pulsing glass pill with a circular number badge; changelog timeline gets gradient dots/chips; About version number is gradient text; 404 shows a larger gradient numeral with a gradient-deep button.
+
+### Internal / docs
+- **Token layer (`src/styles.css` `:root`)** — `--accent-2` added to all 12 theme blocks; derived tokens `--accent-grad`, `--accent-grad-deep` (84% accent + `#111`, safe for white text on amber/gold), `--glass-bg`, `--glass-border`, `--hairline`, `--shadow-md`, `--shadow-lg`, `--glass-blur` built with `color-mix()`; `--radius-md` 14→16px, `--radius-lg` 20→22px.
+- **`BottomNav.jsx`** — dock is `position: fixed` and publishes `--bottom-nav-height` (viewport bottom → dock top); `.main-content`/`.reading-bar` consume it; z-index map: dock 60, reading bar 55, header 100, drawer 201, settings 301, tour 1000–1002, splash 9999.
+- **`SettingsPopup.jsx`** — inline-styled backdrop and scroll body converted to `.settings-backdrop` (blur) and `.settings-modal-body` classes; close button now FA `faXmark`.
+- **`SplashScreen.jsx`** — countdown markup split into `.splash-count-text` + `.splash-count-num` (dot trail removed).
+- **`Home.jsx`** — `.home-hero-mark`, `.home-logo-ring`, `.home-eyebrow`, `.home-section-label` markup added; quick-link chevron removed.
+- **Docs sync** — `docs/styling.md` (Noor token layer, dock, sheets, reading dock), `docs/components.md` (dock/sheet/splash behavior), `CLAUDE.md` (version, Noor styling conventions).
+- **Version bump** — `5.19.0` → `6.0.0`, synchronized package.json, About.jsx, dev changelog, and public changelogs in English and Hinglish.
+
+---
+
 ## 5.19.0 — 2026-10-15
 
 ### User-facing

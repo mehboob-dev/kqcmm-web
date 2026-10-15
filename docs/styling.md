@@ -31,14 +31,14 @@ Twelve themes are defined via CSS custom properties on `[data-theme]` (Light, Da
 
 ### Global Design Tokens
 
-Added in the 5.19.0 UI revamp. Defined **once** in `:root` (not per theme) in
-`src/styles.css`:
+Added in the 5.19.0 UI revamp, extended by the **6.0.0 "Noor" redesign**.
+Defined **once** in `:root` (not per theme) in `src/styles.css`:
 
 ```css
 :root {
   --radius-sm: 10px;   /* inputs, small chips, nav chips */
-  --radius-md: 14px;   /* cards */
-  --radius-lg: 20px;   /* hero blocks, bottom sheets, modals */
+  --radius-md: 16px;   /* cards */
+  --radius-lg: 22px;   /* hero blocks, bottom sheets, modals */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1); /* standard UI motion curve */
   --focus-ring: 0 0 0 3px var(--accent-bg);     /* keyboard focus halo */
 }
@@ -48,6 +48,33 @@ Added in the 5.19.0 UI revamp. Defined **once** in `:root` (not per theme) in
 - `--ease-spring` is the standard motion curve, used at 0.15–0.35s for
   entrances and press feedback (buttons do `transform: scale(0.97)` on
   `:active`; cards lift on hover).
+
+### Noor Token Layer (6.0.0)
+
+Every theme block additionally defines **`--accent-2`** — a second gradient
+stop chosen per theme. All other Noor tokens are *derived once* in `:root`
+with `color-mix()` and therefore resolve to the active theme automatically:
+
+| Token | Built from | Used for |
+|---|---|---|
+| `--accent-2` | per theme (e.g. light `#7c5cfc`, oled `#34d399`) | gradient stop 2 |
+| `--accent-grad` | `linear-gradient(135deg, var(--accent), var(--accent-2))` | gradient text, rails, dots, progress bars |
+| `--accent-grad-deep` | `accent-grad` mixed 84% with `#111` | backgrounds under **white** text (buttons, chips, badges) — keeps contrast on bright accents (amber/gold) |
+| `--glass-bg` | `color-mix(bg-card 72%, transparent)` | glass dock, quick-jump sheet, reading dock |
+| `--glass-border` | `color-mix(border 60%, transparent)` | glass borders, sheet edges |
+| `--hairline` | `color-mix(border 45%, transparent)` | dividers inside sheets/cards (softer than `--border`) |
+| `--shadow-md` / `--shadow-lg` | layered `color-mix` shadows | card / dock + sheet elevation |
+| `--glass-blur` | `saturate(1.6) blur(18px)` | `backdrop-filter` on glass surfaces |
+
+Rules:
+
+- Text on gradient surfaces: use `--accent-grad-deep` + `#fff`; never put
+  white text on `--accent-grad` (fails on amber/gold).
+- Gradient *text* (`.home-title`, `.version-number`, `.nf-code`) uses
+  `--accent-grad` with `background-clip: text`; dark/OLED themes override the
+  wordmark stops to brighter values for contrast on near-black backgrounds.
+- Reuse the dock/sheet z-index map: reading bar 55 · dock 60 · header 100 ·
+  drawer 201 · settings 301 · tour 1000–1002 · splash 9999.
 
 ### Accessibility & Motion
 
@@ -236,7 +263,7 @@ With card-accent (child):
 
 ---
 
-## Page & Component Primitives (5.19.0 revamp)
+## Page & Component Primitives (5.19.0 revamp · refreshed in 6.0.0 "Noor")
 
 ### Page headers
 - `.page-title` — page heading with a gradient underline drawn by
@@ -250,25 +277,58 @@ With card-accent (child):
   from content.
 - `.page-section` — spacing wrapper (`margin-bottom: 1.4em`).
 
-### Reading bar & counter classes (ContentView.jsx)
-The slide-nav/counter bar is class-based (no inline styles):
-- `.reading-bar` — fixed bottom bar container; `.reading-bar.is-split` puts
-  slide nav left + counter right in one bar (slide mode).
-- `.slide-group` / `.slide-btn` / `.slide-pos` — ⏮ ◀ 3/30 ▶ ⏭ navigation.
-- `.counter-group` / `.cnt-btn` / `.cnt-value` / `.cnt-reset` — counter.
-  `.cnt-value` uses `font-variant-numeric: tabular-nums` so the digits don't
-  jitter between increments.
+### Reading dock & counter classes (ContentView.jsx)
+The slide-nav/counter bar is class-based (no inline styles). Since 6.0.0 it is
+a **floating glass capsule** sitting above the dock (`bottom: calc(var(--bottom-nav-height, 88px) + 8px)`,
+`z-index: 55`, `max-width: 620px`; `.reading-bar-inner` carries the glass):
+- `.reading-bar` — fixed container; `.reading-bar.is-split` puts slide nav
+  left + counter right in one capsule (slide mode).
+- `.slide-group` / `.slide-btn` / `.slide-pos` — ⏮ ◀ 3/30 ▶ ⏭ navigation;
+  `.slide-btn` is a soft secondary that tints accent on hover.
+- `.counter-group` / `.cnt-btn` / `.cnt-value` / `.cnt-reset` — counter;
+  `.cnt-btn` is gradient-deep with a soft glow, `.cnt-value` is a chip with
+  `font-variant-numeric: tabular-nums`.
+- All controls use `clamp()` sizing so the split capsule never overflows
+  small phones.
+
+### Noor shell primitives (6.0.0)
+- **Floating glass dock** (`BottomNav.jsx`) — `.bottom-nav` is
+  `position: fixed` (left/right 12px, `bottom: calc(10px + env(safe-area-inset-bottom))`,
+  max-width 1176px, radius 24px, `backdrop-filter: var(--glass-blur)`,
+  z-index 60). The active tab is a gradient pill (`.nav-link.active`) with a
+  `navPop` entrance. It publishes `--bottom-nav-height` (viewport bottom →
+  dock top); `.main-content` uses `padding-bottom: calc(var(--bottom-nav-height, 88px) + 18px)`.
+- **Header seam** — `.app-header::after` renders a 2px `--accent-grad` line at
+  55% opacity; `.app-title` is weight 800.
+- **Cards** — `.card` is borderless (hairline ring via `--glass-border`) with
+  `--shadow-md`; `.card-accent` is a 3px vertical `--accent-grad` rail;
+  `.card-title::before` is a gradient marker; `.card-num` is a gradient-deep
+  circle with white numerals.
+- **Bottom sheets** — `.settings-backdrop` (blurred) + `.settings-modal-card`
+  (mobile: fixed bottom sheet, radius 28px top, `sheetUp` keyframes, grab
+  handle `::before`, `.settings-modal-body` scrolls) / desktop ≥640px:
+  centered sheet. `.settings-section-label` is a gradient eyebrow;
+  `.settings-replay-btn` is gradient-deep. Quick Jump mirrors the pattern
+  (`.qj-sheet` glass, radius 28px).
+- **Home** — `.home-hero-mark` (star-and-crescent watermark),
+  `.home-logo-ring` (gradient ring), `.home-eyebrow` (gradient pill),
+  `.home-title` (gradient wordmark; dark/OLED override), `.home-section-label`
+  ("Explore" + fading rule); `.quick-link` tiles are depth tiles with
+  white-on-gradient-deep icon chips that tilt on hover.
+- **Splash** — `.splash-count` is a glass pill with `splashPulse`;
+  `.splash-count-num` is a circular badge with tabular digits.
 
 ### Utility component classes
 | Area | Classes |
 |---|---|
-| Changelog timeline (`Changelog.jsx`) | `.log-timeline` (vertical line + dots), `.log-item`, `.log-dot` (accent dot; filled for the latest), `.log-head`, `.log-version` (chip), `.log-latest` (badge), `.log-date`, `.log-changes` (custom bullet markers) |
-| About version card | `.version-card` (flex row), `.version-label`, `.version-number`, `.version-link` (pill linking to `/changelog`) |
-| 404 page (`NotFound.jsx`) | `.nf-code` (gradient text), `.nf-msg`, `.nf-btn` (accent pill) |
-| Home hero (`Home.jsx`) | `.home-hero`, `.home-logo` (outline ring), `.home-subtitle` (chip), `.home-desc` (accent-left card) |
-| Quick Jump sheet | `.qj-fab`, `.qj-backdrop`, `.qj-sheet`, `.qj-handle`, `.qj-head`, `.qj-list`, `.qj-item`, `.qj-item-num` |
+| Changelog timeline (`Changelog.jsx`) | `.log-timeline` (vertical line + dots), `.log-item`, `.log-dot` (gradient dot; glows for the latest), `.log-head`, `.log-version` (gradient-deep chip), `.log-latest` (outlined badge), `.log-date`, `.log-changes` (gradient bullet markers) |
+| About version card | `.version-card` (flex row), `.version-label`, `.version-number` (gradient text), `.version-link` (gradient-deep pill to `/changelog`) |
+| 404 page (`NotFound.jsx`) | `.nf-code` (large gradient numeral + soft glow), `.nf-msg`, `.nf-btn` (gradient-deep pill) |
+| Home hero (`Home.jsx`) | `.home-hero`, `.home-hero-mark` (watermark), `.home-logo-ring` (gradient ring), `.home-eyebrow` (gradient pill), `.home-title` (gradient wordmark), `.home-section-label` ("Explore" + fading rule) |
+| Quick links (`Home.jsx`) | `.quick-link` depth tiles, `.ql-icon` white-on-gradient-deep chip (tilt on hover) |
+| Quick Jump sheet | `.qj-fab` (gradient rounded square), `.qj-backdrop`, `.qj-sheet` (glass, radius 28px), `.qj-handle`, `.qj-head`, `.qj-list`, `.qj-item` (rounded hover rows), `.qj-item-num` (gradient chip on hover) |
 | Side drawer brand | `.drawer-brand`, `.drawer-brand-logo`, `.drawer-brand-text` |
-| Settings popup | `.settings-replay-btn`, `.view-mode-row`, `.view-mode-btn` (`.active` = accent border/bg tint) |
+| Settings sheet | `.settings-backdrop`, `.settings-modal-card` (bottom sheet / centered ≥640px), `.settings-modal-body`, `.settings-section-card`, `.settings-section-label` (gradient eyebrow), `.settings-replay-btn` (gradient-deep), `.view-mode-row`, `.view-mode-btn` (`.active` = elevated segment) |
 | Highlight / poem cards (Roshni) | `.highlight-card`, `.poem-card` |
 
 ---

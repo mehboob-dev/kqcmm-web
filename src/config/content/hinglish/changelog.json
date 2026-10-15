@@ -3,6 +3,18 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "6.0.0",
+        "date": "2026-10-15",
+        "changes": [
+          "Poora naya visual redesign — app ka bilkul naya look, har theme mein: soft gradient accents, chamakdar surfaces aur behtar typography.",
+          "Neeche ka bar ab floating glass navigation dock ban gaya hai; Home page par naya wordmark hero aur star-and-crescent motif.",
+          "Content pages naye design mein: borderless elevated cards, gradient accent rails aur numbered badges, naye hero headers aur gradient titles.",
+          "Counter aur slide controls ab navigation ke upar ek glass capsule mein float karte hain — chhote phones ke liye perfect size.",
+          "Settings, Quick Jump aur walkthrough ab modern bottom sheets mein khulte hain (grab handle ke sath); splash screen par circular countdown badge.",
+          "Changelog timeline, About version card aur 404 page ko bhi naya gradient styling mil gaya."
+        ]
+      },
+      {
         "version": "5.19.0",
         "date": "2026-10-15",
         "changes": [

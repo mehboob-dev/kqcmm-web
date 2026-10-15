@@ -3,6 +3,18 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "6.0.0",
+        "date": "2026-10-15",
+        "changes": [
+          "Complete visual redesign — a brand-new look for the whole app, in every theme: soft gradient accents, luminous surfaces, and refined typography throughout.",
+          "Floating glass navigation dock replaces the old bottom bar; the Home page gets a new wordmark hero with a star-and-crescent motif.",
+          "Content pages redesigned: borderless elevated cards with gradient accent rails and numbered badges, refreshed hero headers with gradient titles.",
+          "Counter and slide controls now float in a glass capsule above the navigation, neatly sized for small phones.",
+          "Settings, Quick Jump and the walkthrough open as modern bottom sheets with grab handles; splash screen shows a circular countdown badge.",
+          "Changelog timeline, About version card and the 404 page receive the new gradient styling."
+        ]
+      },
+      {
         "version": "5.19.0",
         "date": "2026-10-15",
         "changes": [
