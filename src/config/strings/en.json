@@ -24,7 +24,12 @@
     "changelog": "Changelog"
   },
   "home": {
-    "welcome": "Welcome to the official platform of KQCMM. Explore duas, kalam, sijrah nama, and other spiritual content."
+    "welcome": "Welcome to the official platform of KQCMM. Explore duas, kalam, sijrah nama, and other spiritual content.",
+    "explore": "Explore",
+    "continueReading": "Continue reading",
+    "duaOfDay": "Dua of the day",
+    "readNow": "Read",
+    "chapter": "Chapter"
   },
   "settings": {
     "title": "Settings",

@@ -77,6 +77,13 @@ export default function BookReader() {
     }
   }, [data, savedIdx])
 
+  // Remember the most recently opened book so the Home dashboard can offer
+  // a "continue reading" shortcut (best-effort; storage may be blocked).
+  useEffect(() => {
+    if (!slug) return
+    try { localStorage.setItem('kqcmm_last_book', slug) } catch { /* ignore */ }
+  }, [slug])
+
   const progressPctNow = progressPct(slug, chapters.length)
 
   const handleShare = async () => {

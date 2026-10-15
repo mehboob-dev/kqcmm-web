@@ -24,7 +24,12 @@
     "changelog": "Changelog"
   },
   "home": {
-    "welcome": "KQCMM ke official platform mein aapka swaagat hai. Duas, kalam, sijrah nama aur doosre spiritual content dekhein."
+    "welcome": "KQCMM ke official platform mein aapka swaagat hai. Duas, kalam, sijrah nama aur doosre spiritual content dekhein.",
+    "explore": "Explore",
+    "continueReading": "Padhna jaari rakhein",
+    "duaOfDay": "Aaj ki Dua",
+    "readNow": "Read karein",
+    "chapter": "Chapter"
   },
   "settings": {
     "title": "Settings",

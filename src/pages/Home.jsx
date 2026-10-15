@@ -1,8 +1,21 @@
+import { useMemo, useState } from 'react'
 import SeoHead from '../components/SeoHead'
-import { Link, useOutletContext } from 'react-router-dom'
+import { Link, useNavigate, useOutletContext } from 'react-router-dom'
 import Icon from '../components/FontAwesome'
 import homeConfig from '../config/home.json'
-import { pageById, routeForNavItem } from '../config/pageRoutes'
+import { pageById, routeForNavItem, routeForPage } from '../config/pageRoutes'
+import { usePageContent } from '../config/content'
+import { useLanguage } from '../context/LanguageContext'
+import { readProgressMap } from '../utils/bookProgress'
+import {
+  todayLocal,
+  todayHijri,
+  enumerateOccurrences,
+  hijriLabel,
+  formatISODate,
+  localizedEvent,
+} from '../utils/hijriCalendar'
+import { coverGradient } from './BooksIndex'
 
 // Home page tiles are driven by src/config/home.json — editable from the admin
 // panel (🏠 Home tab). Each tile references a registry pageId + a FontAwesome
@@ -17,40 +30,164 @@ const homePageRoutes = (homeConfig.tiles || []).map(tile => {
   }
 })
 
+// The Home page is a dashboard: today (Hijri date + events) first, then a
+// continue-reading shortcut, the dua of the day, and the config-driven
+// explore grid. Everything degrades gracefully when content is missing.
+const LAST_BOOK_KEY = 'kqcmm_last_book'
+
 export default function Home() {
   const { strings } = useOutletContext()
+  const { lang } = useLanguage()
+  const navigate = useNavigate()
+
+  const { data: calData } = usePageContent(lang, 'calendar')
+  const { data: duaData } = usePageContent(lang, 'dua')
+  const { data: booksData } = usePageContent(lang, 'books/_index')
+
+  const [progressMap] = useState(() => readProgressMap())
+
+  // --- Today (Hijri date + events) for the date hero ---
+  const today = todayLocal()
+  const todayStr = formatISODate(today)
+  const dateInfo = useMemo(() => {
+    if (!calData) return null
+    const monthNames = calData.monthNames || []
+    const hijri = todayHijri(calData.monthStarts)
+    const eventsById = new Map((calData.events || []).map(ev => [ev.id, ev]))
+    const labels = []
+    for (const o of enumerateOccurrences(calData)) {
+      if (!o.available || !o.gregorianStart || formatISODate(o.gregorianStart) !== todayStr) continue
+      const ev = eventsById.get(o.id)
+      const label = ev ? localizedEvent(ev, lang, monthNames).label : o.id
+      if (label && !labels.includes(label)) labels.push(label)
+    }
+    return { hijri, monthNames, labels }
+  }, [calData, lang, todayStr])
+
+  const gregLabel = new Date(today.y, today.m - 1, today.d).toLocaleDateString(undefined, {
+    weekday: 'long', day: 'numeric', month: 'long',
+  })
+
+  // --- Continue reading (last opened book + saved chapter) ---
+  const lastBook = useMemo(() => {
+    if (!booksData?.books) return null
+    let slug = null
+    try { slug = localStorage.getItem(LAST_BOOK_KEY) } catch { /* blocked */ }
+    if (!slug) return null
+    const entry = booksData.books.find(b => b.slug === slug && (!b.status || b.status === 'live'))
+    if (!entry) return null
+    const savedIdx = progressMap[slug]
+    if (!Number.isInteger(savedIdx) || savedIdx < 0) return null
+    const total = entry.chapterCount || 0
+    const pct = total > 0 ? Math.min(100, Math.round(((savedIdx + 1) / total) * 100)) : 0
+    return { ...entry, idx: savedIdx, total, pct }
+  }, [booksData, progressMap])
+
+  // --- Dua of the day (rotates by day of month) ---
+  const dailyDua = useMemo(() => {
+    const duas = duaData?.[lang]?.duas || duaData?.en?.duas || []
+    if (!duas.length) return null
+    const dua = duas[today.d % duas.length]
+    const text = (dua.text || '').trim()
+    return {
+      heading: dua.heading || '',
+      text: text.length > 190 ? text.slice(0, 190).trimEnd() + '…' : text,
+    }
+  }, [duaData, lang, today.d])
 
   return (
     <>
       <SeoHead title="Home" path="" description="Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya — Spiritual platform for followers of the Chishti Sufi order. Duas, khatm, fateha, kalam, sijrah nama and more." />
       <div className="home-container content-page">
-      <div className="home-hero">
-        <Icon name="faStarAndCrescent" className="home-hero-mark" />
-        <div className="home-logo-ring">
-          <img src={import.meta.env.BASE_URL + 'logo.png'} alt="KQCMM" className="home-logo" />
+
+        {/* Brand row */}
+        <div className="dash-brand">
+          <img className="dash-brand-logo" src={import.meta.env.BASE_URL + 'logo.png'} alt="KQCMM" />
+          <div>
+            <p className="dash-brand-name">KQCMM</p>
+            <p className="dash-brand-tag">{strings.tagline}</p>
+          </div>
         </div>
-        <div className="home-eyebrow">Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya</div>
-        <h1 className="home-title">KQCMM</h1>
-        <p className="home-subtitle">{strings.tagline}</p>
-      </div>
-      <p className="home-desc">{strings.home.welcome}</p>
-      <div className="home-section-label">Explore</div>
-      <div className="home-quick-links" data-tour="home-links">
-        {homePageRoutes.map((link) => {
-          const label = strings.drawer[link.labelKey] || link.labelKey
-          return (
-            <Link
-              key={link.to}
-              to={link.to}
-              className="quick-link"
-              data-tour={`home-link-${link.labelKey}`}
-            >
-              <span className="ql-icon"><Icon name={link.icon} /></span>
-              <span className="ql-label">{label}</span>
-            </Link>
-          )
-        })}
-      </div>
+
+        {/* Today — Hijri date hero with today's events */}
+        <button
+          className="dash-date"
+          onClick={() => navigate(routeForPage('calendar'))}
+          aria-label="Open Islamic calendar"
+        >
+          <span className="pattern-layer" aria-hidden="true" />
+          <span className="dash-date-greg">{gregLabel}</span>
+          <span className="dash-date-hijri">
+            {dateInfo?.hijri?.ok
+              ? hijriLabel(dateInfo.hijri.hijriYear, dateInfo.hijri.hijriMonth, dateInfo.hijri.hijriDay, dateInfo.monthNames, lang)
+              : '—'}
+          </span>
+          {dateInfo?.labels?.length > 0 && (
+            <span className="dash-date-events">
+              <Icon name="faStarAndCrescent" />
+              <span className="dash-date-events-text">{dateInfo.labels.slice(0, 2).join(' · ')}</span>
+            </span>
+          )}
+        </button>
+
+        {/* Continue reading */}
+        {lastBook && (
+          <Link to={`/books/${lastBook.slug}`} className="dash-continue">
+            <span className="dash-continue-cover" style={{ background: coverGradient(lastBook.cover) }}>
+              <Icon name="faBookOpen" />
+            </span>
+            <span className="dash-continue-body">
+              <span className="dash-continue-eyebrow">{strings.home?.continueReading || 'Continue reading'}</span>
+              <span className="dash-continue-title">{lastBook.title}</span>
+              <span className="dash-continue-meta">
+                {(strings.home?.chapter || 'Chapter')} {Math.min(lastBook.idx + 1, lastBook.total)} / {lastBook.total}
+              </span>
+              <span className="dash-prog">
+                <span className="dash-prog-fill" style={{ width: `${lastBook.pct}%` }} />
+              </span>
+            </span>
+            <span className="dash-continue-arrow"><Icon name="faChevronRight" /></span>
+          </Link>
+        )}
+
+        {/* Dua of the day */}
+        {dailyDua && (
+          <Link to={routeForPage('dua')} className="dash-dua">
+            <span className="dash-dua-eyebrow">
+              <Icon name="faHandsPraying" />
+              {strings.home?.duaOfDay || 'Dua of the day'}
+            </span>
+            <span className="dash-dua-heading">{dailyDua.heading}</span>
+            <span className="dash-dua-text">{dailyDua.text}</span>
+            <span className="dash-dua-cta">
+              {strings.home?.readNow || 'Read'}
+              <Icon name="faArrowRight" />
+            </span>
+          </Link>
+        )}
+
+        {/* Explore — config-driven quick links */}
+        <div className="home-section-label">{strings.home?.explore || 'Explore'}</div>
+        <div className="home-quick-links" data-tour="home-links">
+          {homePageRoutes.map((link) => {
+            const label = strings.drawer[link.labelKey] || link.labelKey
+            return (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="quick-link"
+                data-tour={`home-link-${link.labelKey}`}
+              >
+                <span className="ql-icon"><Icon name={link.icon} /></span>
+                <span className="ql-label">{label}</span>
+              </Link>
+            )
+          })}
+        </div>
+
+        <div className="home-foot">
+          <span className="ornament" aria-hidden="true"><span className="ornament-diamond" /></span>
+        </div>
       </div>
     </>
   )
