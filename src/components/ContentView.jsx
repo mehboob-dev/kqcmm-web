@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { trackCounter, trackSlideView } from '../utils/analytics'
 import { useView } from '../context/ViewContext'
+import { hapticTap } from '../utils/haptics'
+import Icon from './FontAwesome'
 
 export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, onIndexChange, showCounter = true }) {
   const { slideMode, getPageMode } = useView()
@@ -8,10 +10,19 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
   const isSlide = actualMode === 'slide'
   const [currentIdx, setCurrentIdx] = useState(0)
   const [count, setCount] = useState(0)
+  const [zen, setZen] = useState(false)
   const listRef = useRef(null)
   const slideRef = useRef(null)
   const touchStart = useRef(null)   // { x, y }
   const touchMoved = useRef(false)  // did the finger actually drag?
+
+  // Focus ("zen") reading mode: hides the top chrome, bottom dock and quick-jump
+  // FAB via a body class so the page becomes pure content. Exits on unmount
+  // (route change) so a new page always starts in the normal shell.
+  useEffect(() => {
+    document.body.classList.toggle('zen', zen)
+    return () => document.body.classList.remove('zen')
+  }, [zen])
 
   // Report the active item index when it changes (used by e.g. book progress
   // tracking). In slide mode this is the current slide; in list mode it's the
@@ -129,6 +140,20 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
     </div>
   )
 
+  // Focus-mode toggle — dims the shell chrome for distraction-free reading
+  // (also rendered when the counter is hidden, e.g. books).
+  const zenButton = (
+    <button
+      className="zen-btn"
+      onClick={() => { hapticTap(10); setZen(z => !z) }}
+      aria-pressed={zen}
+      aria-label={zen ? 'Exit focus mode' : 'Focus mode'}
+      title={zen ? 'Exit focus mode' : 'Focus mode'}
+    >
+      <Icon name={zen ? 'faCompress' : 'faExpand'} />
+    </button>
+  )
+
   // LIST MODE
   if (!isSlide) {
     return (
@@ -136,13 +161,12 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
         <div ref={listRef} style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 66 }}>
           {items.map((item, i) => <div key={i} data-section-index={i}>{renderItem(item, i)}</div>)}
         </div>
-        {showCounter && (
-          <div className="reading-bar">
-            <div className="reading-bar-inner">
-              {counterSection}
-            </div>
+        <div className="reading-bar">
+          <div className="reading-bar-inner">
+            {showCounter && counterSection}
+            {zenButton}
           </div>
-        )}
+        </div>
       </div>
     )
   }
@@ -183,6 +207,7 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
         </div>
         {/* Counter */}
         {showCounter ? counterSection : null}
+        {zenButton}
         </div>{/* inner */}
       </div>{/* outer */}
     </div>

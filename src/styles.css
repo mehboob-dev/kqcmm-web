@@ -486,6 +486,7 @@ strong { font-weight: 700; }
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-lg);
   z-index: 60;
+  transition: transform 0.42s var(--ease-spring), opacity 0.3s ease;
 }
 .nav-item {
   flex: 1;
@@ -3244,6 +3245,21 @@ strong { font-weight: 700; }
 }
 .qj-fab:hover { transform: translateY(-2px); filter: brightness(1.08); }
 .qj-fab:active { transform: scale(0.92); }
+/* Focus reading mode (body.zen, toggled by ContentView) */
+body.zen .top-chrome { transform: translate(-50%, -103%); }
+body.zen .read-progress { opacity: 0; }
+body.zen .bottom-nav {
+  transform: translateY(calc(100% + 36px));
+  opacity: 0;
+  pointer-events: none;
+}
+body.zen .qj-fab {
+  opacity: 0;
+  transform: translateY(22px);
+  pointer-events: none;
+}
+body.zen .main-content { padding-top: 18px; }
+body.zen .reading-bar { bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
 .qj-backdrop {
   position: fixed;
   inset: 0;
@@ -3394,6 +3410,7 @@ strong { font-weight: 700; }
   z-index: 55;
   pointer-events: none;
   animation: fadeSlideIn 0.3s var(--ease-spring);
+  transition: bottom 0.42s var(--ease-spring);
 }
 .reading-bar-inner {
   width: 100%;
@@ -3402,7 +3419,7 @@ strong { font-weight: 700; }
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  border-radius: 22px;
+  border-radius: 24px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -3499,6 +3516,32 @@ strong { font-weight: 700; }
   box-shadow: none;
 }
 .cnt-reset:hover { filter: none; border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); color: var(--accent); }
+.zen-btn {
+  width: clamp(28px, 7.6vw, 36px);
+  height: clamp(28px, 7.6vw, 36px);
+  border-radius: 13px;
+  border: 1px solid var(--hairline);
+  background: var(--bg-card-alt);
+  color: var(--text-muted);
+  font-size: clamp(11px, 2.9vw, 13px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.18s var(--ease-spring);
+}
+.zen-btn:hover {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+}
+.zen-btn:active { transform: scale(0.9); }
+.zen-btn[aria-pressed="true"] {
+  background: var(--accent-grad-deep);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 6px 16px -6px var(--accent);
+}
 
 /* ===== GLOBAL MOTION PREFERENCE ===== */
 @media (prefers-reduced-motion: reduce) {
