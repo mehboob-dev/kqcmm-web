@@ -4,14 +4,17 @@ import QuickJump from './QuickJump'
 import { normalizeGenericContent, cardForItem, toPlainNodes } from './genericContent'
 
 // Renders a normalized card item (plain or master-child).
-function Card({ item }) {
+function Card({ item, index }) {
   if (item.kind === 'empty') return null
   if (item.kind === 'masterChild') {
     return (
       <div>
         {item.title && (
-          <div className="card">
-            <div className="card-title">{item.title}</div>
+          <div className="card fateha-master">
+            <div className="card-head">
+              {index !== undefined && <span className="card-num">{index + 1}</span>}
+              <div className="card-title">{item.title}</div>
+            </div>
           </div>
         )}
         {item.blocks.map((b, bi) => (
@@ -25,7 +28,12 @@ function Card({ item }) {
   }
   return (
     <div className="card">
-      {item.title && <div className="card-title">{item.title}</div>}
+      {(item.title || index !== undefined) && (
+        <div className="card-head">
+          {index !== undefined && <span className="card-num">{index + 1}</span>}
+          {item.title && <div className="card-title">{item.title}</div>}
+        </div>
+      )}
       {item.body && <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{item.body}</div>}
     </div>
   )
@@ -72,15 +80,19 @@ export default function GenericContentRenderer({ content, pageKey }) {
 
   return (
     <div className="content-page">
-      {title && <h2 className="page-title">{title}</h2>}
-      {intro && <div className="page-section"><p style={{ whiteSpace: 'pre-line' }}>{intro}</p></div>}
+      {title && (
+        <div className="page-hero">
+          <h2 className="page-hero-title">{title}</h2>
+          {intro && <div className="page-hero-intro" style={{ whiteSpace: 'pre-line' }}>{intro}</div>}
+        </div>
+      )}
 
       {primary && primary.length > 0 ? (
         <ContentView
           items={primary}
           pageKey={pageKey}
           jumpTo={jumpToIdx}
-          renderItem={(item) => <Card item={cardForItem(item)} />}
+          renderItem={(item, i) => <Card item={cardForItem(item)} index={i} />}
         />
       ) : (
         <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No content yet.</p>

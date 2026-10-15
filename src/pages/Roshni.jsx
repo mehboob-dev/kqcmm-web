@@ -26,29 +26,35 @@ export default function Roshni() {
   return (
     <div className="content-page">
       <SeoHead title="Roshni" path={routeForPage('roshni')} description="Chirag Raushan / Roshni — spiritual illumination and devotional content from the Chishti tradition." />
-      <h2 className="page-title">{content.title}</h2>
-      {content.intro && <div className="page-section"><p>{content.intro}</p></div>}
+      <div className="page-hero">
+        <div className="page-hero-badge">Spiritual Illumination</div>
+        <h2 className="page-hero-title">{content.title}</h2>
+        {content.intro && <div className="page-hero-intro">{content.intro}</div>}
+      </div>
       <ContentView
         items={content.sections}
         pageKey="roshni"
         jumpTo={jumpToIdx}
         renderItem={(s, i) => (
           <div className="card">
-            <div className="card-title">{s.title}</div>
-            <div className="card-text" style={{ whiteSpace: 'pre-line', lineHeight: 1.8 }}>{s.text || s.body}</div>
+            <div className="card-head">
+              <span className="card-num">{i + 1}</span>
+              <div className="card-title">{s.title}</div>
+            </div>
+            <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{s.text || s.body}</div>
           </div>
         )}
       />
       {content.faith && (
-        <div className="card" style={{ marginTop: 16 }}>
+        <div className="card highlight-card" style={{ marginTop: 16 }}>
           <div className="card-title">{content.faith.title}</div>
           <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{content.faith.text}</div>
         </div>
       )}
       {content.poem && (
-        <div className="card" style={{ marginTop: 12 }}>
+        <div className="card poem-card" style={{ marginTop: 12 }}>
           <div className="card-title">{content.poem.title}</div>
-          <div className="card-text" style={{ whiteSpace: 'pre-line', lineHeight: 2 }}>{content.poem.text}</div>
+          <div className="card-text" style={{ whiteSpace: 'pre-line' }}>{content.poem.text}</div>
         </div>
       )}
       {data.quickJump && (

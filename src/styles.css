@@ -1023,6 +1023,37 @@ strong { font-weight: 700; }
 .fateha-master .card-head {
   margin-bottom: 0;
 }
+.highlight-card {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+}
+.highlight-card .card-title {
+  border-bottom-color: var(--accent);
+}
+.poem-card {
+  text-align: center;
+}
+.poem-card .card-title {
+  justify-content: center;
+}
+.poem-card .card-title::before {
+  display: none;
+}
+.poem-card .card-text {
+  font-style: italic;
+  line-height: 2;
+  font-size: 1.02em;
+}
+.poem-card::after {
+  content: '';
+  display: block;
+  width: 44px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--accent);
+  opacity: 0.45;
+  margin: 16px auto 2px;
+}
 
 /* ===== CALENDAR ===== */
 /* Contrast rule: anything with an accent background gets WHITE text
