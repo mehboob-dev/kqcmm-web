@@ -71,7 +71,7 @@ export default function BottomNav({ strings }) {
         return (
         <button
             key={item.to}
-            onClick={() => { hapticTap(10); navigate(item.to, { replace: true }) }}
+            onClick={() => { hapticTap(10); navigate(item.to, { replace: true, viewTransition: true }) }}
             className={`nav-item${active ? ' active' : ''}`}
             aria-current={active ? 'page' : undefined}
             data-tour={item.pageId === 'home' ? 'bottom-home' : `bottom-nav-${item.pageId}`}

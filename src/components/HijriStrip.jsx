@@ -61,7 +61,7 @@ export default function HijriStrip({ lang }) {
     <button
       className="hijri-strip"
       data-tour="hijri-strip"
-      onClick={() => navigate(routeForPage('calendar'))}
+      onClick={() => navigate(routeForPage('calendar'), { viewTransition: true })}
       aria-label="Open Islamic calendar"
       title="Open Islamic calendar"
     >

@@ -50,6 +50,7 @@ export default function BooksIndex() {
           <Link
             key={book.slug}
             to={`/books/${book.slug}`}
+            viewTransition
             className="book-card-item"
             style={{ textDecoration: 'none', color: 'inherit' }}
           >

@@ -39,6 +39,7 @@ export default function BookReader() {
           <div style={{ textAlign: 'center', marginTop: 28, marginBottom: 20 }}>
             <Link
               to={routeForPage('books')}
+              viewTransition
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -117,7 +118,7 @@ export default function BookReader() {
 
       {/* Top bar */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-        <Link to={routeForPage('books')} style={{ color: 'var(--text-muted)', fontSize: '0.9em', textDecoration: 'none' }}>
+        <Link to={routeForPage('books')} viewTransition style={{ color: 'var(--text-muted)', fontSize: '0.9em', textDecoration: 'none' }}>
           ← Books
         </Link>
         <button

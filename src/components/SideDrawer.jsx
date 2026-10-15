@@ -64,6 +64,7 @@ export default function SideDrawer({ open, onClose, strings }) {
               <NavLink
                 key={link.to + link.label}
                 to={link.to}
+                viewTransition
                 onClick={() => hapticTap(10)}
                 className={({ isActive }) => `menu-link${isActive ? ' active' : ''}`}
                 style={{ animationDelay: `${90 + i * 26}ms` }}

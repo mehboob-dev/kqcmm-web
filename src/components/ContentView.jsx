@@ -11,6 +11,7 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
   const [currentIdx, setCurrentIdx] = useState(0)
   const [count, setCount] = useState(0)
   const [zen, setZen] = useState(false)
+  const [dir, setDir] = useState(1)   // slide direction: 1 = forward, -1 = back
   const listRef = useRef(null)
   const slideRef = useRef(null)
   const touchStart = useRef(null)   // { x, y }
@@ -87,8 +88,8 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
     const diff = e.changedTouches[0].clientX - touchStart.current.x
     const threshold = 80
     if (Math.abs(diff) > threshold) {
-      if (diff < 0 && hasNext) setCurrentIdx(i => i + 1)
-      else if (diff > 0 && hasPrev) setCurrentIdx(i => i - 1)
+      if (diff < 0 && hasNext) goTo(currentIdx + 1)
+      else if (diff > 0 && hasPrev) goTo(currentIdx - 1)
     }
     touchStart.current = null
     touchMoved.current = false
@@ -123,7 +124,10 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
   const total = items.length
   const goTo = (idx) => {
     const target = Math.max(0, Math.min(idx, total - 1))
-    if (target !== currentIdx) trackSlideView(pageKey, target)
+    if (target !== currentIdx) {
+      trackSlideView(pageKey, target)
+      setDir(target > currentIdx ? 1 : -1)
+    }
     setCurrentIdx(target)
     onIndexChange?.(target)
   }
@@ -134,7 +138,9 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
   const counterSection = (
     <div className="counter-group" data-tour="counter">
       <button data-tour="counter-dec" onClick={decCount} className="cnt-btn" aria-label="Decrease count">−</button>
-      <span data-tour="counter-value" className="cnt-value">{count}</span>
+      <span data-tour="counter-value" className="cnt-value">
+        <span key={count} className="cnt-digit">{count}</span>
+      </span>
       <button data-tour="counter-inc" onClick={incCount} className="cnt-btn" aria-label="Increase count">+</button>
       <button data-tour="counter-reset" onClick={resetCount} className="cnt-btn cnt-reset" aria-label="Reset count">↺</button>
     </div>
@@ -186,11 +192,13 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
       onTouchEnd={handleTouchEnd}
     >
       {/* padding for fixed bar */}
-      <div style={{
-        flex: 1, overflowY: 'auto', minHeight: 0,
-        animation: 'fadeSlideIn 0.25s ease', paddingBottom: 66,
-      }}>
-        {renderItem(current, currentIdx)}
+      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0, paddingBottom: 66 }}>
+        <div
+          key={currentIdx}
+          className={`slide-stage ${dir > 0 ? 'from-right' : 'from-left'}`}
+        >
+          {renderItem(current, currentIdx)}
+        </div>
       </div>
       {/* One fixed bar: nav left, counter right */}
       <div className="reading-bar">

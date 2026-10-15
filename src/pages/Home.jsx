@@ -112,7 +112,7 @@ export default function Home() {
         {/* Today — Hijri date hero with today's events */}
         <button
           className="dash-date"
-          onClick={() => navigate(routeForPage('calendar'))}
+          onClick={() => navigate(routeForPage('calendar'), { viewTransition: true })}
           aria-label="Open Islamic calendar"
         >
           <span className="pattern-layer" aria-hidden="true" />
@@ -132,7 +132,7 @@ export default function Home() {
 
         {/* Continue reading */}
         {lastBook && (
-          <Link to={`/books/${lastBook.slug}`} className="dash-continue">
+          <Link to={`/books/${lastBook.slug}`} viewTransition className="dash-continue">
             <span className="dash-continue-cover" style={{ background: coverGradient(lastBook.cover) }}>
               <Icon name="faBookOpen" />
             </span>
@@ -152,7 +152,7 @@ export default function Home() {
 
         {/* Dua of the day */}
         {dailyDua && (
-          <Link to={routeForPage('dua')} className="dash-dua">
+          <Link to={routeForPage('dua')} viewTransition className="dash-dua">
             <span className="dash-dua-eyebrow">
               <Icon name="faHandsPraying" />
               {strings.home?.duaOfDay || 'Dua of the day'}
@@ -175,6 +175,7 @@ export default function Home() {
               <Link
                 key={link.to}
                 to={link.to}
+                viewTransition
                 className="quick-link"
                 data-tour={`home-link-${link.labelKey}`}
               >

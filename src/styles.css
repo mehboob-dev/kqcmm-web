@@ -3543,6 +3543,55 @@ body.zen .reading-bar { bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
   box-shadow: 0 6px 16px -6px var(--accent);
 }
 
+/* ===== MOTION SYSTEM (6.2.0) ===== */
+
+/* Route transitions — native View Transitions API (react-router viewTransition).
+   Old page sinks away, new page springs up. Browsers without support navigate
+   instantly (the hooks are no-ops there). */
+::view-transition-old(root) {
+  animation: vtOld 0.22s ease both;
+}
+::view-transition-new(root) {
+  animation: vtNew 0.42s var(--ease-spring) both;
+}
+@keyframes vtOld {
+  to { opacity: 0; transform: translateY(8px) scale(0.992); }
+}
+@keyframes vtNew {
+  from { opacity: 0; transform: translateY(14px) scale(1.006); }
+}
+/* While a view transition is capturing, suppress mount animations so the
+   snapshot isn't taken mid-flight (staggered cards would capture at opacity 0). */
+html:active-view-transition,
+html:active-view-transition * {
+  animation-duration: 0.001ms !important;
+  animation-delay: 0s !important;
+}
+
+/* Slide-mode direction change — the new slide enters from the side you're
+   moving toward (forward = from right, back = from left). */
+.slide-stage.from-right {
+  animation: slideInRight 0.34s var(--ease-spring);
+}
+.slide-stage.from-left {
+  animation: slideInLeft 0.34s var(--ease-spring);
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+}
+
+/* Counter — the number rolls in on every change (keyed remount). */
+.cnt-digit {
+  display: inline-block;
+  animation: cntPop 0.32s var(--ease-spring);
+}
+@keyframes cntPop {
+  from { opacity: 0.15; transform: translateY(55%) scale(0.82); }
+}
+
 /* ===== GLOBAL MOTION PREFERENCE ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -3550,5 +3599,9 @@ body.zen .reading-bar { bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
   }
 }
