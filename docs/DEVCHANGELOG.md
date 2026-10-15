@@ -4,6 +4,27 @@
 
 Maintain both changelogs together when work lands. Latest version at the top.
 
+## 6.1.0 — 2026-10-15
+
+### User-facing
+- **Full-screen magazine menu** — the side drawer is gone; the top-left button now opens a full-viewport menu with numbered editorial links (01–15), staggered entrance animations, icon chips, and a star-pattern backdrop. Escape and backdrop-tap close it.
+- **Dashboard Home** — replaced the logo-hero + tiles page with: compact brand row, mihrab-arched "today" hero (Hijri date + up to two event labels, taps through to the calendar), continue-reading card (last opened book + saved chapter + progress bar), dua of the day card (rotates by day of month), then the config-driven explore grid and a closing ornament.
+- **Focus reading mode** — every content page (including books) now has an expand button in the reading bar; it hides the top chrome, bottom dock, reading progress and quick-jump FAB while reading, and restores everything on exit or route change.
+- **Immersive chrome** — the header + Hijri strip slide away when reading downward (>140px) and return on scroll-up; a 3px gradient reading-progress line tracks scroll position.
+- **Mihrab hero arches** — content page heroes now use a 150px domed top radius with a subtle 8-point star-tile pattern over the accent mesh.
+
+### Internal / docs
+- **`SideDrawer.jsx`** — rewritten as the full-screen menu (`.menu-panel`, `.menu-overlay`, `.menu-link*`); `data-tour="drawer-nav"` preserved; `drawer-bg.jpg` public asset no longer referenced.
+- **`Home.jsx`** — dashboard restructure; loads calendar/dua/books-index via `usePageContent` (module-cached after first import); new `strings.home.*` keys (en + hinglish): `explore`, `continueReading`, `duaOfDay`, `readNow`, `chapter`.
+- **`BookReader.jsx`** — writes `kqcmm_last_book` (localStorage, best-effort) on open so Home can offer continue-reading.
+- **`Layout.jsx`** — header + HijriStrip wrapped in a fixed `.top-chrome` that publishes `--chrome-h` (ResizeObserver); `.main-content` reserves that space; rAF-throttled scroll listener drives `--read-progress` and the chrome hide/show; refs `shellRef`/`chromeRef`; state renamed `menuOpen`.
+- **`ContentView.jsx`** — zen toggle (body class `zen`), reading bar now always rendered (books included); `.zen-btn` with `faExpand`/`faCompress` (iconMap additions); reading bar radius 24 (dock match) and drops into the dock slot while zen is active.
+- **`styles.css`** — `.top-chrome`/`.read-progress`, mihrab `.page-hero` + SVG star pattern, `.menu-*` system, `.dash-*` system, `.ornament`/`.pattern-layer` shared utilities, `body.zen` rules; z-order: reading bar 55 · dock 60 · chrome 100 · reading progress 102 · quick-jump backdrop/sheet 150/160 · menu 200/201.
+- **Docs sync** — `docs/components.md` (menu overlay, dashboard Home, Layout chrome, ContentView zen), `docs/styling.md` (menu/dash/chrome/zen primitives, utility table), `CLAUDE.md` (version, tree notes, conventions).
+- **Version bump** — `6.0.0` → `6.1.0`, synchronized package.json, About.jsx, dev changelog, and public changelogs in English and Hinglish.
+
+---
+
 ## 6.0.0 — 2026-10-15
 
 ### User-facing

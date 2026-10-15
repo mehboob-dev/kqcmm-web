@@ -9,24 +9,28 @@ Detailed documentation for every React component in the application.
 The root layout component that wraps all pages.
 
 ### Responsibilities
-- Renders the header with hamburger menu and settings gear
+- Renders the **fixed top chrome** — header (hamburger + title + language toggle + share + settings gear) and Hijri strip are wrapped in `.top-chrome`; it publishes `--chrome-h` (its height, via ResizeObserver) so `.main-content` can reserve the space
 - Renders the main content area (React Router Outlet)
-- Renders the bottom navigation bar
-- Manages the side drawer (open/close state)
+- Renders the bottom navigation dock
+- Renders the **reading-progress line** (`.read-progress`) — a 3px gradient bar whose `scaleX` is driven by the CSS var `--read-progress` (no React re-renders; rAF-throttled scroll listener)
+- Hides the top chrome while reading downward (>140px) and restores it on scroll-up or near the top (adds `.hidden` to `.top-chrome`)
+- Manages the full-screen menu (open/close state)
 - Manages the settings popup (open/close state)
 - Loads language strings on language change
-- Scrolls to top on page navigation
+- Scrolls to top on page navigation (also restores the chrome + resets the progress line)
 - Applies font family and font size via inline styles
 - Mounts the **OnboardingTour** walkthrough (see [OnboardingTour.jsx](#onboardingtourjsx-first-run-walkthrough)) after strings load; auto-starts only on `/`, and exposes a `Replay walkthrough` action through SettingsPopup (`onReplayTour` → bump `replayToken`)
-- Auto-closes the side drawer / settings popup when a tour step moves off their controls (MutationObserver on `data-tour-step` on `<body>`)
+- Auto-closes the menu / settings popup when a tour step moves off their controls (MutationObserver on `data-tour-step` on `<body>`)
 
 ### State
 | Variable | Type | Purpose |
 |---|---|---|
-| `drawerOpen` | boolean | Controls side drawer visibility |
+| `menuOpen` | boolean | Controls full-screen menu visibility |
 | `settingsOpen` | boolean | Controls settings modal visibility |
 | `strings` | object/null | Loaded language strings |
 | `replayToken` | number | Incremented each time the walkthrough is replayed, forcing a fresh OnboardingTour run |
+
+Refs: `mainRef` (scroll container), `shellRef` (publishes `--chrome-h` / `--read-progress`), `chromeRef` (hide/show class).
 
 ### Page Title Lookup
 Uses a `pageTitleMap` object to translate route paths to display titles from the current language's strings. Includes routes for all 12 pages plus settings.
@@ -36,8 +40,15 @@ Uses a `pageTitleMap` object to translate route paths to display titles from the
 // Load strings when language changes
 useEffect(() => { loadStrings(lang).then(setStrings) }, [lang])
 
-// Reset scroll position on page navigation
-useEffect(() => { mainRef.current.scrollTop = 0 }, [location.pathname])
+// Reset scroll position + restore chrome + reset progress on navigation
+useEffect(() => {
+  mainRef.current.scrollTop = 0
+  chromeRef.current?.classList.remove('hidden')
+  shellRef.current?.style.setProperty('--read-progress', '0')
+}, [location.pathname])
+
+// Publish chrome height (--chrome-h) via ResizeObserver
+// rAF-throttled scroll listener → --read-progress + .top-chrome.hidden
 ```
 
 ---
@@ -105,11 +116,21 @@ right), not two separate bars — see the combined bar in `ContentView.jsx`
 
 ### Styling hooks (class-based since 5.19.0, glass dock in 6.0.0)
 The bar is styled via CSS classes in `src/styles.css` (previously inline styles):
-`.reading-bar`, `.reading-bar.is-split`, `.reading-bar-inner` (glass capsule),
-`.slide-group`, `.slide-btn`, `.slide-pos`, `.counter-group`, `.cnt-btn`
-(gradient-deep), `.cnt-value`, `.cnt-reset`. Since 6.0.0 the bar is a **floating
-glass capsule** above the dock (`bottom: calc(var(--bottom-nav-height, 88px) + 8px)`,
-z-index 55) with `clamp()` sizing. Nav/counter buttons fire `hapticTap(10)` on press.
+`.reading-bar`, `.reading-bar.is-split`, `.reading-bar-inner` (glass capsule,
+24px radius — dock match), `.slide-group`, `.slide-btn`, `.slide-pos`,
+`.counter-group`, `.cnt-btn` (gradient-deep), `.cnt-value`, `.cnt-reset`,
+`.zen-btn`. Since 6.0.0 the bar is a **floating glass capsule** above the dock
+(`bottom: calc(var(--bottom-nav-height, 88px) + 8px)`, z-index 55) with
+`clamp()` sizing. Nav/counter buttons fire `hapticTap(10)` on press.
+
+### Focus ("zen") mode — 6.1.0
+The reading bar renders on **every** content page (books included, even with
+`showCounter={false}`) because it also hosts the `.zen-btn` toggle
+(`faExpand`/`faCompress`, `aria-pressed`). Toggling adds a `zen` class to
+`<body>`; CSS then hides the top chrome, dock, reading progress and quick-jump
+FAB, and the reading bar drops into the dock's slot
+(`bottom: calc(10px + env(safe-area-inset-bottom))`). The class is removed on
+unmount, so any route change exits focus mode.
 
 ---
 
@@ -140,15 +161,19 @@ Swipe navigation in slide mode is handled entirely in `ContentView.jsx` via `onT
 
 ---
 
-## SideDrawer.jsx
+## SideDrawer.jsx (now the full-screen menu)
 
-Slide-in navigation drawer with header image.
+Since 6.1.0 this component renders a **full-screen magazine menu** instead of a
+side drawer (file/name kept to avoid import churn):
 
-- Reads items from `src/config/navigation.json`
-- Background image with gradient overlay in header
-- Closes on route change
-- Locks body scroll when open
-- RTL support (slides from right — wired up for the planned Urdu/Arabic languages)
+- Reads items from `src/config/navigation.json` (`sideDrawer` array)
+- `.menu-panel` (fixed, full viewport, star-pattern `.pattern-layer` + radial
+  accent glow) with stagger-animated `.menu-link` rows: `01…NN` index,
+  label, FA icon chip, gradient active rail
+- `.menu-overlay` (blurred) — tap to close; Escape also closes
+- Closes on route change; locks body scroll when open
+- `data-tour="drawer-nav"` preserved on the nav container for the walkthrough
+- The old `public/drawer-bg.jpg` header image is no longer referenced
 
 ---
 
@@ -571,12 +596,25 @@ Tested by `scripts/test-hijri-calendar.mjs` (`npm test`, 126 cases).
 
 ## Home.jsx
 
-**File:** `src/pages/Home.jsx` — the landing page's quick-link tile grid.
+**File:** `src/pages/Home.jsx` — the landing page, rebuilt in 6.1.0 as a
+**dashboard** (was a logo hero + tile grid):
 
-The tiles are **not hardcoded** — they come from `src/config/home.json`
-(`{ "tiles": [{ "pageId": "...", "icon": "fa..." }, ...] }`), editable from the
-admin panel's **🏠 Home** tab. `Home.jsx` maps each config tile through the page
-registry:
+1. **Brand row** — compact logo card + gradient wordmark + tagline.
+2. **Today hero** (`.dash-date`) — mihrab-arched card with the Hijri date
+   (`todayHijri` + `hijriLabel` from `hijriCalendar.js`) and up to two event
+   labels for today (`enumerateOccurrences` + `localizedEvent`); taps through to
+   `/calendar`. Content comes from `usePageContent(lang, 'calendar')`
+   (module-cached — HijriStrip already imports it).
+3. **Continue reading** (`.dash-continue`) — shown when `kqcmm_last_book`
+   (written by `BookReader.jsx` on open) points at a live book in
+   `books/_index.json` that has saved progress (`bookProgress.readProgressMap`
+   — read once on mount). Shows cover gradient (`coverGradient`), chapter
+   X/Y and a progress bar.
+4. **Dua of the day** (`.dash-dua`) — rotates by day of month over
+   `dua.json`'s `duas`, text truncated, links to `/dua`.
+5. **Explore grid** — the config-driven quick-link tiles (unchanged):
+   from `src/config/home.json` (`{ "tiles": [{ "pageId": "...", "icon": "fa..." }, ...] }`),
+   editable from the admin panel's **🏠 Home** tab:
 
 - **route** = `routeForNavItem({ pageId })` — resolves the registry id → canonical route
 - **labelKey** = `pageById(tile.pageId)?.titleKey` (falls back to the raw `pageId`)
@@ -585,6 +623,8 @@ registry:
 
 Render JSX keeps `.quick-link` cards plus the onboarding hooks
 `data-tour="home-links"` and `data-tour="home-link-<labelKey>"` (see OnboardingTour).
+New UI labels live under `strings.home.*` (en + hinglish):
+`explore`, `continueReading`, `duaOfDay`, `readNow`, `chapter`.
 
 ---
 

@@ -3,6 +3,17 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "6.1.0",
+        "date": "2026-10-15",
+        "changes": [
+          "Naya full-screen menu — top-left button ab har section ki saaf, numbered list kholta hai, smooth staggered animations ke sath.",
+          "Home ab ek dashboard hai: upar aaj ki Hijri tareekh aur event, aakhri padhi gayi kitab ke liye continue-reading shortcut, aur roz badalne wali dua.",
+          "Focus reading mode — counter ke paas naya expand button dabayein aur padhte waqt header aur bottom bar chhupa dein; dobara dabane par sab wapas.",
+          "Padhte hue header upar slide ho jata hai aur scroll up karte hi wapas aa jata hai — sath mein patli reading progress line.",
+          "Content pages par ab mihrab architecture se inspired arched hero headers aur halka star pattern."
+        ]
+      },
+      {
         "version": "6.0.0",
         "date": "2026-10-15",
         "changes": [

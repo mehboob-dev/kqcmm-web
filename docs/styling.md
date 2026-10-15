@@ -310,13 +310,34 @@ a **floating glass capsule** sitting above the dock (`bottom: calc(var(--bottom-
   centered sheet. `.settings-section-label` is a gradient eyebrow;
   `.settings-replay-btn` is gradient-deep. Quick Jump mirrors the pattern
   (`.qj-sheet` glass, radius 28px).
-- **Home** — `.home-hero-mark` (star-and-crescent watermark),
-  `.home-logo-ring` (gradient ring), `.home-eyebrow` (gradient pill),
-  `.home-title` (gradient wordmark; dark/OLED override), `.home-section-label`
-  ("Explore" + fading rule); `.quick-link` tiles are depth tiles with
-  white-on-gradient-deep icon chips that tilt on hover.
+- **Home (6.1.0 dashboard)** — `.dash-brand` row (logo card + gradient
+  wordmark), `.dash-date` mihrab-arched today hero (radial mesh +
+  `.pattern-layer`, event chip), `.dash-continue` card (cover block, progress
+  bar `.dash-prog/.dash-prog-fill`), `.dash-dua` card (gradient rail via
+  `::before`), `.home-section-label` ("Explore" + fading rule), `.home-foot`
+  ornament; `.quick-link` tiles are depth tiles with white-on-gradient-deep
+  icon chips that tilt on hover.
 - **Splash** — `.splash-count` is a glass pill with `splashPulse`;
   `.splash-count-num` is a circular badge with tabular digits.
+
+### Noor shell motion (6.1.0)
+- **Top chrome** — header + Hijri strip live in `.top-chrome` (`position: fixed`,
+  centered, z-index 100; `translate(-50%, -103%)` when `.hidden`). Its height is
+  published as `--chrome-h`; `.main-content` reserves
+  `padding-top: calc(var(--chrome-h, 106px) + 16px)`.
+- **Reading progress** — `.read-progress` is a 3px `--accent-grad` line at the
+  viewport top (z-index 102, max-width 1200px) with
+  `transform: translateX(-50%) scaleX(var(--read-progress, 0))`; both vars are
+  set by Layout's rAF-throttled scroll listener.
+- **Focus mode** — `body.zen` (toggled by `.zen-btn` in `ContentView.jsx`)
+  slides out `.top-chrome` and `.bottom-nav`, fades `.qj-fab`/`.read-progress`,
+  drops `.reading-bar` into the dock slot and trims `.main-content` padding.
+- **Mihrab heroes** — `.page-hero` uses a 150px domed top radius; its `::before`
+  layers a white 8-point-star SVG tile (56px, stroke-opacity 0.07) over the
+  accent mesh gradients.
+- **Shared ornaments** — `.ornament` (+ `.ornament-diamond`) draw the
+  diamond-ended hairline dividers; `.pattern-layer` is the reusable masked
+  star-tile texture (menu panel, dashboard hero).
 
 ### Utility component classes
 | Area | Classes |
@@ -324,10 +345,10 @@ a **floating glass capsule** sitting above the dock (`bottom: calc(var(--bottom-
 | Changelog timeline (`Changelog.jsx`) | `.log-timeline` (vertical line + dots), `.log-item`, `.log-dot` (gradient dot; glows for the latest), `.log-head`, `.log-version` (gradient-deep chip), `.log-latest` (outlined badge), `.log-date`, `.log-changes` (gradient bullet markers) |
 | About version card | `.version-card` (flex row), `.version-label`, `.version-number` (gradient text), `.version-link` (gradient-deep pill to `/changelog`) |
 | 404 page (`NotFound.jsx`) | `.nf-code` (large gradient numeral + soft glow), `.nf-msg`, `.nf-btn` (gradient-deep pill) |
-| Home hero (`Home.jsx`) | `.home-hero`, `.home-hero-mark` (watermark), `.home-logo-ring` (gradient ring), `.home-eyebrow` (gradient pill), `.home-title` (gradient wordmark), `.home-section-label` ("Explore" + fading rule) |
+| Dashboard Home (`Home.jsx`) | `.dash-brand*`, `.dash-date*` (arch hero), `.dash-continue*` + `.dash-prog*`, `.dash-dua*`, `.home-section-label`, `.home-foot` |
 | Quick links (`Home.jsx`) | `.quick-link` depth tiles, `.ql-icon` white-on-gradient-deep chip (tilt on hover) |
 | Quick Jump sheet | `.qj-fab` (gradient rounded square), `.qj-backdrop`, `.qj-sheet` (glass, radius 28px), `.qj-handle`, `.qj-head`, `.qj-list`, `.qj-item` (rounded hover rows), `.qj-item-num` (gradient chip on hover) |
-| Side drawer brand | `.drawer-brand`, `.drawer-brand-logo`, `.drawer-brand-text` |
+| Full-screen menu (`SideDrawer.jsx`) | `.menu-overlay`, `.menu-panel` (+ pattern-layer), `.menu-panel-inner`, `.menu-top`, `.menu-brand*`, `.menu-close`, `.menu-nav`, `.menu-link*` (numbered editorial rows), `.menu-foot` |
 | Settings sheet | `.settings-backdrop`, `.settings-modal-card` (bottom sheet / centered ≥640px), `.settings-modal-body`, `.settings-section-card`, `.settings-section-label` (gradient eyebrow), `.settings-replay-btn` (gradient-deep), `.view-mode-row`, `.view-mode-btn` (`.active` = elevated segment) |
 | Highlight / poem cards (Roshni) | `.highlight-card`, `.poem-card` |
 

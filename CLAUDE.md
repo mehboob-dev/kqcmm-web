@@ -5,7 +5,7 @@ A spiritual web platform for followers of the Chishti Sufi order. Displays duas,
 > **📱 PWA/Offline:** Fully cached for offline use via Service Worker.  
 > **🔍 SEO:** Pre-rendered static HTML per route with Open Graph + Twitter Card tags.
 >
-> **Current version: v6.0.0** ("Noor" redesign) - see [`/changelog`](/kqcmm-web/changelog) for full history.
+> **Current version: v6.1.0** ("Noor" redesign) - see [`/changelog`](/kqcmm-web/changelog) for full history.
 
 ---
 
@@ -78,10 +78,10 @@ kqcmm-web/
 │   ├── styles.css                      # All CSS (themes, layout, cards)
 │   │
 │   ├── components/
-│   │   ├── Layout.jsx                  # App shell (header + content + nav)
-│   │   ├── BottomNav.jsx              # 5-tab navigation bar
-│   │   ├── SideDrawer.jsx             # Slide-in navigation drawer
-│   │   ├── ContentView.jsx            # List/slide view + counter
+│   │   ├── Layout.jsx                  # App shell (fixed top chrome + content + dock; reading progress; chrome hide-on-scroll)
+│   │   ├── BottomNav.jsx              # Floating glass dock (5 tabs)
+│   │   ├── SideDrawer.jsx             # Full-screen magazine menu overlay
+│   │   ├── ContentView.jsx            # List/slide view + counter + focus (zen) mode
 │   │   ├── QuickJump.jsx             # Floating quick-jump bottom sheet (shared, language-independent)
 │   │   ├── HijriStrip.jsx            # App-wide thin strip below header (today Hijri + Gregorian + event-today)
 │   │   ├── SplashScreen.jsx           # Splash with countdown
@@ -92,7 +92,7 @@ kqcmm-web/
 │   │   └── SeoHead.jsx              # Per-page meta tags (Helmet)
 │   │
 │   ├── pages/
-│   │   ├── Home.jsx                   # Home with logo + quick links
+│   │   ├── Home.jsx                   # Dashboard home (today hero, continue reading, dua of day, explore grid)
 │   │   ├── GenericContentPage.jsx     # Custom page renderer (registry renderer: generic)
 │   │   ├── Dua.jsx                    # Duas (supplications)
 │   │   ├── Hmk.jsx                    # Hajee Mahboob Kassim bio
@@ -536,8 +536,10 @@ The editor server at `scripts/content-editor.mjs` serves both the Admin Panel an
 - **`.card-head` / `.card-num`** — numbered cards (chip number + title row) on content pages
 - **`.page-hero`** — centered hero header with gradient eyebrow + title underline
 - **`.card-text`** — default text with `line-height: 1.7`
-- **Floating dock** — `.bottom-nav` is a fixed glass dock (z-index 60) publishing `--bottom-nav-height`; `.reading-bar` floats above it (z-index 55)
-- **Sheets** — settings/quick-jump/walkthrough use glass sheets with grab handles; z-index map: reading bar 55 · dock 60 · header 100 · drawer 201 · settings 301 · tour 1000–1002 · splash 9999
+- **Floating dock** — `.bottom-nav` is a fixed glass dock (z-index 60) publishing `--bottom-nav-height`; `.reading-bar` floats above it (z-index 55, same 24px radius)
+- **Top chrome** — header + Hijri strip in fixed `.top-chrome` publishing `--chrome-h`; hides on downward scroll; `.read-progress` line driven by `--read-progress` (both set by Layout with rAF, no re-renders)
+- **Focus mode** — `.zen-btn` in the reading bar toggles `body.zen` (hides chrome, dock, FAB; reading bar drops into the dock slot); exits on route change
+- **Sheets** — settings/quick-jump/walkthrough use glass sheets with grab handles; z-index map: reading bar 55 · dock 60 · chrome 100 · reading progress 102 · quick-jump 150/160 · menu 200/201 · settings 301 · tour 1000–1002 · splash 9999
 - **Haptics** — `hapticTap()` from `src/utils/haptics.js` in tap handlers only (never effects)
 - **Focus** — `:focus-visible` accent outline stays; no bare `outline: none`
 - Breakpoints: `640px` (sheet centering), `768px` (tablet), `1400px` (desktop max 1200px)

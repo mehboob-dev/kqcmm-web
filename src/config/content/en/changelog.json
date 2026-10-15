@@ -3,6 +3,17 @@
     "title": "Changelog",
     "versions": [
       {
+        "version": "6.1.0",
+        "date": "2026-10-15",
+        "changes": [
+          "New full-screen menu — the top-left button now opens a clean, numbered list of every section with smooth staggered animations.",
+          "Home is now a dashboard: today's Hijri date and event at the top, a continue-reading shortcut for the book you were last reading, and a daily rotating dua.",
+          "Focus reading mode — tap the new expand button beside the counter to hide the header and bottom bar entirely while you read; tap again to bring them back.",
+          "The header now slides away as you read downward and returns as soon as you scroll up, with a thin progress line showing how far you've read.",
+          "Content pages get arched hero headers with a subtle star pattern, inspired by mihrab architecture."
+        ]
+      },
+      {
         "version": "6.0.0",
         "date": "2026-10-15",
         "changes": [
