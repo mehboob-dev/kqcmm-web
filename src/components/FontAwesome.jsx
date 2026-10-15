@@ -6,7 +6,7 @@ import {
   faPeopleGroup, faGear, faBars, faXmark, faClockRotateLeft,
   faLightbulb, faShareNodes, faCheck,
   faBookOpen, faStarAndCrescent, faUserTie, faHandHoldingHeart,
-  faDownload, faMoon, faChevronRight, faArrowRight,
+  faDownload, faMoon, faChevronRight, faArrowRight, faList,
 } from '@fortawesome/free-solid-svg-icons'
 
 const iconMap = {
@@ -15,7 +15,7 @@ const iconMap = {
   faPeopleGroup, faGear, faBars, faXmark, faClockRotateLeft,
   faLightbulb, faShareNodes, faCheck,
   faBookOpen, faStarAndCrescent, faUserTie, faHandHoldingHeart,
-  faDownload, faMoon, faChevronRight, faArrowRight,
+  faDownload, faMoon, faChevronRight, faArrowRight, faList,
 }
 
 export default function Icon({ name, className, style }) {

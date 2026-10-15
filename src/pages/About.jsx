@@ -1,9 +1,11 @@
 import SeoHead from '../components/SeoHead'
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { loadStrings } from '../config/strings'
 import { usePageContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
+import Icon from '../components/FontAwesome'
 
 export default function About() {
   const { lang } = useLanguage()
@@ -29,8 +31,11 @@ export default function About() {
   return (
     <div className="content-page">
       <SeoHead title="About" path={routeForPage('about')} description="About Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya (KQCMM) — mission, activities, and contact information." />
-      <h2 className="page-title">{content.title}</h2>
-      {content.intro && <div className="page-section"><p style={{ whiteSpace: 'pre-line' }}>{content.intro}</p></div>}
+      <div className="page-hero">
+        <div className="page-hero-badge">About KQCMM</div>
+        <h2 className="page-hero-title">{content.title}</h2>
+        {content.intro && <div className="page-hero-intro" style={{ whiteSpace: 'pre-line' }}>{content.intro}</div>}
+      </div>
       {content.sections?.map((s, i) => (
         <div key={i} className="card">
           {s.title && <div className="card-title">{s.title}</div>}
@@ -55,9 +60,14 @@ export default function About() {
           <div className="card-text">{content.contact.text}</div>
         </div>
       )}
-      <div className="card">
-        <div className="card-title">Version</div>
-        <div className="card-text">5.18.0</div>
+      <div className="card version-card">
+        <div>
+          <div className="version-label">Version</div>
+          <div className="version-number">5.18.0</div>
+        </div>
+        <Link to={routeForPage('changelog')} className="version-link">
+          Changelog <Icon name="faArrowRight" />
+        </Link>
       </div>
     </div>
   )

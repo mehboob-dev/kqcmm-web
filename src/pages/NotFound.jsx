@@ -6,9 +6,9 @@ export default function NotFound() {
   return (
     <div className="not-found">
       <SeoHead title="Page Not Found" path="/404" description="The requested page could not be found on KQCMM." />
-      <h2>{strings.notFound.title}</h2>
-      <p>{strings.notFound.msg}</p>
-      <Link to="/" className="quick-link" style={{ display: 'inline-flex' }}>
+      <div className="nf-code">{strings.notFound.title}</div>
+      <p className="nf-msg">{strings.notFound.msg}</p>
+      <Link to="/" className="nf-btn">
         {strings.notFound.goHome}
       </Link>
     </div>

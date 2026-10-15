@@ -480,7 +480,15 @@ export default function OnboardingTour({ strings, pathname, replayToken, navigat
         ref={panelRef}
         tabIndex={-1}
       >
-        <div className="tour-progress">{progressLabel}</div>
+        <div className="tour-progress">
+          <span>{progressLabel}</span>
+          <span className="tour-progress-track">
+            <span
+              className="tour-progress-bar"
+              style={{ width: `${((stepIdx + 1) / steps.length) * 100}%` }}
+            />
+          </span>
+        </div>
         <h2 id="tour-step-title" className="tour-title">{stepStrings[step?.id]?.title || ''}</h2>
         <p id="tour-step-body" className="tour-body">{stepStrings[step?.id]?.body || ''}</p>
         <div className="tour-actions">

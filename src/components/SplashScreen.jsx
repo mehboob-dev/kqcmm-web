@@ -38,53 +38,19 @@ export default function SplashScreen({ onDone }) {
   return (
     <div
       onClick={skip}
+      className="splash"
       style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 9999,
-        background: '#000',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         opacity: fadeOut ? 0 : 1,
         transition: `opacity ${config.fadeTransition}ms ease`,
-        cursor: 'pointer',
       }}
     >
-      <div style={{
-        width: '100%',
-        height: '100%',
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-      }}>
-        <img
-          src={base + config.image.replace(/^\//, '')}
-          alt="KQCMM"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'fill',
-          }}
-        />
-      </div>
-      <div style={{
-        position: 'absolute',
-        bottom: '10%',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        background: 'rgba(0,0,0,0.55)',
-        backdropFilter: 'blur(4px)',
-        color: '#fff',
-        padding: '10px 28px',
-        borderRadius: 30,
-        fontSize: 20,
-        fontWeight: 600,
-        letterSpacing: 1,
-        pointerEvents: 'none',
-      }}>
+      <img
+        src={base + config.image.replace(/^\//, '')}
+        alt="KQCMM"
+        className="splash-img"
+      />
+      <div className="splash-shade" />
+      <div className="splash-count">
         {config.message} {count > 0 ? count : ''}
         {count > 0 ? [...Array(count)].map((_, i) => '.').join('') : ''}
       </div>

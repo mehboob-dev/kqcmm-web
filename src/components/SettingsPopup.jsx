@@ -3,6 +3,8 @@ import { useLanguage } from '../context/LanguageContext'
 import { useTheme } from '../context/ThemeContext'
 import { useFont } from '../context/FontContext'
 import { useView } from '../context/ViewContext'
+import { hapticTap } from '../utils/haptics'
+import Icon from './FontAwesome'
 
 function OptionRow({ label, options, value, onChange }) {
   const isSwatch = options.some(opt => opt.swatch)
@@ -16,7 +18,7 @@ function OptionRow({ label, options, value, onChange }) {
             return (
               <button
                 key={opt.id || opt.code}
-                onClick={() => onChange(opt.id || opt.code)}
+                onClick={() => { hapticTap(8); onChange(opt.id || opt.code) }}
                 title={opt.label}
                 aria-label={`${opt.label} theme`}
                 aria-pressed={selected}
@@ -66,7 +68,7 @@ function OptionRow({ label, options, value, onChange }) {
           return (
             <button
               key={opt.id || opt.code}
-              onClick={() => onChange(opt.id || opt.code)}
+              onClick={() => { hapticTap(8); onChange(opt.id || opt.code) }}
               style={{
                 padding: '6px 14px',
                 borderRadius: 8,
@@ -125,12 +127,7 @@ export default function SettingsPopup({ strings, onClose, onReplayTour }) {
         {onReplayTour && (
           <button
             onClick={onReplayTour}
-            style={{
-              width: '100%', marginBottom: 14, padding: '10px 14px', borderRadius: 10,
-              cursor: 'pointer', fontSize: '0.9em', fontFamily: 'inherit', fontWeight: 600,
-              background: 'var(--accent-bg)', color: 'var(--accent)',
-              border: '1px solid var(--accent)', transition: 'all 0.15s ease',
-            }}
+            className="settings-replay-btn"
           >{strings.onboarding?.replay || 'Replay walkthrough'}</button>
         )}
 
@@ -161,27 +158,15 @@ export default function SettingsPopup({ strings, onClose, onReplayTour }) {
         {/* View Mode */}
         <div className="settings-section-card" style={{ marginBottom: 0 }}>
           <div className="settings-section-label">View Mode</div>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div className="view-mode-row">
             <button
-              onClick={() => { if (slideMode) toggleSlideMode() }}
-              style={{
-                flex: 1, padding: '10px 14px', borderRadius: 8, cursor: 'pointer', fontSize: '0.9em', fontWeight: 600,
-                border: !slideMode ? '2px solid var(--accent)' : '1px solid var(--border)',
-                background: !slideMode ? 'var(--accent-bg)' : 'transparent',
-                color: !slideMode ? 'var(--accent)' : 'var(--text)',
-                transition: 'all 0.15s ease',
-              }}
-            >📋 List</button>
+              onClick={() => { if (slideMode) { hapticTap(8); toggleSlideMode() } }}
+              className={`view-mode-btn${!slideMode ? ' active' : ''}`}
+            ><Icon name="faList" /> List</button>
             <button
-              onClick={() => { if (!slideMode) toggleSlideMode() }}
-              style={{
-                flex: 1, padding: '10px 14px', borderRadius: 8, cursor: 'pointer', fontSize: '0.9em', fontWeight: 600,
-                border: slideMode ? '2px solid var(--accent)' : '1px solid var(--border)',
-                background: slideMode ? 'var(--accent-bg)' : 'transparent',
-                color: slideMode ? 'var(--accent)' : 'var(--text)',
-                transition: 'all 0.15s ease',
-              }}
-            >📖 Slide</button>
+              onClick={() => { if (!slideMode) { hapticTap(8); toggleSlideMode() } }}
+              className={`view-mode-btn${slideMode ? ' active' : ''}`}
+            ><Icon name="faBookOpen" /> Slide</button>
           </div>
         </div>
         </div>

@@ -22,18 +22,27 @@ export default function Changelog() {
   return (
     <div className="content-page">
       <SeoHead title="Changelog" path={routeForPage('changelog')} description="Version history and release notes for KQCMM web app." />
-      <h2 className="page-title">{content.title || 'Changelog'}</h2>
-      {content.versions?.map((v, i) => (
-        <div key={i} className="card">
-          <div className="card-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-            <span>v{v.version}</span>
-            <span style={{ fontSize: '0.8em', color: 'var(--text-muted)', fontWeight: 400 }}>{v.date}</span>
+      <div className="page-hero">
+        <div className="page-hero-badge">Release Notes</div>
+        <h2 className="page-hero-title">{content.title || 'Changelog'}</h2>
+      </div>
+      <div className="log-timeline">
+        {content.versions?.map((v, i) => (
+          <div key={i} className="log-item">
+            <span className="log-dot" aria-hidden="true" />
+            <div className="card log-card">
+              <div className="log-head">
+                <span className="log-version">v{v.version}</span>
+                {i === 0 && <span className="log-latest">Latest</span>}
+                <span className="log-date">{v.date}</span>
+              </div>
+              <ul className="log-changes">
+                {v.changes.map((c, ci) => <li key={ci}>{c}</li>)}
+              </ul>
+            </div>
           </div>
-          <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.8, fontSize: '0.92em' }}>
-            {v.changes.map((c, ci) => <li key={ci}>{c}</li>)}
-          </ul>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }
