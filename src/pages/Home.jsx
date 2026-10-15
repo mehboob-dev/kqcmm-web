@@ -12,9 +12,12 @@ import {
   todayHijri,
   enumerateOccurrences,
   hijriLabel,
+  hijriMonthLength,
   formatISODate,
   localizedEvent,
 } from '../utils/hijriCalendar'
+import { moonPhaseInfo } from '../utils/moonPhase'
+import MoonPhaseIcon from '../components/MoonPhaseIcon'
 import { coverGradient } from './BooksIndex'
 
 // Home page tiles are driven by src/config/home.json — editable from the admin
@@ -53,6 +56,12 @@ export default function Home() {
     if (!calData) return null
     const monthNames = calData.monthNames || []
     const hijri = todayHijri(calData.monthStarts)
+    const moon = hijri.ok
+      ? moonPhaseInfo(
+          hijri.hijriDay,
+          hijriMonthLength(calData.monthStarts, hijri.hijriYear, hijri.hijriMonth),
+        )
+      : null
     const eventsById = new Map((calData.events || []).map(ev => [ev.id, ev]))
     const labels = []
     for (const o of enumerateOccurrences(calData)) {
@@ -61,7 +70,7 @@ export default function Home() {
       const label = ev ? localizedEvent(ev, lang, monthNames).label : o.id
       if (label && !labels.includes(label)) labels.push(label)
     }
-    return { hijri, monthNames, labels }
+    return { hijri, monthNames, labels, moon }
   }, [calData, lang, todayStr])
 
   const gregLabel = new Date(today.y, today.m - 1, today.d).toLocaleDateString(undefined, {
@@ -126,6 +135,12 @@ export default function Home() {
             <span className="dash-date-events">
               <Icon name="faStarAndCrescent" />
               <span className="dash-date-events-text">{dateInfo.labels.slice(0, 2).join(' · ')}</span>
+            </span>
+          )}
+          {dateInfo?.moon && (
+            <span className="dash-moon" aria-hidden="true">
+              <MoonPhaseIcon fraction={dateInfo.moon.fraction} size={54} />
+              <span className="dash-moon-label">{strings.moon?.[dateInfo.moon.key]}</span>
             </span>
           )}
         </button>

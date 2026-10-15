@@ -31,6 +31,18 @@
     "readNow": "Read",
     "chapter": "Chapter"
   },
+  "moon": {
+    "title": "Tonight's Moon",
+    "illuminated": "illuminated",
+    "new": "New Moon",
+    "waxingCrescent": "Waxing Crescent",
+    "firstQuarter": "First Quarter",
+    "waxingGibbous": "Waxing Gibbous",
+    "full": "Full Moon",
+    "waningGibbous": "Waning Gibbous",
+    "lastQuarter": "Last Quarter",
+    "waningCrescent": "Waning Crescent"
+  },
   "settings": {
     "title": "Settings",
     "language": "Language",

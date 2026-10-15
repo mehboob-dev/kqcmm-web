@@ -31,6 +31,18 @@
     "readNow": "Read karein",
     "chapter": "Chapter"
   },
+  "moon": {
+    "title": "Aaj Raat Ka Chaand",
+    "illuminated": "roshan",
+    "new": "Naya Chaand",
+    "waxingCrescent": "Badhta Hilal",
+    "firstQuarter": "Pehla Chauthai",
+    "waxingGibbous": "Badhta Badra",
+    "full": "Pura Chaand",
+    "waningGibbous": "Ghatta Badra",
+    "lastQuarter": "Aakhri Chauthai",
+    "waningCrescent": "Ghatta Hilal"
+  },
   "settings": {
     "title": "Settings",
     "language": "Language",

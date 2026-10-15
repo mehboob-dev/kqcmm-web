@@ -225,6 +225,25 @@ export function todayHijri(monthStarts) {
   return gregorianToHijri(todayLocal(), monthStarts)
 }
 
+/**
+ * Length (29 or 30 days) of a Hijri month, from the distance to the next
+ * stored month start. The final entry has no successor → falls back to 30.
+ */
+export function hijriMonthLength(monthStarts, hijriYear, hijriMonth) {
+  const starts = monthStarts || []
+  for (let i = 0; i < starts.length; i++) {
+    const ms = starts[i]
+    if (ms.hijriYear !== hijriYear || ms.hijriMonth !== hijriMonth) continue
+    const next = starts[i + 1]
+    const a = parseISODate(ms.gregorianStart)
+    const b = next ? parseISODate(next.gregorianStart) : null
+    if (!a || !b) return 30
+    const len = daysBetween(a, b)
+    return len === 29 || len === 30 ? len : 30
+  }
+  return 30
+}
+
 // ---------- event mapping ----------
 
 /**

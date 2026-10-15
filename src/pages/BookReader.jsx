@@ -130,6 +130,7 @@ export default function BookReader() {
         className="reader-hero-cover"
         style={{
           background: coverGradient(content.cover),
+          viewTransitionName: `book-cover-${slug.replace(/[^a-zA-Z0-9_-]/g, '-')}`,
         }}
       >
         <h1 style={{ margin: 0, fontSize: '1.6em', fontWeight: 800, textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>{content.title}</h1>

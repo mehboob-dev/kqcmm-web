@@ -53,6 +53,7 @@ export default function BooksIndex() {
               className="book-cover-wrap"
               style={{
                 background: coverGradient(book.cover),
+                viewTransitionName: `book-cover-${book.slug.replace(/[^a-zA-Z0-9_-]/g, '-')}`,
               }}
             >
               <div className="book-cover-accent-line" />

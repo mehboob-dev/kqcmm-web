@@ -1,5 +1,6 @@
 import SeoHead from '../components/SeoHead'
 import ContentSkeleton from '../components/ContentSkeleton'
+import MoonPhaseIcon from '../components/MoonPhaseIcon'
 import { useState, useEffect, useMemo } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { trackCalendarNav, trackCalendarToggle } from '../utils/analytics'
@@ -13,6 +14,7 @@ import {
   nextOccurrence,
   localizedEvent,
   hijriLabel,
+  hijriMonthLength,
   formatISODate,
   buildMonthGrid,
   hijriMonthOf,
@@ -20,6 +22,7 @@ import {
   gregorianMonthOf,
   splitUpcomingPast,
 } from '../utils/hijriCalendar'
+import { moonPhaseInfo } from '../utils/moonPhase'
 
 // Weekday header labels (3 letters) — Sunday-first. Localized via toLocaleDateString
 // when available, but a static 3-letter set keeps the grid compact across languages.
@@ -237,6 +240,15 @@ export default function Calendar() {
 
   const next = nextOccurrence(occurrences, today)
   const cal = strings?.calendar || {}
+  const moonStrings = strings?.moon || {}
+
+  // Tonight's moon — phase derived from the stored Hijri monthStarts data
+  const todayMoon = todayH.ok
+    ? moonPhaseInfo(
+        todayH.hijriDay,
+        hijriMonthLength(data.monthStarts, todayH.hijriYear, todayH.hijriMonth),
+      )
+    : null
 
   const isMonthly = (occ) => occ.rule === 'hijri-monthly'
 
@@ -321,6 +333,20 @@ export default function Calendar() {
     <div className="content-page">
       <SeoHead title="Islamic Calendar" path={routeForPage('calendar')} description="Upcoming Islamic events, important dates, and spiritual observances from the Chishti tradition." />
       <h2 className="page-title">{title}</h2>
+
+      {/* TONIGHT'S MOON — phase from the stored Hijri calendar data */}
+      {todayMoon && (
+        <div className="moon-card">
+          <MoonPhaseIcon fraction={todayMoon.fraction} size={64} />
+          <div className="moon-card-text">
+            <span className="moon-card-title">{moonStrings.title || "Tonight's Moon"}</span>
+            <span className="moon-card-phase">{moonStrings[todayMoon.key]}</span>
+            <span className="moon-card-meta">
+              {Math.round(todayMoon.illumination * 100)}% {moonStrings.illuminated || 'illuminated'}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* MONTH GRID */}
       <div className="cal-grid-card">
