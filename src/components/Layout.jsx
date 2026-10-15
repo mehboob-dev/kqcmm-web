@@ -15,7 +15,7 @@ import Icon from './FontAwesome'
 import OnboardingTour from './OnboardingTour'
 
 export default function Layout() {
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const [strings, setStrings] = useState(null)
@@ -41,7 +41,7 @@ export default function Layout() {
     const path = location.pathname === '/' ? '/' : location.pathname.replace(/^\/kqcmm-web\/?/, '/')
     trackPageView(path, strings?.appName)
   }, [location.pathname])
-  // Auto-close sidebar drawer and settings popup with a short delay when the onboarding tour advances past their steps
+  // Auto-close menu and settings popup with a short delay when the onboarding tour advances past their steps
   useEffect(() => {
     if (typeof MutationObserver === 'undefined') return undefined
     let timer1 = null
@@ -54,7 +54,7 @@ export default function Layout() {
       }
       if (step && step !== 'header-menu') {
         if (timer2) clearTimeout(timer2)
-        timer2 = setTimeout(() => setDrawerOpen(false), 600)
+        timer2 = setTimeout(() => setMenuOpen(false), 600)
       }
     }
     sync()
@@ -168,7 +168,7 @@ export default function Layout() {
     >
       {/* HEADER */}
       <header className="app-header">
-        <button className="hamburger-btn" data-tour="header-menu" onClick={() => setDrawerOpen(true)} aria-label="Menu" style={{ fontSize: 17 }}>
+        <button className="hamburger-btn" data-tour="header-menu" onClick={() => setMenuOpen(true)} aria-label="Menu" style={{ fontSize: 17 }}>
           <Icon name="faBars" />
         </button>
         <span className="app-title">{title}</span>
@@ -203,8 +203,8 @@ export default function Layout() {
       {/* BOTTOM NAV */}
       {strings && <BottomNav strings={strings} />}
 
-      {/* SIDE DRAWER */}
-      {strings && <SideDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} strings={strings} />}
+      {/* FULL-SCREEN MENU */}
+      {strings && <SideDrawer open={menuOpen} onClose={() => setMenuOpen(false)} strings={strings} />}
 
       {/* SETTINGS POPUP */}
       {strings && settingsOpen && <SettingsPopup strings={strings} onClose={() => setSettingsOpen(false)} onReplayTour={() => { setSettingsOpen(false); setReplayToken(t => t + 1) }} />}
