@@ -25,11 +25,16 @@ export default function Home() {
       <SeoHead title="Home" path="" description="Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya — Spiritual platform for followers of the Chishti Sufi order. Duas, khatm, fateha, kalam, sijrah nama and more." />
       <div className="home-container content-page">
       <div className="home-hero">
-        <img src={import.meta.env.BASE_URL + 'logo.png'} alt="KQCMM" className="home-logo" />
+        <Icon name="faStarAndCrescent" className="home-hero-mark" />
+        <div className="home-logo-ring">
+          <img src={import.meta.env.BASE_URL + 'logo.png'} alt="KQCMM" className="home-logo" />
+        </div>
+        <div className="home-eyebrow">Khanqahe Qadriyah Chishtiya Musharrafiya Mahboobiya</div>
         <h1 className="home-title">KQCMM</h1>
         <p className="home-subtitle">{strings.tagline}</p>
       </div>
       <p className="home-desc">{strings.home.welcome}</p>
+      <div className="home-section-label">Explore</div>
       <div className="home-quick-links" data-tour="home-links">
         {homePageRoutes.map((link) => {
           const label = strings.drawer[link.labelKey] || link.labelKey
