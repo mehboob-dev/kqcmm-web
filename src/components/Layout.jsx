@@ -168,8 +168,8 @@ export default function Layout() {
     >
       {/* HEADER */}
       <header className="app-header">
-        <button className="hamburger-btn" data-tour="header-menu" onClick={() => setDrawerOpen(true)} aria-label="Menu">
-          ☰
+        <button className="hamburger-btn" data-tour="header-menu" onClick={() => setDrawerOpen(true)} aria-label="Menu" style={{ fontSize: 17 }}>
+          <Icon name="faBars" />
         </button>
         <span className="app-title">{title}</span>
         <div
@@ -188,7 +188,7 @@ export default function Layout() {
           {copied ? <Icon name="faCheck" /> : <Icon name="faShareNodes" />}
         </button>
         <button className="hamburger-btn" data-tour="header-settings" onClick={() => setSettingsOpen(true)} aria-label="Settings" style={{ fontSize: 16 }}>
-          <span>⚙</span>
+          <Icon name="faGear" />
         </button>
       </header>
 

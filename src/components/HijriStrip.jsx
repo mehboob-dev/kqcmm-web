@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { usePageContent } from '../config/content'
 import { routeForPage } from '../config/pageRoutes'
+import Icon from './FontAwesome'
 
 import {
   todayLocal,
@@ -64,6 +65,7 @@ export default function HijriStrip({ lang }) {
       aria-label="Open Islamic calendar"
       title="Open Islamic calendar"
     >
+      <Icon name="faMoon" className="hijri-strip-icon" />
       {todayH.ok ? (
         <span className="hijri-strip-hijri">{hijriLabel(todayH.hijriYear, todayH.hijriMonth, todayH.hijriDay, monthNames, lang)}</span>
       ) : (

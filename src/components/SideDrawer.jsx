@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import Icon from './FontAwesome'
 import navConfig from '../config/navigation.json'
 import { routeForNavItem } from '../config/pageRoutes'
+import { hapticTap } from '../utils/haptics'
 
 export default function SideDrawer({ open, onClose, strings }) {
   const location = useLocation()
@@ -38,16 +39,18 @@ export default function SideDrawer({ open, onClose, strings }) {
           flexDirection: 'column',
           justifyContent: 'flex-end',
         }}>
-          <div style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.85))', padding: '16px 16px 20px', margin: -1 }}>
-            <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 800, textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>{strings.appName}</h2>
-            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: 11, marginTop: 4, textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>{strings.tagline}</p>
+          <div className="drawer-brand">
+            <img className="drawer-brand-logo" src={import.meta.env.BASE_URL + 'logo.png'} alt="" />
+            <h2 className="drawer-brand-name">{strings.appName}</h2>
+            <p className="drawer-brand-tag">{strings.tagline}</p>
           </div>
         </div>
-        <nav className="drawer-nav">
+        <nav className="drawer-nav" data-tour="drawer-nav">
           {links.map((link) => (
             <NavLink
               key={link.to + link.label}
               to={link.to}
+              onClick={() => hapticTap(10)}
               className={({ isActive }) =>
                 `drawer-link${isActive ? ' active' : ''}`
               }

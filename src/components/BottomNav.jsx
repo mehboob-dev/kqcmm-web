@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Icon from './FontAwesome'
 import navConfig from '../config/navigation.json'
 import { routeForNavItem } from '../config/pageRoutes'
+import { hapticTap } from '../utils/haptics'
 
 export default function BottomNav({ strings }) {
   const navigate = useNavigate()
@@ -65,40 +66,29 @@ export default function BottomNav({ strings }) {
 
   return (
     <nav className="bottom-nav" data-tour="bottom-nav" ref={ref}>
-      {items.map((item) => (
+      {items.map((item) => {
+        const active = location.pathname === item.to
+        return (
         <button
             key={item.to}
-            onClick={() => navigate(item.to, { replace: true })}
-            className={`nav-item${location.pathname === item.to ? ' active' : ''}`}
+            onClick={() => { hapticTap(10); navigate(item.to, { replace: true }) }}
+            className={`nav-item${active ? ' active' : ''}`}
+            aria-current={active ? 'page' : undefined}
             data-tour={item.pageId === 'home' ? 'bottom-home' : `bottom-nav-${item.pageId}`}
         >
           <Icon name={item.icon} className="nav-icon" />
           {item.label}
         </button>
-      ))}
+        )
+      })}
       {/* 6th tab: Install App — only when browser supports it */}
       {installPrompt && !isInstalled && (
         <button
           onClick={handleInstall}
           className="nav-item"
-          style={{
-            border: 'none',
-            background: 'none',
-            cursor: 'pointer',
-            fontFamily: 'inherit',
-            fontSize: 11,
-            color: 'var(--text-muted)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 2,
-            padding: 0,
-            width: '100%',
-          }}
           aria-label="Install App"
         >
-          📲
+          <span className="nav-icon"><Icon name="faDownload" /></span>
           <span>Install</span>
         </button>
       )}

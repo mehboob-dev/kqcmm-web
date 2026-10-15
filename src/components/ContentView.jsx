@@ -121,16 +121,11 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
 
   // Shared counter component
   const counterSection = (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }} data-tour="counter">
-      <button data-tour="counter-dec" onClick={decCount} style={circleBtn('var(--accent)', 34)} aria-label="Decrease count">−</button>
-      <span data-tour="counter-value" style={{
-        fontSize: 20, fontWeight: 800, color: 'var(--text-heading)',
-        minWidth: 38, textAlign: 'center', fontVariantNumeric: 'tabular-nums',
-      }}>{count}</span>
-      <button data-tour="counter-inc" onClick={incCount} style={circleBtn('var(--accent)', 34)} aria-label="Increase count">+</button>
-      <button data-tour="counter-reset" onClick={resetCount} style={{
-        ...circleBtn('var(--accent)', 28), fontSize: 12, borderRadius: 6,
-      }} aria-label="Reset count">↺</button>
+    <div className="counter-group" data-tour="counter">
+      <button data-tour="counter-dec" onClick={decCount} className="cnt-btn" aria-label="Decrease count">−</button>
+      <span data-tour="counter-value" className="cnt-value">{count}</span>
+      <button data-tour="counter-inc" onClick={incCount} className="cnt-btn" aria-label="Increase count">+</button>
+      <button data-tour="counter-reset" onClick={resetCount} className="cnt-btn cnt-reset" aria-label="Reset count">↺</button>
     </div>
   )
 
@@ -142,18 +137,8 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
           {items.map((item, i) => <div key={i} data-section-index={i}>{renderItem(item, i)}</div>)}
         </div>
         {showCounter && (
-          <div style={{
-            position: 'fixed', bottom: 'var(--bottom-nav-height, 56px)', left: 0, right: 0,
-            display: 'flex', justifyContent: 'center', zIndex: 2,
-            pointerEvents: 'none',
-          }}>
-            <div style={{
-              width: '100%', maxWidth: 1200,
-              background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
-              padding: '10px 0', display: 'flex', justifyContent: 'center',
-              boxSizing: 'border-box',
-              pointerEvents: 'auto',
-            }}>
+          <div className="reading-bar">
+            <div className="reading-bar-inner">
               {counterSection}
             </div>
           </div>
@@ -184,28 +169,17 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
         {renderItem(current, currentIdx)}
       </div>
       {/* One fixed bar: nav left, counter right */}
-      <div style={{
-        position: 'fixed', bottom: 'var(--bottom-nav-height, 56px)', left: 0, right: 0,
-        display: 'flex', justifyContent: 'center', zIndex: 2,
-        pointerEvents: 'none',
-      }}>
-        <div style={{
-          width: '100%', maxWidth: 1200,
-          background: 'var(--bg-card)', borderTop: '1px solid var(--border)',
-          boxSizing: 'border-box',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '8px 12px',
-          pointerEvents: 'auto',
-        }}>
+      <div className="reading-bar">
+        <div className="reading-bar-inner is-split">
         {/* Slide nav */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }} data-tour="slide-nav">
-          <button data-tour="slide-first" onClick={() => goTo(0)} disabled={!hasPrev} style={navBtn(!hasPrev)} aria-label="First">⏮</button>
-          <button data-tour="slide-prev" onClick={() => goTo(currentIdx - 1)} disabled={!hasPrev} style={navBtn(!hasPrev)} aria-label="Previous">◀</button>
-          <span style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 600, minWidth: 50, textAlign: 'center' }}>
+        <div className="slide-group" data-tour="slide-nav">
+          <button data-tour="slide-first" onClick={() => goTo(0)} disabled={!hasPrev} className="slide-btn" aria-label="First">⏮</button>
+          <button data-tour="slide-prev" onClick={() => goTo(currentIdx - 1)} disabled={!hasPrev} className="slide-btn" aria-label="Previous">◀</button>
+          <span className="slide-pos">
             {currentIdx + 1}/{total}
           </span>
-          <button data-tour="slide-next" onClick={() => goTo(currentIdx + 1)} disabled={!hasNext} style={navBtn(!hasNext)} aria-label="Next">▶</button>
-          <button data-tour="slide-last" onClick={() => goTo(total - 1)} disabled={!hasNext} style={navBtn(!hasNext)} aria-label="Last">⏭</button>
+          <button data-tour="slide-next" onClick={() => goTo(currentIdx + 1)} disabled={!hasNext} className="slide-btn" aria-label="Next">▶</button>
+          <button data-tour="slide-last" onClick={() => goTo(total - 1)} disabled={!hasNext} className="slide-btn" aria-label="Last">⏭</button>
         </div>
         {/* Counter */}
         {showCounter ? counterSection : null}
@@ -213,26 +187,4 @@ export default function ContentView({ items, renderItem, mode, pageKey, jumpTo, 
       </div>{/* outer */}
     </div>
   )
-}
-
-function circleBtn(bg, size) {
-  return {
-    background: bg, border: 'none', color: '#fff',
-    width: size, height: size, borderRadius: '50%', cursor: 'pointer',
-    fontSize: 18, fontWeight: 700,
-    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-    boxShadow: '0 2px 8px var(--shadow)',
-    transition: 'transform 0.15s ease, filter 0.15s ease',
-  }
-}
-
-function navBtn(disabled) {
-  return {
-    background: disabled ? 'var(--bg-card-alt)' : 'var(--accent)',
-    border: 'none', color: disabled ? 'var(--text-muted)' : '#fff',
-    width: 34, height: 34, borderRadius: 8, cursor: disabled ? 'default' : 'pointer',
-    fontSize: 13, opacity: disabled ? 0.35 : 1,
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    transition: 'transform 0.15s ease',
-  }
 }
