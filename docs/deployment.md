@@ -70,7 +70,7 @@ dist/
 ### How It Works
 1. Push to `main` branch
 2. GitHub Actions runs the workflow in `.github/workflows/deploy.yml`
-3. Workflow: install Chromium → `npm ci` → `npm run build` → deploy
+3. Workflow: `npm ci` (downloads Puppeteer's managed Chrome) → `npm run build` → deploy
 
 ### When the Deploy Is Skipped
 Only pushes that change **buildable code** trigger a rebuild. Pushes touching only
@@ -123,13 +123,8 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
-      - run: sudo apt-get update && sudo apt-get install -y chromium-browser
       - run: npm ci
-        env:
-          PUPPETEER_SKIP_DOWNLOAD: true
       - run: npm run build
-        env:
-          PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
       - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v5
         with:

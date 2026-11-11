@@ -10,6 +10,7 @@ Maintain both changelogs together when work lands. Latest version at the top.
 - **Added new Dua** — *Khwaja, The Refuge of the Destitute* (*Ghareebon Ke Sahare, Khwaja*) added to `src/config/content/en/dua.json` and `src/config/content/hinglish/dua.json`.
 
 ### Internal / docs
+- **CI / GitHub Pages workflow** — `.github/workflows/deploy.yml`: removed `sudo apt-get install chromium-browser` (which hung and failed due to Snap Store connection timeouts on Ubuntu runner images) and removed `PUPPETEER_SKIP_DOWNLOAD` / `PUPPETEER_EXECUTABLE_PATH`. Puppeteer now automatically downloads its tested Chrome binary during `npm ci`. Updated `docs/deployment.md` to reflect the self-contained workflow.
 - **Version bump** — `5.16.1` → `5.17.0`, public and developer changelogs synchronized.
 
 ---
